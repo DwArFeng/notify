@@ -2,7 +2,7 @@ package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
+import com.dwarfeng.subgrade.sdk.bean.key.JSFixedFastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -13,27 +13,27 @@ import java.util.Objects;
  * @author DwArFeng
  * @since 1.0.0
  */
-public class FastJsonRouterInfo implements Bean {
+public class JSFixedFastJsonRouterInfo implements Bean {
 
-    private static final long serialVersionUID = -768960931817536189L;
+    private static final long serialVersionUID = 3157504625706211425L;
 
-    public static FastJsonRouterInfo of(RouterInfo routerInfo) {
+    public static JSFixedFastJsonRouterInfo of(RouterInfo routerInfo) {
         if (Objects.isNull(routerInfo)) {
             return null;
         } else {
-            return new FastJsonRouterInfo(
-                    FastJsonLongIdKey.of(routerInfo.getKey()),
-                    FastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
+            return new JSFixedFastJsonRouterInfo(
+                    JSFixedFastJsonLongIdKey.of(routerInfo.getKey()),
+                    JSFixedFastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
                     routerInfo.isEnabled(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonLongIdKey key;
+    private JSFixedFastJsonLongIdKey key;
 
     @JSONField(name = "notify_setting_key", ordinal = 2)
-    private FastJsonLongIdKey notifySettingKey;
+    private JSFixedFastJsonLongIdKey notifySettingKey;
 
     @JSONField(name = "enabled", ordinal = 3)
     private boolean enabled;
@@ -47,11 +47,11 @@ public class FastJsonRouterInfo implements Bean {
     @JSONField(name = "remark", ordinal = 6)
     private String remark;
 
-    public FastJsonRouterInfo() {
+    public JSFixedFastJsonRouterInfo() {
     }
 
-    public FastJsonRouterInfo(
-            FastJsonLongIdKey key, FastJsonLongIdKey notifySettingKey, boolean enabled, String type,
+    public JSFixedFastJsonRouterInfo(
+            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey notifySettingKey, boolean enabled, String type,
             String param, String remark
     ) {
         this.key = key;
@@ -62,19 +62,19 @@ public class FastJsonRouterInfo implements Bean {
         this.remark = remark;
     }
 
-    public FastJsonLongIdKey getKey() {
+    public JSFixedFastJsonLongIdKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonLongIdKey key) {
+    public void setKey(JSFixedFastJsonLongIdKey key) {
         this.key = key;
     }
 
-    public FastJsonLongIdKey getNotifySettingKey() {
+    public JSFixedFastJsonLongIdKey getNotifySettingKey() {
         return notifySettingKey;
     }
 
-    public void setNotifySettingKey(FastJsonLongIdKey notifySettingKey) {
+    public void setNotifySettingKey(JSFixedFastJsonLongIdKey notifySettingKey) {
         this.notifySettingKey = notifySettingKey;
     }
 
@@ -112,8 +112,9 @@ public class FastJsonRouterInfo implements Bean {
 
     @Override
     public String toString() {
-        return "FastJsonRouterInfo{" +
+        return "JSFixedFastJsonRouterInfo{" +
                 "key=" + key +
+                ", notifySettingKey=" + notifySettingKey +
                 ", enabled=" + enabled +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +

@@ -10,7 +10,7 @@ import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
  * 路由器支持数据访问层。
  *
  * @author DwArFeng
- * @since beta-1.1.0
+ * @since 1.0.0
  */
 public interface RouterSupportDao extends BatchBaseDao<StringIdKey, RouterSupport>, EntireLookupDao<RouterSupport>,
         PresetLookupDao<RouterSupport> {

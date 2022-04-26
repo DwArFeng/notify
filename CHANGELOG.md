@@ -10,6 +10,7 @@
   - com.dwarfeng.notify.stack.bean.entity.User。
   - com.dwarfeng.notify.stack.bean.entity.RouterInfo。
   - com.dwarfeng.notify.stack.bean.entity.RouterSupport。
+  - com.dwarfeng.notify.stack.bean.entity.NotifySetting。
 
 #### Bug修复
 

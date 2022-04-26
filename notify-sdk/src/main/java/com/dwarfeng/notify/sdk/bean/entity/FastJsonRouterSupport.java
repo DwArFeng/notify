@@ -11,7 +11,7 @@ import java.util.Objects;
  * FastJson 路由器支持。
  *
  * @author DwArFeng
- * @since beta-1.1.0
+ * @since 1.0.0
  */
 public class FastJsonRouterSupport implements Bean {
 

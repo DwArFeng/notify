@@ -4,7 +4,7 @@ package com.dwarfeng.notify.impl.handler;
  * 路由器支持器。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.0.0
  */
 public interface RouterSupporter {
 

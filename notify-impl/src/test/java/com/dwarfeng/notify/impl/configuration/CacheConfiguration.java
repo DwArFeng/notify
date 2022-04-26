@@ -1,13 +1,16 @@
 package com.dwarfeng.notify.impl.configuration;
 
+import com.dwarfeng.notify.sdk.bean.entity.FastJsonNotifySetting;
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonRouterInfo;
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonRouterSupport;
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonUser;
+import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.impl.cache.RedisKeyListCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
 import com.dwarfeng.subgrade.sdk.redis.formatter.StringIdStringKeyFormatter;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -30,6 +33,10 @@ public class CacheConfiguration {
     private String routerInfoPrefix;
     @Value("${cache.prefix.entity.router_support}")
     private String routerSupportPrefix;
+    @Value("${cache.prefix.entity.notify_setting}")
+    private String notifySettingPrefix;
+    @Value("${cache.prefix.list.enabled_router_info}")
+    private String enabledRouterInfoPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -63,6 +70,26 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonRouterSupport>) template,
                 new StringIdStringKeyFormatter(routerSupportPrefix),
                 new DozerBeanTransformer<>(RouterSupport.class, FastJsonRouterSupport.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, NotifySetting, FastJsonNotifySetting> notifySettingRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonNotifySetting>) template,
+                new LongIdStringKeyFormatter(notifySettingPrefix),
+                new DozerBeanTransformer<>(NotifySetting.class, FastJsonNotifySetting.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisKeyListCache<LongIdKey, RouterInfo, FastJsonRouterInfo> routerInfoEnabledRedisKeyListCache() {
+        return new RedisKeyListCache<>(
+                (RedisTemplate<String, FastJsonRouterInfo>) template,
+                new LongIdStringKeyFormatter(enabledRouterInfoPrefix),
+                new DozerBeanTransformer<>(RouterInfo.class, FastJsonRouterInfo.class, mapper)
         );
     }
 }

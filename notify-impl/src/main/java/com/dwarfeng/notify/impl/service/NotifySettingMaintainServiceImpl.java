@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
-import com.dwarfeng.notify.stack.service.RouterInfoMaintainService;
+import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
+import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
@@ -17,16 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService {
+public class NotifySettingMaintainServiceImpl implements NotifySettingMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, RouterInfo> crudService;
-    private final DaoOnlyEntireLookupService<RouterInfo> entireLookupService;
-    private final DaoOnlyPresetLookupService<RouterInfo> presetLookupService;
+    private final CustomBatchCrudService<LongIdKey, NotifySetting> crudService;
+    private final DaoOnlyEntireLookupService<NotifySetting> entireLookupService;
+    private final DaoOnlyPresetLookupService<NotifySetting> presetLookupService;
 
-    public RouterInfoMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, RouterInfo> crudService,
-            DaoOnlyEntireLookupService<RouterInfo> entireLookupService,
-            DaoOnlyPresetLookupService<RouterInfo> presetLookupService
+    public NotifySettingMaintainServiceImpl(
+            CustomBatchCrudService<LongIdKey, NotifySetting> crudService,
+            DaoOnlyEntireLookupService<NotifySetting> entireLookupService,
+            DaoOnlyPresetLookupService<NotifySetting> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
@@ -43,21 +43,21 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public RouterInfo get(LongIdKey key) throws ServiceException {
+    public NotifySetting get(LongIdKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insert(RouterInfo element) throws ServiceException {
+    public LongIdKey insert(NotifySetting element) throws ServiceException {
         return crudService.insert(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void update(RouterInfo element) throws ServiceException {
+    public void update(NotifySetting element) throws ServiceException {
         crudService.update(element);
     }
 
@@ -71,21 +71,21 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public RouterInfo getIfExists(LongIdKey key) throws ServiceException {
+    public NotifySetting getIfExists(LongIdKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insertIfNotExists(RouterInfo element) throws ServiceException {
+    public LongIdKey insertIfNotExists(NotifySetting element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void updateIfExists(RouterInfo element) throws ServiceException {
+    public void updateIfExists(NotifySetting element) throws ServiceException {
         crudService.updateIfExists(element);
     }
 
@@ -99,7 +99,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insertOrUpdate(RouterInfo element) throws ServiceException {
+    public LongIdKey insertOrUpdate(NotifySetting element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
@@ -121,7 +121,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<RouterInfo> batchGet(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public List<NotifySetting> batchGet(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -129,14 +129,14 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(@SkipRecord List<RouterInfo> elements) throws ServiceException {
+    public List<LongIdKey> batchInsert(@SkipRecord List<NotifySetting> elements) throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(@SkipRecord List<RouterInfo> elements) throws ServiceException {
+    public void batchUpdate(@SkipRecord List<NotifySetting> elements) throws ServiceException {
         crudService.batchUpdate(elements);
     }
 
@@ -151,7 +151,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<RouterInfo> batchGetIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public List<NotifySetting> batchGetIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -159,14 +159,14 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertIfExists(@SkipRecord List<RouterInfo> elements) throws ServiceException {
+    public List<LongIdKey> batchInsertIfExists(@SkipRecord List<NotifySetting> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdateIfExists(@SkipRecord List<RouterInfo> elements) throws ServiceException {
+    public void batchUpdateIfExists(@SkipRecord List<NotifySetting> elements) throws ServiceException {
         crudService.batchUpdateIfExists(elements);
     }
 
@@ -181,7 +181,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertOrUpdate(@SkipRecord List<RouterInfo> elements) throws ServiceException {
+    public List<LongIdKey> batchInsertOrUpdate(@SkipRecord List<NotifySetting> elements) throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 
@@ -189,7 +189,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<RouterInfo> lookup() throws ServiceException {
+    public PagedData<NotifySetting> lookup() throws ServiceException {
         return entireLookupService.lookup();
     }
 
@@ -197,7 +197,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<RouterInfo> lookup(PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<NotifySetting> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);
     }
 
@@ -205,7 +205,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<RouterInfo> lookup(String preset, Object[] objs) throws ServiceException {
+    public PagedData<NotifySetting> lookup(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookup(preset, objs);
     }
 
@@ -213,7 +213,7 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<RouterInfo> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<NotifySetting> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 }

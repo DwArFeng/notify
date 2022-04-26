@@ -11,9 +11,10 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class RouterInfo implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -4053659959914521971L;
+    private static final long serialVersionUID = 7540509799464467467L;
 
     private LongIdKey key;
+    private LongIdKey notifySettingKey;
     private boolean enabled;
     private String type;
     private String param;
@@ -22,8 +23,11 @@ public class RouterInfo implements Entity<LongIdKey> {
     public RouterInfo() {
     }
 
-    public RouterInfo(LongIdKey key, boolean enabled, String type, String param, String remark) {
+    public RouterInfo(
+            LongIdKey key, LongIdKey notifySettingKey, boolean enabled, String type, String param, String remark
+    ) {
         this.key = key;
+        this.notifySettingKey = notifySettingKey;
         this.enabled = enabled;
         this.type = type;
         this.param = param;
@@ -38,6 +42,14 @@ public class RouterInfo implements Entity<LongIdKey> {
     @Override
     public void setKey(LongIdKey key) {
         this.key = key;
+    }
+
+    public LongIdKey getNotifySettingKey() {
+        return notifySettingKey;
+    }
+
+    public void setNotifySettingKey(LongIdKey notifySettingKey) {
+        this.notifySettingKey = notifySettingKey;
     }
 
     public boolean isEnabled() {
@@ -76,6 +88,7 @@ public class RouterInfo implements Entity<LongIdKey> {
     public String toString() {
         return "RouterInfo{" +
                 "key=" + key +
+                ", notifySettingKey=" + notifySettingKey +
                 ", enabled=" + enabled +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +

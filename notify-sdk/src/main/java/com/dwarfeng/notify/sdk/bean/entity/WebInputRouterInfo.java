@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class WebInputRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 7878680080706486619L;
+    private static final long serialVersionUID = -1729234679546272701L;
 
     public static RouterInfo toStackBean(WebInputRouterInfo webInputRouterInfo) {
         if (Objects.isNull(webInputRouterInfo)) {
@@ -29,9 +29,8 @@ public class WebInputRouterInfo implements Bean {
         } else {
             return new RouterInfo(
                     WebInputLongIdKey.toStackBean(webInputRouterInfo.getKey()),
-                    webInputRouterInfo.isEnabled(),
-                    webInputRouterInfo.getType(),
-                    webInputRouterInfo.getParam(),
+                    WebInputLongIdKey.toStackBean(webInputRouterInfo.getNotifySettingKey()),
+                    webInputRouterInfo.isEnabled(), webInputRouterInfo.getType(), webInputRouterInfo.getParam(),
                     webInputRouterInfo.getRemark()
             );
         }
@@ -41,6 +40,10 @@ public class WebInputRouterInfo implements Bean {
     @Valid
     @NotNull(groups = Default.class)
     private WebInputLongIdKey key;
+
+    @JSONField(name = "notify_setting_key")
+    @Valid
+    private WebInputLongIdKey notifySettingKey;
 
     @JSONField(name = "enabled")
     private boolean enabled;
@@ -61,20 +64,20 @@ public class WebInputRouterInfo implements Bean {
     public WebInputRouterInfo() {
     }
 
-    public WebInputRouterInfo(WebInputLongIdKey key, boolean enabled, String type, String param, String remark) {
-        this.key = key;
-        this.enabled = enabled;
-        this.type = type;
-        this.param = param;
-        this.remark = remark;
-    }
-
     public WebInputLongIdKey getKey() {
         return key;
     }
 
     public void setKey(WebInputLongIdKey key) {
         this.key = key;
+    }
+
+    public WebInputLongIdKey getNotifySettingKey() {
+        return notifySettingKey;
+    }
+
+    public void setNotifySettingKey(WebInputLongIdKey notifySettingKey) {
+        this.notifySettingKey = notifySettingKey;
     }
 
     public boolean isEnabled() {
@@ -113,6 +116,7 @@ public class WebInputRouterInfo implements Bean {
     public String toString() {
         return "WebInputRouterInfo{" +
                 "key=" + key +
+                ", notifySettingKey=" + notifySettingKey +
                 ", enabled=" + enabled +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
