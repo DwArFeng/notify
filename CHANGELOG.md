@@ -8,6 +8,8 @@
 
 - 实体建立，单元测试通过。
   - com.dwarfeng.notify.stack.bean.entity.User。
+  - com.dwarfeng.notify.stack.bean.entity.RouterInfo。
+  - com.dwarfeng.notify.stack.bean.entity.RouterSupport。
 
 #### Bug修复
 
