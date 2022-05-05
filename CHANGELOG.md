@@ -11,6 +11,8 @@
   - com.dwarfeng.notify.stack.bean.entity.RouterInfo。
   - com.dwarfeng.notify.stack.bean.entity.RouterSupport。
   - com.dwarfeng.notify.stack.bean.entity.NotifySetting。
+  - com.dwarfeng.notify.stack.bean.entity.SenderInfo。
+  - com.dwarfeng.notify.stack.bean.entity.SenderSupport。
 
 #### Bug修复
 

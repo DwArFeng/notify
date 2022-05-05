@@ -1,16 +1,8 @@
 package com.dwarfeng.notify.impl.configuration;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateNotifySetting;
-import com.dwarfeng.notify.impl.bean.entity.HibernateRouterInfo;
-import com.dwarfeng.notify.impl.bean.entity.HibernateRouterSupport;
-import com.dwarfeng.notify.impl.bean.entity.HibernateUser;
-import com.dwarfeng.notify.impl.dao.preset.NotifySettingPresetCriteriaMaker;
-import com.dwarfeng.notify.impl.dao.preset.RouterInfoPresetCriteriaMaker;
-import com.dwarfeng.notify.impl.dao.preset.RouterSupportPresetCriteriaMaker;
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
-import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
-import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.impl.bean.entity.*;
+import com.dwarfeng.notify.impl.dao.preset.*;
+import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
@@ -35,6 +27,8 @@ public class DaoConfiguration {
     private final RouterInfoPresetCriteriaMaker routerInfoPresetCriteriaMaker;
     private final RouterSupportPresetCriteriaMaker routerSupportPresetCriteriaMaker;
     private final NotifySettingPresetCriteriaMaker notifySettingPresetCriteriaMaker;
+    private final SenderInfoPresetCriteriaMaker senderInfoPresetCriteriaMaker;
+    private final SenderSupportPresetCriteriaMaker senderSupportPresetCriteriaMaker;
 
     @Autowired
     private Mapper mapper;
@@ -46,12 +40,16 @@ public class DaoConfiguration {
             HibernateTemplate hibernateTemplate,
             RouterInfoPresetCriteriaMaker routerInfoPresetCriteriaMaker,
             RouterSupportPresetCriteriaMaker routerSupportPresetCriteriaMaker,
-            NotifySettingPresetCriteriaMaker notifySettingPresetCriteriaMaker
+            NotifySettingPresetCriteriaMaker notifySettingPresetCriteriaMaker,
+            SenderInfoPresetCriteriaMaker senderInfoPresetCriteriaMaker,
+            SenderSupportPresetCriteriaMaker senderSupportPresetCriteriaMaker
     ) {
         this.hibernateTemplate = hibernateTemplate;
         this.routerInfoPresetCriteriaMaker = routerInfoPresetCriteriaMaker;
         this.routerSupportPresetCriteriaMaker = routerSupportPresetCriteriaMaker;
         this.notifySettingPresetCriteriaMaker = notifySettingPresetCriteriaMaker;
+        this.senderInfoPresetCriteriaMaker = senderInfoPresetCriteriaMaker;
+        this.senderSupportPresetCriteriaMaker = senderSupportPresetCriteriaMaker;
     }
 
     @Bean
@@ -168,6 +166,70 @@ public class DaoConfiguration {
                 new DozerBeanTransformer<>(NotifySetting.class, HibernateNotifySetting.class, mapper),
                 HibernateNotifySetting.class,
                 notifySettingPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, SenderInfo, HibernateSenderInfo>
+    senderInfoHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
+                new DozerBeanTransformer<>(SenderInfo.class, HibernateSenderInfo.class, mapper),
+                HibernateSenderInfo.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<SenderInfo, HibernateSenderInfo> senderInfoHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(SenderInfo.class, HibernateSenderInfo.class, mapper),
+                HibernateSenderInfo.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<SenderInfo, HibernateSenderInfo> senderInfoHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(SenderInfo.class, HibernateSenderInfo.class, mapper),
+                HibernateSenderInfo.class,
+                senderInfoPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, SenderSupport, HibernateSenderSupport>
+    senderSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
+                new DozerBeanTransformer<>(SenderSupport.class, HibernateSenderSupport.class, mapper),
+                HibernateSenderSupport.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<SenderSupport, HibernateSenderSupport> senderSupportHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(SenderSupport.class, HibernateSenderSupport.class, mapper),
+                HibernateSenderSupport.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<SenderSupport, HibernateSenderSupport> senderSupportHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(SenderSupport.class, HibernateSenderSupport.class, mapper),
+                HibernateSenderSupport.class,
+                senderSupportPresetCriteriaMaker
         );
     }
 }

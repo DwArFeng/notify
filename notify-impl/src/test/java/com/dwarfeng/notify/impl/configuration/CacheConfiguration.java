@@ -1,13 +1,7 @@
 package com.dwarfeng.notify.impl.configuration;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonNotifySetting;
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonRouterInfo;
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonRouterSupport;
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonUser;
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
-import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
-import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.sdk.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
@@ -34,6 +28,10 @@ public class CacheConfiguration {
     private String routerSupportPrefix;
     @Value("${cache.prefix.entity.notify_setting}")
     private String notifySettingPrefix;
+    @Value("${cache.prefix.entity.sender_info}")
+    private String senderInfoPrefix;
+    @Value("${cache.prefix.entity.sender_support}")
+    private String senderSupportPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -77,6 +75,26 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonNotifySetting>) template,
                 new LongIdStringKeyFormatter(notifySettingPrefix),
                 new DozerBeanTransformer<>(NotifySetting.class, FastJsonNotifySetting.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, SenderInfo, FastJsonSenderInfo> senderInfoRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonSenderInfo>) template,
+                new LongIdStringKeyFormatter(senderInfoPrefix),
+                new DozerBeanTransformer<>(SenderInfo.class, FastJsonSenderInfo.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<StringIdKey, SenderSupport, FastJsonSenderSupport> senderSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonSenderSupport>) template,
+                new StringIdStringKeyFormatter(senderSupportPrefix),
+                new DozerBeanTransformer<>(SenderSupport.class, FastJsonSenderSupport.class, mapper)
         );
     }
 }
