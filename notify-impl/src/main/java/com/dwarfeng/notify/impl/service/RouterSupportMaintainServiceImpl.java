@@ -239,6 +239,7 @@ public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainSe
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void reset() throws ServiceException {
+        //TODO 将复位逻辑更新为删除与重置。
         for (RouterSupporter routerSupporter : routerSupporters) {
             try {
                 crudService.insertIfNotExists(

@@ -32,6 +32,8 @@ public class CacheConfiguration {
     private String senderInfoPrefix;
     @Value("${cache.prefix.entity.sender_support}")
     private String senderSupportPrefix;
+    @Value("${cache.prefix.entity.topic}")
+    private String topicPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -95,6 +97,16 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonSenderSupport>) template,
                 new StringIdStringKeyFormatter(senderSupportPrefix),
                 new DozerBeanTransformer<>(SenderSupport.class, FastJsonSenderSupport.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<StringIdKey, Topic, FastJsonTopic> topicRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonTopic>) template,
+                new StringIdStringKeyFormatter(topicPrefix),
+                new DozerBeanTransformer<>(Topic.class, FastJsonTopic.class, mapper)
         );
     }
 }

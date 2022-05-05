@@ -1,54 +1,36 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.impl.handler.SenderSupporter;
-import com.dwarfeng.notify.stack.bean.entity.SenderSupport;
-import com.dwarfeng.notify.stack.service.SenderSupportMaintainService;
+import com.dwarfeng.notify.stack.bean.entity.Topic;
+import com.dwarfeng.notify.stack.service.TopicMaintainService;
+import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 @Service
-public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainService {
+public class TopicMaintainServiceImpl implements TopicMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, SenderSupport> crudService;
-    private final DaoOnlyEntireLookupService<SenderSupport> entireLookupService;
-    private final DaoOnlyPresetLookupService<SenderSupport> presetLookupService;
+    private final CustomBatchCrudService<StringIdKey, Topic> crudService;
+    private final DaoOnlyEntireLookupService<Topic> entireLookupService;
+    private final DaoOnlyPresetLookupService<Topic> presetLookupService;
 
-    private final List<SenderSupporter> senderSupporters;
-
-    private final ServiceExceptionMapper sem;
-
-    public SenderSupportMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, SenderSupport> crudService,
-            DaoOnlyEntireLookupService<SenderSupport> entireLookupService,
-            DaoOnlyPresetLookupService<SenderSupport> presetLookupService,
-            List<SenderSupporter> senderSupporters,
-            ServiceExceptionMapper sem
+    public TopicMaintainServiceImpl(
+            CustomBatchCrudService<StringIdKey, Topic> crudService,
+            DaoOnlyEntireLookupService<Topic> entireLookupService,
+            DaoOnlyPresetLookupService<Topic> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(senderSupporters)) {
-            this.senderSupporters = new ArrayList<>();
-        } else {
-            this.senderSupporters = senderSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -61,21 +43,21 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderSupport get(StringIdKey key) throws ServiceException {
+    public Topic get(StringIdKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insert(SenderSupport element) throws ServiceException {
+    public StringIdKey insert(Topic element) throws ServiceException {
         return crudService.insert(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void update(SenderSupport element) throws ServiceException {
+    public void update(Topic element) throws ServiceException {
         crudService.update(element);
     }
 
@@ -89,21 +71,21 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderSupport getIfExists(StringIdKey key) throws ServiceException {
+    public Topic getIfExists(StringIdKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insertIfNotExists(SenderSupport element) throws ServiceException {
+    public StringIdKey insertIfNotExists(Topic element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void updateIfExists(SenderSupport element) throws ServiceException {
+    public void updateIfExists(Topic element) throws ServiceException {
         crudService.updateIfExists(element);
     }
 
@@ -117,7 +99,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insertOrUpdate(SenderSupport element) throws ServiceException {
+    public StringIdKey insertOrUpdate(Topic element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
@@ -139,7 +121,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderSupport> batchGet(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public List<Topic> batchGet(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -147,14 +129,14 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsert(@SkipRecord List<SenderSupport> elements) throws ServiceException {
+    public List<StringIdKey> batchInsert(@SkipRecord List<Topic> elements) throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(@SkipRecord List<SenderSupport> elements) throws ServiceException {
+    public void batchUpdate(@SkipRecord List<Topic> elements) throws ServiceException {
         crudService.batchUpdate(elements);
     }
 
@@ -169,7 +151,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderSupport> batchGetIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public List<Topic> batchGetIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -177,14 +159,14 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsertIfExists(@SkipRecord List<SenderSupport> elements) throws ServiceException {
+    public List<StringIdKey> batchInsertIfExists(@SkipRecord List<Topic> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdateIfExists(@SkipRecord List<SenderSupport> elements) throws ServiceException {
+    public void batchUpdateIfExists(@SkipRecord List<Topic> elements) throws ServiceException {
         crudService.batchUpdateIfExists(elements);
     }
 
@@ -199,7 +181,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsertOrUpdate(@SkipRecord List<SenderSupport> elements) throws ServiceException {
+    public List<StringIdKey> batchInsertOrUpdate(@SkipRecord List<Topic> elements) throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 
@@ -207,7 +189,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderSupport> lookup() throws ServiceException {
+    public PagedData<Topic> lookup() throws ServiceException {
         return entireLookupService.lookup();
     }
 
@@ -215,7 +197,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderSupport> lookup(PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<Topic> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);
     }
 
@@ -223,7 +205,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderSupport> lookup(String preset, Object[] objs) throws ServiceException {
+    public PagedData<Topic> lookup(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookup(preset, objs);
     }
 
@@ -231,30 +213,7 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderSupport> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<Topic> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void reset() throws ServiceException {
-        //TODO 将复位逻辑更新为删除与重置。
-        for (SenderSupporter senderSupporter : senderSupporters) {
-            try {
-                crudService.insertIfNotExists(
-                        new SenderSupport(
-                                new StringIdKey(senderSupporter.provideType()),
-                                senderSupporter.provideLabel(),
-                                senderSupporter.provideDescription(),
-                                senderSupporter.provideExampleContent()
-                        )
-                );
-            } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("重置判断器支持时发生异常",
-                        LogLevel.WARN, sem, e
-                );
-            }
-        }
     }
 }

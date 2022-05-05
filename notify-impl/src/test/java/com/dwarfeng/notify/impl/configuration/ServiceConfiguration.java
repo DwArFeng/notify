@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.SenderInfoCrudOperation;
+import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.cache.RouterInfoCache;
 import com.dwarfeng.notify.stack.cache.RouterSupportCache;
@@ -39,6 +40,8 @@ public class ServiceConfiguration {
     private final SenderInfoDao senderInfoDao;
     private final SenderSupportDao senderSupportDao;
     private final SenderSupportCache senderSupportCache;
+    private final TopicCrudOperation topicCrudOperation;
+    private final TopicDao topicDao;
 
     @Value("${cache.timeout.entity.user}")
     private long userTimeout;
@@ -56,7 +59,8 @@ public class ServiceConfiguration {
             RouterSupportDao routerSupportDao, RouterSupportCache routerSupportCache,
             NotifySettingCrudOperation notifySettingCrudOperation, NotifySettingDao notifySettingDao,
             SenderInfoCrudOperation senderInfoCrudOperation, SenderInfoDao senderInfoDao,
-            SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache
+            SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache,
+            TopicCrudOperation topicCrudOperation, TopicDao topicDao
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.userDao = userDao;
@@ -71,6 +75,8 @@ public class ServiceConfiguration {
         this.senderInfoDao = senderInfoDao;
         this.senderSupportDao = senderSupportDao;
         this.senderSupportCache = senderSupportCache;
+        this.topicCrudOperation = topicCrudOperation;
+        this.topicDao = topicDao;
     }
 
     @Bean
@@ -240,6 +246,34 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<SenderSupport> senderSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 senderSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public CustomBatchCrudService<StringIdKey, Topic> topicCustomBatchCrudService() {
+        return new CustomBatchCrudService<>(
+                topicCrudOperation,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<Topic> topicDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                topicDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<Topic> topicDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                topicDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

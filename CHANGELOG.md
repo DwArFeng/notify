@@ -13,6 +13,7 @@
   - com.dwarfeng.notify.stack.bean.entity.NotifySetting。
   - com.dwarfeng.notify.stack.bean.entity.SenderInfo。
   - com.dwarfeng.notify.stack.bean.entity.SenderSupport。
+  - com.dwarfeng.notify.stack.bean.entity.Topic。
 
 #### Bug修复
 
