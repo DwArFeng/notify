@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 3157504625706211425L;
+    private static final long serialVersionUID = -5033633488814008270L;
 
     public static JSFixedFastJsonRouterInfo of(RouterInfo routerInfo) {
         if (Objects.isNull(routerInfo)) {
@@ -24,7 +24,7 @@ public class JSFixedFastJsonRouterInfo implements Bean {
             return new JSFixedFastJsonRouterInfo(
                     JSFixedFastJsonLongIdKey.of(routerInfo.getKey()),
                     JSFixedFastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
-                    routerInfo.isEnabled(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
+                    routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
             );
         }
     }
@@ -35,28 +35,24 @@ public class JSFixedFastJsonRouterInfo implements Bean {
     @JSONField(name = "notify_setting_key", ordinal = 2)
     private JSFixedFastJsonLongIdKey notifySettingKey;
 
-    @JSONField(name = "enabled", ordinal = 3)
-    private boolean enabled;
-
-    @JSONField(name = "type", ordinal = 4)
+    @JSONField(name = "type", ordinal = 3)
     private String type;
 
-    @JSONField(name = "param", ordinal = 5)
+    @JSONField(name = "param", ordinal = 4)
     private String param;
 
-    @JSONField(name = "remark", ordinal = 6)
+    @JSONField(name = "remark", ordinal = 5)
     private String remark;
 
     public JSFixedFastJsonRouterInfo() {
     }
 
     public JSFixedFastJsonRouterInfo(
-            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey notifySettingKey, boolean enabled, String type,
+            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey notifySettingKey, String type,
             String param, String remark
     ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
-        this.enabled = enabled;
         this.type = type;
         this.param = param;
         this.remark = remark;
@@ -76,14 +72,6 @@ public class JSFixedFastJsonRouterInfo implements Bean {
 
     public void setNotifySettingKey(JSFixedFastJsonLongIdKey notifySettingKey) {
         this.notifySettingKey = notifySettingKey;
-    }
-
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
     }
 
     public String getType() {
@@ -115,7 +103,6 @@ public class JSFixedFastJsonRouterInfo implements Bean {
         return "JSFixedFastJsonRouterInfo{" +
                 "key=" + key +
                 ", notifySettingKey=" + notifySettingKey +
-                ", enabled=" + enabled +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +

@@ -16,7 +16,6 @@ public interface RouterInfoMaintainService extends BatchCrudService<LongIdKey, R
         PresetLookupService<RouterInfo> {
 
     String CHILD_FOR_NOTIFY_SETTING = "child_for_notify_setting";
-    String ENABLED = "enabled";
     String TYPE_EQUALS = "type_equals";
     String TYPE_LIKE = "type_like";
 }

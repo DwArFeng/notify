@@ -15,6 +15,5 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 public interface NotifySettingMaintainService extends BatchCrudService<LongIdKey, NotifySetting>,
         EntireLookupService<NotifySetting>, PresetLookupService<NotifySetting> {
 
-    String ENABLED = "enabled";
     String LABEL_LIKE = "label_like";
 }

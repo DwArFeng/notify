@@ -2,7 +2,6 @@ package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
-import com.dwarfeng.notify.stack.cache.EnabledRouterInfoCache;
 import com.dwarfeng.notify.stack.cache.NotifySettingCache;
 import com.dwarfeng.notify.stack.cache.RouterInfoCache;
 import com.dwarfeng.notify.stack.dao.NotifySettingDao;
@@ -27,21 +26,17 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     private final RouterInfoDao routerInfoDao;
     private final RouterInfoCache routerInfoCache;
 
-    private final EnabledRouterInfoCache enabledRouterInfoCache;
-
     @Value("${cache.timeout.entity.notify_setting}")
     private long notifySettingTimeout;
 
     public NotifySettingCrudOperation(
             NotifySettingDao notifySettingDao, NotifySettingCache notifySettingCache,
-            RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
-            EnabledRouterInfoCache enabledRouterInfoCache
+            RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache
     ) {
         this.notifySettingDao = notifySettingDao;
         this.notifySettingCache = notifySettingCache;
         this.routerInfoDao = routerInfoDao;
         this.routerInfoCache = routerInfoCache;
-        this.enabledRouterInfoCache = enabledRouterInfoCache;
     }
 
     @Override
@@ -83,9 +78,6 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
         ).stream().map(RouterInfo::getKey).collect(Collectors.toList());
         routerInfoDao.batchDelete(routerInfoKeys);
         routerInfoCache.batchDelete(routerInfoKeys);
-
-        // 删除对应的使能缓存。
-        enabledRouterInfoCache.delete(key);
 
         // 删除通知设置实体本身。
         notifySettingDao.delete(key);

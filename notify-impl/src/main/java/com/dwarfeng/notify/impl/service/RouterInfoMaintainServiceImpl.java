@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.service.RouterInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, RouterInfo> crudService;
+    private final GeneralBatchCrudService<LongIdKey, RouterInfo> crudService;
     private final DaoOnlyEntireLookupService<RouterInfo> entireLookupService;
     private final DaoOnlyPresetLookupService<RouterInfo> presetLookupService;
 
     public RouterInfoMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, RouterInfo> crudService,
+            GeneralBatchCrudService<LongIdKey, RouterInfo> crudService,
             DaoOnlyEntireLookupService<RouterInfo> entireLookupService,
             DaoOnlyPresetLookupService<RouterInfo> presetLookupService
     ) {

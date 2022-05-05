@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 7719890494391082860L;
+    private static final long serialVersionUID = 2253825331020388954L;
 
     public static JSFixedFastJsonNotifySetting of(NotifySetting notifySetting) {
         if (Objects.isNull(notifySetting)) {
@@ -23,7 +23,7 @@ public class JSFixedFastJsonNotifySetting implements Bean {
         } else {
             return new JSFixedFastJsonNotifySetting(
                     JSFixedFastJsonLongIdKey.of(notifySetting.getKey()),
-                    notifySetting.getLabel(), notifySetting.isEnabled(), notifySetting.getRemark()
+                    notifySetting.getLabel(), notifySetting.getRemark()
             );
         }
     }
@@ -34,19 +34,15 @@ public class JSFixedFastJsonNotifySetting implements Bean {
     @JSONField(name = "label", ordinal = 2)
     private String label;
 
-    @JSONField(name = "enabled", ordinal = 3)
-    private boolean enabled;
-
-    @JSONField(name = "remark", ordinal = 4)
+    @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
     public JSFixedFastJsonNotifySetting() {
     }
 
-    public JSFixedFastJsonNotifySetting(JSFixedFastJsonLongIdKey key, String label, boolean enabled, String remark) {
+    public JSFixedFastJsonNotifySetting(JSFixedFastJsonLongIdKey key, String label, String remark) {
         this.key = key;
         this.label = label;
-        this.enabled = enabled;
         this.remark = remark;
     }
 
@@ -66,14 +62,6 @@ public class JSFixedFastJsonNotifySetting implements Bean {
         this.label = label;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -87,7 +75,6 @@ public class JSFixedFastJsonNotifySetting implements Bean {
         return "JSFixedFastJsonNotifySetting{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
-                ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 '}';
     }

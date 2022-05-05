@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 4606041369318988629L;
+    private static final long serialVersionUID = -2896265297434150798L;
 
     public static FastJsonNotifySetting of(NotifySetting notifySetting) {
         if (Objects.isNull(notifySetting)) {
@@ -23,7 +23,7 @@ public class FastJsonNotifySetting implements Bean {
         } else {
             return new FastJsonNotifySetting(
                     FastJsonLongIdKey.of(notifySetting.getKey()),
-                    notifySetting.getLabel(), notifySetting.isEnabled(), notifySetting.getRemark()
+                    notifySetting.getLabel(), notifySetting.getRemark()
             );
         }
     }
@@ -34,19 +34,15 @@ public class FastJsonNotifySetting implements Bean {
     @JSONField(name = "label", ordinal = 2)
     private String label;
 
-    @JSONField(name = "enabled", ordinal = 3)
-    private boolean enabled;
-
-    @JSONField(name = "remark", ordinal = 4)
+    @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
     public FastJsonNotifySetting() {
     }
 
-    public FastJsonNotifySetting(FastJsonLongIdKey key, String label, boolean enabled, String remark) {
+    public FastJsonNotifySetting(FastJsonLongIdKey key, String label, String remark) {
         this.key = key;
         this.label = label;
-        this.enabled = enabled;
         this.remark = remark;
     }
 
@@ -66,14 +62,6 @@ public class FastJsonNotifySetting implements Bean {
         this.label = label;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -87,7 +75,6 @@ public class FastJsonNotifySetting implements Bean {
         return "FastJsonNotifySetting{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
-                ", enabled=" + enabled +
                 ", remark='" + remark + '\'' +
                 '}';
     }

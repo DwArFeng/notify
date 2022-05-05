@@ -1,11 +1,11 @@
 package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
-import com.dwarfeng.notify.impl.service.operation.RouterInfoCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
 import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.stack.cache.RouterInfoCache;
 import com.dwarfeng.notify.stack.cache.RouterSupportCache;
 import com.dwarfeng.notify.stack.cache.UserCache;
 import com.dwarfeng.notify.stack.dao.NotifySettingDao;
@@ -33,8 +33,8 @@ public class ServiceConfiguration {
 
     private final UserDao userDao;
     private final UserCache userCache;
-    private final RouterInfoCrudOperation routerInfoCrudOperation;
     private final RouterInfoDao routerInfoDao;
+    private final RouterInfoCache routerInfoCache;
     private final RouterSupportDao routerSupportDao;
     private final RouterSupportCache routerSupportCache;
     private final NotifySettingCrudOperation notifySettingCrudOperation;
@@ -42,21 +42,23 @@ public class ServiceConfiguration {
 
     @Value("${cache.timeout.entity.user}")
     private long userTimeout;
+    @Value("${cache.timeout.entity.router_info}")
+    private long routerInfoTimeout;
     @Value("${cache.timeout.entity.router_support}")
     private long routerSupportTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
             UserDao userDao, UserCache userCache,
-            RouterInfoCrudOperation routerInfoCrudOperation, RouterInfoDao routerInfoDao,
+            RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
             RouterSupportDao routerSupportDao, RouterSupportCache routerSupportCache,
             NotifySettingCrudOperation notifySettingCrudOperation, NotifySettingDao notifySettingDao
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.userDao = userDao;
         this.userCache = userCache;
-        this.routerInfoCrudOperation = routerInfoCrudOperation;
         this.routerInfoDao = routerInfoDao;
+        this.routerInfoCache = routerInfoCache;
         this.routerSupportDao = routerSupportDao;
         this.routerSupportCache = routerSupportCache;
         this.notifySettingCrudOperation = notifySettingCrudOperation;
@@ -90,12 +92,14 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomBatchCrudService<LongIdKey, RouterInfo> routerInfoCustomBatchCrudService() {
-        return new CustomBatchCrudService<>(
-                routerInfoCrudOperation,
+    public GeneralBatchCrudService<LongIdKey, RouterInfo> routerInfoGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                routerInfoDao,
+                routerInfoCache,
                 longIdKeyKeyFetcher(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
+                LogLevel.WARN,
+                routerInfoTimeout
         );
     }
 

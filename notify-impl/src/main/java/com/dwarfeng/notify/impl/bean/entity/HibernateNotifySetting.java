@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = -150042033700520872L;
+    private static final long serialVersionUID = 2206657309615069350L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -24,9 +24,6 @@ public class HibernateNotifySetting implements Bean {
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
     private String label;
-
-    @Column(name = "enabled", nullable = false)
-    private boolean enabled;
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
@@ -64,14 +61,6 @@ public class HibernateNotifySetting implements Bean {
         this.label = label;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public String getRemark() {
         return remark;
     }
@@ -93,7 +82,6 @@ public class HibernateNotifySetting implements Bean {
         return getClass().getSimpleName() + "(" +
                 "longId = " + longId + ", " +
                 "label = " + label + ", " +
-                "enabled = " + enabled + ", " +
                 "remark = " + remark + ")";
     }
 }

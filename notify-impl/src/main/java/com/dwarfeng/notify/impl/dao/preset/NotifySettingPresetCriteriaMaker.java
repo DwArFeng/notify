@@ -12,25 +12,15 @@ import java.util.Arrays;
 @Component
 public class NotifySettingPresetCriteriaMaker implements PresetCriteriaMaker {
 
+    @SuppressWarnings("SwitchStatementWithTooFewBranches")
     @Override
     public void makeCriteria(DetachedCriteria detachedCriteria, String s, Object[] objects) {
         switch (s) {
-            case NotifySettingMaintainService.ENABLED:
-                enabled(detachedCriteria, objects);
-                break;
             case NotifySettingMaintainService.LABEL_LIKE:
                 labelLike(detachedCriteria, objects);
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
-        }
-    }
-
-    private void enabled(DetachedCriteria detachedCriteria, Object[] objects) {
-        try {
-            detachedCriteria.add(Restrictions.eq("enabled", true));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
     }
 
