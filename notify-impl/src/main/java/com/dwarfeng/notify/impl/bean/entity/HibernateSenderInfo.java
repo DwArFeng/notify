@@ -5,14 +5,16 @@ import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @IdClass(HibernateLongIdKey.class)
 @Table(name = "tbl_sender_info")
 public class HibernateSenderInfo implements Bean {
 
-    private static final long serialVersionUID = 5598989716900264731L;
+    private static final long serialVersionUID = 1623477450890638049L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -28,6 +30,10 @@ public class HibernateSenderInfo implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "senderInfo")
+    private Set<HibernateRelation> relations = new HashSet<>();
 
     public HibernateSenderInfo() {
     }
@@ -72,6 +78,14 @@ public class HibernateSenderInfo implements Bean {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Set<HibernateRelation> getRelations() {
+        return relations;
+    }
+
+    public void setRelations(Set<HibernateRelation> relations) {
+        this.relations = relations;
     }
 
     @Override

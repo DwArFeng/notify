@@ -4,10 +4,8 @@ import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.SenderInfoCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.cache.RouterInfoCache;
-import com.dwarfeng.notify.stack.cache.RouterSupportCache;
-import com.dwarfeng.notify.stack.cache.SenderSupportCache;
-import com.dwarfeng.notify.stack.cache.UserCache;
+import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
 import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
@@ -42,6 +40,8 @@ public class ServiceConfiguration {
     private final SenderSupportCache senderSupportCache;
     private final TopicCrudOperation topicCrudOperation;
     private final TopicDao topicDao;
+    private final RelationDao relationDao;
+    private final RelationCache relationCache;
 
     @Value("${cache.timeout.entity.user}")
     private long userTimeout;
@@ -51,6 +51,8 @@ public class ServiceConfiguration {
     private long routerSupportTimeout;
     @Value("${cache.timeout.entity.sender_support}")
     private long senderSupportTimeout;
+    @Value("${cache.timeout.entity.relation}")
+    private long relationTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
@@ -60,7 +62,8 @@ public class ServiceConfiguration {
             NotifySettingCrudOperation notifySettingCrudOperation, NotifySettingDao notifySettingDao,
             SenderInfoCrudOperation senderInfoCrudOperation, SenderInfoDao senderInfoDao,
             SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache,
-            TopicCrudOperation topicCrudOperation, TopicDao topicDao
+            TopicCrudOperation topicCrudOperation, TopicDao topicDao,
+            RelationDao relationDao, RelationCache relationCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.userDao = userDao;
@@ -77,6 +80,8 @@ public class ServiceConfiguration {
         this.senderSupportCache = senderSupportCache;
         this.topicCrudOperation = topicCrudOperation;
         this.topicDao = topicDao;
+        this.relationDao = relationDao;
+        this.relationCache = relationCache;
     }
 
     @Bean
@@ -274,6 +279,36 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<Topic> topicDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 topicDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<RelationKey, Relation> relationGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                relationDao,
+                relationCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                relationTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<Relation> relationDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                relationDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<Relation> relationDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                relationDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

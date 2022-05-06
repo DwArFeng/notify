@@ -14,6 +14,7 @@
   - com.dwarfeng.notify.stack.bean.entity.SenderInfo。
   - com.dwarfeng.notify.stack.bean.entity.SenderSupport。
   - com.dwarfeng.notify.stack.bean.entity.Topic。
+  - com.dwarfeng.notify.stack.bean.entity.Relation。
 
 #### Bug修复
 

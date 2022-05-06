@@ -1,8 +1,13 @@
 package com.dwarfeng.notify.impl.service.operation;
 
+import com.dwarfeng.notify.stack.bean.entity.Relation;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
+import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.cache.RelationCache;
 import com.dwarfeng.notify.stack.cache.TopicCache;
+import com.dwarfeng.notify.stack.dao.RelationDao;
 import com.dwarfeng.notify.stack.dao.TopicDao;
+import com.dwarfeng.notify.stack.service.RelationMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -11,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic> {
@@ -18,14 +24,20 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final TopicDao topicDao;
     private final TopicCache topicCache;
 
+    private final RelationDao relationDao;
+    private final RelationCache relationCache;
+
     @Value("${cache.timeout.entity.topic}")
     private long topicTimeout;
 
     public TopicCrudOperation(
-            TopicDao topicDao, TopicCache topicCache
+            TopicDao topicDao, TopicCache topicCache,
+            RelationDao relationDao, RelationCache relationCache
     ) {
         this.topicDao = topicDao;
         this.topicCache = topicCache;
+        this.relationDao = relationDao;
+        this.relationCache = relationCache;
     }
 
     @Override
@@ -61,6 +73,13 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
 
     @Override
     public void delete(StringIdKey key) throws Exception {
+        // 删除与通知设置相关的关系。
+        List<RelationKey> relationKeys = relationDao.lookup(
+                RelationMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(Relation::getKey).collect(Collectors.toList());
+        relationDao.batchDelete(relationKeys);
+        relationCache.batchDelete(relationKeys);
+
         // 删除通知设置实体本身。
         topicDao.delete(key);
         topicCache.delete(key);

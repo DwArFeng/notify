@@ -5,14 +5,16 @@ import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 @Entity
 @IdClass(HibernateStringIdKey.class)
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -3414846759646764018L;
+    private static final long serialVersionUID = 6046373205083116526L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -25,6 +27,10 @@ public class HibernateTopic implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "topic")
+    private Set<HibernateRelation> relations = new HashSet<>();
 
     public HibernateTopic() {
     }
@@ -61,6 +67,14 @@ public class HibernateTopic implements Bean {
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public Set<HibernateRelation> getRelations() {
+        return relations;
+    }
+
+    public void setRelations(Set<HibernateRelation> relations) {
+        this.relations = relations;
     }
 
     @Override

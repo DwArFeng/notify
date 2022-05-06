@@ -1,8 +1,13 @@
 package com.dwarfeng.notify.impl.service.operation;
 
+import com.dwarfeng.notify.stack.bean.entity.Relation;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
+import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.cache.RelationCache;
 import com.dwarfeng.notify.stack.cache.SenderInfoCache;
+import com.dwarfeng.notify.stack.dao.RelationDao;
 import com.dwarfeng.notify.stack.dao.SenderInfoDao;
+import com.dwarfeng.notify.stack.service.RelationMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -11,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class SenderInfoCrudOperation implements BatchCrudOperation<LongIdKey, SenderInfo> {
@@ -18,14 +24,20 @@ public class SenderInfoCrudOperation implements BatchCrudOperation<LongIdKey, Se
     private final SenderInfoDao senderInfoDao;
     private final SenderInfoCache senderInfoCache;
 
+    private final RelationDao relationDao;
+    private final RelationCache relationCache;
+
     @Value("${cache.timeout.entity.sender_info}")
     private long senderInfoTimeout;
 
     public SenderInfoCrudOperation(
-            SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache
+            SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
+            RelationDao relationDao, RelationCache relationCache
     ) {
         this.senderInfoDao = senderInfoDao;
         this.senderInfoCache = senderInfoCache;
+        this.relationDao = relationDao;
+        this.relationCache = relationCache;
     }
 
     @Override
@@ -61,6 +73,13 @@ public class SenderInfoCrudOperation implements BatchCrudOperation<LongIdKey, Se
 
     @Override
     public void delete(LongIdKey key) throws Exception {
+        // 删除与通知设置相关的关系。
+        List<RelationKey> relationKeys = relationDao.lookup(
+                RelationMaintainService.CHILD_FOR_SENDER_INFO, new Object[]{key}
+        ).stream().map(Relation::getKey).collect(Collectors.toList());
+        relationDao.batchDelete(relationKeys);
+        relationCache.batchDelete(relationKeys);
+
         // 删除通知设置实体本身。
         senderInfoDao.delete(key);
         senderInfoCache.delete(key);
