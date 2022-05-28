@@ -1,13 +1,13 @@
 package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.Relation;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
+import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
-import com.dwarfeng.notify.stack.service.RelationMaintainService;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
+import com.dwarfeng.notify.stack.service.SenderRelationMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.apache.commons.beanutils.BeanUtils;
@@ -24,7 +24,7 @@ import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
-public class RelationMaintainServiceImplTest {
+public class SenderSenderSenderRelationMaintainServiceImplTest {
 
     @Autowired
     private NotifySettingMaintainService notifySettingMaintainService;
@@ -33,19 +33,19 @@ public class RelationMaintainServiceImplTest {
     @Autowired
     private SenderInfoMaintainService senderInfoMaintainService;
     @Autowired
-    private RelationMaintainService relationMaintainService;
+    private SenderRelationMaintainService senderRelationMaintainService;
 
     private NotifySetting notifySetting;
     private Topic topic;
     private SenderInfo senderInfo;
-    private Relation relation;
+    private SenderRelation senderRelation;
 
     @Before
     public void setUp() {
         notifySetting = new NotifySetting(null, "label", "remark");
         topic = new Topic(new StringIdKey("test.topic"), "label", "remark");
         senderInfo = new SenderInfo(null, "type", "param", "remark");
-        relation = new Relation(null, null, "remark");
+        senderRelation = new SenderRelation(null, null, "remark");
     }
 
     @After
@@ -53,7 +53,7 @@ public class RelationMaintainServiceImplTest {
         notifySetting = null;
         topic = null;
         senderInfo = null;
-        relation = null;
+        senderRelation = null;
     }
 
     @Test
@@ -62,15 +62,15 @@ public class RelationMaintainServiceImplTest {
             notifySetting.setKey(notifySettingMaintainService.insert(notifySetting));
             topicMaintainService.insertOrUpdate(topic);
             senderInfo.setKey(senderInfoMaintainService.insert(senderInfo));
-            relation.setKey(new RelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
-            relation.setSenderInfoKey(senderInfo.getKey());
+            senderRelation.setKey(new SenderRelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
+            senderRelation.setSenderInfoKey(senderInfo.getKey());
 
-            relationMaintainService.insertOrUpdate(relation);
-            relationMaintainService.update(relation);
-            Relation testRelation = relationMaintainService.get(relation.getKey());
-            assertEquals(BeanUtils.describe(relation), BeanUtils.describe(testRelation));
+            senderRelationMaintainService.insertOrUpdate(senderRelation);
+            senderRelationMaintainService.update(senderRelation);
+            SenderRelation testSenderRelation = senderRelationMaintainService.get(senderRelation.getKey());
+            assertEquals(BeanUtils.describe(senderRelation), BeanUtils.describe(testSenderRelation));
         } finally {
-            relationMaintainService.deleteIfExists(relation.getKey());
+            senderRelationMaintainService.deleteIfExists(senderRelation.getKey());
             senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
@@ -83,14 +83,14 @@ public class RelationMaintainServiceImplTest {
             notifySetting.setKey(notifySettingMaintainService.insert(notifySetting));
             topicMaintainService.insertOrUpdate(topic);
             senderInfo.setKey(senderInfoMaintainService.insert(senderInfo));
-            relation.setKey(new RelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
-            relation.setSenderInfoKey(senderInfo.getKey());
-            relationMaintainService.insertOrUpdate(relation);
+            senderRelation.setKey(new SenderRelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
+            senderRelation.setSenderInfoKey(senderInfo.getKey());
+            senderRelationMaintainService.insertOrUpdate(senderRelation);
 
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
-            assertFalse(relationMaintainService.exists(relation.getKey()));
+            assertFalse(senderRelationMaintainService.exists(senderRelation.getKey()));
         } finally {
-            relationMaintainService.deleteIfExists(relation.getKey());
+            senderRelationMaintainService.deleteIfExists(senderRelation.getKey());
             senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
@@ -103,14 +103,14 @@ public class RelationMaintainServiceImplTest {
             notifySetting.setKey(notifySettingMaintainService.insert(notifySetting));
             topicMaintainService.insertOrUpdate(topic);
             senderInfo.setKey(senderInfoMaintainService.insert(senderInfo));
-            relation.setKey(new RelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
-            relation.setSenderInfoKey(senderInfo.getKey());
-            relationMaintainService.insertOrUpdate(relation);
+            senderRelation.setKey(new SenderRelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
+            senderRelation.setSenderInfoKey(senderInfo.getKey());
+            senderRelationMaintainService.insertOrUpdate(senderRelation);
 
             topicMaintainService.deleteIfExists(topic.getKey());
-            assertFalse(relationMaintainService.exists(relation.getKey()));
+            assertFalse(senderRelationMaintainService.exists(senderRelation.getKey()));
         } finally {
-            relationMaintainService.deleteIfExists(relation.getKey());
+            senderRelationMaintainService.deleteIfExists(senderRelation.getKey());
             senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
@@ -123,14 +123,14 @@ public class RelationMaintainServiceImplTest {
             notifySetting.setKey(notifySettingMaintainService.insert(notifySetting));
             topicMaintainService.insertOrUpdate(topic);
             senderInfo.setKey(senderInfoMaintainService.insert(senderInfo));
-            relation.setKey(new RelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
-            relation.setSenderInfoKey(senderInfo.getKey());
-            relationMaintainService.insertOrUpdate(relation);
+            senderRelation.setKey(new SenderRelationKey(notifySetting.getKey().getLongId(), topic.getKey().getStringId()));
+            senderRelation.setSenderInfoKey(senderInfo.getKey());
+            senderRelationMaintainService.insertOrUpdate(senderRelation);
 
             senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
-            assertFalse(relationMaintainService.exists(relation.getKey()));
+            assertFalse(senderRelationMaintainService.exists(senderRelation.getKey()));
         } finally {
-            relationMaintainService.deleteIfExists(relation.getKey());
+            senderRelationMaintainService.deleteIfExists(senderRelation.getKey());
             senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());

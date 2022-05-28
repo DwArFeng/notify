@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateRelationKey;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderRelationKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -10,11 +10,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateRelationKey.class)
-@Table(name = "tbl_relation")
-public class HibernateRelation implements Bean {
+@IdClass(HibernateSenderRelationKey.class)
+@Table(name = "tbl_sender_relation")
+public class HibernateSenderRelation implements Bean {
 
-    private static final long serialVersionUID = -7521073603687780633L;
+    private static final long serialVersionUID = -7011299429200877189L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -52,15 +52,15 @@ public class HibernateRelation implements Bean {
     })
     private HibernateSenderInfo senderInfo;
 
-    public HibernateRelation() {
+    public HibernateSenderRelation() {
     }
 
     // -----------------------------------------------------------映射用 getter&setter-----------------------------------------------------------
-    public HibernateRelationKey getKey() {
-        return new HibernateRelationKey(notifySettingId, topicId);
+    public HibernateSenderRelationKey getKey() {
+        return new HibernateSenderRelationKey(notifySettingId, topicId);
     }
 
-    public void setKey(HibernateRelationKey key) {
+    public void setKey(HibernateSenderRelationKey key) {
         if (Objects.isNull(key)) {
             this.notifySettingId = null;
             this.topicId = null;

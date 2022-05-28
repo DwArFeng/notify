@@ -1,13 +1,13 @@
 package com.dwarfeng.notify.impl.service.operation;
 
-import com.dwarfeng.notify.stack.bean.entity.Relation;
+import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
-import com.dwarfeng.notify.stack.cache.RelationCache;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.cache.SenderRelationCache;
 import com.dwarfeng.notify.stack.cache.TopicCache;
-import com.dwarfeng.notify.stack.dao.RelationDao;
+import com.dwarfeng.notify.stack.dao.SenderRelationDao;
 import com.dwarfeng.notify.stack.dao.TopicDao;
-import com.dwarfeng.notify.stack.service.RelationMaintainService;
+import com.dwarfeng.notify.stack.service.SenderRelationMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -24,20 +24,20 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final TopicDao topicDao;
     private final TopicCache topicCache;
 
-    private final RelationDao relationDao;
-    private final RelationCache relationCache;
+    private final SenderRelationDao senderRelationDao;
+    private final SenderRelationCache senderRelationCache;
 
     @Value("${cache.timeout.entity.topic}")
     private long topicTimeout;
 
     public TopicCrudOperation(
             TopicDao topicDao, TopicCache topicCache,
-            RelationDao relationDao, RelationCache relationCache
+            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache
     ) {
         this.topicDao = topicDao;
         this.topicCache = topicCache;
-        this.relationDao = relationDao;
-        this.relationCache = relationCache;
+        this.senderRelationDao = senderRelationDao;
+        this.senderRelationCache = senderRelationCache;
     }
 
     @Override
@@ -74,11 +74,11 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     @Override
     public void delete(StringIdKey key) throws Exception {
         // 删除与通知设置相关的关系。
-        List<RelationKey> relationKeys = relationDao.lookup(
-                RelationMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ).stream().map(Relation::getKey).collect(Collectors.toList());
-        relationDao.batchDelete(relationKeys);
-        relationCache.batchDelete(relationKeys);
+        List<SenderRelationKey> senderRelationKeys = senderRelationDao.lookup(
+                SenderRelationMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(SenderRelation::getKey).collect(Collectors.toList());
+        senderRelationDao.batchDelete(senderRelationKeys);
+        senderRelationCache.batchDelete(senderRelationKeys);
 
         // 删除通知设置实体本身。
         topicDao.delete(key);

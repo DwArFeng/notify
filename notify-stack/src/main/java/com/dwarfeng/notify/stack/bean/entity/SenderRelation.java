@@ -1,39 +1,39 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 /**
- * 关系。
+ * 发送器关系。
  *
  * @author DwArFeng
  * @since 1.0.0
  */
-public class Relation implements Entity<RelationKey> {
+public class SenderRelation implements Entity<SenderRelationKey> {
 
-    private static final long serialVersionUID = -1730519514515656753L;
-    
-    private RelationKey key;
+    private static final long serialVersionUID = 3349188197841566569L;
+
+    private SenderRelationKey key;
     private LongIdKey senderInfoKey;
     private String remark;
 
-    public Relation() {
+    public SenderRelation() {
     }
 
-    public Relation(RelationKey key, LongIdKey senderInfoKey, String remark) {
+    public SenderRelation(SenderRelationKey key, LongIdKey senderInfoKey, String remark) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
         this.remark = remark;
     }
 
     @Override
-    public RelationKey getKey() {
+    public SenderRelationKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(RelationKey key) {
+    public void setKey(SenderRelationKey key) {
         this.key = key;
     }
 
@@ -55,7 +55,7 @@ public class Relation implements Entity<RelationKey> {
 
     @Override
     public String toString() {
-        return "Relation{" +
+        return "SenderRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
                 ", remark='" + remark + '\'' +

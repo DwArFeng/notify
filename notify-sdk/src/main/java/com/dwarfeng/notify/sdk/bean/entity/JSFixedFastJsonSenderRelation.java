@@ -1,37 +1,37 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.entity.key.JSFixedFastJsonRelationKey;
-import com.dwarfeng.notify.stack.bean.entity.Relation;
+import com.dwarfeng.notify.sdk.bean.entity.key.JSFixedFastJsonSenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
 import com.dwarfeng.subgrade.sdk.bean.key.JSFixedFastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
 
 /**
- * JSFixed FastJson 关系。
+ * JSFixed FastJson 发送器关系。
  *
  * @author DwArFeng
  * @since 1.0.0
  */
-public class JSFixedFastJsonRelation implements Bean {
+public class JSFixedFastJsonSenderRelation implements Bean {
 
-    private static final long serialVersionUID = 7524681367863176164L;
+    private static final long serialVersionUID = -5686545643511724881L;
 
-    public static JSFixedFastJsonRelation of(Relation relation) {
-        if (Objects.isNull(relation)) {
+    public static JSFixedFastJsonSenderRelation of(SenderRelation senderRelation) {
+        if (Objects.isNull(senderRelation)) {
             return null;
         } else {
-            return new JSFixedFastJsonRelation(
-                    JSFixedFastJsonRelationKey.of(relation.getKey()),
-                    JSFixedFastJsonLongIdKey.of(relation.getSenderInfoKey()),
-                    relation.getRemark()
+            return new JSFixedFastJsonSenderRelation(
+                    JSFixedFastJsonSenderRelationKey.of(senderRelation.getKey()),
+                    JSFixedFastJsonLongIdKey.of(senderRelation.getSenderInfoKey()),
+                    senderRelation.getRemark()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private JSFixedFastJsonRelationKey key;
+    private JSFixedFastJsonSenderRelationKey key;
 
     @JSONField(name = "sender_info_key", ordinal = 2)
     private JSFixedFastJsonLongIdKey senderInfoKey;
@@ -39,22 +39,22 @@ public class JSFixedFastJsonRelation implements Bean {
     @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
-    public JSFixedFastJsonRelation() {
+    public JSFixedFastJsonSenderRelation() {
     }
 
-    public JSFixedFastJsonRelation(
-            JSFixedFastJsonRelationKey key, JSFixedFastJsonLongIdKey senderInfoKey, String remark
+    public JSFixedFastJsonSenderRelation(
+            JSFixedFastJsonSenderRelationKey key, JSFixedFastJsonLongIdKey senderInfoKey, String remark
     ) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
         this.remark = remark;
     }
 
-    public JSFixedFastJsonRelationKey getKey() {
+    public JSFixedFastJsonSenderRelationKey getKey() {
         return key;
     }
 
-    public void setKey(JSFixedFastJsonRelationKey key) {
+    public void setKey(JSFixedFastJsonSenderRelationKey key) {
         this.key = key;
     }
 
@@ -76,7 +76,7 @@ public class JSFixedFastJsonRelation implements Bean {
 
     @Override
     public String toString() {
-        return "JSFixedFastJsonRelation{" +
+        return "JSFixedFastJsonSenderRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
                 ", remark='" + remark + '\'' +
