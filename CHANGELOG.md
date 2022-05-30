@@ -18,6 +18,12 @@
 
 - 通知发送核心逻辑实现。
 
+- 实现推送机制，并开发预设推送器。
+  - com.dwarfeng.notify.impl.handler.pusher.AbstractPusher。
+  - com.dwarfeng.notify.impl.handler.pusher.DrainPusher。
+  - com.dwarfeng.notify.impl.handler.pusher.LogPusher。
+  - com.dwarfeng.notify.impl.handler.pusher.MultiPusher。
+
 #### Bug修复
 
 - (无)

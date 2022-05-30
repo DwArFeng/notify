@@ -25,6 +25,8 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(SenderMakeException.class, ServiceExceptionCodes.SENDER_MAKE_FAILED);
         destination.put(UnsupportedSenderTypeException.class, ServiceExceptionCodes.UNSUPPORTED_SENDER_TYPE);
         destination.put(NotifySettingNotExistsException.class, ServiceExceptionCodes.NOTIFY_SETTING_NOT_EXISTED);
+        destination.put(TopicNotExistsException.class, ServiceExceptionCodes.TOPIC_NOT_EXISTED);
+        destination.put(UserNotExistsException.class, ServiceExceptionCodes.USER_NOT_EXISTED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

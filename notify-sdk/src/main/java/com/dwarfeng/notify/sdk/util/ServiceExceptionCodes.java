@@ -30,6 +30,10 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(13), "unsupported sender type");
     public static final ServiceException.Code NOTIFY_SETTING_NOT_EXISTED =
             new ServiceException.Code(offset(20), "notify setting not existed");
+    public static final ServiceException.Code TOPIC_NOT_EXISTED =
+            new ServiceException.Code(offset(30), "topic not existed");
+    public static final ServiceException.Code USER_NOT_EXISTED =
+            new ServiceException.Code(offset(40), "user not existed");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -63,6 +67,8 @@ public final class ServiceExceptionCodes {
         SENDER_MAKE_FAILED.setCode(offset(12));
         UNSUPPORTED_SENDER_TYPE.setCode(offset(13));
         NOTIFY_SETTING_NOT_EXISTED.setCode(offset(20));
+        TOPIC_NOT_EXISTED.setCode(offset(30));
+        USER_NOT_EXISTED.setCode(offset(40));
     }
 
     private ServiceExceptionCodes() {
