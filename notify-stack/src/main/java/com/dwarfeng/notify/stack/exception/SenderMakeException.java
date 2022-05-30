@@ -8,20 +8,24 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class SenderMakeException extends SenderException {
 
-    private static final long serialVersionUID = 5577007340111336445L;
+    private static final long serialVersionUID = 319531295182011844L;
 
-    public SenderMakeException() {
+    private final String senderType;
+    private final String param;
+
+    public SenderMakeException(String senderType, String param) {
+        this.senderType = senderType;
+        this.param = param;
     }
 
-    public SenderMakeException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public SenderMakeException(String message) {
-        super(message);
-    }
-
-    public SenderMakeException(Throwable cause) {
+    public SenderMakeException(Throwable cause, String senderType, String param) {
         super(cause);
+        this.senderType = senderType;
+        this.param = param;
+    }
+
+    @Override
+    public String getMessage() {
+        return "发送器构造异常, 类型为: " + senderType + ", 参数为: " + param;
     }
 }

@@ -26,7 +26,7 @@
         <junit.version>4.13.1</junit.version>
         <spring.version>5.3.20</spring.version>
         <spring-kafka.version>2.3.6.RELEASE</spring-kafka.version>
-        <mysql.version>8.0.27</mysql.version>
+        <mysql.version>8.0.28</mysql.version>
         <fastjson.version>1.2.83</fastjson.version>
         <druid.version>1.1.20</druid.version>
         <joda-time.version>2.5</joda-time.version>
@@ -398,6 +398,13 @@
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>spring-telqos-api</artifactId>
                 <version>${spring-telqos.version}</version>
+            </dependency>
+            <!-- groovy支持 -->
+            <dependency>
+                <groupId>org.codehaus.groovy</groupId>
+                <artifactId>groovy-all</artifactId>
+                <type>pom</type>
+                <version>${groovy.version}</version>
             </dependency>
             <!-- 程序自身组件 -->
             <dependency>

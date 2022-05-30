@@ -24,6 +24,14 @@
   - com.dwarfeng.notify.impl.handler.pusher.LogPusher。
   - com.dwarfeng.notify.impl.handler.pusher.MultiPusher。
 
+- 实现路由机制，并开发预设路由器。
+  - com.dwarfeng.notify.impl.handler.router.AbstractRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry。
+
+- 实现发送机制，并开发预设发送器。
+  - com.dwarfeng.notify.impl.handler.sender.AbstractSenderRegistry。
+  - com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry。
+
 #### Bug修复
 
 - (无)

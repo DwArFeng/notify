@@ -141,6 +141,12 @@
             <groupId>com.dwarfeng</groupId>
             <artifactId>spring-telqos-core</artifactId>
         </dependency>
+        <!-- groovy支持 -->
+        <dependency>
+            <groupId>org.codehaus.groovy</groupId>
+            <artifactId>groovy-all</artifactId>
+            <type>pom</type>
+        </dependency>
         <!-- 程序自身模块 -->
         <dependency>
             <groupId>com.dwarfeng</groupId>
