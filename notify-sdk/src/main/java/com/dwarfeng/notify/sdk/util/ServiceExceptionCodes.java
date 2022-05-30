@@ -12,16 +12,24 @@ public final class ServiceExceptionCodes {
 
     private static int EXCEPTION_CODE_OFFSET = 5500;
 
-    public static final ServiceException.Code PROMPTER_FAILED =
-            new ServiceException.Code(offset(0), "prompter failed");
-    public static final ServiceException.Code PROMPTER_MAKE_FAILED =
-            new ServiceException.Code(offset(1), "prompter make failed");
-    public static final ServiceException.Code PROMPTER_TYPE_UNSUPPORTED =
-            new ServiceException.Code(offset(2), "prompter type unsupported");
-    public static final ServiceException.Code NOTIFY_HANDLER_STOPPED =
-            new ServiceException.Code(offset(10), "notify handler stopped");
-    public static final ServiceException.Code SCHEDULED_CLEAR_HANDLER_STOPPED =
-            new ServiceException.Code(offset(20), "scheduled clear handler stopped");
+    public static final ServiceException.Code ROUTER_FAILED =
+            new ServiceException.Code(offset(0), "router failed");
+    public static final ServiceException.Code ROUTER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(1), "router execution failed");
+    public static final ServiceException.Code ROUTER_MAKE_FAILED =
+            new ServiceException.Code(offset(2), "router make failed");
+    public static final ServiceException.Code UNSUPPORTED_ROUTER_TYPE =
+            new ServiceException.Code(offset(3), "unsupported router type");
+    public static final ServiceException.Code SENDER_FAILED =
+            new ServiceException.Code(offset(10), "sender failed");
+    public static final ServiceException.Code SENDER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(11), "sender execution failed");
+    public static final ServiceException.Code SENDER_MAKE_FAILED =
+            new ServiceException.Code(offset(12), "sender make failed");
+    public static final ServiceException.Code UNSUPPORTED_SENDER_TYPE =
+            new ServiceException.Code(offset(13), "unsupported sender type");
+    public static final ServiceException.Code NOTIFY_SETTING_NOT_EXISTED =
+            new ServiceException.Code(offset(20), "notify setting not existed");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -46,11 +54,15 @@ public final class ServiceExceptionCodes {
         EXCEPTION_CODE_OFFSET = exceptionCodeOffset;
 
         // 以新的 EXCEPTION_CODE_OFFSET 为基准，更新异常代码的值。
-        PROMPTER_FAILED.setCode(offset(0));
-        PROMPTER_MAKE_FAILED.setCode(offset(1));
-        PROMPTER_TYPE_UNSUPPORTED.setCode(offset(2));
-        NOTIFY_HANDLER_STOPPED.setCode(offset(10));
-        SCHEDULED_CLEAR_HANDLER_STOPPED.setCode(offset(20));
+        ROUTER_FAILED.setCode(offset(0));
+        ROUTER_EXECUTION_FAILED.setCode(offset(1));
+        ROUTER_MAKE_FAILED.setCode(offset(2));
+        UNSUPPORTED_ROUTER_TYPE.setCode(offset(3));
+        SENDER_FAILED.setCode(offset(10));
+        SENDER_EXECUTION_FAILED.setCode(offset(11));
+        SENDER_MAKE_FAILED.setCode(offset(12));
+        UNSUPPORTED_SENDER_TYPE.setCode(offset(13));
+        NOTIFY_SETTING_NOT_EXISTED.setCode(offset(20));
     }
 
     private ServiceExceptionCodes() {

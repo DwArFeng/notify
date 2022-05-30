@@ -16,6 +16,8 @@
   - com.dwarfeng.notify.stack.bean.entity.Topic。
   - com.dwarfeng.notify.stack.bean.entity.SenderRelation。
 
+- 通知发送核心逻辑实现。
+
 #### Bug修复
 
 - (无)
