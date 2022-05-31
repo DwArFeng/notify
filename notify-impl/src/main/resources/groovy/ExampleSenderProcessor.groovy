@@ -18,7 +18,7 @@ class ExampleSenderProcessor implements GroovySenderRegistry.Processor {
     private final Logger LOGGER = LoggerFactory.getLogger(ExampleSenderProcessor.class)
 
     @Override
-    void send(StringIdKey userKey, Object[] context) throws SenderException {
+    void send(StringIdKey userKey, Object context) throws SenderException {
         LOGGER.info("向用户 {} 发生信息, 内容为 {}", userKey, context)
     }
 }

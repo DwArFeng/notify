@@ -101,7 +101,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<Routing> parseRouting(Object[] context) throws RouterException {
+        public List<Routing> parseRouting(Object context) throws RouterException {
             return processor.parseRouting(context);
         }
 
@@ -128,6 +128,6 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
          * @return 解析的路径组成的列表。
          * @throws RouterException 路由器异常。
          */
-        List<Routing> parseRouting(Object[] context) throws RouterException;
+        List<Routing> parseRouting(Object context) throws RouterException;
     }
 }

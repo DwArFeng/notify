@@ -31,13 +31,13 @@ public class PushHandlerImpl implements PushHandler {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object[] context)
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context)
             throws HandlerException {
         pusher.notifyHappened(notifySetting, topic, user, context);
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object[] context)
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context)
             throws HandlerException {
         pusher.notifyHappened(notifySetting, topic, users, context);
     }

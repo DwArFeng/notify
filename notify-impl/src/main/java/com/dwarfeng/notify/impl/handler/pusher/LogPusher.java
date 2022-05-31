@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
-
 /**
  * 将信息输出至日志的推送器。
  *
@@ -38,11 +36,11 @@ public class LogPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object[] context)
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context)
             throws HandlerException {
         String title = "通知发生事件:";
         String message = String.format(
-                "通知设置: %s, 主题: %s, 用户: %s, 上下文对象: %s", notifySetting, topic, user, Arrays.toString(context)
+                "通知设置: %s, 主题: %s, 用户: %s, 上下文对象: %s", notifySetting, topic, user, context
         );
         logData(title, message);
     }

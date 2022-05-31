@@ -20,5 +20,5 @@ public interface Router {
      * @return 解析的路径组成的列表。
      * @throws RouterException 路由器异常。
      */
-    List<Routing> parseRouting(Object[] context) throws RouterException;
+    List<Routing> parseRouting(Object context) throws RouterException;
 }

@@ -65,7 +65,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
     public void notify(NotifyInfo notifyInfo) throws HandlerException {
         try {
             LongIdKey notifySettingKey = notifyInfo.getNotifySettingKey();
-            Object[] context = notifyInfo.getContext();
+            Object context = notifyInfo.getContext();
 
             // 确认 notifySettingKey 存在。
             handlerValidator.makeSureNotifySettingExists(notifySettingKey);
@@ -148,7 +148,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     private void notifySingleTopic(
-            LongIdKey notifySettingKey, StringIdKey topicKey, List<StringIdKey> userKeys, Object[] context,
+            LongIdKey notifySettingKey, StringIdKey topicKey, List<StringIdKey> userKeys, Object context,
             NotifySetting notifySetting, Topic topic, List<User> users
     ) throws Exception {
         // 根据通知设置和主题找到对应的发送器，如果找不到，则警告并退出方法。
