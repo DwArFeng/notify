@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class WebInputRouterInfo implements Bean {
 
-    private static final long serialVersionUID = -3877303833017166569L;
+    private static final long serialVersionUID = 520741029230438963L;
 
     public static RouterInfo toStackBean(WebInputRouterInfo webInputRouterInfo) {
         if (Objects.isNull(webInputRouterInfo)) {
@@ -30,7 +30,7 @@ public class WebInputRouterInfo implements Bean {
             return new RouterInfo(
                     WebInputLongIdKey.toStackBean(webInputRouterInfo.getKey()),
                     WebInputLongIdKey.toStackBean(webInputRouterInfo.getNotifySettingKey()),
-                    webInputRouterInfo.getType(), webInputRouterInfo.getParam(),
+                    webInputRouterInfo.getLabel(), webInputRouterInfo.getType(), webInputRouterInfo.getParam(),
                     webInputRouterInfo.getRemark()
             );
         }
@@ -44,6 +44,12 @@ public class WebInputRouterInfo implements Bean {
     @JSONField(name = "notify_setting_key")
     @Valid
     private WebInputLongIdKey notifySettingKey;
+
+    @JSONField(name = "label")
+    @NotNull
+    @NotEmpty
+    @Length(max = Constraints.LENGTH_LABEL)
+    private String label;
 
     @JSONField(name = "type")
     @NotNull
@@ -75,6 +81,14 @@ public class WebInputRouterInfo implements Bean {
 
     public void setNotifySettingKey(WebInputLongIdKey notifySettingKey) {
         this.notifySettingKey = notifySettingKey;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {

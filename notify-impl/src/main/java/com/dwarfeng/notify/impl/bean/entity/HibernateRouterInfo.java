@@ -12,7 +12,7 @@ import java.util.Optional;
 @Table(name = "tbl_router_info")
 public class HibernateRouterInfo implements Bean {
 
-    private static final long serialVersionUID = -6270968051432111044L;
+    private static final long serialVersionUID = 5559771721808443316L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -24,6 +24,9 @@ public class HibernateRouterInfo implements Bean {
     private Long notifySettingLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    @Column(name = "label", length = Constraints.LENGTH_LABEL)
+    private String label;
+
     @Column(name = "type", length = Constraints.LENGTH_TYPE)
     private String type;
 
@@ -77,6 +80,14 @@ public class HibernateRouterInfo implements Bean {
         this.notifySettingLongId = notifySettingLongId;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public String getType() {
         return type;
     }
@@ -114,6 +125,7 @@ public class HibernateRouterInfo implements Bean {
         return getClass().getSimpleName() + "(" +
                 "longId = " + longId + ", " +
                 "notifySettingLongId = " + notifySettingLongId + ", " +
+                "label = " + label + ", " +
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +

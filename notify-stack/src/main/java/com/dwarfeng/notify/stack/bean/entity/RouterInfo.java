@@ -11,10 +11,11 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class RouterInfo implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -4435522675223253828L;
+    private static final long serialVersionUID = 2250235064122458849L;
 
     private LongIdKey key;
     private LongIdKey notifySettingKey;
+    private String label;
     private String type;
     private String param;
     private String remark;
@@ -22,9 +23,12 @@ public class RouterInfo implements Entity<LongIdKey> {
     public RouterInfo() {
     }
 
-    public RouterInfo(LongIdKey key, LongIdKey notifySettingKey, String type, String param, String remark) {
+    public RouterInfo(
+            LongIdKey key, LongIdKey notifySettingKey, String label, String type, String param, String remark
+    ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
+        this.label = label;
         this.type = type;
         this.param = param;
         this.remark = remark;
@@ -46,6 +50,14 @@ public class RouterInfo implements Entity<LongIdKey> {
 
     public void setNotifySettingKey(LongIdKey notifySettingKey) {
         this.notifySettingKey = notifySettingKey;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {
@@ -77,6 +89,7 @@ public class RouterInfo implements Entity<LongIdKey> {
         return "RouterInfo{" +
                 "key=" + key +
                 ", notifySettingKey=" + notifySettingKey +
+                ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
