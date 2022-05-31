@@ -65,7 +65,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
     public void notify(NotifyInfo notifyInfo) throws HandlerException {
         try {
             LongIdKey notifySettingKey = notifyInfo.getNotifySettingKey();
-            Object context = notifyInfo.getContext();
+            Object routerContext = notifyInfo.getRouterContext();
+            Object senderContext = notifyInfo.getSenderContext();
 
             // 确认 notifySettingKey 存在。
             handlerValidator.makeSureNotifySettingExists(notifySettingKey);
@@ -89,7 +90,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
             Set<Routing> routingSet = new HashSet<>();
             for (Router router : routers) {
                 try {
-                    List<Routing> routings = router.parseRouting(context);
+                    List<Routing> routings = router.parseRouting(routerContext);
                     routingSet.addAll(routings);
                 } catch (RouterException e) {
                     LOGGER.warn("路由 " + router + " 解析路径时发生异常，部分路径将不会发送通知，异常信息如下: ", e);
@@ -138,7 +139,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 List<StringIdKey> userKeys = entry.getValue();
                 Topic topic = topicMap.get(topicKey);
                 List<User> users = userKeys.stream().map(userMap::get).collect(Collectors.toList());
-                notifySingleTopic(notifySettingKey, topicKey, userKeys, context, notifySetting, topic, users);
+                notifySingleTopic(notifySettingKey, topicKey, userKeys, senderContext, notifySetting, topic, users);
             }
         } catch (HandlerException e) {
             throw e;

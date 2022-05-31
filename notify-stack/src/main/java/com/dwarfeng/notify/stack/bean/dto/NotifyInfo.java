@@ -11,17 +11,19 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class NotifyInfo implements Dto {
 
-    private static final long serialVersionUID = -7686561242783315495L;
+    private static final long serialVersionUID = 4505514778249069224L;
 
     private LongIdKey notifySettingKey;
-    private Object context;
+    private Object routerContext;
+    private Object senderContext;
 
     public NotifyInfo() {
     }
 
-    public NotifyInfo(LongIdKey notifySettingKey, Object context) {
+    public NotifyInfo(LongIdKey notifySettingKey, Object routerContext, Object senderContext) {
         this.notifySettingKey = notifySettingKey;
-        this.context = context;
+        this.routerContext = routerContext;
+        this.senderContext = senderContext;
     }
 
     public LongIdKey getNotifySettingKey() {
@@ -32,19 +34,28 @@ public class NotifyInfo implements Dto {
         this.notifySettingKey = notifySettingKey;
     }
 
-    public Object getContext() {
-        return context;
+    public Object getRouterContext() {
+        return routerContext;
     }
 
-    public void setContext(Object context) {
-        this.context = context;
+    public void setRouterContext(Object routerContext) {
+        this.routerContext = routerContext;
+    }
+
+    public Object getSenderContext() {
+        return senderContext;
+    }
+
+    public void setSenderContext(Object senderContext) {
+        this.senderContext = senderContext;
     }
 
     @Override
     public String toString() {
         return "NotifyInfo{" +
                 "notifySettingKey=" + notifySettingKey +
-                ", context=" + context +
+                ", routerContext=" + routerContext +
+                ", senderContext=" + senderContext +
                 '}';
     }
 }
