@@ -3,6 +3,8 @@ package com.dwarfeng.notify.stack.bean.dto;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
+import java.util.Arrays;
+
 /**
  * 通知信息。
  *
@@ -11,15 +13,15 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class NotifyInfo implements Dto {
 
-    private static final long serialVersionUID = -7686561242783315495L;
+    private static final long serialVersionUID = 1607405822178434303L;
 
     private LongIdKey notifySettingKey;
-    private Object context;
+    private Object[] context;
 
     public NotifyInfo() {
     }
 
-    public NotifyInfo(LongIdKey notifySettingKey, Object context) {
+    public NotifyInfo(LongIdKey notifySettingKey, Object[] context) {
         this.notifySettingKey = notifySettingKey;
         this.context = context;
     }
@@ -32,11 +34,11 @@ public class NotifyInfo implements Dto {
         this.notifySettingKey = notifySettingKey;
     }
 
-    public Object getContext() {
+    public Object[] getContext() {
         return context;
     }
 
-    public void setContext(Object context) {
+    public void setContext(Object[] context) {
         this.context = context;
     }
 
@@ -44,7 +46,7 @@ public class NotifyInfo implements Dto {
     public String toString() {
         return "NotifyInfo{" +
                 "notifySettingKey=" + notifySettingKey +
-                ", context=" + context +
+                ", context=" + Arrays.toString(context) +
                 '}';
     }
 }

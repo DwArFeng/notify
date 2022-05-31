@@ -32,7 +32,7 @@ public interface Pusher {
      * @param context       上下文对象。
      * @throws HandlerException 处理器异常。
      */
-    void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context) throws HandlerException;
+    void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object[] context) throws HandlerException;
 
     /**
      * 通知发生时执行的推送动作。
@@ -43,7 +43,7 @@ public interface Pusher {
      * @param context       上下文对象。
      * @throws HandlerException 处理器异常。
      */
-    default void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context)
+    default void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object[] context)
             throws HandlerException {
         for (User user : users) {
             notifyHappened(notifySetting, topic, user, context);

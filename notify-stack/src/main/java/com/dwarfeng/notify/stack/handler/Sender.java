@@ -20,7 +20,7 @@ public interface Sender {
      * @param context 上下文。
      * @throws SenderException 发送器异常。
      */
-    void send(StringIdKey userKey, Object context) throws SenderException;
+    void send(StringIdKey userKey, Object[] context) throws SenderException;
 
     /**
      * 向一批用户发送信息。
@@ -29,7 +29,7 @@ public interface Sender {
      * @param context  上下文。
      * @throws SenderException 发送器异常
      */
-    default void batchSend(List<StringIdKey> userKeys, Object context) throws SenderException {
+    default void batchSend(List<StringIdKey> userKeys, Object[] context) throws SenderException {
         for (StringIdKey userKey : userKeys) {
             send(userKey, context);
         }

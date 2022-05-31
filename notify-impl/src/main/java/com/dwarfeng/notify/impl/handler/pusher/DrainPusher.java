@@ -23,10 +23,10 @@ public class DrainPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context) {
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object[] context) {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context) {
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object[] context) {
     }
 }

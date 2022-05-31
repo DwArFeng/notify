@@ -52,7 +52,7 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context) {
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object[] context) {
         for (Pusher delegate : delegates) {
             try {
                 delegate.notifyHappened(notifySetting, topic, user, context);
@@ -63,7 +63,7 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context) {
+    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object[] context) {
         for (Pusher delegate : delegates) {
             try {
                 delegate.notifyHappened(notifySetting, topic, users, context);

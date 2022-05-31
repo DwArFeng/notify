@@ -31,7 +31,7 @@ class ExampleRouterProcessor implements GroovyRouterRegistry.Processor {
     private UserMaintainService userMaintainService
 
     @Override
-    List<Routing> parseRouting(Object context) throws RouterException {
+    List<Routing> parseRouting(Object[] context) throws RouterException {
         List<Topic> topics = topicMaintainService.lookupAsList(new PagingInfo(0, MAX_TOPIC))
         List<User> users = userMaintainService.lookupAsList(new PagingInfo(0, MAX_USER))
         List<Routing> result = new ArrayList<>()
