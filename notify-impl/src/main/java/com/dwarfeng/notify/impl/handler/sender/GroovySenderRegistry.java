@@ -51,7 +51,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
     }
 
     @Override
-    public String provideExampleContent() {
+    public String provideExampleParam() {
         try {
             Resource resource = ctx.getResource("classpath:groovy/ExampleSenderProcessor.groovy");
             String example;

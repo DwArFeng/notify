@@ -51,7 +51,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
     }
 
     @Override
-    public String provideExampleContent() {
+    public String provideExampleParam() {
         try {
             Resource resource = ctx.getResource("classpath:groovy/ExampleRouterProcessor.groovy");
             String example;

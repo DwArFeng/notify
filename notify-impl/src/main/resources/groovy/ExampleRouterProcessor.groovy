@@ -1,3 +1,5 @@
+package groovy
+
 import com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry
 import com.dwarfeng.notify.stack.bean.dto.Routing
 import com.dwarfeng.notify.stack.bean.entity.Topic

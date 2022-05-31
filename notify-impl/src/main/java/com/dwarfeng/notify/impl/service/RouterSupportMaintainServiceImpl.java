@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainService {
@@ -237,24 +238,22 @@ public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void reset() throws ServiceException {
-        //TODO 将复位逻辑更新为删除与重置。
-        for (RouterSupporter routerSupporter : routerSupporters) {
-            try {
-                crudService.insertIfNotExists(
-                        new RouterSupport(
-                                new StringIdKey(routerSupporter.provideType()),
-                                routerSupporter.provideLabel(),
-                                routerSupporter.provideDescription(),
-                                routerSupporter.provideExampleContent()
-                        )
-                );
-            } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("重置判断器支持时发生异常",
-                        LogLevel.WARN, sem, e
-                );
-            }
+        try {
+            List<StringIdKey> routerKeys = entireLookupService.lookup().getData().stream()
+                    .map(RouterSupport::getKey).collect(Collectors.toList());
+            crudService.batchDelete(routerKeys);
+            List<RouterSupport> routerSupports = routerSupporters.stream().map(supporter -> new RouterSupport(
+                    new StringIdKey(supporter.provideType()),
+                    supporter.provideLabel(),
+                    supporter.provideDescription(),
+                    supporter.provideExampleParam()
+            )).collect(Collectors.toList());
+            crudService.batchInsert(routerSupports);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("重置路由器支持时发生异常",
+                    LogLevel.WARN, sem, e
+            );
         }
     }
 }

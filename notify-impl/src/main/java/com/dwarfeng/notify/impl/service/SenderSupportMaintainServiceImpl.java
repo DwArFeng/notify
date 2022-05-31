@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainService {
@@ -237,24 +238,22 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
 
     @Override
     @BehaviorAnalyse
-    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void reset() throws ServiceException {
-        //TODO 将复位逻辑更新为删除与重置。
-        for (SenderSupporter senderSupporter : senderSupporters) {
-            try {
-                crudService.insertIfNotExists(
-                        new SenderSupport(
-                                new StringIdKey(senderSupporter.provideType()),
-                                senderSupporter.provideLabel(),
-                                senderSupporter.provideDescription(),
-                                senderSupporter.provideExampleContent()
-                        )
-                );
-            } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("重置判断器支持时发生异常",
-                        LogLevel.WARN, sem, e
-                );
-            }
+        try {
+            List<StringIdKey> senderKeys = entireLookupService.lookup().getData().stream()
+                    .map(SenderSupport::getKey).collect(Collectors.toList());
+            crudService.batchDelete(senderKeys);
+            List<SenderSupport> senderSupports = senderSupporters.stream().map(supporter -> new SenderSupport(
+                    new StringIdKey(supporter.provideType()),
+                    supporter.provideLabel(),
+                    supporter.provideDescription(),
+                    supporter.provideExampleParam()
+            )).collect(Collectors.toList());
+            crudService.batchInsert(senderSupports);
+        } catch (Exception e) {
+            throw ServiceExceptionHelper.logAndThrow("重置发送器支持时发生异常",
+                    LogLevel.WARN, sem, e
+            );
         }
     }
 }

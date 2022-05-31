@@ -30,9 +30,9 @@ public interface RouterSupporter {
     String provideDescription();
 
     /**
-     * 提供示例内容。
+     * 提供示例参数。
      *
-     * @return 示例内容。
+     * @return 示例参数。
      */
-    String provideExampleContent();
+    String provideExampleParam();
 }

@@ -32,6 +32,8 @@
   - com.dwarfeng.notify.impl.handler.sender.AbstractSenderRegistry。
   - com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry。
 
+- 程序开发完成，运行测试通过，打包测试通过。
+
 #### Bug修复
 
 - (无)

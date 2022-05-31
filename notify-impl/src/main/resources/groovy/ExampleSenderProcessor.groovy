@@ -1,3 +1,5 @@
+package groovy
+
 import com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry
 import com.dwarfeng.notify.stack.exception.SenderException
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey
