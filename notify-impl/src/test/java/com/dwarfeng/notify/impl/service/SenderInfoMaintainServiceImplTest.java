@@ -32,7 +32,7 @@ public class SenderInfoMaintainServiceImplTest {
         notifySetting = new NotifySetting(null, "label", "remark");
         senderInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            SenderInfo senderInfo = new SenderInfo(null, "type", "param", "remark");
+            SenderInfo senderInfo = new SenderInfo(null, "label", "type", "param", "remark");
             senderInfos.add(senderInfo);
         }
     }

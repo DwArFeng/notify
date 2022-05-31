@@ -44,7 +44,7 @@ public class SenderSenderSenderRelationMaintainServiceImplTest {
     public void setUp() {
         notifySetting = new NotifySetting(null, "label", "remark");
         topic = new Topic(new StringIdKey("test.topic"), "label", "remark");
-        senderInfo = new SenderInfo(null, "type", "param", "remark");
+        senderInfo = new SenderInfo(null, "label", "type", "param", "remark");
         senderRelation = new SenderRelation(null, null, "remark");
     }
 

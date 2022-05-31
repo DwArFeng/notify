@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class WebInputSenderInfo implements Bean {
 
-    private static final long serialVersionUID = -2024120822791839366L;
+    private static final long serialVersionUID = -8050305036684218699L;
 
     public static SenderInfo toStackBean(WebInputSenderInfo webInputSenderInfo) {
         if (Objects.isNull(webInputSenderInfo)) {
@@ -29,7 +29,7 @@ public class WebInputSenderInfo implements Bean {
         } else {
             return new SenderInfo(
                     WebInputLongIdKey.toStackBean(webInputSenderInfo.getKey()),
-                    webInputSenderInfo.getType(), webInputSenderInfo.getParam(),
+                    webInputSenderInfo.getLabel(), webInputSenderInfo.getType(), webInputSenderInfo.getParam(),
                     webInputSenderInfo.getRemark()
             );
         }
@@ -39,6 +39,12 @@ public class WebInputSenderInfo implements Bean {
     @Valid
     @NotNull(groups = Default.class)
     private WebInputLongIdKey key;
+
+    @JSONField(name = "label")
+    @NotNull
+    @NotEmpty
+    @Length(max = Constraints.LENGTH_LABEL)
+    private String label;
 
     @JSONField(name = "type")
     @NotNull
@@ -62,6 +68,14 @@ public class WebInputSenderInfo implements Bean {
 
     public void setKey(WebInputLongIdKey key) {
         this.key = key;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {

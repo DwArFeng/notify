@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_sender_info")
 public class HibernateSenderInfo implements Bean {
 
-    private static final long serialVersionUID = 1623477450890638049L;
+    private static final long serialVersionUID = -7190978882692526859L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -22,6 +22,9 @@ public class HibernateSenderInfo implements Bean {
     private Long longId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    @Column(name = "label", length = Constraints.LENGTH_LABEL)
+    private String label;
+
     @Column(name = "type", length = Constraints.LENGTH_TYPE)
     private String type;
 
@@ -54,6 +57,14 @@ public class HibernateSenderInfo implements Bean {
 
     public void setLongId(Long longId) {
         this.longId = longId;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {
@@ -92,6 +103,7 @@ public class HibernateSenderInfo implements Bean {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "longId = " + longId + ", " +
+                "label = " + label + ", " +
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ")";

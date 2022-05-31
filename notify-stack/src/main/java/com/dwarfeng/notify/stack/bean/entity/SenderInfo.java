@@ -11,9 +11,10 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class SenderInfo implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 5712338054573798441L;
+    private static final long serialVersionUID = -7255275533811395996L;
 
     private LongIdKey key;
+    private String label;
     private String type;
     private String param;
     private String remark;
@@ -21,8 +22,9 @@ public class SenderInfo implements Entity<LongIdKey> {
     public SenderInfo() {
     }
 
-    public SenderInfo(LongIdKey key, String type, String param, String remark) {
+    public SenderInfo(LongIdKey key, String label, String type, String param, String remark) {
         this.key = key;
+        this.label = label;
         this.type = type;
         this.param = param;
         this.remark = remark;
@@ -36,6 +38,14 @@ public class SenderInfo implements Entity<LongIdKey> {
     @Override
     public void setKey(LongIdKey key) {
         this.key = key;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {
@@ -66,6 +76,7 @@ public class SenderInfo implements Entity<LongIdKey> {
     public String toString() {
         return "SenderInfo{" +
                 "key=" + key +
+                ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +

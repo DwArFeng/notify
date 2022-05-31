@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonSenderInfo implements Bean {
 
-    private static final long serialVersionUID = -5729171871615805666L;
+    private static final long serialVersionUID = 8548356347008196646L;
 
     public static FastJsonSenderInfo of(SenderInfo senderInfo) {
         if (Objects.isNull(senderInfo)) {
@@ -23,7 +23,7 @@ public class FastJsonSenderInfo implements Bean {
         } else {
             return new FastJsonSenderInfo(
                     FastJsonLongIdKey.of(senderInfo.getKey()),
-                    senderInfo.getType(), senderInfo.getParam(), senderInfo.getRemark()
+                    senderInfo.getLabel(), senderInfo.getType(), senderInfo.getParam(), senderInfo.getRemark()
             );
         }
     }
@@ -31,20 +31,24 @@ public class FastJsonSenderInfo implements Bean {
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
 
-    @JSONField(name = "type", ordinal = 2)
+    @JSONField(name = "label", ordinal = 2)
+    private String label;
+
+    @JSONField(name = "type", ordinal = 3)
     private String type;
 
-    @JSONField(name = "param", ordinal = 3)
+    @JSONField(name = "param", ordinal = 4)
     private String param;
 
-    @JSONField(name = "remark", ordinal = 4)
+    @JSONField(name = "remark", ordinal = 5)
     private String remark;
 
     public FastJsonSenderInfo() {
     }
 
-    public FastJsonSenderInfo(FastJsonLongIdKey key, String type, String param, String remark) {
+    public FastJsonSenderInfo(FastJsonLongIdKey key, String label, String type, String param, String remark) {
         this.key = key;
+        this.label = label;
         this.type = type;
         this.param = param;
         this.remark = remark;
@@ -56,6 +60,14 @@ public class FastJsonSenderInfo implements Bean {
 
     public void setKey(FastJsonLongIdKey key) {
         this.key = key;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {
@@ -86,6 +98,7 @@ public class FastJsonSenderInfo implements Bean {
     public String toString() {
         return "FastJsonSenderInfo{" +
                 "key=" + key +
+                ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
