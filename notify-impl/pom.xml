@@ -7,12 +7,12 @@
     <parent>
         <artifactId>notify</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.0.0.a-SNAPSHOT</version>
+        <version>1.0.0.a</version>
     </parent>
 
     <artifactId>notify-impl</artifactId>
     <name>notify-impl</name>
-    <url>http://www.example.com</url>
+    <url>http://maven.apache.org</url>
 
     <properties>
         <!-- 进行工程编码声明 -->
