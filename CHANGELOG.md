@@ -12,6 +12,9 @@
   - 升级 `spring-terminator` 依赖版本为 `1.0.8.a` 以规避漏洞。
   - 升级 `spring-telqos` 依赖版本为 `1.1.3.a` 以规避漏洞。
 
+- 新增内置的路由器实现。
+  - com.dwarfeng.notify.impl.handler.router.IdentityRouterRegistry。
+
 #### Bug修复
 
 - (无)

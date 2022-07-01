@@ -9,7 +9,6 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -33,11 +32,11 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GroovySenderRegistry.class);
 
-    @Autowired
-    private ApplicationContext ctx;
+    private final ApplicationContext ctx;
 
-    public GroovySenderRegistry() {
+    public GroovySenderRegistry(ApplicationContext ctx) {
         super(SENDER_TYPE);
+        this.ctx = ctx;
     }
 
     @Override
