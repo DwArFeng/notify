@@ -18,6 +18,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.0.1
  */
+@Component
 public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
     public static final String ROUTER_TYPE = "identity_router";

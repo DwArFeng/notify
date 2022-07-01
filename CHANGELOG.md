@@ -15,6 +15,9 @@
 - 新增内置的路由器实现。
   - com.dwarfeng.notify.impl.handler.router.IdentityRouterRegistry。
 
+- 新增内置的发送器实现。
+  - com.dwarfeng.notify.impl.handler.sender.LogSenderRegistry。
+
 #### Bug修复
 
 - (无)
