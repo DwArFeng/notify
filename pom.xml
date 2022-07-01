@@ -23,21 +23,16 @@
         <!-- 进行版本声明 -->
         <!-- 集中定义依赖版本号 -->
         <javassist.version>3.23.2-GA</javassist.version>
-        <junit.version>4.13.1</junit.version>
+        <junit.version>4.13.2</junit.version>
         <spring.version>5.3.20</spring.version>
         <spring-kafka.version>2.3.6.RELEASE</spring-kafka.version>
         <mysql.version>8.0.28</mysql.version>
         <fastjson.version>1.2.83</fastjson.version>
         <druid.version>1.1.20</druid.version>
-        <joda-time.version>2.5</joda-time.version>
         <commons-lang3.version>3.3.2</commons-lang3.version>
         <commons-io.version>1.3.2</commons-io.version>
         <commons-net.version>3.3</commons-net.version>
-        <pagehelper.version>4.0.3</pagehelper.version>
-        <jsqlparser.version>0.9.1</jsqlparser.version>
-        <commons-fileupload.version>1.3.1</commons-fileupload.version>
         <jedis.version>2.9.0</jedis.version>
-        <solrj.version>4.10.3</solrj.version>
         <dubbo.version>2.7.15</dubbo.version>
         <netty.version>4.1.77.Final</netty.version>
         <curator.version>4.2.0</curator.version>
@@ -54,12 +49,12 @@
         <log4j2.version>2.17.2</log4j2.version>
         <slf4j.version>1.7.5</slf4j.version>
         <dozer.version>5.5.1</dozer.version>
-        <dutil.version>beta-0.2.1.a</dutil.version>
+        <dutil.version>beta-0.3.0.a</dutil.version>
         <kafka.version>2.4.0</kafka.version>
-        <snowflake.version>1.4.5.a</snowflake.version>
-        <subgrade.version>1.2.7.a</subgrade.version>
-        <spring-terminator.version>1.0.7.a</spring-terminator.version>
-        <spring-telqos.version>1.1.2.a</spring-telqos.version>
+        <snowflake.version>1.4.7.a</snowflake.version>
+        <subgrade.version>1.2.8.a</subgrade.version>
+        <spring-terminator.version>1.0.8.a</spring-terminator.version>
+        <spring-telqos.version>1.1.3.a</spring-telqos.version>
         <groovy.version>3.0.7</groovy.version>
         <!-- Maven插件版本声明 -->
         <maven-clean-plugin.version>2.5</maven-clean-plugin.version>
@@ -90,16 +85,6 @@
                 <version>${zookeeper.version}</version>
             </dependency>
             <!-- Apache工具组件 -->
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-lang3</artifactId>
-                <version>${commons-lang3.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
-                <artifactId>commons-io</artifactId>
-                <version>${commons-io.version}</version>
-            </dependency>
             <dependency>
                 <groupId>commons-net</groupId>
                 <artifactId>commons-net</artifactId>
@@ -261,12 +246,6 @@
                 <artifactId>jedis</artifactId>
                 <version>${jedis.version}</version>
             </dependency>
-            <!-- solr客户端 -->
-            <dependency>
-                <groupId>org.apache.solr</groupId>
-                <artifactId>solr-solrj</artifactId>
-                <version>${solrj.version}</version>
-            </dependency>
             <!-- zookeeper客户端 -->
             <dependency>
                 <groupId>com.101tec</groupId>
@@ -285,27 +264,11 @@
                         <artifactId>netty</artifactId>
                         <groupId>io.netty</groupId>
                     </exclusion>
+                    <exclusion>
+                        <artifactId>jline</artifactId>
+                        <groupId>jline</groupId>
+                    </exclusion>
                 </exclusions>
-            </dependency>
-            <dependency>
-                <groupId>org.noggit</groupId>
-                <artifactId>noggit</artifactId>
-                <version>${noggit.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpclient</artifactId>
-                <version>${httpcomponents.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpmime</artifactId>
-                <version>${httpcomponents.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.httpcomponents</groupId>
-                <artifactId>httpcore</artifactId>
-                <version>${httpcomponents.version}</version>
             </dependency>
             <!-- hibernate组件 -->
             <dependency>
@@ -384,6 +347,10 @@
                         <artifactId>mybatis-spring</artifactId>
                         <groupId>org.mybatis</groupId>
                     </exclusion>
+                    <exclusion>
+                        <artifactId>commons-beanutils</artifactId>
+                        <groupId>commons-beanutils</groupId>
+                    </exclusion>
                 </exclusions>
             </dependency>
             <dependency>
@@ -424,6 +391,20 @@
                 <artifactId>groovy-all</artifactId>
                 <type>pom</type>
                 <version>${groovy.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-test</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-test-junit5</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.codehaus.groovy</groupId>
+                        <artifactId>groovy-testng</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- 程序自身组件 -->
             <dependency>

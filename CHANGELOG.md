@@ -1,5 +1,32 @@
 # ChangeLog
 
+### Release_1.0.1_20220701_build_A
+
+#### 功能构建
+
+- 依赖升级。
+  - 升级 `junit` 依赖版本为 `4.13.2` 以规避漏洞。
+  - 升级 `dutil` 依赖版本为 `beta-0.3.0.a` 以规避漏洞。
+  - 升级 `snowflake` 依赖版本为 `1.4.7.a` 以规避漏洞。
+  - 升级 `subgrade` 依赖版本为 `1.2.8.a` 以规避漏洞。
+  - 升级 `spring-terminator` 依赖版本为 `1.0.8.a` 以规避漏洞。
+  - 升级 `spring-telqos` 依赖版本为 `1.1.3.a` 以规避漏洞。
+
+#### Bug修复
+
+- (无)
+
+#### 功能移除
+
+- 删除不需要的依赖。
+  - 删除 `joda-time` 依赖。
+  - 删除 `pagehelper` 依赖。
+  - 删除 `jsqlparser` 依赖。
+  - 删除 `commons-fileupload` 依赖。
+  - 删除 `solrj` 依赖。
+
+---
+
 ### Release_1.0.0_20220604_build_A
 
 #### 功能构建
