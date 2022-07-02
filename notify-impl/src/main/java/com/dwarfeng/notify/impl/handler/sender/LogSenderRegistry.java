@@ -26,13 +26,13 @@ import java.util.*;
 public class LogSenderRegistry extends AbstractSenderRegistry {
 
     public static final String SENDER_TYPE = "log_sender";
+    public static final String LOG_LEVEL_DEBUG = "debug";
+    public static final String LOG_LEVEL_INFO = "info";
+    public static final String LOG_LEVEL_WARN = "warn";
+    public static final String LOG_LEVEL_ERROR = "error";
 
     // 映射定义。
     private static final Map<String, LogLevel> LOG_LEVEL_MAP;
-    private static final String LOG_LEVEL_DEBUG = "debug";
-    private static final String LOG_LEVEL_INFO = "info";
-    private static final String LOG_LEVEL_WARN = "warn";
-    private static final String LOG_LEVEL_ERROR = "error";
 
     // 初始化 LOG_LEVEL_MAP。
     static {
