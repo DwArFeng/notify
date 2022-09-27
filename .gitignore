@@ -77,3 +77,8 @@ buildNumber.properties
 ## Optext Files
 #################
 /notify-node/optext/
+
+#################
+## Confext Files
+#################
+/notify-node/confext/
