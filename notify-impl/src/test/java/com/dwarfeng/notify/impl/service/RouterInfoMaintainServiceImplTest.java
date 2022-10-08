@@ -34,7 +34,7 @@ public class RouterInfoMaintainServiceImplTest {
 
     @Before
     public void setUp() {
-        notifySetting = new NotifySetting(null, "label", "remark");
+        notifySetting = new NotifySetting(null, "label", "remark", true);
         routerInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             RouterInfo routerInfo = new RouterInfo(null, null, "label", "type", "param", "remark", true);

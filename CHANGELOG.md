@@ -13,6 +13,7 @@
   - com.dwarfeng.notify.stack.bean.entity.Topic.enabled。
   - com.dwarfeng.notify.stack.bean.entity.Topic.priority。
   - com.dwarfeng.notify.stack.bean.entity.RouterInfo.enabled。
+  - com.dwarfeng.notify.stack.bean.entity.NotifySetting.enabled。
 
 #### Bug修复
 

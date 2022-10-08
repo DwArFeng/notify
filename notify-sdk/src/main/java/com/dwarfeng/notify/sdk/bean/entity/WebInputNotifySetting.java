@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class WebInputNotifySetting implements Bean {
 
-    private static final long serialVersionUID = -989742591728945363L;
+    private static final long serialVersionUID = -873730307721884024L;
 
     public static NotifySetting toStackBean(WebInputNotifySetting webInputNotifySetting) {
         if (Objects.isNull(webInputNotifySetting)) {
@@ -28,8 +28,8 @@ public class WebInputNotifySetting implements Bean {
         } else {
             return new NotifySetting(
                     WebInputLongIdKey.toStackBean(webInputNotifySetting.getKey()),
-                    webInputNotifySetting.getLabel(),
-                    webInputNotifySetting.getRemark()
+                    webInputNotifySetting.getLabel(), webInputNotifySetting.getRemark(),
+                    webInputNotifySetting.isEnabled()
             );
         }
     }
@@ -47,6 +47,9 @@ public class WebInputNotifySetting implements Bean {
     @JSONField(name = "remark")
     @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @JSONField(name = "enabled")
+    private boolean enabled;
 
     public WebInputNotifySetting() {
     }
@@ -75,12 +78,21 @@ public class WebInputNotifySetting implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "WebInputNotifySetting{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

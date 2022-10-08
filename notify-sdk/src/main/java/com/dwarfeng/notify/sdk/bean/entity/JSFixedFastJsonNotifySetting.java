@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 2253825331020388954L;
+    private static final long serialVersionUID = -468445153381117312L;
 
     public static JSFixedFastJsonNotifySetting of(NotifySetting notifySetting) {
         if (Objects.isNull(notifySetting)) {
@@ -23,7 +23,7 @@ public class JSFixedFastJsonNotifySetting implements Bean {
         } else {
             return new JSFixedFastJsonNotifySetting(
                     JSFixedFastJsonLongIdKey.of(notifySetting.getKey()),
-                    notifySetting.getLabel(), notifySetting.getRemark()
+                    notifySetting.getLabel(), notifySetting.getRemark(), notifySetting.isEnabled()
             );
         }
     }
@@ -37,13 +37,17 @@ public class JSFixedFastJsonNotifySetting implements Bean {
     @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
+    @JSONField(name = "enabled", ordinal = 4)
+    private boolean enabled;
+
     public JSFixedFastJsonNotifySetting() {
     }
 
-    public JSFixedFastJsonNotifySetting(JSFixedFastJsonLongIdKey key, String label, String remark) {
+    public JSFixedFastJsonNotifySetting(JSFixedFastJsonLongIdKey key, String label, String remark, boolean enabled) {
         this.key = key;
         this.label = label;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -70,12 +74,21 @@ public class JSFixedFastJsonNotifySetting implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonNotifySetting{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonNotifySetting implements Bean {
 
-    private static final long serialVersionUID = -2896265297434150798L;
+    private static final long serialVersionUID = 6271478164083303184L;
 
     public static FastJsonNotifySetting of(NotifySetting notifySetting) {
         if (Objects.isNull(notifySetting)) {
@@ -23,7 +23,7 @@ public class FastJsonNotifySetting implements Bean {
         } else {
             return new FastJsonNotifySetting(
                     FastJsonLongIdKey.of(notifySetting.getKey()),
-                    notifySetting.getLabel(), notifySetting.getRemark()
+                    notifySetting.getLabel(), notifySetting.getRemark(), notifySetting.isEnabled()
             );
         }
     }
@@ -37,13 +37,17 @@ public class FastJsonNotifySetting implements Bean {
     @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
+    @JSONField(name = "enabled", ordinal = 4)
+    private boolean enabled;
+
     public FastJsonNotifySetting() {
     }
 
-    public FastJsonNotifySetting(FastJsonLongIdKey key, String label, String remark) {
+    public FastJsonNotifySetting(FastJsonLongIdKey key, String label, String remark, boolean enabled) {
         this.key = key;
         this.label = label;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     public FastJsonLongIdKey getKey() {
@@ -70,12 +74,21 @@ public class FastJsonNotifySetting implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "FastJsonNotifySetting{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

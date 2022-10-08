@@ -115,20 +115,20 @@ public class HibernateRouterInfo implements Bean {
         this.remark = remark;
     }
 
-    public HibernateNotifySetting getNotifySetting() {
-        return notifySetting;
-    }
-
-    public void setNotifySetting(HibernateNotifySetting notifySetting) {
-        this.notifySetting = notifySetting;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public HibernateNotifySetting getNotifySetting() {
+        return notifySetting;
+    }
+
+    public void setNotifySetting(HibernateNotifySetting notifySetting) {
+        this.notifySetting = notifySetting;
     }
 
     @Override

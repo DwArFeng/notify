@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 2206657309615069350L;
+    private static final long serialVersionUID = -8388353522644967807L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -27,6 +27,9 @@ public class HibernateNotifySetting implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRouterInfo.class, mappedBy = "notifySetting")
@@ -72,6 +75,14 @@ public class HibernateNotifySetting implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Set<HibernateRouterInfo> getRouterInfos() {
         return routerInfos;
     }
@@ -93,6 +104,7 @@ public class HibernateNotifySetting implements Bean {
         return getClass().getSimpleName() + "(" +
                 "longId = " + longId + ", " +
                 "label = " + label + ", " +
-                "remark = " + remark + ")";
+                "remark = " + remark + ", " +
+                "enabled = " + enabled + ")";
     }
 }

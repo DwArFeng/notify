@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
 import org.apache.commons.beanutils.BeanUtils;
@@ -24,12 +23,10 @@ public class SenderInfoMaintainServiceImplTest {
     @Autowired
     private SenderInfoMaintainService senderInfoMaintainService;
 
-    private NotifySetting notifySetting;
     private List<SenderInfo> senderInfos;
 
     @Before
     public void setUp() {
-        notifySetting = new NotifySetting(null, "label", "remark");
         senderInfos = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             SenderInfo senderInfo = new SenderInfo(null, "label", "type", "param", "remark");
@@ -39,7 +36,6 @@ public class SenderInfoMaintainServiceImplTest {
 
     @After
     public void tearDown() {
-        notifySetting = null;
         senderInfos.clear();
     }
 

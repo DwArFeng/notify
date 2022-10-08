@@ -29,7 +29,7 @@ public class NotifySettingMaintainServiceImplTest {
     public void setUp() {
         notifySettings = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            NotifySetting notifySetting = new NotifySetting(null, "label", "remark");
+            NotifySetting notifySetting = new NotifySetting(null, "label", "remark", true);
             notifySettings.add(notifySetting);
         }
     }

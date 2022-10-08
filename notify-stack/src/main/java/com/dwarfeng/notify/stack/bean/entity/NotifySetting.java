@@ -11,19 +11,25 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class NotifySetting implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 8610695309270184003L;
+    private static final long serialVersionUID = 26748674208998290L;
 
     private LongIdKey key;
     private String label;
     private String remark;
 
+    /**
+     * @since 1.0.5
+     */
+    private boolean enabled;
+
     public NotifySetting() {
     }
 
-    public NotifySetting(LongIdKey key, String label, String remark) {
+    public NotifySetting(LongIdKey key, String label, String remark, boolean enabled) {
         this.key = key;
         this.label = label;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     @Override
@@ -52,12 +58,21 @@ public class NotifySetting implements Entity<LongIdKey> {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "NotifySetting{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
