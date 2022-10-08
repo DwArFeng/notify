@@ -72,9 +72,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
             handlerValidator.makeSureNotifySettingExists(notifySettingKey);
             NotifySetting notifySetting = notifySettingMaintainService.get(notifySettingKey);
 
-            // 查找 notifySettingKey 对应的所有路由器信息，并通过本地缓存拿出路由器。
+            // 查找 notifySettingKey 对应的所有使能的路由器信息，并通过本地缓存拿出路由器。
             List<RouterInfo> routerInfos = routerInfoMaintainService.lookupAsList(
-                    RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{notifySettingKey}
+                    RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING_ENABLED, new Object[]{notifySettingKey}
             );
             List<Router> routers = new ArrayList<>();
             for (RouterInfo routerInfo : routerInfos) {
