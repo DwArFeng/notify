@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
+import com.dwarfeng.notify.stack.exception.NotifySettingDisabledException;
 import com.dwarfeng.notify.stack.exception.NotifySettingNotExistsException;
 import com.dwarfeng.notify.stack.exception.TopicNotExistsException;
 import com.dwarfeng.notify.stack.exception.UserNotExistsException;
@@ -61,6 +63,20 @@ public class HandlerValidator {
         try {
             if (Objects.isNull(userKey) || !userMaintainService.exists(userKey)) {
                 throw new UserNotExistsException(userKey);
+            }
+        } catch (ServiceException e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    public void makeSureNotifySettingEnabled(LongIdKey notifySettingKey) throws HandlerException {
+        try {
+            if (Objects.isNull(notifySettingKey) || !notifySettingMaintainService.exists(notifySettingKey)) {
+                throw new NotifySettingNotExistsException(notifySettingKey);
+            }
+            NotifySetting notifySetting = notifySettingMaintainService.get(notifySettingKey);
+            if (!notifySetting.isEnabled()) {
+                throw new NotifySettingDisabledException(notifySettingKey);
             }
         } catch (ServiceException e) {
             throw new HandlerException(e);

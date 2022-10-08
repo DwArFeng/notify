@@ -27,6 +27,7 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(NotifySettingNotExistsException.class, ServiceExceptionCodes.NOTIFY_SETTING_NOT_EXISTED);
         destination.put(TopicNotExistsException.class, ServiceExceptionCodes.TOPIC_NOT_EXISTED);
         destination.put(UserNotExistsException.class, ServiceExceptionCodes.USER_NOT_EXISTED);
+        destination.put(NotifySettingDisabledException.class, ServiceExceptionCodes.NOTIFY_SETTING_DISABLED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

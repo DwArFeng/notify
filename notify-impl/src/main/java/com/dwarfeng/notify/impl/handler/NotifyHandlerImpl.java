@@ -70,6 +70,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
             // 确认 notifySettingKey 存在。
             handlerValidator.makeSureNotifySettingExists(notifySettingKey);
+            // 确认 notifySettingKey 使能。
+            handlerValidator.makeSureNotifySettingEnabled(notifySettingKey);
+
             NotifySetting notifySetting = notifySettingMaintainService.get(notifySettingKey);
 
             // 查找 notifySettingKey 对应的所有使能的路由器信息，并通过本地缓存拿出路由器。

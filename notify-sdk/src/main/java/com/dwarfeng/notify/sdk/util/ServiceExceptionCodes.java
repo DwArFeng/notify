@@ -34,6 +34,8 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(30), "topic not existed");
     public static final ServiceException.Code USER_NOT_EXISTED =
             new ServiceException.Code(offset(40), "user not existed");
+    public static final ServiceException.Code NOTIFY_SETTING_DISABLED =
+            new ServiceException.Code(offset(50), "notify setting disabled");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -69,6 +71,7 @@ public final class ServiceExceptionCodes {
         NOTIFY_SETTING_NOT_EXISTED.setCode(offset(20));
         TOPIC_NOT_EXISTED.setCode(offset(30));
         USER_NOT_EXISTED.setCode(offset(40));
+        NOTIFY_SETTING_DISABLED.setCode(offset(50));
     }
 
     private ServiceExceptionCodes() {
