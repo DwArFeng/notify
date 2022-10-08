@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class WebInputTopic implements Bean {
 
-    private static final long serialVersionUID = 6595579537125058549L;
+    private static final long serialVersionUID = 2773264961331580703L;
 
     public static Topic toStackBean(WebInputTopic webInputTopic) {
         if (Objects.isNull(webInputTopic)) {
@@ -27,7 +27,8 @@ public class WebInputTopic implements Bean {
         }
         return new Topic(
                 WebInputStringIdKey.toStackBean(webInputTopic.getKey()),
-                webInputTopic.getLabel(), webInputTopic.getRemark()
+                webInputTopic.getLabel(), webInputTopic.getRemark(), webInputTopic.isEnabled(),
+                webInputTopic.getPriority()
         );
     }
 
@@ -43,6 +44,12 @@ public class WebInputTopic implements Bean {
     @JSONField(name = "remark")
     @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @JSONField(name = "enabled")
+    private boolean enabled;
+
+    @JSONField(name = "priority")
+    private int priority;
 
     public WebInputTopic() {
     }
@@ -71,12 +78,30 @@ public class WebInputTopic implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "WebInputTopic{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
+                ", priority=" + priority +
                 '}';
     }
 }

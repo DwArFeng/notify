@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonTopic implements Bean {
 
-    private static final long serialVersionUID = -6034137552824580654L;
+    private static final long serialVersionUID = -2259138942051918903L;
 
     public static FastJsonTopic of(Topic topic) {
         if (Objects.isNull(topic)) {
@@ -23,7 +23,7 @@ public class FastJsonTopic implements Bean {
         }
         return new FastJsonTopic(
                 FastJsonStringIdKey.of(topic.getKey()),
-                topic.getLabel(), topic.getRemark()
+                topic.getLabel(), topic.getRemark(), topic.isEnabled(), topic.getPriority()
         );
     }
 
@@ -36,13 +36,21 @@ public class FastJsonTopic implements Bean {
     @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
+    @JSONField(name = "enabled", ordinal = 4)
+    private boolean enabled;
+
+    @JSONField(name = "priority", ordinal = 5)
+    private int priority;
+
     public FastJsonTopic() {
     }
 
-    public FastJsonTopic(FastJsonStringIdKey key, String label, String remark) {
+    public FastJsonTopic(FastJsonStringIdKey key, String label, String remark, boolean enabled, int priority) {
         this.key = key;
         this.label = label;
         this.remark = remark;
+        this.enabled = enabled;
+        this.priority = priority;
     }
 
     public FastJsonStringIdKey getKey() {
@@ -69,12 +77,30 @@ public class FastJsonTopic implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "FastJsonTopic{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
+                ", priority=" + priority +
                 '}';
     }
 }

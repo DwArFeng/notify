@@ -4,7 +4,9 @@
 
 #### 功能构建
 
-- (无)
+- 增加实体字段。
+  - com.dwarfeng.notify.stack.bean.entity.Topic.enabled。
+  - com.dwarfeng.notify.stack.bean.entity.Topic.priority。
 
 #### Bug修复
 

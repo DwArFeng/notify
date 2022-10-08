@@ -29,7 +29,7 @@ public class TopicMaintainServiceImplTest {
     @Before
     public void setUp() {
         for (int i = 0; i < 5; i++) {
-            Topic topic = new Topic(new StringIdKey("topic-" + (i + 1)), "label", "remark");
+            Topic topic = new Topic(new StringIdKey("topic-" + (i + 1)), "label", "remark", true, 12450);
             topics.add(topic);
         }
     }

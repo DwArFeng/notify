@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = 6046373205083116526L;
+    private static final long serialVersionUID = -5805422989386120894L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -27,6 +27,12 @@ public class HibernateTopic implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @Column(name = "enabled")
+    private boolean enabled;
+
+    @Column(name = "priority")
+    private int priority;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "topic")
@@ -69,6 +75,22 @@ public class HibernateTopic implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     public Set<HibernateSenderRelation> getSenderRelations() {
         return senderRelations;
     }
@@ -82,6 +104,8 @@ public class HibernateTopic implements Bean {
         return getClass().getSimpleName() + "(" +
                 "stringId = " + stringId + ", " +
                 "label = " + label + ", " +
-                "remark = " + remark + ")";
+                "remark = " + remark + ", " +
+                "enabled = " + enabled + ", " +
+                "priority = " + priority + ")";
     }
 }

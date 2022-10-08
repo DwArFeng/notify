@@ -11,19 +11,31 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class Topic implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = -574921187295491197L;
-
+    private static final long serialVersionUID = 8089461632829965343L;
+    
     private StringIdKey key;
     private String label;
     private String remark;
 
+    /**
+     * @since 1.0.5
+     */
+    private boolean enabled;
+
+    /**
+     * @since 1.0.5
+     */
+    private int priority;
+
     public Topic() {
     }
 
-    public Topic(StringIdKey key, String label, String remark) {
+    public Topic(StringIdKey key, String label, String remark, boolean enabled, int priority) {
         this.key = key;
         this.label = label;
         this.remark = remark;
+        this.enabled = enabled;
+        this.priority = priority;
     }
 
     @Override
@@ -52,12 +64,30 @@ public class Topic implements Entity<StringIdKey> {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "Topic{" +
                 "key=" + key +
                 ", label='" + label + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
+                ", priority=" + priority +
                 '}';
     }
 }
