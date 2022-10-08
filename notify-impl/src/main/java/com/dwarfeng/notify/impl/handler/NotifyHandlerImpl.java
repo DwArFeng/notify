@@ -90,24 +90,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
             Set<Routing> routingSet = new HashSet<>();
             for (Router router : routers) {
                 try {
-                    List<Routing> routings = router.parseRouting(routerContext);
-                    routingSet.addAll(routings);
+                    routingSet.addAll(router.parseRouting(routerContext));
                 } catch (RouterException e) {
                     LOGGER.warn("路由 " + router + " 解析路径时发生异常，部分路径将不会发送通知，异常信息如下: ", e);
-                }
-            }
-
-            // 以主题为键，将路径汇聚为映射。
-            Map<StringIdKey, List<StringIdKey>> routingMap = new HashMap<>();
-            for (Routing routing : routingSet) {
-                StringIdKey topicKey = routing.getTopicKey();
-                StringIdKey userKey = routing.getUserKey();
-                if (routingMap.containsKey(topicKey)) {
-                    routingMap.get(topicKey).add(userKey);
-                } else {
-                    List<StringIdKey> userKeys = new ArrayList<>();
-                    userKeys.add(userKey);
-                    routingMap.put(topicKey, userKeys);
                 }
             }
 
@@ -115,37 +100,73 @@ public class NotifyHandlerImpl implements NotifyHandler {
             Map<StringIdKey, Topic> topicMap = new HashMap<>();
             Map<StringIdKey, User> userMap = new HashMap<>();
 
-            // 遍历映射键，确认主题全部存在，查出实体并存放在本地映射中。
-            for (StringIdKey topicKey : routingMap.keySet()) {
-                handlerValidator.makeSureTopicExists(topicKey);
-                Topic topic = topicMaintainService.get(topicKey);
-                topicMap.put(topicKey, topic);
-            }
-            // 遍历映射值，确认用户全部存在，查出实体并存放在本地映射中。
-            for (List<StringIdKey> userKeys : routingMap.values()) {
-                for (StringIdKey userKey : userKeys) {
-                    if (userMap.containsKey(userKey)) {
-                        continue;
-                    }
-                    handlerValidator.makeSureUserExists(userKey);
-                    User user = userMaintainService.get(userKey);
-                    userMap.put(userKey, user);
-                }
-            }
+            // 以主题为键，将路径汇聚为映射。
+            Map<StringIdKey, List<StringIdKey>> routingMap = mapRouting(topicMap, userMap, routingSet);
+            // 取出主题的键，按照主题的优先级进行升序排序，获得排序好的主题键列表。
+            List<StringIdKey> orderedTopicKey = topicMap.values().stream().sorted(TopicComparator.INSTANCE)
+                    .map(Topic::getKey).collect(Collectors.toList());
 
-            // 遍历映射入口，发送数据。
-            for (Map.Entry<StringIdKey, List<StringIdKey>> entry : routingMap.entrySet()) {
-                StringIdKey topicKey = entry.getKey();
-                List<StringIdKey> userKeys = entry.getValue();
+            // 遍历排序好的主题键，发送数据。
+            for (StringIdKey topicKey : orderedTopicKey) {
+                List<StringIdKey> userKeys = routingMap.get(topicKey);
                 Topic topic = topicMap.get(topicKey);
                 List<User> users = userKeys.stream().map(userMap::get).collect(Collectors.toList());
-                notifySingleTopic(notifySettingKey, topicKey, userKeys, senderContext, notifySetting, topic, users);
+                notifySingleTopic(
+                        notifySettingKey, topicKey, userKeys, senderContext, notifySetting, topic, users
+                );
             }
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
             throw new HandlerException(e);
         }
+    }
+
+    private Map<StringIdKey, List<StringIdKey>> mapRouting(
+            Map<StringIdKey, Topic> topicMap, Map<StringIdKey, User> userMap, Set<Routing> routingSet
+    ) throws Exception {
+        Map<StringIdKey, List<StringIdKey>> routingMap = new HashMap<>();
+        for (Routing routing : routingSet) {
+            // 对主题进行使能判定，如果主题未使能，则不汇聚路径。
+            StringIdKey topicKey = routing.getTopicKey();
+            mayPutTopic(topicMap, topicKey);
+            Topic topic = topicMap.get(topicKey);
+            if (!topic.isEnabled()) {
+                continue;
+            }
+
+            // 对于使能的映射，汇聚路径。
+            StringIdKey userKey = routing.getUserKey();
+            mayPutUser(userMap, userKey);
+            if (routingMap.containsKey(topicKey)) {
+                routingMap.get(topicKey).add(userKey);
+            } else {
+                List<StringIdKey> userKeys = new ArrayList<>();
+                userKeys.add(userKey);
+                routingMap.put(topicKey, userKeys);
+            }
+        }
+        return routingMap;
+    }
+
+    private void mayPutTopic(Map<StringIdKey, Topic> topicMap, StringIdKey topicKey) throws Exception {
+        if (topicMap.containsKey(topicKey)) {
+            return;
+        }
+
+        handlerValidator.makeSureTopicExists(topicKey);
+        Topic topic = topicMaintainService.get(topicKey);
+        topicMap.put(topicKey, topic);
+    }
+
+    private void mayPutUser(Map<StringIdKey, User> userMap, StringIdKey userKey) throws Exception {
+        if (userMap.containsKey(userKey)) {
+            return;
+        }
+
+        handlerValidator.makeSureUserExists(userKey);
+        User user = userMaintainService.get(userKey);
+        userMap.put(userKey, user);
     }
 
     private void notifySingleTopic(
@@ -179,6 +200,25 @@ public class NotifyHandlerImpl implements NotifyHandler {
             pushHandler.notifyHappened(notifySetting, topic, users, context);
         } catch (SenderException e) {
             LOGGER.warn("发送器 " + sender + " 发送信息失败，异常信息如下: ", e);
+        }
+    }
+
+    private static class TopicComparator implements Comparator<Topic> {
+
+        public static final TopicComparator INSTANCE = new TopicComparator();
+
+        @Override
+        public int compare(Topic o1, Topic o2) {
+            int p1 = o1.getPriority();
+            int p2 = o2.getPriority();
+            if (p1 != p2) {
+                // 优先级高的主题要排在优先级低的主题前面，所以优先级高的要小于优先级低的，因此参数是 p2, p1。
+                return Integer.compare(p2, p1);
+            }
+            // 如果优先级相等，则按照 id 进行比较。
+            String id1 = o1.getKey().getStringId();
+            String id2 = o2.getKey().getStringId();
+            return id1.compareTo(id2);
         }
     }
 }

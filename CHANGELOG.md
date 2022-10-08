@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 优化通知的发送逻辑。
+  - 新增主题筛选，通知不会发送到未使能的主题中。
+  - 优化通知发送的顺序，按照主题的优先级进行发送。
+
 - 增加实体字段。
   - com.dwarfeng.notify.stack.bean.entity.Topic.enabled。
   - com.dwarfeng.notify.stack.bean.entity.Topic.priority。
