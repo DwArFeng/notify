@@ -20,6 +20,9 @@ public class RouterInfoPresetCriteriaMaker implements PresetCriteriaMaker {
             case RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING:
                 childForNotifySetting(detachedCriteria, objects);
                 break;
+            case RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING_ENABLED:
+                childForNotifySettingEnabled(detachedCriteria, objects);
+                break;
             case RouterInfoMaintainService.TYPE_EQUALS:
                 typeEquals(detachedCriteria, objects);
                 break;
@@ -40,6 +43,20 @@ public class RouterInfoPresetCriteriaMaker implements PresetCriteriaMaker {
                 LongIdKey longIdKey = (LongIdKey) objects[0];
                 detachedCriteria.add(Restrictions.eqOrIsNull("notifySettingLongId", longIdKey.getLongId()));
             }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    private void childForNotifySettingEnabled(DetachedCriteria detachedCriteria, Object[] objects) {
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("notifySettingLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objects[0];
+                detachedCriteria.add(Restrictions.eqOrIsNull("notifySettingLongId", longIdKey.getLongId()));
+            }
+            detachedCriteria.add(Restrictions.eq("enabled", true));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }

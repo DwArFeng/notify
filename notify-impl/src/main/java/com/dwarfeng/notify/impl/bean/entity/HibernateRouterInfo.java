@@ -12,7 +12,7 @@ import java.util.Optional;
 @Table(name = "tbl_router_info")
 public class HibernateRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 5559771721808443316L;
+    private static final long serialVersionUID = 4206225164875868503L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -35,6 +35,9 @@ public class HibernateRouterInfo implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @Column(name = "enabled")
+    private boolean enabled;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateNotifySetting.class)
@@ -120,6 +123,14 @@ public class HibernateRouterInfo implements Bean {
         this.notifySetting = notifySetting;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -129,6 +140,7 @@ public class HibernateRouterInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
+                "enabled = " + enabled + ", " +
                 "notifySetting = " + notifySetting + ")";
     }
 }

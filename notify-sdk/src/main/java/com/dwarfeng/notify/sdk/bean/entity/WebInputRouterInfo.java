@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class WebInputRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 520741029230438963L;
+    private static final long serialVersionUID = -7255389745452337478L;
 
     public static RouterInfo toStackBean(WebInputRouterInfo webInputRouterInfo) {
         if (Objects.isNull(webInputRouterInfo)) {
@@ -31,7 +31,7 @@ public class WebInputRouterInfo implements Bean {
                     WebInputLongIdKey.toStackBean(webInputRouterInfo.getKey()),
                     WebInputLongIdKey.toStackBean(webInputRouterInfo.getNotifySettingKey()),
                     webInputRouterInfo.getLabel(), webInputRouterInfo.getType(), webInputRouterInfo.getParam(),
-                    webInputRouterInfo.getRemark()
+                    webInputRouterInfo.getRemark(), webInputRouterInfo.isEnabled()
             );
         }
     }
@@ -63,6 +63,9 @@ public class WebInputRouterInfo implements Bean {
     @JSONField(name = "remark")
     @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @JSONField(name = "enabled")
+    private boolean enabled;
 
     public WebInputRouterInfo() {
     }
@@ -115,14 +118,24 @@ public class WebInputRouterInfo implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "WebInputRouterInfo{" +
                 "key=" + key +
                 ", notifySettingKey=" + notifySettingKey +
+                ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

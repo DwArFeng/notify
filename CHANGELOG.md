@@ -11,6 +11,7 @@
 - 增加实体字段。
   - com.dwarfeng.notify.stack.bean.entity.Topic.enabled。
   - com.dwarfeng.notify.stack.bean.entity.Topic.priority。
+  - com.dwarfeng.notify.stack.bean.entity.RouterInfo.enabled。
 
 #### Bug修复
 

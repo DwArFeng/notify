@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 4586314532809131864L;
+    private static final long serialVersionUID = -936961194750282423L;
 
     public static JSFixedFastJsonRouterInfo of(RouterInfo routerInfo) {
         if (Objects.isNull(routerInfo)) {
@@ -24,7 +24,8 @@ public class JSFixedFastJsonRouterInfo implements Bean {
             return new JSFixedFastJsonRouterInfo(
                     JSFixedFastJsonLongIdKey.of(routerInfo.getKey()),
                     JSFixedFastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
-                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
+                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark(),
+                    routerInfo.isEnabled()
             );
         }
     }
@@ -47,12 +48,15 @@ public class JSFixedFastJsonRouterInfo implements Bean {
     @JSONField(name = "remark", ordinal = 6)
     private String remark;
 
+    @JSONField(name = "enabled", ordinal = 7)
+    private boolean enabled;
+
     public JSFixedFastJsonRouterInfo() {
     }
 
     public JSFixedFastJsonRouterInfo(
             JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey notifySettingKey, String label, String type,
-            String param, String remark
+            String param, String remark, boolean enabled
     ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
@@ -60,6 +64,7 @@ public class JSFixedFastJsonRouterInfo implements Bean {
         this.type = type;
         this.param = param;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -110,6 +115,14 @@ public class JSFixedFastJsonRouterInfo implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "JSFixedFastJsonRouterInfo{" +
@@ -119,6 +132,7 @@ public class JSFixedFastJsonRouterInfo implements Bean {
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

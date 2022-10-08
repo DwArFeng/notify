@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 2770659861456612878L;
+    private static final long serialVersionUID = -57263079714917985L;
 
     public static FastJsonRouterInfo of(RouterInfo routerInfo) {
         if (Objects.isNull(routerInfo)) {
@@ -24,7 +24,8 @@ public class FastJsonRouterInfo implements Bean {
             return new FastJsonRouterInfo(
                     FastJsonLongIdKey.of(routerInfo.getKey()),
                     FastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
-                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
+                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark(),
+                    routerInfo.isEnabled()
             );
         }
     }
@@ -47,12 +48,15 @@ public class FastJsonRouterInfo implements Bean {
     @JSONField(name = "remark", ordinal = 6)
     private String remark;
 
+    @JSONField(name = "enabled", ordinal = 7)
+    private boolean enabled;
+
     public FastJsonRouterInfo() {
     }
 
     public FastJsonRouterInfo(
             FastJsonLongIdKey key, FastJsonLongIdKey notifySettingKey, String label, String type, String param,
-            String remark
+            String remark, boolean enabled
     ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
@@ -60,6 +64,7 @@ public class FastJsonRouterInfo implements Bean {
         this.type = type;
         this.param = param;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     public FastJsonLongIdKey getKey() {
@@ -110,6 +115,14 @@ public class FastJsonRouterInfo implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "FastJsonRouterInfo{" +
@@ -119,6 +132,7 @@ public class FastJsonRouterInfo implements Bean {
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }
