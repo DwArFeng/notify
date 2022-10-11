@@ -7,7 +7,7 @@
     <parent>
         <artifactId>notify</artifactId>
         <groupId>com.dwarfeng</groupId>
-        <version>1.0.6.a-SNAPSHOT</version>
+        <version>1.0.6.a</version>
     </parent>
 
     <artifactId>notify-stack</artifactId>
