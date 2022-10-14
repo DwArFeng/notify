@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonRelation implements Bean {
 
-    private static final long serialVersionUID = 7524681367863176164L;
+    private static final long serialVersionUID = -7121280602102195211L;
 
     public static JSFixedFastJsonRelation of(Relation relation) {
         if (Objects.isNull(relation)) {
@@ -25,6 +25,7 @@ public class JSFixedFastJsonRelation implements Bean {
             return new JSFixedFastJsonRelation(
                     JSFixedFastJsonRelationKey.of(relation.getKey()),
                     JSFixedFastJsonLongIdKey.of(relation.getSenderInfoKey()),
+                    JSFixedFastJsonLongIdKey.of(relation.getDispatcherInfoKey()),
                     relation.getRemark()
             );
         }
@@ -36,17 +37,22 @@ public class JSFixedFastJsonRelation implements Bean {
     @JSONField(name = "sender_info_key", ordinal = 2)
     private JSFixedFastJsonLongIdKey senderInfoKey;
 
-    @JSONField(name = "remark", ordinal = 3)
+    @JSONField(name = "dispatcher_info_key", ordinal = 3)
+    private JSFixedFastJsonLongIdKey dispatcherInfoKey;
+
+    @JSONField(name = "remark", ordinal = 4)
     private String remark;
 
     public JSFixedFastJsonRelation() {
     }
 
     public JSFixedFastJsonRelation(
-            JSFixedFastJsonRelationKey key, JSFixedFastJsonLongIdKey senderInfoKey, String remark
+            JSFixedFastJsonRelationKey key, JSFixedFastJsonLongIdKey senderInfoKey,
+            JSFixedFastJsonLongIdKey dispatcherInfoKey, String remark
     ) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
+        this.dispatcherInfoKey = dispatcherInfoKey;
         this.remark = remark;
     }
 
@@ -66,6 +72,14 @@ public class JSFixedFastJsonRelation implements Bean {
         this.senderInfoKey = senderInfoKey;
     }
 
+    public JSFixedFastJsonLongIdKey getDispatcherInfoKey() {
+        return dispatcherInfoKey;
+    }
+
+    public void setDispatcherInfoKey(JSFixedFastJsonLongIdKey dispatcherInfoKey) {
+        this.dispatcherInfoKey = dispatcherInfoKey;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -79,6 +93,7 @@ public class JSFixedFastJsonRelation implements Bean {
         return "JSFixedFastJsonRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
+                ", dispatcherInfoKey=" + dispatcherInfoKey +
                 ", remark='" + remark + '\'' +
                 '}';
     }

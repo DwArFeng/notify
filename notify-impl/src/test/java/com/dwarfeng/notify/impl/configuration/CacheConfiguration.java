@@ -38,6 +38,10 @@ public class CacheConfiguration {
     private String topicPrefix;
     @Value("${cache.prefix.entity.relation}")
     private String relationPrefix;
+    @Value("${cache.prefix.entity.dispatcher_info}")
+    private String dispatcherInfoPrefix;
+    @Value("${cache.prefix.entity.dispatcher_support}")
+    private String dispatcherSupportPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -121,6 +125,27 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonRelation>) template,
                 new RelationStringKeyFormatter(relationPrefix),
                 new DozerBeanTransformer<>(Relation.class, FastJsonRelation.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, DispatcherInfo, FastJsonDispatcherInfo> dispatcherInfoRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonDispatcherInfo>) template,
+                new LongIdStringKeyFormatter(dispatcherInfoPrefix),
+                new DozerBeanTransformer<>(DispatcherInfo.class, FastJsonDispatcherInfo.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport>
+    dispatcherSupportRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonDispatcherSupport>) template,
+                new StringIdStringKeyFormatter(dispatcherSupportPrefix),
+                new DozerBeanTransformer<>(DispatcherSupport.class, FastJsonDispatcherSupport.class, mapper)
         );
     }
 }

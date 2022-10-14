@@ -12,18 +12,20 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class Relation implements Entity<RelationKey> {
 
-    private static final long serialVersionUID = -1730519514515656753L;
-
+    private static final long serialVersionUID = -1133724242038268249L;
+    
     private RelationKey key;
     private LongIdKey senderInfoKey;
+    private LongIdKey dispatcherInfoKey;
     private String remark;
 
     public Relation() {
     }
 
-    public Relation(RelationKey key, LongIdKey senderInfoKey, String remark) {
+    public Relation(RelationKey key, LongIdKey senderInfoKey, LongIdKey dispatcherInfoKey, String remark) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
+        this.dispatcherInfoKey = dispatcherInfoKey;
         this.remark = remark;
     }
 
@@ -45,6 +47,14 @@ public class Relation implements Entity<RelationKey> {
         this.senderInfoKey = senderInfoKey;
     }
 
+    public LongIdKey getDispatcherInfoKey() {
+        return dispatcherInfoKey;
+    }
+
+    public void setDispatcherInfoKey(LongIdKey dispatcherInfoKey) {
+        this.dispatcherInfoKey = dispatcherInfoKey;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -58,6 +68,7 @@ public class Relation implements Entity<RelationKey> {
         return "Relation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
+                ", dispatcherInfoKey=" + dispatcherInfoKey +
                 ", remark='" + remark + '\'' +
                 '}';
     }

@@ -33,6 +33,8 @@ public class DaoConfiguration {
     private final SenderSupportPresetCriteriaMaker senderSupportPresetCriteriaMaker;
     private final TopicPresetCriteriaMaker topicPresetCriteriaMaker;
     private final RelationPresetCriteriaMaker relationPresetCriteriaMaker;
+    private final DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker;
+    private final DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker;
 
     @Autowired
     private Mapper mapper;
@@ -48,7 +50,9 @@ public class DaoConfiguration {
             SenderInfoPresetCriteriaMaker senderInfoPresetCriteriaMaker,
             SenderSupportPresetCriteriaMaker senderSupportPresetCriteriaMaker,
             TopicPresetCriteriaMaker topicPresetCriteriaMaker,
-            RelationPresetCriteriaMaker relationPresetCriteriaMaker
+            RelationPresetCriteriaMaker relationPresetCriteriaMaker,
+            DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker,
+            DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker
     ) {
         this.hibernateTemplate = hibernateTemplate;
         this.routerInfoPresetCriteriaMaker = routerInfoPresetCriteriaMaker;
@@ -58,6 +62,8 @@ public class DaoConfiguration {
         this.senderSupportPresetCriteriaMaker = senderSupportPresetCriteriaMaker;
         this.topicPresetCriteriaMaker = topicPresetCriteriaMaker;
         this.relationPresetCriteriaMaker = relationPresetCriteriaMaker;
+        this.dispatcherInfoPresetCriteriaMaker = dispatcherInfoPresetCriteriaMaker;
+        this.dispatcherSupportPresetCriteriaMaker = dispatcherSupportPresetCriteriaMaker;
     }
 
     @Bean
@@ -302,6 +308,70 @@ public class DaoConfiguration {
                 new DozerBeanTransformer<>(Relation.class, HibernateRelation.class, mapper),
                 HibernateRelation.class,
                 relationPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, DispatcherInfo, HibernateDispatcherInfo>
+    dispatcherInfoHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
+                new DozerBeanTransformer<>(DispatcherInfo.class, HibernateDispatcherInfo.class, mapper),
+                HibernateDispatcherInfo.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<DispatcherInfo, HibernateDispatcherInfo> dispatcherInfoHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(DispatcherInfo.class, HibernateDispatcherInfo.class, mapper),
+                HibernateDispatcherInfo.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<DispatcherInfo, HibernateDispatcherInfo> dispatcherInfoHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(DispatcherInfo.class, HibernateDispatcherInfo.class, mapper),
+                HibernateDispatcherInfo.class,
+                dispatcherInfoPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, DispatcherSupport, HibernateDispatcherSupport>
+    dispatcherSupportHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
+                new DozerBeanTransformer<>(DispatcherSupport.class, HibernateDispatcherSupport.class, mapper),
+                HibernateDispatcherSupport.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<DispatcherSupport, HibernateDispatcherSupport> dispatcherSupportHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(DispatcherSupport.class, HibernateDispatcherSupport.class, mapper),
+                HibernateDispatcherSupport.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<DispatcherSupport, HibernateDispatcherSupport> dispatcherSupportHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(DispatcherSupport.class, HibernateDispatcherSupport.class, mapper),
+                HibernateDispatcherSupport.class,
+                dispatcherSupportPresetCriteriaMaker
         );
     }
 }

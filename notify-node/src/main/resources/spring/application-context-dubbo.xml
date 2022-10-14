@@ -36,6 +36,10 @@
                    ref="senderSupportMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.TopicMaintainService" ref="topicMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.UserMaintainService" ref="userMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.notify.stack.service.DispatcherInfoMaintainService"
+                   ref="dispatcherInfoMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService"
+                   ref="dispatcherSupportMaintainServiceImpl"/>
 
     <!-- 向注册中心注册暴露服务地址,注册消费者服务 -->
     <dubbo:reference id="longIdService" interface="com.dwarfeng.sfds.stack.service.LongIdService"/>

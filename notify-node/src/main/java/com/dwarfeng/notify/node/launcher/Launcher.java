@@ -1,6 +1,7 @@
 package com.dwarfeng.notify.node.launcher;
 
 import com.dwarfeng.notify.node.handler.LauncherSettingHandler;
+import com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService;
 import com.dwarfeng.notify.stack.service.RouterSupportMaintainService;
 import com.dwarfeng.notify.stack.service.SenderSupportMaintainService;
 import com.dwarfeng.springterminator.sdk.util.ApplicationUtil;
@@ -39,6 +40,16 @@ public class Launcher {
             if (launcherSettingHandler.isResetSenderSupport()) {
                 LOGGER.info("重置发送器支持...");
                 SenderSupportMaintainService maintainService = ctx.getBean(SenderSupportMaintainService.class);
+                try {
+                    maintainService.reset();
+                } catch (ServiceException e) {
+                    LOGGER.warn("发送器支持重置失败，异常信息如下", e);
+                }
+            }
+            // 判断是否重置调度器支持。
+            if (launcherSettingHandler.isResetDispatcherSupport()) {
+                LOGGER.info("重置发送器支持...");
+                DispatcherSupportMaintainService maintainService = ctx.getBean(DispatcherSupportMaintainService.class);
                 try {
                     maintainService.reset();
                 } catch (ServiceException e) {

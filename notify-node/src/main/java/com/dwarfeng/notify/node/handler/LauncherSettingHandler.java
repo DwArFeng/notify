@@ -13,11 +13,18 @@ public class LauncherSettingHandler implements Handler {
     @Value("${launcher.reset_sender_support}")
     private boolean resetSenderSupport;
 
+    @Value("${launcher.reset_dispatcher_support}")
+    private boolean resetDispatcherSupport;
+
     public boolean isResetRouterSupport() {
         return resetRouterSupport;
     }
 
     public boolean isResetSenderSupport() {
         return resetSenderSupport;
+    }
+
+    public boolean isResetDispatcherSupport() {
+        return resetDispatcherSupport;
     }
 }

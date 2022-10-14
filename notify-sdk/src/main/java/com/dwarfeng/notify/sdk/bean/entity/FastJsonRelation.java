@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 public class FastJsonRelation implements Bean {
 
-    private static final long serialVersionUID = -826795574968687531L;
+    private static final long serialVersionUID = 1900620071997143194L;
 
     public static FastJsonRelation of(Relation relation) {
         if (Objects.isNull(relation)) {
@@ -25,6 +25,7 @@ public class FastJsonRelation implements Bean {
             return new FastJsonRelation(
                     FastJsonRelationKey.of(relation.getKey()),
                     FastJsonLongIdKey.of(relation.getSenderInfoKey()),
+                    FastJsonLongIdKey.of(relation.getDispatcherInfoKey()),
                     relation.getRemark()
             );
         }
@@ -36,15 +37,22 @@ public class FastJsonRelation implements Bean {
     @JSONField(name = "sender_info_key", ordinal = 2)
     private FastJsonLongIdKey senderInfoKey;
 
-    @JSONField(name = "remark", ordinal = 3)
+    @JSONField(name = "dispatcher_info_key", ordinal = 3)
+    private FastJsonLongIdKey dispatcherInfoKey;
+
+    @JSONField(name = "remark", ordinal = 4)
     private String remark;
 
     public FastJsonRelation() {
     }
 
-    public FastJsonRelation(FastJsonRelationKey key, FastJsonLongIdKey senderInfoKey, String remark) {
+    public FastJsonRelation(
+            FastJsonRelationKey key, FastJsonLongIdKey senderInfoKey, FastJsonLongIdKey dispatcherInfoKey,
+            String remark
+    ) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
+        this.dispatcherInfoKey = dispatcherInfoKey;
         this.remark = remark;
     }
 
@@ -64,6 +72,14 @@ public class FastJsonRelation implements Bean {
         this.senderInfoKey = senderInfoKey;
     }
 
+    public FastJsonLongIdKey getDispatcherInfoKey() {
+        return dispatcherInfoKey;
+    }
+
+    public void setDispatcherInfoKey(FastJsonLongIdKey dispatcherInfoKey) {
+        this.dispatcherInfoKey = dispatcherInfoKey;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -77,6 +93,7 @@ public class FastJsonRelation implements Bean {
         return "FastJsonRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
+                ", dispatcherInfoKey=" + dispatcherInfoKey +
                 ", remark='" + remark + '\'' +
                 '}';
     }

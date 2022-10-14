@@ -28,6 +28,10 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(TopicNotExistsException.class, ServiceExceptionCodes.TOPIC_NOT_EXISTED);
         destination.put(UserNotExistsException.class, ServiceExceptionCodes.USER_NOT_EXISTED);
         destination.put(NotifySettingDisabledException.class, ServiceExceptionCodes.NOTIFY_SETTING_DISABLED);
+        destination.put(DispatcherException.class, ServiceExceptionCodes.DISPATCHER_FAILED);
+        destination.put(DispatcherExecutionException.class, ServiceExceptionCodes.DISPATCHER_EXECUTION_FAILED);
+        destination.put(DispatcherMakeException.class, ServiceExceptionCodes.DISPATCHER_MAKE_FAILED);
+        destination.put(UnsupportedDispatcherTypeException.class, ServiceExceptionCodes.UNSUPPORTED_DISPATCHER_TYPE);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

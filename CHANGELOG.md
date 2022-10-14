@@ -11,6 +11,10 @@
   - SenderRelation -> Relation。
   - SenderRelationKey -> RelationKey。
 
+- 新增实体及其维护服务。
+  - com.dwarfeng.notify.stack.bean.entity.DispatcherInfo。
+  - com.dwarfeng.notify.stack.bean.entity.DispatcherSupport。
+
 #### Bug修复
 
 - (无)

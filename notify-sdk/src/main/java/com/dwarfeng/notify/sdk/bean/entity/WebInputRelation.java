@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class WebInputRelation implements Bean {
 
-    private static final long serialVersionUID = -4057175559033366193L;
+    private static final long serialVersionUID = -805213545694349031L;
 
     public static Relation toStackBean(WebInputRelation webInputRelation) {
         if (Objects.isNull(webInputRelation)) {
@@ -28,6 +28,7 @@ public class WebInputRelation implements Bean {
             return new Relation(
                     WebInputRelationKey.toStackBean(webInputRelation.getKey()),
                     WebInputLongIdKey.toStackBean(webInputRelation.getSenderInfoKey()),
+                    WebInputLongIdKey.toStackBean(webInputRelation.getDispatcherInfoKey()),
                     webInputRelation.getRemark()
             );
         }
@@ -40,6 +41,10 @@ public class WebInputRelation implements Bean {
     @JSONField(name = "sender_info_key")
     @Valid
     private WebInputLongIdKey senderInfoKey;
+
+    @JSONField(name = "dispatcher_info_key")
+    @Valid
+    private WebInputLongIdKey dispatcherInfoKey;
 
     @JSONField(name = "remark")
     @Length(max = Constraints.LENGTH_REMARK)
@@ -64,6 +69,14 @@ public class WebInputRelation implements Bean {
         this.senderInfoKey = senderInfoKey;
     }
 
+    public WebInputLongIdKey getDispatcherInfoKey() {
+        return dispatcherInfoKey;
+    }
+
+    public void setDispatcherInfoKey(WebInputLongIdKey dispatcherInfoKey) {
+        this.dispatcherInfoKey = dispatcherInfoKey;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -77,6 +90,7 @@ public class WebInputRelation implements Bean {
         return "WebInputRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
+                ", dispatcherInfoKey=" + dispatcherInfoKey +
                 ", remark='" + remark + '\'' +
                 '}';
     }

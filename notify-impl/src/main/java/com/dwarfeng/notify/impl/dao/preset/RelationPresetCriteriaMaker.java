@@ -26,6 +26,9 @@ public class RelationPresetCriteriaMaker implements PresetCriteriaMaker {
             case RelationMaintainService.CHILD_FOR_SENDER_INFO:
                 childForSenderInfo(detachedCriteria, objects);
                 break;
+            case RelationMaintainService.CHILD_FOR_DISPATCHER_INFO:
+                childForDispatcherInfo(detachedCriteria, objects);
+                break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
         }
@@ -65,6 +68,19 @@ public class RelationPresetCriteriaMaker implements PresetCriteriaMaker {
             } else {
                 LongIdKey longIdKey = (LongIdKey) objects[0];
                 detachedCriteria.add(Restrictions.eqOrIsNull("senderInfoLongId", longIdKey.getLongId()));
+            }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    private void childForDispatcherInfo(DetachedCriteria detachedCriteria, Object[] objects) {
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("dispatcherInfoLongId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objects[0];
+                detachedCriteria.add(Restrictions.eqOrIsNull("dispatcherInfoLongId", longIdKey.getLongId()));
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));

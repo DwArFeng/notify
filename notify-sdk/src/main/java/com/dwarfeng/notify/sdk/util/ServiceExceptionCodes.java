@@ -36,6 +36,14 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(40), "user not existed");
     public static final ServiceException.Code NOTIFY_SETTING_DISABLED =
             new ServiceException.Code(offset(50), "notify setting disabled");
+    public static final ServiceException.Code DISPATCHER_FAILED =
+            new ServiceException.Code(offset(60), "dispatcher failed");
+    public static final ServiceException.Code DISPATCHER_EXECUTION_FAILED =
+            new ServiceException.Code(offset(61), "dispatcher execution failed");
+    public static final ServiceException.Code DISPATCHER_MAKE_FAILED =
+            new ServiceException.Code(offset(62), "dispatcher make failed");
+    public static final ServiceException.Code UNSUPPORTED_DISPATCHER_TYPE =
+            new ServiceException.Code(offset(63), "unsupported dispatcher type");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -72,6 +80,10 @@ public final class ServiceExceptionCodes {
         TOPIC_NOT_EXISTED.setCode(offset(30));
         USER_NOT_EXISTED.setCode(offset(40));
         NOTIFY_SETTING_DISABLED.setCode(offset(50));
+        DISPATCHER_FAILED.setCode(offset(60));
+        DISPATCHER_EXECUTION_FAILED.setCode(offset(61));
+        DISPATCHER_MAKE_FAILED.setCode(offset(62));
+        UNSUPPORTED_DISPATCHER_TYPE.setCode(offset(63));
     }
 
     private ServiceExceptionCodes() {

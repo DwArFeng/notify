@@ -15,7 +15,6 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 public interface SenderInfoMaintainService extends BatchCrudService<LongIdKey, SenderInfo>, EntireLookupService<SenderInfo>,
         PresetLookupService<SenderInfo> {
 
-    String CHILD_FOR_NOTIFY_SETTING = "child_for_notify_setting";
     String TYPE_EQUALS = "type_equals";
     String TYPE_LIKE = "type_like";
 }
