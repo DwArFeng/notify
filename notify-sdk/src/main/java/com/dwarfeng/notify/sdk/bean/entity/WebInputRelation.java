@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.entity.key.WebInputSenderRelationKey;
+import com.dwarfeng.notify.sdk.bean.entity.key.WebInputRelationKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
+import com.dwarfeng.notify.stack.bean.entity.Relation;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import org.hibernate.validator.constraints.Length;
@@ -12,30 +12,30 @@ import javax.validation.Valid;
 import java.util.Objects;
 
 /**
- * WebInput 发送器关系。
+ * WebInput 关系。
  *
  * @author DwArFeng
- * @since 1.0.0
+ * @since 1.1.0
  */
-public class WebInputSenderRelation implements Bean {
+public class WebInputRelation implements Bean {
 
-    private static final long serialVersionUID = -7063583107543070143L;
+    private static final long serialVersionUID = -4057175559033366193L;
 
-    public static SenderRelation toStackBean(WebInputSenderRelation webInputSenderRelation) {
-        if (Objects.isNull(webInputSenderRelation)) {
+    public static Relation toStackBean(WebInputRelation webInputRelation) {
+        if (Objects.isNull(webInputRelation)) {
             return null;
         } else {
-            return new SenderRelation(
-                    WebInputSenderRelationKey.toStackBean(webInputSenderRelation.getKey()),
-                    WebInputLongIdKey.toStackBean(webInputSenderRelation.getSenderInfoKey()),
-                    webInputSenderRelation.getRemark()
+            return new Relation(
+                    WebInputRelationKey.toStackBean(webInputRelation.getKey()),
+                    WebInputLongIdKey.toStackBean(webInputRelation.getSenderInfoKey()),
+                    webInputRelation.getRemark()
             );
         }
     }
 
     @JSONField(name = "key")
     @Valid
-    private WebInputSenderRelationKey key;
+    private WebInputRelationKey key;
 
     @JSONField(name = "sender_info_key")
     @Valid
@@ -45,14 +45,14 @@ public class WebInputSenderRelation implements Bean {
     @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
 
-    public WebInputSenderRelation() {
+    public WebInputRelation() {
     }
 
-    public WebInputSenderRelationKey getKey() {
+    public WebInputRelationKey getKey() {
         return key;
     }
 
-    public void setKey(WebInputSenderRelationKey key) {
+    public void setKey(WebInputRelationKey key) {
         this.key = key;
     }
 
@@ -74,7 +74,7 @@ public class WebInputSenderRelation implements Bean {
 
     @Override
     public String toString() {
-        return "WebInputSenderRelation{" +
+        return "WebInputRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
                 ", remark='" + remark + '\'' +

@@ -7,6 +7,10 @@
 - 依赖升级。
   - 升级 `subgrade` 依赖版本为 `1.2.13.a` 以规避漏洞。
 
+- 实体名称变更。
+  - SenderRelation -> Relation。
+  - SenderRelationKey -> RelationKey。
+
 #### Bug修复
 
 - (无)

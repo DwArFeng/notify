@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.dao.preset;
 
-import com.dwarfeng.notify.stack.service.SenderRelationMaintainService;
+import com.dwarfeng.notify.stack.service.RelationMaintainService;
 import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -12,18 +12,18 @@ import java.util.Arrays;
 import java.util.Objects;
 
 @Component
-public class SenderRelationPresetCriteriaMaker implements PresetCriteriaMaker {
+public class RelationPresetCriteriaMaker implements PresetCriteriaMaker {
 
     @Override
     public void makeCriteria(DetachedCriteria detachedCriteria, String s, Object[] objects) {
         switch (s) {
-            case SenderRelationMaintainService.CHILD_FOR_NOTIFY_SETTING:
+            case RelationMaintainService.CHILD_FOR_NOTIFY_SETTING:
                 childForNotifySetting(detachedCriteria, objects);
                 break;
-            case SenderRelationMaintainService.CHILD_FOR_TOPIC:
+            case RelationMaintainService.CHILD_FOR_TOPIC:
                 childForTopic(detachedCriteria, objects);
                 break;
-            case SenderRelationMaintainService.CHILD_FOR_SENDER_INFO:
+            case RelationMaintainService.CHILD_FOR_SENDER_INFO:
                 childForSenderInfo(detachedCriteria, objects);
                 break;
             default:

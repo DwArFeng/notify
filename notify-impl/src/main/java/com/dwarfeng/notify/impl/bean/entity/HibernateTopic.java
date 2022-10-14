@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -5805422989386120894L;
+    private static final long serialVersionUID = -8386312921915775642L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -35,8 +35,8 @@ public class HibernateTopic implements Bean {
     private int priority;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "topic")
-    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "topic")
+    private Set<HibernateRelation> relations = new HashSet<>();
 
     public HibernateTopic() {
     }
@@ -91,12 +91,12 @@ public class HibernateTopic implements Bean {
         this.priority = priority;
     }
 
-    public Set<HibernateSenderRelation> getSenderRelations() {
-        return senderRelations;
+    public Set<HibernateRelation> getRelations() {
+        return relations;
     }
 
-    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
-        this.senderRelations = senderRelations;
+    public void setRelations(Set<HibernateRelation> relations) {
+        this.relations = relations;
     }
 
     @Override

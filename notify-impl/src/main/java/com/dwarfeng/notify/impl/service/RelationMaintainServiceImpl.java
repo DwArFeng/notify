@@ -1,8 +1,8 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
-import com.dwarfeng.notify.stack.service.SenderRelationMaintainService;
+import com.dwarfeng.notify.stack.bean.entity.Relation;
+import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.service.RelationMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
@@ -17,16 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-public class SenderRelationMaintainServiceImpl implements SenderRelationMaintainService {
+public class RelationMaintainServiceImpl implements RelationMaintainService {
 
-    private final GeneralBatchCrudService<SenderRelationKey, SenderRelation> crudService;
-    private final DaoOnlyEntireLookupService<SenderRelation> entireLookupService;
-    private final DaoOnlyPresetLookupService<SenderRelation> presetLookupService;
+    private final GeneralBatchCrudService<RelationKey, Relation> crudService;
+    private final DaoOnlyEntireLookupService<Relation> entireLookupService;
+    private final DaoOnlyPresetLookupService<Relation> presetLookupService;
 
-    public SenderRelationMaintainServiceImpl(
-            GeneralBatchCrudService<SenderRelationKey, SenderRelation> crudService,
-            DaoOnlyEntireLookupService<SenderRelation> entireLookupService,
-            DaoOnlyPresetLookupService<SenderRelation> presetLookupService
+    public RelationMaintainServiceImpl(
+            GeneralBatchCrudService<RelationKey, Relation> crudService,
+            DaoOnlyEntireLookupService<Relation> entireLookupService,
+            DaoOnlyPresetLookupService<Relation> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
@@ -36,84 +36,84 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(SenderRelationKey key) throws ServiceException {
+    public boolean exists(RelationKey key) throws ServiceException {
         return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderRelation get(SenderRelationKey key) throws ServiceException {
+    public Relation get(RelationKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public SenderRelationKey insert(SenderRelation element) throws ServiceException {
+    public RelationKey insert(Relation element) throws ServiceException {
         return crudService.insert(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void update(SenderRelation element) throws ServiceException {
+    public void update(Relation element) throws ServiceException {
         crudService.update(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(SenderRelationKey key) throws ServiceException {
+    public void delete(RelationKey key) throws ServiceException {
         crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderRelation getIfExists(SenderRelationKey key) throws ServiceException {
+    public Relation getIfExists(RelationKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public SenderRelationKey insertIfNotExists(SenderRelation element) throws ServiceException {
+    public RelationKey insertIfNotExists(Relation element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void updateIfExists(SenderRelation element) throws ServiceException {
+    public void updateIfExists(Relation element) throws ServiceException {
         crudService.updateIfExists(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void deleteIfExists(SenderRelationKey key) throws ServiceException {
+    public void deleteIfExists(RelationKey key) throws ServiceException {
         crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public SenderRelationKey insertOrUpdate(SenderRelation element) throws ServiceException {
+    public RelationKey insertOrUpdate(Relation element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<SenderRelationKey> keys) throws ServiceException {
+    public boolean allExists(@SkipRecord List<RelationKey> keys) throws ServiceException {
         return crudService.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<SenderRelationKey> keys) throws ServiceException {
+    public boolean nonExists(@SkipRecord List<RelationKey> keys) throws ServiceException {
         return crudService.nonExists(keys);
     }
 
@@ -121,7 +121,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderRelation> batchGet(@SkipRecord List<SenderRelationKey> keys) throws ServiceException {
+    public List<Relation> batchGet(@SkipRecord List<RelationKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -129,21 +129,21 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<SenderRelationKey> batchInsert(@SkipRecord List<SenderRelation> elements) throws ServiceException {
+    public List<RelationKey> batchInsert(@SkipRecord List<Relation> elements) throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(@SkipRecord List<SenderRelation> elements) throws ServiceException {
+    public void batchUpdate(@SkipRecord List<Relation> elements) throws ServiceException {
         crudService.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<SenderRelationKey> keys) throws ServiceException {
+    public void batchDelete(@SkipRecord List<RelationKey> keys) throws ServiceException {
         crudService.batchDelete(keys);
     }
 
@@ -151,7 +151,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderRelation> batchGetIfExists(@SkipRecord List<SenderRelationKey> keys) throws ServiceException {
+    public List<Relation> batchGetIfExists(@SkipRecord List<RelationKey> keys) throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -159,21 +159,21 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<SenderRelationKey> batchInsertIfExists(@SkipRecord List<SenderRelation> elements) throws ServiceException {
+    public List<RelationKey> batchInsertIfExists(@SkipRecord List<Relation> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdateIfExists(@SkipRecord List<SenderRelation> elements) throws ServiceException {
+    public void batchUpdateIfExists(@SkipRecord List<Relation> elements) throws ServiceException {
         crudService.batchUpdateIfExists(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDeleteIfExists(@SkipRecord List<SenderRelationKey> keys) throws ServiceException {
+    public void batchDeleteIfExists(@SkipRecord List<RelationKey> keys) throws ServiceException {
         crudService.batchDeleteIfExists(keys);
     }
 
@@ -181,7 +181,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<SenderRelationKey> batchInsertOrUpdate(@SkipRecord List<SenderRelation> elements) throws ServiceException {
+    public List<RelationKey> batchInsertOrUpdate(@SkipRecord List<Relation> elements) throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 
@@ -189,7 +189,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderRelation> lookup() throws ServiceException {
+    public PagedData<Relation> lookup() throws ServiceException {
         return entireLookupService.lookup();
     }
 
@@ -197,7 +197,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderRelation> lookup(PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<Relation> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);
     }
 
@@ -205,7 +205,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderRelation> lookup(String preset, Object[] objs) throws ServiceException {
+    public PagedData<Relation> lookup(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookup(preset, objs);
     }
 
@@ -213,7 +213,7 @@ public class SenderRelationMaintainServiceImpl implements SenderRelationMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<SenderRelation> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<Relation> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 }

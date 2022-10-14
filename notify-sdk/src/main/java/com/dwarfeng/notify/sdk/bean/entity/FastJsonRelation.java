@@ -1,37 +1,37 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonSenderRelationKey;
-import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
+import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.Relation;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
 
 /**
- * FastJson 发送器关系。
+ * FastJson 关系。
  *
  * @author DwArFeng
- * @since 1.0.0
+ * @since 1.1.0
  */
-public class FastJsonSenderRelation implements Bean {
+public class FastJsonRelation implements Bean {
 
-    private static final long serialVersionUID = 8032024672328863110L;
+    private static final long serialVersionUID = -826795574968687531L;
 
-    public static FastJsonSenderRelation of(SenderRelation senderRelation) {
-        if (Objects.isNull(senderRelation)) {
+    public static FastJsonRelation of(Relation relation) {
+        if (Objects.isNull(relation)) {
             return null;
         } else {
-            return new FastJsonSenderRelation(
-                    FastJsonSenderRelationKey.of(senderRelation.getKey()),
-                    FastJsonLongIdKey.of(senderRelation.getSenderInfoKey()),
-                    senderRelation.getRemark()
+            return new FastJsonRelation(
+                    FastJsonRelationKey.of(relation.getKey()),
+                    FastJsonLongIdKey.of(relation.getSenderInfoKey()),
+                    relation.getRemark()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonSenderRelationKey key;
+    private FastJsonRelationKey key;
 
     @JSONField(name = "sender_info_key", ordinal = 2)
     private FastJsonLongIdKey senderInfoKey;
@@ -39,20 +39,20 @@ public class FastJsonSenderRelation implements Bean {
     @JSONField(name = "remark", ordinal = 3)
     private String remark;
 
-    public FastJsonSenderRelation() {
+    public FastJsonRelation() {
     }
 
-    public FastJsonSenderRelation(FastJsonSenderRelationKey key, FastJsonLongIdKey senderInfoKey, String remark) {
+    public FastJsonRelation(FastJsonRelationKey key, FastJsonLongIdKey senderInfoKey, String remark) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
         this.remark = remark;
     }
 
-    public FastJsonSenderRelationKey getKey() {
+    public FastJsonRelationKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonSenderRelationKey key) {
+    public void setKey(FastJsonRelationKey key) {
         this.key = key;
     }
 
@@ -74,7 +74,7 @@ public class FastJsonSenderRelation implements Bean {
 
     @Override
     public String toString() {
-        return "FastJsonSenderRelation{" +
+        return "FastJsonRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
                 ", remark='" + remark + '\'' +

@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.node.configuration;
 
 import com.dwarfeng.notify.sdk.bean.entity.*;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.SenderRelationStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.RelationStringKeyFormatter;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
@@ -36,8 +36,8 @@ public class CacheConfiguration {
     private String senderSupportPrefix;
     @Value("${cache.prefix.entity.topic}")
     private String topicPrefix;
-    @Value("${cache.prefix.entity.sender_relation}")
-    private String senderRelationPrefix;
+    @Value("${cache.prefix.entity.relation}")
+    private String relationPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -116,11 +116,11 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<SenderRelationKey, SenderRelation, FastJsonSenderRelation> senderRelationRedisBatchBaseCache() {
+    public RedisBatchBaseCache<RelationKey, Relation, FastJsonRelation> relationRedisBatchBaseCache() {
         return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonSenderRelation>) template,
-                new SenderRelationStringKeyFormatter(senderRelationPrefix),
-                new DozerBeanTransformer<>(SenderRelation.class, FastJsonSenderRelation.class, mapper)
+                (RedisTemplate<String, FastJsonRelation>) template,
+                new RelationStringKeyFormatter(relationPrefix),
+                new DozerBeanTransformer<>(Relation.class, FastJsonRelation.class, mapper)
         );
     }
 }

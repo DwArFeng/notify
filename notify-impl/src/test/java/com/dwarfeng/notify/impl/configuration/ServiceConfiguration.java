@@ -4,7 +4,7 @@ import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.SenderInfoCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
@@ -40,8 +40,8 @@ public class ServiceConfiguration {
     private final SenderSupportCache senderSupportCache;
     private final TopicCrudOperation topicCrudOperation;
     private final TopicDao topicDao;
-    private final SenderRelationDao senderRelationDao;
-    private final SenderRelationCache senderRelationCache;
+    private final RelationDao relationDao;
+    private final RelationCache relationCache;
 
     @Value("${cache.timeout.entity.user}")
     private long userTimeout;
@@ -51,8 +51,8 @@ public class ServiceConfiguration {
     private long routerSupportTimeout;
     @Value("${cache.timeout.entity.sender_support}")
     private long senderSupportTimeout;
-    @Value("${cache.timeout.entity.sender_relation}")
-    private long senderRelationTimeout;
+    @Value("${cache.timeout.entity.relation}")
+    private long relationTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
@@ -63,7 +63,7 @@ public class ServiceConfiguration {
             SenderInfoCrudOperation senderInfoCrudOperation, SenderInfoDao senderInfoDao,
             SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache,
             TopicCrudOperation topicCrudOperation, TopicDao topicDao,
-            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache
+            RelationDao relationDao, RelationCache relationCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.userDao = userDao;
@@ -80,8 +80,8 @@ public class ServiceConfiguration {
         this.senderSupportCache = senderSupportCache;
         this.topicCrudOperation = topicCrudOperation;
         this.topicDao = topicDao;
-        this.senderRelationDao = senderRelationDao;
-        this.senderRelationCache = senderRelationCache;
+        this.relationDao = relationDao;
+        this.relationCache = relationCache;
     }
 
     @Bean
@@ -285,30 +285,30 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<SenderRelationKey, SenderRelation> senderRelationGeneralBatchCrudService() {
+    public GeneralBatchCrudService<RelationKey, Relation> relationGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
-                senderRelationDao,
-                senderRelationCache,
+                relationDao,
+                relationCache,
                 new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
-                senderRelationTimeout
+                relationTimeout
         );
     }
 
     @Bean
-    public DaoOnlyEntireLookupService<SenderRelation> senderRelationDaoOnlyEntireLookupService() {
+    public DaoOnlyEntireLookupService<Relation> relationDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                senderRelationDao,
+                relationDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
     }
 
     @Bean
-    public DaoOnlyPresetLookupService<SenderRelation> senderRelationDaoOnlyPresetLookupService() {
+    public DaoOnlyPresetLookupService<Relation> relationDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                senderRelationDao,
+                relationDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
