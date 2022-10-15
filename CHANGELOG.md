@@ -4,8 +4,8 @@
 
 #### 功能构建
 
-- 依赖升级。
-  - 升级 `subgrade` 依赖版本为 `1.2.13.a` 以规避漏洞。
+- 新增预设查询。
+  - com.dwarfeng.notify.stack.service.TopicMaintainService.ENABLED。
 
 - 新增实体字段。
   - com.dwarfeng.notify.stack.bean.entity.User.enabled。
@@ -21,6 +21,9 @@
   - com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator。
   - com.dwarfeng.notify.stack.bean.entity.SendHistory。
   - com.dwarfeng.notify.stack.bean.entity.Variable。
+
+- 依赖升级。
+  - 升级 `subgrade` 依赖版本为 `1.2.13.a` 以规避漏洞。
 
 #### Bug修复
 

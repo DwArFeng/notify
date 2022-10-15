@@ -17,4 +17,5 @@ public interface TopicMaintainService extends BatchCrudService<StringIdKey, Topi
 
     String ID_LIKE = "id_like";
     String LABEL_LIKE = "label_like";
+    String ENABLED = "enabled";
 }
