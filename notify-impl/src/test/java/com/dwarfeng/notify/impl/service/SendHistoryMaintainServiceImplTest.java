@@ -52,7 +52,7 @@ public class SendHistoryMaintainServiceImplTest {
     public void setUp() {
         notifySetting = new NotifySetting(new LongIdKey(NOTIFY_SETTING_ID), "label", "remark", true);
         topic = new Topic(new StringIdKey(TOPIC_ID), "label", "remark", true, 12450);
-        user = new User(new StringIdKey(USER_ID), "remark");
+        user = new User(new StringIdKey(USER_ID), "remark", true);
         for (int i = 0; i < 5; i++) {
             SendHistory sendHistory = new SendHistory(
                     null, new LongIdKey(NOTIFY_SETTING_ID), new StringIdKey(TOPIC_ID), new StringIdKey(USER_ID),

@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonUser implements Bean {
 
-    private static final long serialVersionUID = -1633824520375898405L;
+    private static final long serialVersionUID = 7151598859289481185L;
 
     public static FastJsonUser of(User user) {
         if (Objects.isNull(user)) {
@@ -23,7 +23,7 @@ public class FastJsonUser implements Bean {
         }
         return new FastJsonUser(
                 FastJsonStringIdKey.of(user.getKey()),
-                user.getRemark()
+                user.getRemark(), user.isEnabled()
         );
     }
 
@@ -33,12 +33,16 @@ public class FastJsonUser implements Bean {
     @JSONField(name = "remark", ordinal = 2)
     private String remark;
 
+    @JSONField(name = "enabled", ordinal = 3)
+    private boolean enabled;
+
     public FastJsonUser() {
     }
 
-    public FastJsonUser(FastJsonStringIdKey key, String remark) {
+    public FastJsonUser(FastJsonStringIdKey key, String remark, boolean enabled) {
         this.key = key;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     public FastJsonStringIdKey getKey() {
@@ -57,11 +61,20 @@ public class FastJsonUser implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "FastJsonUser{" +
                 "key=" + key +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

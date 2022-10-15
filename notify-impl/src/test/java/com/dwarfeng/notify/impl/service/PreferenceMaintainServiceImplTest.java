@@ -50,7 +50,7 @@ public class PreferenceMaintainServiceImplTest {
     public void setUp() {
         notifySetting = new NotifySetting(new LongIdKey(NOTIFY_SETTING_ID), "label", "remark", true);
         topic = new Topic(new StringIdKey(TOPIC_ID), "label", "remark", true, 12450);
-        user = new User(new StringIdKey(USER_ID), "remark");
+        user = new User(new StringIdKey(USER_ID), "remark", true);
         preference = new Preference(
                 new PreferenceKey(NOTIFY_SETTING_ID, TOPIC_ID, USER_ID, PREFERENCE_ID), "value", "remark"
         );

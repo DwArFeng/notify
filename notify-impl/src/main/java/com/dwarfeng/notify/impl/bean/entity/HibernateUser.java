@@ -25,6 +25,9 @@ public class HibernateUser implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
+    @Column(name = "enabled", nullable = false)
+    private boolean enabled;
+
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "user")
     private Set<HibernatePreference> preferences = new HashSet<>();
@@ -64,6 +67,14 @@ public class HibernateUser implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Set<HibernatePreference> getPreferences() {
         return preferences;
     }
@@ -92,6 +103,7 @@ public class HibernateUser implements Bean {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "stringId = " + stringId + ", " +
-                "remark = " + remark + ")";
+                "remark = " + remark + ", " +
+                "enabled = " + enabled + ")";
     }
 }

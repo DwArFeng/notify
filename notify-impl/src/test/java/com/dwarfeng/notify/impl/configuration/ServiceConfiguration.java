@@ -147,6 +147,15 @@ public class ServiceConfiguration {
     }
 
     @Bean
+    public DaoOnlyPresetLookupService<User> userDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                userDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
     public GeneralBatchCrudService<LongIdKey, RouterInfo> routerInfoGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
                 routerInfoDao,

@@ -30,6 +30,7 @@ public class DaoConfiguration {
 
     private final HibernateTemplate hibernateTemplate;
 
+    private final UserPresetCriteriaMaker userPresetCriteriaMaker;
     private final RouterInfoPresetCriteriaMaker routerInfoPresetCriteriaMaker;
     private final RouterSupportPresetCriteriaMaker routerSupportPresetCriteriaMaker;
     private final NotifySettingPresetCriteriaMaker notifySettingPresetCriteriaMaker;
@@ -52,6 +53,7 @@ public class DaoConfiguration {
 
     public DaoConfiguration(
             HibernateTemplate hibernateTemplate,
+            UserPresetCriteriaMaker userPresetCriteriaMaker,
             RouterInfoPresetCriteriaMaker routerInfoPresetCriteriaMaker,
             RouterSupportPresetCriteriaMaker routerSupportPresetCriteriaMaker,
             NotifySettingPresetCriteriaMaker notifySettingPresetCriteriaMaker,
@@ -67,6 +69,7 @@ public class DaoConfiguration {
             PreferenceIndicatorPresetCriteriaMaker preferenceIndicatorPresetCriteriaMaker
     ) {
         this.hibernateTemplate = hibernateTemplate;
+        this.userPresetCriteriaMaker = userPresetCriteriaMaker;
         this.routerInfoPresetCriteriaMaker = routerInfoPresetCriteriaMaker;
         this.routerSupportPresetCriteriaMaker = routerSupportPresetCriteriaMaker;
         this.notifySettingPresetCriteriaMaker = notifySettingPresetCriteriaMaker;
@@ -83,7 +86,8 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser> userHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser>
+    userHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
                 new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
@@ -100,6 +104,16 @@ public class DaoConfiguration {
                 hibernateTemplate,
                 new DozerBeanTransformer<>(User.class, HibernateUser.class, mapper),
                 HibernateUser.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<User, HibernateUser> userHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new DozerBeanTransformer<>(User.class, HibernateUser.class, mapper),
+                HibernateUser.class,
+                userPresetCriteriaMaker
         );
     }
 

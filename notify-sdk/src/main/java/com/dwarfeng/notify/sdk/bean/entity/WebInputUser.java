@@ -19,7 +19,7 @@ import java.util.Objects;
  */
 public class WebInputUser implements Bean {
 
-    private static final long serialVersionUID = -2472553297434496603L;
+    private static final long serialVersionUID = -2226074724595202828L;
 
     public static User toStackBean(WebInputUser webInputUser) {
         if (Objects.isNull(webInputUser)) {
@@ -27,7 +27,7 @@ public class WebInputUser implements Bean {
         }
         return new User(
                 WebInputStringIdKey.toStackBean(webInputUser.getKey()),
-                webInputUser.getRemark()
+                webInputUser.getRemark(), webInputUser.isEnabled()
         );
     }
 
@@ -39,6 +39,9 @@ public class WebInputUser implements Bean {
     @JSONField(name = "remark")
     @Length(max = Constraints.LENGTH_REMARK)
     private String remark;
+
+    @JSONField(name = "enabled")
+    private boolean enabled;
 
     public WebInputUser() {
     }
@@ -59,11 +62,20 @@ public class WebInputUser implements Bean {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "WebInputUser{" +
                 "key=" + key +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

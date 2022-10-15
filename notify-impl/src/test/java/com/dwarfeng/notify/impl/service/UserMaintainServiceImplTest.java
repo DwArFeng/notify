@@ -30,7 +30,7 @@ public class UserMaintainServiceImplTest {
     public void setUp() {
         users = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            User user = new User(new StringIdKey("user-" + i), "test-user");
+            User user = new User(new StringIdKey("user-" + i), "test-user", true);
             users.add(user);
         }
     }

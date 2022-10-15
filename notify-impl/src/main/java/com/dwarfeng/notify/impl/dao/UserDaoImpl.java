@@ -5,6 +5,7 @@ import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.dao.UserDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
+import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
@@ -21,13 +22,16 @@ public class UserDaoImpl implements UserDao {
 
     private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser> batchBaseDao;
     private final HibernateEntireLookupDao<User, HibernateUser> entireLookupDao;
+    private final HibernatePresetLookupDao<User, HibernateUser> presetLookupDao;
 
     public UserDaoImpl(
             HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser> batchBaseDao,
-            HibernateEntireLookupDao<User, HibernateUser> entireLookupDao
+            HibernateEntireLookupDao<User, HibernateUser> entireLookupDao,
+            HibernatePresetLookupDao<User, HibernateUser> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;
+        this.presetLookupDao = presetLookupDao;
     }
 
     @Override
@@ -130,5 +134,28 @@ public class UserDaoImpl implements UserDao {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int lookupCount() throws DaoException {
         return entireLookupDao.lookupCount();
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<User> lookup(String preset, Object[] objs) throws DaoException {
+        return presetLookupDao.lookup(preset, objs);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public List<User> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
+        return presetLookupDao.lookup(preset, objs, pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public int lookupCount(String preset, Object[] objs) throws DaoException {
+        return presetLookupDao.lookupCount(preset, objs);
     }
 }

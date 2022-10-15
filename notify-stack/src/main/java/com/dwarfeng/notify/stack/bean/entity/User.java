@@ -11,17 +11,23 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class User implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = -5071291359557688845L;
+    private static final long serialVersionUID = 6741466564036557711L;
 
     private StringIdKey key;
     private String remark;
 
+    /**
+     * @since 1.1.0
+     */
+    private boolean enabled;
+
     public User() {
     }
 
-    public User(StringIdKey key, String remark) {
+    public User(StringIdKey key, String remark, boolean enabled) {
         this.key = key;
         this.remark = remark;
+        this.enabled = enabled;
     }
 
     @Override
@@ -42,11 +48,20 @@ public class User implements Entity<StringIdKey> {
         this.remark = remark;
     }
 
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "key=" + key +
                 ", remark='" + remark + '\'' +
+                ", enabled=" + enabled +
                 '}';
     }
 }

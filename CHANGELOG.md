@@ -7,6 +7,9 @@
 - 依赖升级。
   - 升级 `subgrade` 依赖版本为 `1.2.13.a` 以规避漏洞。
 
+- 新增实体字段。
+  - com.dwarfeng.notify.stack.bean.entity.User.enabled。
+
 - 实体名称变更。
   - SenderRelation -> Relation。
   - SenderRelationKey -> RelationKey。

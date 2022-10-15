@@ -4,6 +4,7 @@ import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.service.UserMaintainService;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
+import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -20,13 +21,16 @@ public class UserMaintainServiceImpl implements UserMaintainService {
 
     private final CustomBatchCrudService<StringIdKey, User> crudService;
     private final DaoOnlyEntireLookupService<User> entireLookupService;
+    private final DaoOnlyPresetLookupService<User> presetLookupService;
 
     public UserMaintainServiceImpl(
             CustomBatchCrudService<StringIdKey, User> crudService,
-            DaoOnlyEntireLookupService<User> entireLookupService
+            DaoOnlyEntireLookupService<User> entireLookupService,
+            DaoOnlyPresetLookupService<User> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
+        this.presetLookupService = presetLookupService;
     }
 
     @Override
@@ -195,5 +199,21 @@ public class UserMaintainServiceImpl implements UserMaintainService {
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public PagedData<User> lookup(PagingInfo pagingInfo) throws ServiceException {
         return entireLookupService.lookup(pagingInfo);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public PagedData<User> lookup(String preset, Object[] objs) throws ServiceException {
+        return presetLookupService.lookup(preset, objs);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+    public PagedData<User> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+        return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 }
