@@ -18,7 +18,7 @@ import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
-public class SenderSenderRelationMaintainServiceImplTest {
+public class RelationMaintainServiceImplTest {
 
     @Autowired
     private NotifySettingMaintainService notifySettingMaintainService;

@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = -4955736547059976430L;
+    private static final long serialVersionUID = 9044258274118228385L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -37,6 +37,15 @@ public class HibernateNotifySetting implements Bean {
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "notifySetting")
     private Set<HibernateRelation> relations = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "notifySetting")
+    private Set<HibernatePreference> preferences = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "notifySetting")
+    private Set<HibernateVariable> variables = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSendHistory.class, mappedBy = "notifySetting")
+    private Set<HibernateSendHistory> sendHistories = new HashSet<>();
 
     public HibernateNotifySetting() {
     }
@@ -97,6 +106,30 @@ public class HibernateNotifySetting implements Bean {
 
     public void setRelations(Set<HibernateRelation> relations) {
         this.relations = relations;
+    }
+
+    public Set<HibernatePreference> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Set<HibernatePreference> preferences) {
+        this.preferences = preferences;
+    }
+
+    public Set<HibernateVariable> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(Set<HibernateVariable> variables) {
+        this.variables = variables;
+    }
+
+    public Set<HibernateSendHistory> getSendHistories() {
+        return sendHistories;
+    }
+
+    public void setSendHistories(Set<HibernateSendHistory> sendHistories) {
+        this.sendHistories = sendHistories;
     }
 
     @Override

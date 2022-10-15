@@ -1,13 +1,15 @@
 package com.dwarfeng.notify.impl.service.operation;
 
-import com.dwarfeng.notify.stack.bean.entity.Relation;
-import com.dwarfeng.notify.stack.bean.entity.Topic;
+import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
 import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
-import com.dwarfeng.notify.stack.cache.RelationCache;
-import com.dwarfeng.notify.stack.cache.TopicCache;
-import com.dwarfeng.notify.stack.dao.RelationDao;
-import com.dwarfeng.notify.stack.dao.TopicDao;
+import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
+import com.dwarfeng.notify.stack.cache.*;
+import com.dwarfeng.notify.stack.dao.*;
+import com.dwarfeng.notify.stack.service.PreferenceMaintainService;
 import com.dwarfeng.notify.stack.service.RelationMaintainService;
+import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
+import com.dwarfeng.notify.stack.service.VariableMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -27,17 +29,35 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final RelationDao relationDao;
     private final RelationCache relationCache;
 
+    private final PreferenceDao preferenceDao;
+    private final PreferenceCache preferenceCache;
+
+    private final VariableDao variableDao;
+    private final VariableCache variableCache;
+
+    private final SendHistoryDao sendHistoryDao;
+    private final SendHistoryCache sendHistoryCache;
+
     @Value("${cache.timeout.entity.topic}")
     private long topicTimeout;
 
     public TopicCrudOperation(
             TopicDao topicDao, TopicCache topicCache,
-            RelationDao relationDao, RelationCache relationCache
+            RelationDao relationDao, RelationCache relationCache,
+            PreferenceDao preferenceDao, PreferenceCache preferenceCache,
+            VariableDao variableDao, VariableCache variableCache,
+            SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
         this.topicDao = topicDao;
         this.topicCache = topicCache;
         this.relationDao = relationDao;
         this.relationCache = relationCache;
+        this.preferenceDao = preferenceDao;
+        this.preferenceCache = preferenceCache;
+        this.variableDao = variableDao;
+        this.variableCache = variableCache;
+        this.sendHistoryDao = sendHistoryDao;
+        this.sendHistoryCache = sendHistoryCache;
     }
 
     @Override
@@ -79,6 +99,28 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         ).stream().map(Relation::getKey).collect(Collectors.toList());
         relationDao.batchDelete(relationKeys);
         relationCache.batchDelete(relationKeys);
+
+        // 删除与通知设置相关的偏好。
+        List<PreferenceKey> preferenceKeys = preferenceDao.lookup(
+                PreferenceMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(Preference::getKey).collect(Collectors.toList());
+        preferenceDao.batchDelete(preferenceKeys);
+        preferenceCache.batchDelete(preferenceKeys);
+
+        // 删除与通知设置相关的变量。
+        List<VariableKey> variableKeys = variableDao.lookup(
+                VariableMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(Variable::getKey).collect(Collectors.toList());
+        variableDao.batchDelete(variableKeys);
+        variableCache.batchDelete(variableKeys);
+
+        // 删除与通知设置相关的发送历史的关联。
+        List<SendHistory> sendHistories = sendHistoryDao.lookup(
+                SendHistoryMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        );
+        sendHistories.forEach(history -> history.setTopicKey(null));
+        sendHistoryCache.batchDelete(sendHistories.stream().map(SendHistory::getKey).collect(Collectors.toList()));
+        sendHistoryDao.batchUpdate(sendHistories);
 
         // 删除通知设置实体本身。
         topicDao.delete(key);

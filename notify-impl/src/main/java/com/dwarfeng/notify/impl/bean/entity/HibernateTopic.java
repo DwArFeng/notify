@@ -14,11 +14,11 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -8386312921915775642L;
+    private static final long serialVersionUID = -5530475187754131276L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "id", nullable = false, unique = true)
+    @Column(name = "id", length = Constraints.LENGTH_ID, nullable = false, unique = true)
     private String stringId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
@@ -37,6 +37,15 @@ public class HibernateTopic implements Bean {
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "topic")
     private Set<HibernateRelation> relations = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "topic")
+    private Set<HibernatePreference> preferences = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "topic")
+    private Set<HibernateVariable> variables = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSendHistory.class, mappedBy = "topic")
+    private Set<HibernateSendHistory> sendHistories = new HashSet<>();
 
     public HibernateTopic() {
     }
@@ -97,6 +106,30 @@ public class HibernateTopic implements Bean {
 
     public void setRelations(Set<HibernateRelation> relations) {
         this.relations = relations;
+    }
+
+    public Set<HibernatePreference> getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(Set<HibernatePreference> preferences) {
+        this.preferences = preferences;
+    }
+
+    public Set<HibernateVariable> getVariables() {
+        return variables;
+    }
+
+    public void setVariables(Set<HibernateVariable> variables) {
+        this.variables = variables;
+    }
+
+    public Set<HibernateSendHistory> getSendHistories() {
+        return sendHistories;
+    }
+
+    public void setSendHistories(Set<HibernateSendHistory> sendHistories) {
+        this.sendHistories = sendHistories;
     }
 
     @Override

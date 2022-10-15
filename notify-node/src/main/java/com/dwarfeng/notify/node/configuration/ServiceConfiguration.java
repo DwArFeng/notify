@@ -1,11 +1,10 @@
 package com.dwarfeng.notify.node.configuration;
 
-import com.dwarfeng.notify.impl.service.operation.DispatcherInfoCrudOperation;
-import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
-import com.dwarfeng.notify.impl.service.operation.SenderInfoCrudOperation;
-import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
+import com.dwarfeng.notify.impl.service.operation.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
 import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
@@ -27,8 +26,8 @@ public class ServiceConfiguration {
 
     private final ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
 
+    private final UserCrudOperation userCrudOperation;
     private final UserDao userDao;
-    private final UserCache userCache;
     private final RouterInfoDao routerInfoDao;
     private final RouterInfoCache routerInfoCache;
     private final RouterSupportDao routerSupportDao;
@@ -47,9 +46,15 @@ public class ServiceConfiguration {
     private final DispatcherInfoDao dispatcherInfoDao;
     private final DispatcherSupportDao dispatcherSupportDao;
     private final DispatcherSupportCache dispatcherSupportCache;
+    private final PreferenceDao preferenceDao;
+    private final PreferenceCache preferenceCache;
+    private final VariableDao variableDao;
+    private final VariableCache variableCache;
+    private final SendHistoryDao sendHistoryDao;
+    private final SendHistoryCache sendHistoryCache;
+    private final PreferenceIndicatorDao preferenceIndicatorDao;
+    private final PreferenceIndicatorCache preferenceIndicatorCache;
 
-    @Value("${cache.timeout.entity.user}")
-    private long userTimeout;
     @Value("${cache.timeout.entity.router_info}")
     private long routerInfoTimeout;
     @Value("${cache.timeout.entity.router_support}")
@@ -60,10 +65,18 @@ public class ServiceConfiguration {
     private long relationTimeout;
     @Value("${cache.timeout.entity.dispatcher_support}")
     private long dispatcherSupportTimeout;
+    @Value("${cache.timeout.entity.preference}")
+    private long preferenceTimeout;
+    @Value("${cache.timeout.entity.variable}")
+    private long variableTimeout;
+    @Value("${cache.timeout.entity.send_history}")
+    private long sendHistoryTimeout;
+    @Value("${cache.timeout.entity.preference_indicator}")
+    private long preferenceIndicatorTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
-            UserDao userDao, UserCache userCache,
+            UserCrudOperation userCrudOperation, UserDao userDao,
             RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
             RouterSupportDao routerSupportDao, RouterSupportCache routerSupportCache,
             NotifySettingCrudOperation notifySettingCrudOperation, NotifySettingDao notifySettingDao,
@@ -72,11 +85,15 @@ public class ServiceConfiguration {
             TopicCrudOperation topicCrudOperation, TopicDao topicDao,
             RelationDao relationDao, RelationCache relationCache,
             DispatcherInfoCrudOperation dispatcherInfoCrudOperation, DispatcherInfoDao dispatcherInfoDao,
-            DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache
+            DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
+            PreferenceDao preferenceDao, PreferenceCache preferenceCache,
+            VariableDao variableDao, VariableCache variableCache,
+            SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache,
+            PreferenceIndicatorDao preferenceIndicatorDao, PreferenceIndicatorCache preferenceIndicatorCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
+        this.userCrudOperation = userCrudOperation;
         this.userDao = userDao;
-        this.userCache = userCache;
         this.routerInfoDao = routerInfoDao;
         this.routerInfoCache = routerInfoCache;
         this.routerSupportDao = routerSupportDao;
@@ -95,6 +112,14 @@ public class ServiceConfiguration {
         this.dispatcherInfoDao = dispatcherInfoDao;
         this.dispatcherSupportDao = dispatcherSupportDao;
         this.dispatcherSupportCache = dispatcherSupportCache;
+        this.preferenceDao = preferenceDao;
+        this.preferenceCache = preferenceCache;
+        this.variableDao = variableDao;
+        this.variableCache = variableCache;
+        this.sendHistoryDao = sendHistoryDao;
+        this.sendHistoryCache = sendHistoryCache;
+        this.preferenceIndicatorDao = preferenceIndicatorDao;
+        this.preferenceIndicatorCache = preferenceIndicatorCache;
     }
 
     @Bean
@@ -103,14 +128,12 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<StringIdKey, User> userCustomBatchCrudService() {
-        return new GeneralBatchCrudService<>(
-                userDao,
-                userCache,
+    public CustomBatchCrudService<StringIdKey, User> userCustomBatchCrudService() {
+        return new CustomBatchCrudService<>(
+                userCrudOperation,
                 new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN,
-                userTimeout
+                LogLevel.WARN
         );
     }
 
@@ -380,6 +403,126 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<DispatcherSupport> dispatcherSupportDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 dispatcherSupportDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<PreferenceKey, Preference> preferenceGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                preferenceDao,
+                preferenceCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                preferenceTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<Preference> preferenceDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                preferenceDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<Preference> preferenceDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                preferenceDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<VariableKey, Variable> variableGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                variableDao,
+                variableCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                variableTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<Variable> variableDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                variableDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<Variable> variableDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                variableDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<LongIdKey, SendHistory> sendHistoryGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                sendHistoryDao,
+                sendHistoryCache,
+                longIdKeyKeyFetcher(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                sendHistoryTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<SendHistory> sendHistoryDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                sendHistoryDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<SendHistory> sendHistoryDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                sendHistoryDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<StringIdKey, PreferenceIndicator> preferenceIndicatorGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                preferenceIndicatorDao,
+                preferenceIndicatorCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                preferenceIndicatorTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<PreferenceIndicator> preferenceIndicatorDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                preferenceIndicatorDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<PreferenceIndicator> preferenceIndicatorDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                preferenceIndicatorDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

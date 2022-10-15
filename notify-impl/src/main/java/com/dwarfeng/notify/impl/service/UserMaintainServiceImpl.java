@@ -2,8 +2,8 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.service.UserMaintainService;
+import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -18,11 +18,11 @@ import java.util.List;
 @Service
 public class UserMaintainServiceImpl implements UserMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, User> crudService;
+    private final CustomBatchCrudService<StringIdKey, User> crudService;
     private final DaoOnlyEntireLookupService<User> entireLookupService;
 
     public UserMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, User> crudService,
+            CustomBatchCrudService<StringIdKey, User> crudService,
             DaoOnlyEntireLookupService<User> entireLookupService
     ) {
         this.crudService = crudService;

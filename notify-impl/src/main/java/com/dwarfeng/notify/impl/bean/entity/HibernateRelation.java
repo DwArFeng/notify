@@ -22,7 +22,7 @@ public class HibernateRelation implements Bean {
     private Long notifySettingId;
 
     @Id
-    @Column(name = "topic_id", nullable = false, length = Constraints.LENGTH_TYPE)
+    @Column(name = "topic_id", length = Constraints.LENGTH_ID, nullable = false)
     private String topicId;
 
     // -----------------------------------------------------------外键-----------------------------------------------------------

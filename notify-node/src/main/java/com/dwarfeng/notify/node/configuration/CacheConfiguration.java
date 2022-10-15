@@ -1,9 +1,13 @@
 package com.dwarfeng.notify.node.configuration;
 
 import com.dwarfeng.notify.sdk.bean.entity.*;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.PreferenceStringKeyFormatter;
 import com.dwarfeng.notify.sdk.bean.entity.key.formatter.RelationStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.VariableStringKeyFormatter;
 import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
 import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
@@ -42,6 +46,14 @@ public class CacheConfiguration {
     private String dispatcherInfoPrefix;
     @Value("${cache.prefix.entity.dispatcher_support}")
     private String dispatcherSupportPrefix;
+    @Value("${cache.prefix.entity.preference}")
+    private String preferencePrefix;
+    @Value("${cache.prefix.entity.variable}")
+    private String variablePrefix;
+    @Value("${cache.prefix.entity.send_history}")
+    private String sendHistoryPrefix;
+    @Value("${cache.prefix.entity.preference_indicator}")
+    private String preferenceIndicatorPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -146,6 +158,47 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonDispatcherSupport>) template,
                 new StringIdStringKeyFormatter(dispatcherSupportPrefix),
                 new DozerBeanTransformer<>(DispatcherSupport.class, FastJsonDispatcherSupport.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<PreferenceKey, Preference, FastJsonPreference> preferenceRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonPreference>) template,
+                new PreferenceStringKeyFormatter(preferencePrefix),
+                new DozerBeanTransformer<>(Preference.class, FastJsonPreference.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<VariableKey, Variable, FastJsonVariable> variableRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonVariable>) template,
+                new VariableStringKeyFormatter(variablePrefix),
+                new DozerBeanTransformer<>(Variable.class, FastJsonVariable.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, SendHistory, FastJsonSendHistory> sendHistoryRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonSendHistory>) template,
+                new LongIdStringKeyFormatter(sendHistoryPrefix),
+                new DozerBeanTransformer<>(SendHistory.class, FastJsonSendHistory.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<StringIdKey, PreferenceIndicator, FastJsonPreferenceIndicator>
+    preferenceIndicatorRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonPreferenceIndicator>) template,
+                new StringIdStringKeyFormatter(preferenceIndicatorPrefix),
+                new DozerBeanTransformer<>(PreferenceIndicator.class, FastJsonPreferenceIndicator.class, mapper)
         );
     }
 }
