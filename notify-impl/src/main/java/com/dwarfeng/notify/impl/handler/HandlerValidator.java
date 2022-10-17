@@ -1,11 +1,9 @@
 package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.exception.NotifySettingDisabledException;
-import com.dwarfeng.notify.stack.exception.NotifySettingNotExistsException;
-import com.dwarfeng.notify.stack.exception.TopicNotExistsException;
-import com.dwarfeng.notify.stack.exception.UserNotExistsException;
+import com.dwarfeng.notify.stack.exception.*;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
+import com.dwarfeng.notify.stack.service.RouterInfoMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
 import com.dwarfeng.notify.stack.service.UserMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -26,15 +24,18 @@ import java.util.Objects;
 public class HandlerValidator {
 
     private final NotifySettingMaintainService notifySettingMaintainService;
+    private final RouterInfoMaintainService routerInfoMaintainService;
     private final TopicMaintainService topicMaintainService;
     private final UserMaintainService userMaintainService;
 
     public HandlerValidator(
             NotifySettingMaintainService notifySettingMaintainService,
+            RouterInfoMaintainService routerInfoMaintainService,
             TopicMaintainService topicMaintainService,
             UserMaintainService userMaintainService
     ) {
         this.notifySettingMaintainService = notifySettingMaintainService;
+        this.routerInfoMaintainService = routerInfoMaintainService;
         this.topicMaintainService = topicMaintainService;
         this.userMaintainService = userMaintainService;
     }
@@ -43,6 +44,16 @@ public class HandlerValidator {
         try {
             if (Objects.isNull(notifySettingKey) || !notifySettingMaintainService.exists(notifySettingKey)) {
                 throw new NotifySettingNotExistsException(notifySettingKey);
+            }
+        } catch (ServiceException e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    public void makeSureRouterInfoExists(LongIdKey routerInfoKey) throws HandlerException {
+        try {
+            if (Objects.isNull(routerInfoKey) || !routerInfoMaintainService.exists(routerInfoKey)) {
+                throw new RouterInfoNotExistsException(routerInfoKey);
             }
         } catch (ServiceException e) {
             throw new HandlerException(e);

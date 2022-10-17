@@ -12,16 +12,12 @@ import java.util.Optional;
 @Table(name = "tbl_router_info")
 public class HibernateRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 4206225164875868503L;
+    private static final long serialVersionUID = 1479550085023216502L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
-
-    // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "notify_setting_id")
-    private Long notifySettingLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
@@ -36,13 +32,10 @@ public class HibernateRouterInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    @Column(name = "enabled")
-    private boolean enabled;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernateNotifySetting.class)
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(targetEntity = HibernateNotifySetting.class)
     @JoinColumns({ //
-            @JoinColumn(name = "notify_setting_id", referencedColumnName = "id", insertable = false, updatable = false), //
+            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateNotifySetting notifySetting;
 
@@ -58,14 +51,6 @@ public class HibernateRouterInfo implements Bean {
         this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    public HibernateLongIdKey getNotifySettingKey() {
-        return Optional.ofNullable(notifySettingLongId).map(HibernateLongIdKey::new).orElse(null);
-    }
-
-    public void setNotifySettingKey(HibernateLongIdKey key) {
-        this.notifySettingLongId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
-    }
-
     // -----------------------------------------------------------常规属性区-----------------------------------------------------------
     public Long getLongId() {
         return longId;
@@ -73,14 +58,6 @@ public class HibernateRouterInfo implements Bean {
 
     public void setLongId(Long longId) {
         this.longId = longId;
-    }
-
-    public Long getNotifySettingLongId() {
-        return notifySettingLongId;
-    }
-
-    public void setNotifySettingLongId(Long notifySettingLongId) {
-        this.notifySettingLongId = notifySettingLongId;
     }
 
     public String getLabel() {
@@ -115,14 +92,6 @@ public class HibernateRouterInfo implements Bean {
         this.remark = remark;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     public HibernateNotifySetting getNotifySetting() {
         return notifySetting;
     }
@@ -135,12 +104,10 @@ public class HibernateRouterInfo implements Bean {
     public String toString() {
         return getClass().getSimpleName() + "(" +
                 "longId = " + longId + ", " +
-                "notifySettingLongId = " + notifySettingLongId + ", " +
                 "label = " + label + ", " +
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
-                "enabled = " + enabled + ", " +
                 "notifySetting = " + notifySetting + ")";
     }
 }

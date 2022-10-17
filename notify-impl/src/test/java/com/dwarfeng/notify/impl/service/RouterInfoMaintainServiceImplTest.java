@@ -13,12 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -30,39 +25,31 @@ public class RouterInfoMaintainServiceImplTest {
     private RouterInfoMaintainService routerInfoMaintainService;
 
     private NotifySetting notifySetting;
-    private List<RouterInfo> routerInfos;
+    private RouterInfo routerInfo;
 
     @Before
     public void setUp() {
         notifySetting = new NotifySetting(null, "label", "remark", true);
-        routerInfos = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            RouterInfo routerInfo = new RouterInfo(null, null, "label", "type", "param", "remark", true);
-            routerInfos.add(routerInfo);
-        }
+        routerInfo = new RouterInfo(null, "label", "type", "param", "remark");
     }
 
     @After
     public void tearDown() {
         notifySetting = null;
-        routerInfos.clear();
+        routerInfo = null;
     }
 
     @Test
     public void testForCurd() throws Exception {
         try {
             notifySetting.setKey(notifySettingMaintainService.insert(notifySetting));
-            for (RouterInfo routerInfo : routerInfos) {
-                routerInfo.setNotifySettingKey(notifySetting.getKey());
-                routerInfo.setKey(routerInfoMaintainService.insertOrUpdate(routerInfo));
-                routerInfoMaintainService.update(routerInfo);
-                RouterInfo testRouterInfo = routerInfoMaintainService.get(routerInfo.getKey());
-                assertEquals(BeanUtils.describe(routerInfo), BeanUtils.describe(testRouterInfo));
-            }
+            routerInfo.setKey(notifySetting.getKey());
+            routerInfoMaintainService.insertOrUpdate(routerInfo);
+            routerInfoMaintainService.update(routerInfo);
+            RouterInfo testRouterInfo = routerInfoMaintainService.get(routerInfo.getKey());
+            assertEquals(BeanUtils.describe(routerInfo), BeanUtils.describe(testRouterInfo));
         } finally {
-            for (RouterInfo routerInfo : routerInfos) {
-                routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
-            }
+            routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
         }
     }
@@ -71,29 +58,16 @@ public class RouterInfoMaintainServiceImplTest {
     public void testForNotifySettingCascade() throws Exception {
         try {
             notifySetting.setKey(notifySettingMaintainService.insert(notifySetting));
-            for (RouterInfo routerInfo : routerInfos) {
-                routerInfo.setNotifySettingKey(notifySetting.getKey());
-                routerInfo.setKey(routerInfoMaintainService.insertOrUpdate(routerInfo));
-            }
+            routerInfo.setKey(notifySetting.getKey());
+            routerInfoMaintainService.insertOrUpdate(routerInfo);
 
-            assertEquals(routerInfos.size(), routerInfoMaintainService.lookup(
-                    RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING,
-                    new Object[]{notifySetting.getKey()}).getCount()
-            );
+            assertTrue(routerInfoMaintainService.exists(routerInfo.getKey()));
 
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
 
-            assertEquals(0, routerInfoMaintainService.lookup(
-                    RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING,
-                    new Object[]{notifySetting.getKey()}).getCount()
-            );
-            assertTrue(routerInfoMaintainService.nonExists(
-                    routerInfos.stream().map(RouterInfo::getKey).collect(Collectors.toList())
-            ));
+            assertFalse(routerInfoMaintainService.exists(routerInfo.getKey()));
         } finally {
-            for (RouterInfo routerInfo : routerInfos) {
-                routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
-            }
+            routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
         }
     }

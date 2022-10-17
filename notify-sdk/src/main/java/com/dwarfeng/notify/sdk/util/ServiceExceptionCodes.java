@@ -44,6 +44,8 @@ public final class ServiceExceptionCodes {
             new ServiceException.Code(offset(62), "dispatcher make failed");
     public static final ServiceException.Code UNSUPPORTED_DISPATCHER_TYPE =
             new ServiceException.Code(offset(63), "unsupported dispatcher type");
+    public static final ServiceException.Code ROUTER_INFO_NOT_EXISTED =
+            new ServiceException.Code(offset(70), "router info not existed");
 
     private static int offset(int i) {
         return EXCEPTION_CODE_OFFSET + i;
@@ -84,6 +86,7 @@ public final class ServiceExceptionCodes {
         DISPATCHER_EXECUTION_FAILED.setCode(offset(61));
         DISPATCHER_MAKE_FAILED.setCode(offset(62));
         UNSUPPORTED_DISPATCHER_TYPE.setCode(offset(63));
+        ROUTER_INFO_NOT_EXISTED.setCode(offset(70));
     }
 
     private ServiceExceptionCodes() {

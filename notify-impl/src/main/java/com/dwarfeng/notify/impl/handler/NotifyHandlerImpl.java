@@ -68,20 +68,22 @@ public class NotifyHandlerImpl implements NotifyHandler {
             Object routerContext = notifyInfo.getRouterContext();
             Object senderContext = notifyInfo.getSenderContext();
 
-            // 确认 notifySettingKey 存在。
+            // 确认通知设置存在。
             handlerValidator.makeSureNotifySettingExists(notifySettingKey);
-            // 确认 notifySettingKey 使能。
+
+            // 确认通知设置使能。
             handlerValidator.makeSureNotifySettingEnabled(notifySettingKey);
+
+            // 确认路由器信息存在。
+            handlerValidator.makeSureRouterInfoExists(notifySettingKey);
 
             NotifySetting notifySetting = notifySettingMaintainService.get(notifySettingKey);
 
             // 查找 notifySettingKey 对应的所有使能的路由器信息，并通过本地缓存拿出路由器。
-            List<RouterInfo> routerInfos = routerInfoMaintainService.lookupAsList(
-                    RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING_ENABLED, new Object[]{notifySettingKey}
-            );
+            List<RouterInfo> routerInfos = routerInfoMaintainService.lookupAsList();
             List<Router> routers = new ArrayList<>();
             for (RouterInfo routerInfo : routerInfos) {
-                Router router = routeLocalCacheHandler.getRouter(routerInfo.getKey());
+                Router router = routeLocalCacheHandler.getRouter(notifySettingKey);
                 if (Objects.isNull(router)) {
                     LOGGER.warn("未能获取路由器信息 {} 对应的路由器，请检查配置", routerInfo);
                 } else {

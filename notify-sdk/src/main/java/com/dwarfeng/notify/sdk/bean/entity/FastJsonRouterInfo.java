@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonRouterInfo implements Bean {
 
-    private static final long serialVersionUID = -57263079714917985L;
+    private static final long serialVersionUID = -7296741400425628929L;
 
     public static FastJsonRouterInfo of(RouterInfo routerInfo) {
         if (Objects.isNull(routerInfo)) {
@@ -23,9 +23,7 @@ public class FastJsonRouterInfo implements Bean {
         } else {
             return new FastJsonRouterInfo(
                     FastJsonLongIdKey.of(routerInfo.getKey()),
-                    FastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
-                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark(),
-                    routerInfo.isEnabled()
+                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
             );
         }
     }
@@ -33,38 +31,27 @@ public class FastJsonRouterInfo implements Bean {
     @JSONField(name = "key", ordinal = 1)
     private FastJsonLongIdKey key;
 
-    @JSONField(name = "notify_setting_key", ordinal = 2)
-    private FastJsonLongIdKey notifySettingKey;
-
-    @JSONField(name = "label", ordinal = 3)
+    @JSONField(name = "label", ordinal = 2)
     private String label;
 
-    @JSONField(name = "type", ordinal = 4)
+    @JSONField(name = "type", ordinal = 3)
     private String type;
 
-    @JSONField(name = "param", ordinal = 5)
+    @JSONField(name = "param", ordinal = 4)
     private String param;
 
-    @JSONField(name = "remark", ordinal = 6)
+    @JSONField(name = "remark", ordinal = 5)
     private String remark;
-
-    @JSONField(name = "enabled", ordinal = 7)
-    private boolean enabled;
 
     public FastJsonRouterInfo() {
     }
 
-    public FastJsonRouterInfo(
-            FastJsonLongIdKey key, FastJsonLongIdKey notifySettingKey, String label, String type, String param,
-            String remark, boolean enabled
-    ) {
+    public FastJsonRouterInfo(FastJsonLongIdKey key, String label, String type, String param, String remark) {
         this.key = key;
-        this.notifySettingKey = notifySettingKey;
         this.label = label;
         this.type = type;
         this.param = param;
         this.remark = remark;
-        this.enabled = enabled;
     }
 
     public FastJsonLongIdKey getKey() {
@@ -73,14 +60,6 @@ public class FastJsonRouterInfo implements Bean {
 
     public void setKey(FastJsonLongIdKey key) {
         this.key = key;
-    }
-
-    public FastJsonLongIdKey getNotifySettingKey() {
-        return notifySettingKey;
-    }
-
-    public void setNotifySettingKey(FastJsonLongIdKey notifySettingKey) {
-        this.notifySettingKey = notifySettingKey;
     }
 
     public String getLabel() {
@@ -115,24 +94,14 @@ public class FastJsonRouterInfo implements Bean {
         this.remark = remark;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     @Override
     public String toString() {
         return "FastJsonRouterInfo{" +
                 "key=" + key +
-                ", notifySettingKey=" + notifySettingKey +
                 ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
-                ", enabled=" + enabled +
                 '}';
     }
 }

@@ -6,7 +6,10 @@ import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
-import com.dwarfeng.notify.stack.service.*;
+import com.dwarfeng.notify.stack.service.PreferenceMaintainService;
+import com.dwarfeng.notify.stack.service.RelationMaintainService;
+import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
+import com.dwarfeng.notify.stack.service.VariableMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -97,11 +100,10 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     @Override
     public void delete(LongIdKey key) throws Exception {
         // 删除与通知设置相关的路由器信息。
-        List<LongIdKey> routerInfoKeys = routerInfoDao.lookup(
-                RouterInfoMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{key}
-        ).stream().map(RouterInfo::getKey).collect(Collectors.toList());
-        routerInfoDao.batchDelete(routerInfoKeys);
-        routerInfoCache.batchDelete(routerInfoKeys);
+        if (routerInfoDao.exists(key)) {
+            routerInfoCache.delete(key);
+            routerInfoDao.delete(key);
+        }
 
         // 删除与通知设置相关的关系。
         List<RelationKey> relationKeys = relationDao.lookup(

@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonRouterInfo implements Bean {
 
-    private static final long serialVersionUID = -936961194750282423L;
+    private static final long serialVersionUID = -2931332337319017599L;
 
     public static JSFixedFastJsonRouterInfo of(RouterInfo routerInfo) {
         if (Objects.isNull(routerInfo)) {
@@ -23,9 +23,7 @@ public class JSFixedFastJsonRouterInfo implements Bean {
         } else {
             return new JSFixedFastJsonRouterInfo(
                     JSFixedFastJsonLongIdKey.of(routerInfo.getKey()),
-                    JSFixedFastJsonLongIdKey.of(routerInfo.getNotifySettingKey()),
-                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark(),
-                    routerInfo.isEnabled()
+                    routerInfo.getLabel(), routerInfo.getType(), routerInfo.getParam(), routerInfo.getRemark()
             );
         }
     }
@@ -33,38 +31,29 @@ public class JSFixedFastJsonRouterInfo implements Bean {
     @JSONField(name = "key", ordinal = 1)
     private JSFixedFastJsonLongIdKey key;
 
-    @JSONField(name = "notify_setting_key", ordinal = 2)
-    private JSFixedFastJsonLongIdKey notifySettingKey;
-
-    @JSONField(name = "label", ordinal = 3)
+    @JSONField(name = "label", ordinal = 2)
     private String label;
 
-    @JSONField(name = "type", ordinal = 4)
+    @JSONField(name = "type", ordinal = 3)
     private String type;
 
-    @JSONField(name = "param", ordinal = 5)
+    @JSONField(name = "param", ordinal = 4)
     private String param;
 
-    @JSONField(name = "remark", ordinal = 6)
+    @JSONField(name = "remark", ordinal = 5)
     private String remark;
-
-    @JSONField(name = "enabled", ordinal = 7)
-    private boolean enabled;
 
     public JSFixedFastJsonRouterInfo() {
     }
 
     public JSFixedFastJsonRouterInfo(
-            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey notifySettingKey, String label, String type,
-            String param, String remark, boolean enabled
+            JSFixedFastJsonLongIdKey key, String label, String type, String param, String remark
     ) {
         this.key = key;
-        this.notifySettingKey = notifySettingKey;
         this.label = label;
         this.type = type;
         this.param = param;
         this.remark = remark;
-        this.enabled = enabled;
     }
 
     public JSFixedFastJsonLongIdKey getKey() {
@@ -73,14 +62,6 @@ public class JSFixedFastJsonRouterInfo implements Bean {
 
     public void setKey(JSFixedFastJsonLongIdKey key) {
         this.key = key;
-    }
-
-    public JSFixedFastJsonLongIdKey getNotifySettingKey() {
-        return notifySettingKey;
-    }
-
-    public void setNotifySettingKey(JSFixedFastJsonLongIdKey notifySettingKey) {
-        this.notifySettingKey = notifySettingKey;
     }
 
     public String getLabel() {
@@ -115,24 +96,14 @@ public class JSFixedFastJsonRouterInfo implements Bean {
         this.remark = remark;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     @Override
     public String toString() {
         return "JSFixedFastJsonRouterInfo{" +
                 "key=" + key +
-                ", notifySettingKey=" + notifySettingKey +
                 ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
-                ", enabled=" + enabled +
                 '}';
     }
 }

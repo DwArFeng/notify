@@ -11,34 +11,23 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class RouterInfo implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 2833378733467353522L;
+    private static final long serialVersionUID = 2544012714879188416L;
     
     private LongIdKey key;
-    private LongIdKey notifySettingKey;
     private String label;
     private String type;
     private String param;
     private String remark;
 
-    /**
-     * @since 1.0.5
-     */
-    private boolean enabled;
-
     public RouterInfo() {
     }
 
-    public RouterInfo(
-            LongIdKey key, LongIdKey notifySettingKey, String label, String type, String param, String remark,
-            boolean enabled
-    ) {
+    public RouterInfo(LongIdKey key, String label, String type, String param, String remark) {
         this.key = key;
-        this.notifySettingKey = notifySettingKey;
         this.label = label;
         this.type = type;
         this.param = param;
         this.remark = remark;
-        this.enabled = enabled;
     }
 
     @Override
@@ -49,14 +38,6 @@ public class RouterInfo implements Entity<LongIdKey> {
     @Override
     public void setKey(LongIdKey key) {
         this.key = key;
-    }
-
-    public LongIdKey getNotifySettingKey() {
-        return notifySettingKey;
-    }
-
-    public void setNotifySettingKey(LongIdKey notifySettingKey) {
-        this.notifySettingKey = notifySettingKey;
     }
 
     public String getLabel() {
@@ -91,24 +72,14 @@ public class RouterInfo implements Entity<LongIdKey> {
         this.remark = remark;
     }
 
-    public boolean isEnabled() {
-        return enabled;
-    }
-
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
-    }
-
     @Override
     public String toString() {
         return "RouterInfo{" +
                 "key=" + key +
-                ", notifySettingKey=" + notifySettingKey +
                 ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", param='" + param + '\'' +
                 ", remark='" + remark + '\'' +
-                ", enabled=" + enabled +
                 '}';
     }
 }

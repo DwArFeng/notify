@@ -14,8 +14,8 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 9044258274118228385L;
-
+    private static final long serialVersionUID = -7654183737668339023L;
+    
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -31,10 +31,11 @@ public class HibernateNotifySetting implements Bean {
     @Column(name = "enabled")
     private boolean enabled;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRouterInfo.class, mappedBy = "notifySetting")
-    private Set<HibernateRouterInfo> routerInfos = new HashSet<>();
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateRouterInfo.class, mappedBy = "notifySetting")
+    private HibernateRouterInfo routerInfo;
 
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "notifySetting")
     private Set<HibernateRelation> relations = new HashSet<>();
 
@@ -92,12 +93,12 @@ public class HibernateNotifySetting implements Bean {
         this.enabled = enabled;
     }
 
-    public Set<HibernateRouterInfo> getRouterInfos() {
-        return routerInfos;
+    public HibernateRouterInfo getRouterInfo() {
+        return routerInfo;
     }
 
-    public void setRouterInfos(Set<HibernateRouterInfo> routerInfos) {
-        this.routerInfos = routerInfos;
+    public void setRouterInfo(HibernateRouterInfo routerInfo) {
+        this.routerInfo = routerInfo;
     }
 
     public Set<HibernateRelation> getRelations() {
@@ -138,6 +139,7 @@ public class HibernateNotifySetting implements Bean {
                 "longId = " + longId + ", " +
                 "label = " + label + ", " +
                 "remark = " + remark + ", " +
-                "enabled = " + enabled + ")";
+                "enabled = " + enabled + ", " +
+                "routerInfo = " + routerInfo + ")";
     }
 }
