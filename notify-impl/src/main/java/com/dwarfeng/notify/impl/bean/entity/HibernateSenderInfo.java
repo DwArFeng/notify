@@ -35,8 +35,8 @@ public class HibernateSenderInfo implements Bean {
     private String remark;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "senderInfo")
-    private Set<HibernateRelation> relations = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "senderInfo")
+    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
 
     public HibernateSenderInfo() {
     }
@@ -91,12 +91,12 @@ public class HibernateSenderInfo implements Bean {
         this.remark = remark;
     }
 
-    public Set<HibernateRelation> getRelations() {
-        return relations;
+    public Set<HibernateSenderRelation> getSenderRelations() {
+        return senderRelations;
     }
 
-    public void setRelations(Set<HibernateRelation> relations) {
-        this.relations = relations;
+    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
+        this.senderRelations = senderRelations;
     }
 
     @Override

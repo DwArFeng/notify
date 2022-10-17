@@ -5,22 +5,22 @@ import com.dwarfeng.subgrade.stack.bean.key.Key;
 import java.util.Objects;
 
 /**
- * 关系主键。
+ * 发送器关系主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class RelationKey implements Key {
+public class SenderRelationKey implements Key {
 
-    private static final long serialVersionUID = -2815133004629979563L;
+    private static final long serialVersionUID = -8949434525933907828L;
 
     private Long notifySettingId;
     private String topicId;
 
-    public RelationKey() {
+    public SenderRelationKey() {
     }
 
-    public RelationKey(Long notifySettingId, String topicId) {
+    public SenderRelationKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -46,7 +46,7 @@ public class RelationKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RelationKey that = (RelationKey) o;
+        SenderRelationKey that = (SenderRelationKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId))
             return false;
@@ -62,7 +62,7 @@ public class RelationKey implements Key {
 
     @Override
     public String toString() {
-        return "RelationKey{" +
+        return "SenderRelationKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

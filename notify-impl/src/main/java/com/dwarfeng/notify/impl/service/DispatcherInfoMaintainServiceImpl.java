@@ -2,14 +2,14 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
 import com.dwarfeng.notify.stack.service.DispatcherInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, DispatcherInfo> crudService;
+    private final GeneralBatchCrudService<StringIdKey, DispatcherInfo> crudService;
     private final DaoOnlyEntireLookupService<DispatcherInfo> entireLookupService;
     private final DaoOnlyPresetLookupService<DispatcherInfo> presetLookupService;
 
     public DispatcherInfoMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, DispatcherInfo> crudService,
+            GeneralBatchCrudService<StringIdKey, DispatcherInfo> crudService,
             DaoOnlyEntireLookupService<DispatcherInfo> entireLookupService,
             DaoOnlyPresetLookupService<DispatcherInfo> presetLookupService
     ) {
@@ -36,21 +36,21 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(LongIdKey key) throws ServiceException {
+    public boolean exists(StringIdKey key) throws ServiceException {
         return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public DispatcherInfo get(LongIdKey key) throws ServiceException {
+    public DispatcherInfo get(StringIdKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insert(DispatcherInfo element) throws ServiceException {
+    public StringIdKey insert(DispatcherInfo element) throws ServiceException {
         return crudService.insert(element);
     }
 
@@ -64,21 +64,21 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(LongIdKey key) throws ServiceException {
+    public void delete(StringIdKey key) throws ServiceException {
         crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public DispatcherInfo getIfExists(LongIdKey key) throws ServiceException {
+    public DispatcherInfo getIfExists(StringIdKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insertIfNotExists(DispatcherInfo element) throws ServiceException {
+    public StringIdKey insertIfNotExists(DispatcherInfo element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
@@ -92,28 +92,28 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void deleteIfExists(LongIdKey key) throws ServiceException {
+    public void deleteIfExists(StringIdKey key) throws ServiceException {
         crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insertOrUpdate(DispatcherInfo element) throws ServiceException {
+    public StringIdKey insertOrUpdate(DispatcherInfo element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public boolean allExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         return crudService.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         return crudService.nonExists(keys);
     }
 
@@ -121,7 +121,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<DispatcherInfo> batchGet(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public List<DispatcherInfo> batchGet(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -129,7 +129,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(@SkipRecord List<DispatcherInfo> elements) throws ServiceException {
+    public List<StringIdKey> batchInsert(@SkipRecord List<DispatcherInfo> elements) throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
@@ -143,7 +143,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public void batchDelete(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         crudService.batchDelete(keys);
     }
 
@@ -151,7 +151,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<DispatcherInfo> batchGetIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public List<DispatcherInfo> batchGetIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -159,7 +159,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertIfExists(@SkipRecord List<DispatcherInfo> elements) throws ServiceException {
+    public List<StringIdKey> batchInsertIfExists(@SkipRecord List<DispatcherInfo> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
@@ -173,7 +173,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDeleteIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public void batchDeleteIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
         crudService.batchDeleteIfExists(keys);
     }
 
@@ -181,7 +181,7 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertOrUpdate(@SkipRecord List<DispatcherInfo> elements) throws ServiceException {
+    public List<StringIdKey> batchInsertOrUpdate(@SkipRecord List<DispatcherInfo> elements) throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 
@@ -229,7 +229,8 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<DispatcherInfo> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<DispatcherInfo> lookup(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 
@@ -245,7 +246,8 @@ public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<DispatcherInfo> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public List<DispatcherInfo> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
     }
 }

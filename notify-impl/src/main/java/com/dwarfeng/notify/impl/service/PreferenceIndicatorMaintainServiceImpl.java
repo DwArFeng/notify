@@ -1,6 +1,7 @@
 package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.service.PreferenceIndicatorMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
@@ -9,7 +10,6 @@ import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicatorMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, PreferenceIndicator> crudService;
+    private final GeneralBatchCrudService<PreferenceIndicatorKey, PreferenceIndicator> crudService;
     private final DaoOnlyEntireLookupService<PreferenceIndicator> entireLookupService;
     private final DaoOnlyPresetLookupService<PreferenceIndicator> presetLookupService;
 
     public PreferenceIndicatorMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, PreferenceIndicator> crudService,
+            GeneralBatchCrudService<PreferenceIndicatorKey, PreferenceIndicator> crudService,
             DaoOnlyEntireLookupService<PreferenceIndicator> entireLookupService,
             DaoOnlyPresetLookupService<PreferenceIndicator> presetLookupService
     ) {
@@ -36,21 +36,21 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(StringIdKey key) throws ServiceException {
+    public boolean exists(PreferenceIndicatorKey key) throws ServiceException {
         return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PreferenceIndicator get(StringIdKey key) throws ServiceException {
+    public PreferenceIndicator get(PreferenceIndicatorKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insert(PreferenceIndicator element) throws ServiceException {
+    public PreferenceIndicatorKey insert(PreferenceIndicator element) throws ServiceException {
         return crudService.insert(element);
     }
 
@@ -64,21 +64,21 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(StringIdKey key) throws ServiceException {
+    public void delete(PreferenceIndicatorKey key) throws ServiceException {
         crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PreferenceIndicator getIfExists(StringIdKey key) throws ServiceException {
+    public PreferenceIndicator getIfExists(PreferenceIndicatorKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insertIfNotExists(PreferenceIndicator element) throws ServiceException {
+    public PreferenceIndicatorKey insertIfNotExists(PreferenceIndicator element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
@@ -92,28 +92,28 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void deleteIfExists(StringIdKey key) throws ServiceException {
+    public void deleteIfExists(PreferenceIndicatorKey key) throws ServiceException {
         crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insertOrUpdate(PreferenceIndicator element) throws ServiceException {
+    public PreferenceIndicatorKey insertOrUpdate(PreferenceIndicator element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public boolean allExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws ServiceException {
         return crudService.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public boolean nonExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws ServiceException {
         return crudService.nonExists(keys);
     }
 
@@ -121,7 +121,7 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<PreferenceIndicator> batchGet(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public List<PreferenceIndicator> batchGet(@SkipRecord List<PreferenceIndicatorKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -129,7 +129,8 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsert(@SkipRecord List<PreferenceIndicator> elements) throws ServiceException {
+    public List<PreferenceIndicatorKey> batchInsert(@SkipRecord List<PreferenceIndicator> elements)
+            throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
@@ -143,7 +144,7 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public void batchDelete(@SkipRecord List<PreferenceIndicatorKey> keys) throws ServiceException {
         crudService.batchDelete(keys);
     }
 
@@ -151,7 +152,8 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<PreferenceIndicator> batchGetIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public List<PreferenceIndicator> batchGetIfExists(@SkipRecord List<PreferenceIndicatorKey> keys)
+            throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -159,7 +161,8 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsertIfExists(@SkipRecord List<PreferenceIndicator> elements) throws ServiceException {
+    public List<PreferenceIndicatorKey> batchInsertIfExists(@SkipRecord List<PreferenceIndicator> elements)
+            throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
@@ -173,7 +176,7 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDeleteIfExists(@SkipRecord List<StringIdKey> keys) throws ServiceException {
+    public void batchDeleteIfExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws ServiceException {
         crudService.batchDeleteIfExists(keys);
     }
 
@@ -181,7 +184,8 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsertOrUpdate(@SkipRecord List<PreferenceIndicator> elements) throws ServiceException {
+    public List<PreferenceIndicatorKey> batchInsertOrUpdate(@SkipRecord List<PreferenceIndicator> elements)
+            throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 
@@ -229,7 +233,8 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<PreferenceIndicator> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<PreferenceIndicator> lookup(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 
@@ -245,7 +250,8 @@ public class PreferenceIndicatorMaintainServiceImpl implements PreferenceIndicat
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<PreferenceIndicator> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public List<PreferenceIndicator> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
     }
 }

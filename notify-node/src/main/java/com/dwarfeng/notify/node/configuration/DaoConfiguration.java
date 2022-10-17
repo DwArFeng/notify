@@ -1,13 +1,15 @@
 package com.dwarfeng.notify.node.configuration;
 
 import com.dwarfeng.notify.impl.bean.entity.*;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernatePreferenceIndicatorKey;
 import com.dwarfeng.notify.impl.bean.entity.key.HibernatePreferenceKey;
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateRelationKey;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderRelationKey;
 import com.dwarfeng.notify.impl.bean.entity.key.HibernateVariableKey;
 import com.dwarfeng.notify.impl.dao.preset.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
@@ -37,7 +39,7 @@ public class DaoConfiguration {
     private final SenderInfoPresetCriteriaMaker senderInfoPresetCriteriaMaker;
     private final SenderSupportPresetCriteriaMaker senderSupportPresetCriteriaMaker;
     private final TopicPresetCriteriaMaker topicPresetCriteriaMaker;
-    private final RelationPresetCriteriaMaker relationPresetCriteriaMaker;
+    private final SenderRelationPresetCriteriaMaker senderRelationPresetCriteriaMaker;
     private final DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker;
     private final DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker;
     private final PreferencePresetCriteriaMaker preferencePresetCriteriaMaker;
@@ -60,7 +62,7 @@ public class DaoConfiguration {
             SenderInfoPresetCriteriaMaker senderInfoPresetCriteriaMaker,
             SenderSupportPresetCriteriaMaker senderSupportPresetCriteriaMaker,
             TopicPresetCriteriaMaker topicPresetCriteriaMaker,
-            RelationPresetCriteriaMaker relationPresetCriteriaMaker,
+            SenderRelationPresetCriteriaMaker senderRelationPresetCriteriaMaker,
             DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker,
             DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker,
             PreferencePresetCriteriaMaker preferencePresetCriteriaMaker,
@@ -76,7 +78,7 @@ public class DaoConfiguration {
         this.senderInfoPresetCriteriaMaker = senderInfoPresetCriteriaMaker;
         this.senderSupportPresetCriteriaMaker = senderSupportPresetCriteriaMaker;
         this.topicPresetCriteriaMaker = topicPresetCriteriaMaker;
-        this.relationPresetCriteriaMaker = relationPresetCriteriaMaker;
+        this.senderRelationPresetCriteriaMaker = senderRelationPresetCriteriaMaker;
         this.dispatcherInfoPresetCriteriaMaker = dispatcherInfoPresetCriteriaMaker;
         this.dispatcherSupportPresetCriteriaMaker = dispatcherSupportPresetCriteriaMaker;
         this.preferencePresetCriteriaMaker = preferencePresetCriteriaMaker;
@@ -310,43 +312,43 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<RelationKey, HibernateRelationKey, Relation, HibernateRelation>
-    relationHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<SenderRelationKey, HibernateSenderRelationKey, SenderRelation, HibernateSenderRelation>
+    senderRelationHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(RelationKey.class, HibernateRelationKey.class, mapper),
-                new DozerBeanTransformer<>(Relation.class, HibernateRelation.class, mapper),
-                HibernateRelation.class,
+                new DozerBeanTransformer<>(SenderRelationKey.class, HibernateSenderRelationKey.class, mapper),
+                new DozerBeanTransformer<>(SenderRelation.class, HibernateSenderRelation.class, mapper),
+                HibernateSenderRelation.class,
                 new DefaultDeletionMod<>(),
                 batchSize
         );
     }
 
     @Bean
-    public HibernateEntireLookupDao<Relation, HibernateRelation> relationHibernateEntireLookupDao() {
+    public HibernateEntireLookupDao<SenderRelation, HibernateSenderRelation> senderRelationHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(Relation.class, HibernateRelation.class, mapper),
-                HibernateRelation.class
+                new DozerBeanTransformer<>(SenderRelation.class, HibernateSenderRelation.class, mapper),
+                HibernateSenderRelation.class
         );
     }
 
     @Bean
-    public HibernatePresetLookupDao<Relation, HibernateRelation> relationHibernatePresetLookupDao() {
+    public HibernatePresetLookupDao<SenderRelation, HibernateSenderRelation> senderRelationHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(Relation.class, HibernateRelation.class, mapper),
-                HibernateRelation.class,
-                relationPresetCriteriaMaker
+                new DozerBeanTransformer<>(SenderRelation.class, HibernateSenderRelation.class, mapper),
+                HibernateSenderRelation.class,
+                senderRelationPresetCriteriaMaker
         );
     }
 
     @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, DispatcherInfo, HibernateDispatcherInfo>
+    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, DispatcherInfo, HibernateDispatcherInfo>
     dispatcherInfoHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, mapper),
+                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
                 new DozerBeanTransformer<>(DispatcherInfo.class, HibernateDispatcherInfo.class, mapper),
                 HibernateDispatcherInfo.class,
                 new DefaultDeletionMod<>(),
@@ -504,11 +506,11 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, PreferenceIndicator, HibernatePreferenceIndicator>
-    preferenceIndicatorHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<PreferenceIndicatorKey, HibernatePreferenceIndicatorKey, PreferenceIndicator,
+            HibernatePreferenceIndicator> preferenceIndicatorHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, mapper),
+                new DozerBeanTransformer<>(PreferenceIndicatorKey.class, HibernatePreferenceIndicatorKey.class, mapper),
                 new DozerBeanTransformer<>(PreferenceIndicator.class, HibernatePreferenceIndicator.class, mapper),
                 HibernatePreferenceIndicator.class,
                 new DefaultDeletionMod<>(),

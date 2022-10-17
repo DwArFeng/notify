@@ -1,25 +1,23 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Optional;
-import java.util.Set;
 
 @Entity
-@IdClass(HibernateLongIdKey.class)
+@IdClass(HibernateStringIdKey.class)
 @Table(name = "tbl_dispatcher_info")
 public class HibernateDispatcherInfo implements Bean {
 
-    private static final long serialVersionUID = 6143436001449653357L;
+    private static final long serialVersionUID = 5591101623257156060L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "id", nullable = false, unique = true)
-    private Long longId;
+    @Column(name = "id", length = Constraints.LENGTH_ID, nullable = false, unique = true)
+    private String stringId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
@@ -34,29 +32,32 @@ public class HibernateDispatcherInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "dispatcherInfo")
-    private Set<HibernateRelation> relations = new HashSet<>();
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(targetEntity = HibernateTopic.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateTopic topic;
 
     public HibernateDispatcherInfo() {
     }
 
     // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
-    public HibernateLongIdKey getKey() {
-        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
+    public HibernateStringIdKey getKey() {
+        return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
 
-    public void setKey(HibernateLongIdKey key) {
-        this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
+    public void setKey(HibernateStringIdKey key) {
+        this.stringId = Optional.ofNullable(key).map(HibernateStringIdKey::getStringId).orElse(null);
     }
 
     // -----------------------------------------------------------常规属性区-----------------------------------------------------------
-    public Long getLongId() {
-        return longId;
+    public String getStringId() {
+        return stringId;
     }
 
-    public void setLongId(Long longId) {
-        this.longId = longId;
+    public void setStringId(String stringId) {
+        this.stringId = stringId;
     }
 
     public String getLabel() {
@@ -91,21 +92,22 @@ public class HibernateDispatcherInfo implements Bean {
         this.remark = remark;
     }
 
-    public Set<HibernateRelation> getRelations() {
-        return relations;
+    public HibernateTopic getTopic() {
+        return topic;
     }
 
-    public void setRelations(Set<HibernateRelation> relations) {
-        this.relations = relations;
+    public void setTopic(HibernateTopic topic) {
+        this.topic = topic;
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "longId = " + longId + ", " +
+                "stringId = " + stringId + ", " +
                 "label = " + label + ", " +
                 "type = " + type + ", " +
                 "param = " + param + ", " +
-                "remark = " + remark + ")";
+                "remark = " + remark + ", " +
+                "topic = " + topic + ")";
     }
 }

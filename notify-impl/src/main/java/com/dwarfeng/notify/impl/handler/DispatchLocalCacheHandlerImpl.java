@@ -5,7 +5,7 @@ import com.dwarfeng.notify.stack.handler.DispatchLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.handler.DispatcherHandler;
 import com.dwarfeng.notify.stack.service.DispatcherInfoMaintainService;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +20,8 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
     private final DispatcherFetcher dispatcherFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<LongIdKey, Dispatcher> dispatcherMap = new HashMap<>();
-    private final Set<LongIdKey> notExistSettings = new HashSet<>();
+    private final Map<StringIdKey, Dispatcher> dispatcherMap = new HashMap<>();
+    private final Set<StringIdKey> notExistSettings = new HashSet<>();
 
     public DispatchLocalCacheHandlerImpl(DispatcherFetcher dispatcherFetcher) {
         this.dispatcherFetcher = dispatcherFetcher;
@@ -29,7 +29,7 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public Dispatcher getDispatcher(LongIdKey dispatchInfoKey) throws HandlerException {
+    public Dispatcher getDispatcher(StringIdKey dispatchInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
@@ -89,11 +89,11 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
         }
 
         @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public Dispatcher fetchDispatcher(LongIdKey commandSettingKey) throws Exception {
-            if (!dispatcherInfoMaintainService.exists(commandSettingKey)) {
+        public Dispatcher fetchDispatcher(StringIdKey dispatchInfoKey) throws Exception {
+            if (!dispatcherInfoMaintainService.exists(dispatchInfoKey)) {
                 return null;
             }
-            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(commandSettingKey);
+            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(dispatchInfoKey);
             return dispatcherHandler.make(dispatcherInfo.getType(), dispatcherInfo.getParam());
         }
     }

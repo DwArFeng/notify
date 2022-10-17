@@ -3,7 +3,7 @@ package com.dwarfeng.notify.sdk.bean.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
+import com.dwarfeng.subgrade.sdk.bean.key.WebInputStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import org.hibernate.validator.constraints.Length;
 
@@ -21,16 +21,16 @@ import java.util.Objects;
  */
 public class WebInputDispatcherInfo implements Bean {
 
-    private static final long serialVersionUID = 7646942859058121062L;
+    private static final long serialVersionUID = -7830323916988267771L;
 
     public static DispatcherInfo toStackBean(WebInputDispatcherInfo webInputDispatcherInfo) {
         if (Objects.isNull(webInputDispatcherInfo)) {
             return null;
         } else {
             return new DispatcherInfo(
-                    WebInputLongIdKey.toStackBean(webInputDispatcherInfo.getKey()),
-                    webInputDispatcherInfo.getLabel(), webInputDispatcherInfo.getType(), webInputDispatcherInfo.getParam(),
-                    webInputDispatcherInfo.getRemark()
+                    WebInputStringIdKey.toStackBean(webInputDispatcherInfo.getKey()),
+                    webInputDispatcherInfo.getLabel(), webInputDispatcherInfo.getType(),
+                    webInputDispatcherInfo.getParam(), webInputDispatcherInfo.getRemark()
             );
         }
     }
@@ -38,7 +38,7 @@ public class WebInputDispatcherInfo implements Bean {
     @JSONField(name = "key")
     @Valid
     @NotNull(groups = Default.class)
-    private WebInputLongIdKey key;
+    private WebInputStringIdKey key;
 
     @JSONField(name = "label")
     @NotNull
@@ -62,11 +62,11 @@ public class WebInputDispatcherInfo implements Bean {
     public WebInputDispatcherInfo() {
     }
 
-    public WebInputLongIdKey getKey() {
+    public WebInputStringIdKey getKey() {
         return key;
     }
 
-    public void setKey(WebInputLongIdKey key) {
+    public void setKey(WebInputStringIdKey key) {
         this.key = key;
     }
 

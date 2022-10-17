@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.dao;
 
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
 import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
 import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
@@ -12,6 +12,6 @@ import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
  * @author DwArFeng
  * @since 1.1.0
  */
-public interface DispatcherInfoDao extends BatchBaseDao<LongIdKey, DispatcherInfo>, EntireLookupDao<DispatcherInfo>,
+public interface DispatcherInfoDao extends BatchBaseDao<StringIdKey, DispatcherInfo>, EntireLookupDao<DispatcherInfo>,
         PresetLookupDao<DispatcherInfo> {
 }

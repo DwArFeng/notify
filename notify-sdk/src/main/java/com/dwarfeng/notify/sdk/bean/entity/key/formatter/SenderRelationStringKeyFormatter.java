@@ -1,27 +1,27 @@
 package com.dwarfeng.notify.sdk.bean.entity.key.formatter;
 
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.subgrade.sdk.common.Constants;
 import com.dwarfeng.subgrade.sdk.redis.formatter.StringKeyFormatter;
 
 import java.util.Objects;
 
 /**
- * RelationKey 的文本格式化转换器。
+ * SenderRelationKey 的文本格式化转换器。
  *
  * @author DwArFeng
  * @since 1.0.0
  */
-public class RelationStringKeyFormatter implements StringKeyFormatter<RelationKey> {
+public class SenderRelationStringKeyFormatter implements StringKeyFormatter<SenderRelationKey> {
 
     private String prefix;
 
-    public RelationStringKeyFormatter(String prefix) {
+    public SenderRelationStringKeyFormatter(String prefix) {
         this.prefix = prefix;
     }
 
     @Override
-    public String format(RelationKey key) {
+    public String format(SenderRelationKey key) {
         Objects.requireNonNull(key);
         return prefix + key.getNotifySettingId() + "_" + key.getTopicId();
     }
@@ -41,7 +41,7 @@ public class RelationStringKeyFormatter implements StringKeyFormatter<RelationKe
 
     @Override
     public String toString() {
-        return "RelationStringKeyFormatter{" +
+        return "SenderRelationStringKeyFormatter{" +
                 "prefix='" + prefix + '\'' +
                 '}';
     }

@@ -36,8 +36,8 @@ public class HibernateNotifySetting implements Bean {
     private HibernateRouterInfo routerInfo;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "notifySetting")
-    private Set<HibernateRelation> relations = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "notifySetting")
+    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "notifySetting")
     private Set<HibernatePreference> preferences = new HashSet<>();
@@ -101,12 +101,12 @@ public class HibernateNotifySetting implements Bean {
         this.routerInfo = routerInfo;
     }
 
-    public Set<HibernateRelation> getRelations() {
-        return relations;
+    public Set<HibernateSenderRelation> getSenderRelations() {
+        return senderRelations;
     }
 
-    public void setRelations(Set<HibernateRelation> relations) {
-        this.relations = relations;
+    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
+        this.senderRelations = senderRelations;
     }
 
     public Set<HibernatePreference> getPreferences() {

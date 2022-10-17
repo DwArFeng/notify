@@ -2,11 +2,11 @@ package com.dwarfeng.notify.impl.cache;
 
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonPreferenceIndicator;
 import com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.cache.PreferenceIndicatorCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,11 +16,11 @@ import java.util.List;
 @Repository
 public class PreferenceIndicatorCacheImpl implements PreferenceIndicatorCache {
 
-    private final RedisBatchBaseCache<StringIdKey, PreferenceIndicator, FastJsonPreferenceIndicator>
+    private final RedisBatchBaseCache<PreferenceIndicatorKey, PreferenceIndicator, FastJsonPreferenceIndicator>
             preferenceIndicatorBatchBaseDelegate;
 
     public PreferenceIndicatorCacheImpl(
-            RedisBatchBaseCache<StringIdKey, PreferenceIndicator, FastJsonPreferenceIndicator>
+            RedisBatchBaseCache<PreferenceIndicatorKey, PreferenceIndicator, FastJsonPreferenceIndicator>
                     preferenceIndicatorBatchBaseDelegate
     ) {
         this.preferenceIndicatorBatchBaseDelegate = preferenceIndicatorBatchBaseDelegate;
@@ -29,14 +29,14 @@ public class PreferenceIndicatorCacheImpl implements PreferenceIndicatorCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(StringIdKey key) throws CacheException {
+    public boolean exists(PreferenceIndicatorKey key) throws CacheException {
         return preferenceIndicatorBatchBaseDelegate.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PreferenceIndicator get(StringIdKey key) throws CacheException {
+    public PreferenceIndicator get(PreferenceIndicatorKey key) throws CacheException {
         return preferenceIndicatorBatchBaseDelegate.get(key);
     }
 
@@ -50,7 +50,7 @@ public class PreferenceIndicatorCacheImpl implements PreferenceIndicatorCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(StringIdKey key) throws CacheException {
+    public void delete(PreferenceIndicatorKey key) throws CacheException {
         preferenceIndicatorBatchBaseDelegate.delete(key);
     }
 
@@ -64,14 +64,14 @@ public class PreferenceIndicatorCacheImpl implements PreferenceIndicatorCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
+    public boolean allExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws CacheException {
         return preferenceIndicatorBatchBaseDelegate.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
+    public boolean nonExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws CacheException {
         return preferenceIndicatorBatchBaseDelegate.nonExists(keys);
     }
 
@@ -79,7 +79,7 @@ public class PreferenceIndicatorCacheImpl implements PreferenceIndicatorCache {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<PreferenceIndicator> batchGet(@SkipRecord List<StringIdKey> keys) throws CacheException {
+    public List<PreferenceIndicator> batchGet(@SkipRecord List<PreferenceIndicatorKey> keys) throws CacheException {
         return preferenceIndicatorBatchBaseDelegate.batchGet(keys);
     }
 
@@ -93,7 +93,7 @@ public class PreferenceIndicatorCacheImpl implements PreferenceIndicatorCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<StringIdKey> keys) throws CacheException {
+    public void batchDelete(@SkipRecord List<PreferenceIndicatorKey> keys) throws CacheException {
         preferenceIndicatorBatchBaseDelegate.batchDelete(keys);
     }
 }

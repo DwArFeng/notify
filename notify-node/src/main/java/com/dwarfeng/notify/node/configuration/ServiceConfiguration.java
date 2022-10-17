@@ -1,9 +1,13 @@
 package com.dwarfeng.notify.node.configuration;
 
-import com.dwarfeng.notify.impl.service.operation.*;
+import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
+import com.dwarfeng.notify.impl.service.operation.SenderInfoCrudOperation;
+import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
+import com.dwarfeng.notify.impl.service.operation.UserCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
@@ -40,10 +44,10 @@ public class ServiceConfiguration {
     private final SenderSupportCache senderSupportCache;
     private final TopicCrudOperation topicCrudOperation;
     private final TopicDao topicDao;
-    private final RelationDao relationDao;
-    private final RelationCache relationCache;
-    private final DispatcherInfoCrudOperation dispatcherInfoCrudOperation;
+    private final SenderRelationDao senderRelationDao;
+    private final SenderRelationCache senderRelationCache;
     private final DispatcherInfoDao dispatcherInfoDao;
+    private final DispatcherInfoCache dispatcherInfoCache;
     private final DispatcherSupportDao dispatcherSupportDao;
     private final DispatcherSupportCache dispatcherSupportCache;
     private final PreferenceDao preferenceDao;
@@ -61,8 +65,10 @@ public class ServiceConfiguration {
     private long routerSupportTimeout;
     @Value("${cache.timeout.entity.sender_support}")
     private long senderSupportTimeout;
-    @Value("${cache.timeout.entity.relation}")
-    private long relationTimeout;
+    @Value("${cache.timeout.entity.sender_relation}")
+    private long senderRelationTimeout;
+    @Value("${cache.timeout.entity.dispatcher_info}")
+    private long dispatcherInfoTimeout;
     @Value("${cache.timeout.entity.dispatcher_support}")
     private long dispatcherSupportTimeout;
     @Value("${cache.timeout.entity.preference}")
@@ -83,8 +89,8 @@ public class ServiceConfiguration {
             SenderInfoCrudOperation senderInfoCrudOperation, SenderInfoDao senderInfoDao,
             SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache,
             TopicCrudOperation topicCrudOperation, TopicDao topicDao,
-            RelationDao relationDao, RelationCache relationCache,
-            DispatcherInfoCrudOperation dispatcherInfoCrudOperation, DispatcherInfoDao dispatcherInfoDao,
+            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache,
+            DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
             DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
             PreferenceDao preferenceDao, PreferenceCache preferenceCache,
             VariableDao variableDao, VariableCache variableCache,
@@ -106,10 +112,10 @@ public class ServiceConfiguration {
         this.senderSupportCache = senderSupportCache;
         this.topicCrudOperation = topicCrudOperation;
         this.topicDao = topicDao;
-        this.relationDao = relationDao;
-        this.relationCache = relationCache;
-        this.dispatcherInfoCrudOperation = dispatcherInfoCrudOperation;
+        this.senderRelationDao = senderRelationDao;
+        this.senderRelationCache = senderRelationCache;
         this.dispatcherInfoDao = dispatcherInfoDao;
+        this.dispatcherInfoCache = dispatcherInfoCache;
         this.dispatcherSupportDao = dispatcherSupportDao;
         this.dispatcherSupportCache = dispatcherSupportCache;
         this.preferenceDao = preferenceDao;
@@ -330,42 +336,44 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<RelationKey, Relation> relationGeneralBatchCrudService() {
+    public GeneralBatchCrudService<SenderRelationKey, SenderRelation> senderRelationGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
-                relationDao,
-                relationCache,
+                senderRelationDao,
+                senderRelationCache,
                 new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
-                relationTimeout
+                senderRelationTimeout
         );
     }
 
     @Bean
-    public DaoOnlyEntireLookupService<Relation> relationDaoOnlyEntireLookupService() {
+    public DaoOnlyEntireLookupService<SenderRelation> senderRelationDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                relationDao,
+                senderRelationDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
     }
 
     @Bean
-    public DaoOnlyPresetLookupService<Relation> relationDaoOnlyPresetLookupService() {
+    public DaoOnlyPresetLookupService<SenderRelation> senderRelationDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                relationDao,
+                senderRelationDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
     }
 
     @Bean
-    public CustomBatchCrudService<LongIdKey, DispatcherInfo> dispatcherInfoCustomBatchCrudService() {
-        return new CustomBatchCrudService<>(
-                dispatcherInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+    public GeneralBatchCrudService<StringIdKey, DispatcherInfo> dispatcherInfoCustomBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                dispatcherInfoDao,
+                dispatcherInfoCache,
+                new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
+                LogLevel.WARN,
+                dispatcherInfoTimeout
         );
     }
 
@@ -508,7 +516,8 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<StringIdKey, PreferenceIndicator> preferenceIndicatorGeneralBatchCrudService() {
+    public GeneralBatchCrudService<PreferenceIndicatorKey, PreferenceIndicator>
+    preferenceIndicatorGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
                 preferenceIndicatorDao,
                 preferenceIndicatorCache,

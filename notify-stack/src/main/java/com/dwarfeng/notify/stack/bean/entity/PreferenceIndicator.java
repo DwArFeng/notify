@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 
 /**
  * 偏好指示器。
@@ -9,11 +9,11 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  * @author DwArFeng
  * @since 1.1.0
  */
-public class PreferenceIndicator implements Entity<StringIdKey> {
+public class PreferenceIndicator implements Entity<PreferenceIndicatorKey> {
 
-    private static final long serialVersionUID = 3319054827616690548L;
+    private static final long serialVersionUID = 6383937805807341376L;
 
-    private StringIdKey key;
+    private PreferenceIndicatorKey key;
     private String label;
     private String remark;
     private String defaultValue;
@@ -21,7 +21,7 @@ public class PreferenceIndicator implements Entity<StringIdKey> {
     public PreferenceIndicator() {
     }
 
-    public PreferenceIndicator(StringIdKey key, String label, String remark, String defaultValue) {
+    public PreferenceIndicator(PreferenceIndicatorKey key, String label, String remark, String defaultValue) {
         this.key = key;
         this.label = label;
         this.remark = remark;
@@ -29,12 +29,12 @@ public class PreferenceIndicator implements Entity<StringIdKey> {
     }
 
     @Override
-    public StringIdKey getKey() {
+    public PreferenceIndicatorKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(StringIdKey key) {
+    public void setKey(PreferenceIndicatorKey key) {
         this.key = key;
     }
 

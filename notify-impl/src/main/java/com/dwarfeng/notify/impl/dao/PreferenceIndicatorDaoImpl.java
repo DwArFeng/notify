@@ -1,16 +1,16 @@
 package com.dwarfeng.notify.impl.dao;
 
 import com.dwarfeng.notify.impl.bean.entity.HibernatePreferenceIndicator;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernatePreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.dao.PreferenceIndicatorDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +20,13 @@ import java.util.List;
 @Repository
 public class PreferenceIndicatorDaoImpl implements PreferenceIndicatorDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, PreferenceIndicator,
+    private final HibernateBatchBaseDao<PreferenceIndicatorKey, HibernatePreferenceIndicatorKey, PreferenceIndicator,
             HibernatePreferenceIndicator> batchBaseDao;
     private final HibernateEntireLookupDao<PreferenceIndicator, HibernatePreferenceIndicator> entireLookupDao;
     private final HibernatePresetLookupDao<PreferenceIndicator, HibernatePreferenceIndicator> presetLookupDao;
 
     public PreferenceIndicatorDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, PreferenceIndicator,
+            HibernateBatchBaseDao<PreferenceIndicatorKey, HibernatePreferenceIndicatorKey, PreferenceIndicator,
                     HibernatePreferenceIndicator> batchBaseDao,
             HibernateEntireLookupDao<PreferenceIndicator, HibernatePreferenceIndicator> entireLookupDao,
             HibernatePresetLookupDao<PreferenceIndicator, HibernatePreferenceIndicator> presetLookupDao
@@ -39,7 +39,7 @@ public class PreferenceIndicatorDaoImpl implements PreferenceIndicatorDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public StringIdKey insert(PreferenceIndicator element) throws DaoException {
+    public PreferenceIndicatorKey insert(PreferenceIndicator element) throws DaoException {
         return batchBaseDao.insert(element);
     }
 
@@ -53,21 +53,21 @@ public class PreferenceIndicatorDaoImpl implements PreferenceIndicatorDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(StringIdKey key) throws DaoException {
+    public void delete(PreferenceIndicatorKey key) throws DaoException {
         batchBaseDao.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(StringIdKey key) throws DaoException {
+    public boolean exists(PreferenceIndicatorKey key) throws DaoException {
         return batchBaseDao.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PreferenceIndicator get(StringIdKey key) throws DaoException {
+    public PreferenceIndicator get(PreferenceIndicatorKey key) throws DaoException {
         return batchBaseDao.get(key);
     }
 
@@ -75,7 +75,8 @@ public class PreferenceIndicatorDaoImpl implements PreferenceIndicatorDao {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<StringIdKey> batchInsert(@SkipRecord List<PreferenceIndicator> elements) throws DaoException {
+    public List<PreferenceIndicatorKey> batchInsert(@SkipRecord List<PreferenceIndicator> elements)
+            throws DaoException {
         return batchBaseDao.batchInsert(elements);
     }
 
@@ -89,21 +90,21 @@ public class PreferenceIndicatorDaoImpl implements PreferenceIndicatorDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<StringIdKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<PreferenceIndicatorKey> keys) throws DaoException {
         batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<StringIdKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws DaoException {
         return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<PreferenceIndicatorKey> keys) throws DaoException {
         return batchBaseDao.nonExists(keys);
     }
 
@@ -111,7 +112,7 @@ public class PreferenceIndicatorDaoImpl implements PreferenceIndicatorDao {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<PreferenceIndicator> batchGet(@SkipRecord List<StringIdKey> keys) throws DaoException {
+    public List<PreferenceIndicator> batchGet(@SkipRecord List<PreferenceIndicatorKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

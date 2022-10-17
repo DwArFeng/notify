@@ -89,11 +89,11 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
         }
 
         @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public Router fetchRouter(LongIdKey commandSettingKey) throws Exception {
-            if (!routerInfoMaintainService.exists(commandSettingKey)) {
+        public Router fetchRouter(LongIdKey routerInfoKey) throws Exception {
+            if (!routerInfoMaintainService.exists(routerInfoKey)) {
                 return null;
             }
-            RouterInfo routerInfo = routerInfoMaintainService.get(commandSettingKey);
+            RouterInfo routerInfo = routerInfoMaintainService.get(routerInfoKey);
             return routerHandler.make(routerInfo.getType(), routerInfo.getParam());
         }
     }

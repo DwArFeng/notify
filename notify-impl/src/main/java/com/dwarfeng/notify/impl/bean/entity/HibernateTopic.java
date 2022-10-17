@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -5530475187754131276L;
+    private static final long serialVersionUID = -8204493164273117658L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -34,12 +34,19 @@ public class HibernateTopic implements Bean {
     @Column(name = "priority")
     private int priority;
 
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateDispatcherInfo.class, mappedBy = "topic")
+    private HibernateDispatcherInfo dispatcherInfo;
+
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateRelation.class, mappedBy = "topic")
-    private Set<HibernateRelation> relations = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "topic")
+    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "topic")
     private Set<HibernatePreference> preferences = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreferenceIndicator.class, mappedBy = "topic")
+    private Set<HibernatePreferenceIndicator> preferenceIndicators = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "topic")
     private Set<HibernateVariable> variables = new HashSet<>();
@@ -100,12 +107,20 @@ public class HibernateTopic implements Bean {
         this.priority = priority;
     }
 
-    public Set<HibernateRelation> getRelations() {
-        return relations;
+    public HibernateDispatcherInfo getDispatcherInfo() {
+        return dispatcherInfo;
     }
 
-    public void setRelations(Set<HibernateRelation> relations) {
-        this.relations = relations;
+    public void setDispatcherInfo(HibernateDispatcherInfo dispatcherInfo) {
+        this.dispatcherInfo = dispatcherInfo;
+    }
+
+    public Set<HibernateSenderRelation> getSenderRelations() {
+        return senderRelations;
+    }
+
+    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
+        this.senderRelations = senderRelations;
     }
 
     public Set<HibernatePreference> getPreferences() {
@@ -114,6 +129,14 @@ public class HibernateTopic implements Bean {
 
     public void setPreferences(Set<HibernatePreference> preferences) {
         this.preferences = preferences;
+    }
+
+    public Set<HibernatePreferenceIndicator> getPreferenceIndicators() {
+        return preferenceIndicators;
+    }
+
+    public void setPreferenceIndicators(Set<HibernatePreferenceIndicator> preferenceIndicators) {
+        this.preferenceIndicators = preferenceIndicators;
     }
 
     public Set<HibernateVariable> getVariables() {
@@ -139,6 +162,7 @@ public class HibernateTopic implements Bean {
                 "label = " + label + ", " +
                 "remark = " + remark + ", " +
                 "enabled = " + enabled + ", " +
-                "priority = " + priority + ")";
+                "priority = " + priority + ", " +
+                "dispatcherInfo = " + dispatcherInfo + ")";
     }
 }

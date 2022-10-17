@@ -2,13 +2,13 @@ package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.notify.stack.service.PreferenceMaintainService;
-import com.dwarfeng.notify.stack.service.RelationMaintainService;
 import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
+import com.dwarfeng.notify.stack.service.SenderRelationMaintainService;
 import com.dwarfeng.notify.stack.service.VariableMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
@@ -29,8 +29,8 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     private final RouterInfoDao routerInfoDao;
     private final RouterInfoCache routerInfoCache;
 
-    private final RelationDao relationDao;
-    private final RelationCache relationCache;
+    private final SenderRelationDao senderRelationDao;
+    private final SenderRelationCache senderRelationCache;
 
     private final PreferenceDao preferenceDao;
     private final PreferenceCache preferenceCache;
@@ -47,7 +47,7 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     public NotifySettingCrudOperation(
             NotifySettingDao notifySettingDao, NotifySettingCache notifySettingCache,
             RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
-            RelationDao relationDao, RelationCache relationCache,
+            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache,
             PreferenceDao preferenceDao, PreferenceCache preferenceCache,
             VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
@@ -56,8 +56,8 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
         this.notifySettingCache = notifySettingCache;
         this.routerInfoDao = routerInfoDao;
         this.routerInfoCache = routerInfoCache;
-        this.relationDao = relationDao;
-        this.relationCache = relationCache;
+        this.senderRelationDao = senderRelationDao;
+        this.senderRelationCache = senderRelationCache;
         this.preferenceDao = preferenceDao;
         this.preferenceCache = preferenceCache;
         this.variableDao = variableDao;
@@ -105,12 +105,12 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
             routerInfoDao.delete(key);
         }
 
-        // 删除与通知设置相关的关系。
-        List<RelationKey> relationKeys = relationDao.lookup(
-                RelationMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{key}
-        ).stream().map(Relation::getKey).collect(Collectors.toList());
-        relationDao.batchDelete(relationKeys);
-        relationCache.batchDelete(relationKeys);
+        // 删除与通知设置相关的发送器关系。
+        List<SenderRelationKey> senderRelationKeys = senderRelationDao.lookup(
+                SenderRelationMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{key}
+        ).stream().map(SenderRelation::getKey).collect(Collectors.toList());
+        senderRelationDao.batchDelete(senderRelationKeys);
+        senderRelationCache.batchDelete(senderRelationKeys);
 
         // 删除与通知设置相关的偏好。
         List<PreferenceKey> preferenceKeys = preferenceDao.lookup(

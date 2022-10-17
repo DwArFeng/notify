@@ -30,8 +30,8 @@
                    ref="routerSupportMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.SenderInfoMaintainService"
                    ref="senderInfoMaintainServiceImpl"/>
-    <dubbo:service interface="com.dwarfeng.notify.stack.service.RelationMaintainService"
-                   ref="relationMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.notify.stack.service.SenderRelationMaintainService"
+                   ref="senderRelationMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.SenderSupportMaintainService"
                    ref="senderSupportMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.TopicMaintainService" ref="topicMaintainServiceImpl"/>

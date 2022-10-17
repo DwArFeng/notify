@@ -1,15 +1,13 @@
 package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
-import com.dwarfeng.notify.stack.service.PreferenceMaintainService;
-import com.dwarfeng.notify.stack.service.RelationMaintainService;
-import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
-import com.dwarfeng.notify.stack.service.VariableMaintainService;
+import com.dwarfeng.notify.stack.service.*;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -26,11 +24,17 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final TopicDao topicDao;
     private final TopicCache topicCache;
 
-    private final RelationDao relationDao;
-    private final RelationCache relationCache;
+    private final DispatcherInfoDao dispatcherInfoDao;
+    private final DispatcherInfoCache dispatcherInfoCache;
+
+    private final SenderRelationDao senderRelationDao;
+    private final SenderRelationCache senderRelationCache;
 
     private final PreferenceDao preferenceDao;
     private final PreferenceCache preferenceCache;
+
+    private final PreferenceIndicatorDao preferenceIndicatorDao;
+    private final PreferenceIndicatorCache preferenceIndicatorCache;
 
     private final VariableDao variableDao;
     private final VariableCache variableCache;
@@ -43,17 +47,23 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
 
     public TopicCrudOperation(
             TopicDao topicDao, TopicCache topicCache,
-            RelationDao relationDao, RelationCache relationCache,
+            DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
+            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache,
             PreferenceDao preferenceDao, PreferenceCache preferenceCache,
+            PreferenceIndicatorDao preferenceIndicatorDao, PreferenceIndicatorCache preferenceIndicatorCache,
             VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
         this.topicDao = topicDao;
         this.topicCache = topicCache;
-        this.relationDao = relationDao;
-        this.relationCache = relationCache;
+        this.dispatcherInfoDao = dispatcherInfoDao;
+        this.dispatcherInfoCache = dispatcherInfoCache;
+        this.senderRelationDao = senderRelationDao;
+        this.senderRelationCache = senderRelationCache;
         this.preferenceDao = preferenceDao;
         this.preferenceCache = preferenceCache;
+        this.preferenceIndicatorDao = preferenceIndicatorDao;
+        this.preferenceIndicatorCache = preferenceIndicatorCache;
         this.variableDao = variableDao;
         this.variableCache = variableCache;
         this.sendHistoryDao = sendHistoryDao;
@@ -93,12 +103,18 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
 
     @Override
     public void delete(StringIdKey key) throws Exception {
-        // 删除与通知设置相关的关系。
-        List<RelationKey> relationKeys = relationDao.lookup(
-                RelationMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ).stream().map(Relation::getKey).collect(Collectors.toList());
-        relationDao.batchDelete(relationKeys);
-        relationCache.batchDelete(relationKeys);
+        // 删除与通知设置相关的调度器信息。
+        if (dispatcherInfoDao.exists(key)) {
+            dispatcherInfoCache.delete(key);
+            dispatcherInfoDao.delete(key);
+        }
+
+        // 删除与通知设置相关的发送器关系。
+        List<SenderRelationKey> senderRelationKeys = senderRelationDao.lookup(
+                SenderRelationMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(SenderRelation::getKey).collect(Collectors.toList());
+        senderRelationDao.batchDelete(senderRelationKeys);
+        senderRelationCache.batchDelete(senderRelationKeys);
 
         // 删除与通知设置相关的偏好。
         List<PreferenceKey> preferenceKeys = preferenceDao.lookup(
@@ -106,6 +122,13 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         ).stream().map(Preference::getKey).collect(Collectors.toList());
         preferenceDao.batchDelete(preferenceKeys);
         preferenceCache.batchDelete(preferenceKeys);
+
+        // 删除与通知设置相关的偏好指示器。
+        List<PreferenceIndicatorKey> preferenceIndicatorKeys = preferenceIndicatorDao.lookup(
+                PreferenceIndicatorMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(PreferenceIndicator::getKey).collect(Collectors.toList());
+        preferenceIndicatorDao.batchDelete(preferenceIndicatorKeys);
+        preferenceIndicatorCache.batchDelete(preferenceIndicatorKeys);
 
         // 删除与通知设置相关的变量。
         List<VariableKey> variableKeys = variableDao.lookup(

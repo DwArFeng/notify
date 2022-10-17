@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.entity.key.WebInputPreferenceIndicatorKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator;
-import com.dwarfeng.subgrade.sdk.bean.key.WebInputStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import org.hibernate.validator.constraints.Length;
 
@@ -20,14 +20,14 @@ import java.util.Objects;
  */
 public class WebInputPreferenceIndicator implements Bean {
 
-    private static final long serialVersionUID = 7581512892076486126L;
+    private static final long serialVersionUID = 7069576984601145104L;
 
     public static PreferenceIndicator toStackBean(WebInputPreferenceIndicator webInputPreferenceIndicator) {
         if (Objects.isNull(webInputPreferenceIndicator)) {
             return null;
         } else {
             return new PreferenceIndicator(
-                    WebInputStringIdKey.toStackBean(webInputPreferenceIndicator.getKey()),
+                    WebInputPreferenceIndicatorKey.toStackBean(webInputPreferenceIndicator.getKey()),
                     webInputPreferenceIndicator.getLabel(), webInputPreferenceIndicator.getRemark(),
                     webInputPreferenceIndicator.getDefaultValue()
             );
@@ -37,7 +37,7 @@ public class WebInputPreferenceIndicator implements Bean {
     @JSONField(name = "key")
     @Valid
     @NotNull
-    private WebInputStringIdKey key;
+    private WebInputPreferenceIndicatorKey key;
 
     @JSONField(name = "label")
     @NotNull
@@ -55,11 +55,11 @@ public class WebInputPreferenceIndicator implements Bean {
     public WebInputPreferenceIndicator() {
     }
 
-    public WebInputStringIdKey getKey() {
+    public WebInputPreferenceIndicatorKey getKey() {
         return key;
     }
 
-    public void setKey(WebInputStringIdKey key) {
+    public void setKey(WebInputPreferenceIndicatorKey key) {
         this.key = key;
     }
 

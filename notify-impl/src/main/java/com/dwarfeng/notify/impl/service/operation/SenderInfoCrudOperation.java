@@ -1,13 +1,13 @@
 package com.dwarfeng.notify.impl.service.operation;
 
-import com.dwarfeng.notify.stack.bean.entity.Relation;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
-import com.dwarfeng.notify.stack.cache.RelationCache;
+import com.dwarfeng.notify.stack.bean.entity.SenderRelation;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.notify.stack.cache.SenderInfoCache;
-import com.dwarfeng.notify.stack.dao.RelationDao;
+import com.dwarfeng.notify.stack.cache.SenderRelationCache;
 import com.dwarfeng.notify.stack.dao.SenderInfoDao;
-import com.dwarfeng.notify.stack.service.RelationMaintainService;
+import com.dwarfeng.notify.stack.dao.SenderRelationDao;
+import com.dwarfeng.notify.stack.service.SenderRelationMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -24,20 +24,20 @@ public class SenderInfoCrudOperation implements BatchCrudOperation<LongIdKey, Se
     private final SenderInfoDao senderInfoDao;
     private final SenderInfoCache senderInfoCache;
 
-    private final RelationDao relationDao;
-    private final RelationCache relationCache;
+    private final SenderRelationDao senderRelationDao;
+    private final SenderRelationCache senderRelationCache;
 
     @Value("${cache.timeout.entity.sender_info}")
     private long senderInfoTimeout;
 
     public SenderInfoCrudOperation(
             SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
-            RelationDao relationDao, RelationCache relationCache
+            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache
     ) {
         this.senderInfoDao = senderInfoDao;
         this.senderInfoCache = senderInfoCache;
-        this.relationDao = relationDao;
-        this.relationCache = relationCache;
+        this.senderRelationDao = senderRelationDao;
+        this.senderRelationCache = senderRelationCache;
     }
 
     @Override
@@ -73,12 +73,12 @@ public class SenderInfoCrudOperation implements BatchCrudOperation<LongIdKey, Se
 
     @Override
     public void delete(LongIdKey key) throws Exception {
-        // 删除与通知设置相关的关系。
-        List<RelationKey> relationKeys = relationDao.lookup(
-                RelationMaintainService.CHILD_FOR_SENDER_INFO, new Object[]{key}
-        ).stream().map(Relation::getKey).collect(Collectors.toList());
-        relationDao.batchDelete(relationKeys);
-        relationCache.batchDelete(relationKeys);
+        // 删除与通知设置相关的发送器关系。
+        List<SenderRelationKey> senderRelationKeys = senderRelationDao.lookup(
+                SenderRelationMaintainService.CHILD_FOR_SENDER_INFO, new Object[]{key}
+        ).stream().map(SenderRelation::getKey).collect(Collectors.toList());
+        senderRelationDao.batchDelete(senderRelationKeys);
+        senderRelationCache.batchDelete(senderRelationKeys);
 
         // 删除通知设置实体本身。
         senderInfoDao.delete(key);

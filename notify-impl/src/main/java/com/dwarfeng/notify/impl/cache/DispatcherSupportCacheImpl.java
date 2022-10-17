@@ -16,10 +16,12 @@ import java.util.List;
 @Repository
 public class DispatcherSupportCacheImpl implements DispatcherSupportCache {
 
-    private final RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport> dispatcherSupportBatchBaseDelegate;
+    private final RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport>
+            dispatcherSupportBatchBaseDelegate;
 
     public DispatcherSupportCacheImpl(
-            RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport> dispatcherSupportBatchBaseDelegate
+            RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport>
+                    dispatcherSupportBatchBaseDelegate
     ) {
         this.dispatcherSupportBatchBaseDelegate = dispatcherSupportBatchBaseDelegate;
     }

@@ -2,7 +2,7 @@ package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
+import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -15,21 +15,21 @@ import java.util.Objects;
  */
 public class FastJsonDispatcherInfo implements Bean {
 
-    private static final long serialVersionUID = -5578296474841886760L;
+    private static final long serialVersionUID = 188627511330967352L;
 
     public static FastJsonDispatcherInfo of(DispatcherInfo dispatcherInfo) {
         if (Objects.isNull(dispatcherInfo)) {
             return null;
         } else {
             return new FastJsonDispatcherInfo(
-                    FastJsonLongIdKey.of(dispatcherInfo.getKey()),
+                    FastJsonStringIdKey.of(dispatcherInfo.getKey()),
                     dispatcherInfo.getLabel(), dispatcherInfo.getType(), dispatcherInfo.getParam(), dispatcherInfo.getRemark()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonLongIdKey key;
+    private FastJsonStringIdKey key;
 
     @JSONField(name = "label", ordinal = 2)
     private String label;
@@ -46,7 +46,7 @@ public class FastJsonDispatcherInfo implements Bean {
     public FastJsonDispatcherInfo() {
     }
 
-    public FastJsonDispatcherInfo(FastJsonLongIdKey key, String label, String type, String param, String remark) {
+    public FastJsonDispatcherInfo(FastJsonStringIdKey key, String label, String type, String param, String remark) {
         this.key = key;
         this.label = label;
         this.type = type;
@@ -54,11 +54,11 @@ public class FastJsonDispatcherInfo implements Bean {
         this.remark = remark;
     }
 
-    public FastJsonLongIdKey getKey() {
+    public FastJsonStringIdKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonLongIdKey key) {
+    public void setKey(FastJsonStringIdKey key) {
         this.key = key;
     }
 

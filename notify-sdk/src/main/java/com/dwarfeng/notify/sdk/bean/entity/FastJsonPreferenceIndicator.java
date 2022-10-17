@@ -1,8 +1,8 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonPreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -15,14 +15,14 @@ import java.util.Objects;
  */
 public class FastJsonPreferenceIndicator implements Bean {
 
-    private static final long serialVersionUID = -1069058029699167413L;
+    private static final long serialVersionUID = -9205596678149087098L;
 
     public static FastJsonPreferenceIndicator of(PreferenceIndicator preferenceIndicator) {
         if (Objects.isNull(preferenceIndicator)) {
             return null;
         } else {
             return new FastJsonPreferenceIndicator(
-                    FastJsonStringIdKey.of(preferenceIndicator.getKey()),
+                    FastJsonPreferenceIndicatorKey.of(preferenceIndicator.getKey()),
                     preferenceIndicator.getLabel(), preferenceIndicator.getRemark(),
                     preferenceIndicator.getDefaultValue()
             );
@@ -30,7 +30,7 @@ public class FastJsonPreferenceIndicator implements Bean {
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonStringIdKey key;
+    private FastJsonPreferenceIndicatorKey key;
 
     @JSONField(name = "label", ordinal = 2)
     private String label;
@@ -44,18 +44,20 @@ public class FastJsonPreferenceIndicator implements Bean {
     public FastJsonPreferenceIndicator() {
     }
 
-    public FastJsonPreferenceIndicator(FastJsonStringIdKey key, String label, String remark, String defaultValue) {
+    public FastJsonPreferenceIndicator(
+            FastJsonPreferenceIndicatorKey key, String label, String remark, String defaultValue
+    ) {
         this.key = key;
         this.label = label;
         this.remark = remark;
         this.defaultValue = defaultValue;
     }
 
-    public FastJsonStringIdKey getKey() {
+    public FastJsonPreferenceIndicatorKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonStringIdKey key) {
+    public void setKey(FastJsonPreferenceIndicatorKey key) {
         this.key = key;
     }
 

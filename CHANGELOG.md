@@ -10,10 +10,6 @@
 - 新增实体字段。
   - com.dwarfeng.notify.stack.bean.entity.User.enabled。
 
-- 实体名称变更。
-  - SenderRelation -> Relation。
-  - SenderRelationKey -> RelationKey。
-
 - 新增实体及其维护服务。
   - com.dwarfeng.notify.stack.bean.entity.DispatcherInfo。
   - com.dwarfeng.notify.stack.bean.entity.DispatcherSupport。
@@ -188,7 +184,7 @@
   - com.dwarfeng.notify.stack.bean.entity.SenderInfo。
   - com.dwarfeng.notify.stack.bean.entity.SenderSupport。
   - com.dwarfeng.notify.stack.bean.entity.Topic。
-  - com.dwarfeng.notify.stack.bean.entity.SenderRelation。
+  - com.dwarfeng.notify.stack.bean.entity.SenderSenderRelation。
 
 - 通知发送核心逻辑实现。
 

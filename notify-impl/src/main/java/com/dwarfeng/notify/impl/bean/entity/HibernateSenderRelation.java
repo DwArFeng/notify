@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateRelationKey;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderRelationKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -10,11 +10,11 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Entity
-@IdClass(HibernateRelationKey.class)
-@Table(name = "tbl_relation")
-public class HibernateRelation implements Bean {
+@IdClass(HibernateSenderRelationKey.class)
+@Table(name = "tbl_sender_relation")
+public class HibernateSenderRelation implements Bean {
 
-    private static final long serialVersionUID = 516055792781958534L;
+    private static final long serialVersionUID = -7011299429200877189L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -28,9 +28,6 @@ public class HibernateRelation implements Bean {
     // -----------------------------------------------------------外键-----------------------------------------------------------
     @Column(name = "sender_info_id")
     private Long senderInfoLongId;
-
-    @Column(name = "dispatcher_info_id")
-    private Long dispatcherInfoLongId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
@@ -55,21 +52,15 @@ public class HibernateRelation implements Bean {
     })
     private HibernateSenderInfo senderInfo;
 
-    @ManyToOne(targetEntity = HibernateDispatcherInfo.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "dispatcher_info_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateDispatcherInfo dispatcherInfo;
-
-    public HibernateRelation() {
+    public HibernateSenderRelation() {
     }
 
     // -----------------------------------------------------------映射用 getter&setter-----------------------------------------------------------
-    public HibernateRelationKey getKey() {
-        return new HibernateRelationKey(notifySettingId, topicId);
+    public HibernateSenderRelationKey getKey() {
+        return new HibernateSenderRelationKey(notifySettingId, topicId);
     }
 
-    public void setKey(HibernateRelationKey key) {
+    public void setKey(HibernateSenderRelationKey key) {
         if (Objects.isNull(key)) {
             this.notifySettingId = null;
             this.topicId = null;
@@ -85,14 +76,6 @@ public class HibernateRelation implements Bean {
 
     public void setSenderInfoKey(HibernateLongIdKey key) {
         this.senderInfoLongId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
-    }
-
-    public HibernateLongIdKey getDispatcherInfoKey() {
-        return Optional.ofNullable(dispatcherInfoLongId).map(HibernateLongIdKey::new).orElse(null);
-    }
-
-    public void setDispatcherInfoKey(HibernateLongIdKey key) {
-        this.dispatcherInfoLongId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
     // -----------------------------------------------------------常规 getter&setter-----------------------------------------------------------
@@ -118,14 +101,6 @@ public class HibernateRelation implements Bean {
 
     public void setSenderInfoLongId(Long senderInfoLongId) {
         this.senderInfoLongId = senderInfoLongId;
-    }
-
-    public Long getDispatcherInfoLongId() {
-        return dispatcherInfoLongId;
-    }
-
-    public void setDispatcherInfoLongId(Long dispatcherInfoLongId) {
-        this.dispatcherInfoLongId = dispatcherInfoLongId;
     }
 
     public String getRemark() {
@@ -160,26 +135,15 @@ public class HibernateRelation implements Bean {
         this.senderInfo = senderInfo;
     }
 
-    public HibernateDispatcherInfo getDispatcherInfo() {
-        return dispatcherInfo;
-    }
-
-    public void setDispatcherInfo(HibernateDispatcherInfo dispatcherInfo) {
-        this.dispatcherInfo = dispatcherInfo;
-    }
-
     @Override
     public String toString() {
-        return "HibernateRelation{" +
-                "notifySettingId=" + notifySettingId +
-                ", topicId='" + topicId + '\'' +
-                ", senderInfoLongId=" + senderInfoLongId +
-                ", dispatcherInfoLongId=" + dispatcherInfoLongId +
-                ", remark='" + remark + '\'' +
-                ", notifySetting=" + notifySetting +
-                ", topic=" + topic +
-                ", senderInfo=" + senderInfo +
-                ", dispatcherInfo=" + dispatcherInfo +
-                '}';
+        return getClass().getSimpleName() + "(" +
+                "notifySettingId = " + notifySettingId + ", " +
+                "topicId = " + topicId + ", " +
+                "senderInfoLongId = " + senderInfoLongId + ", " +
+                "remark = " + remark + ", " +
+                "notifySetting = " + notifySetting + ", " +
+                "topic = " + topic + ", " +
+                "senderInfo = " + senderInfo + ")";
     }
 }

@@ -6,22 +6,22 @@ import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Hibernate 关系主键。
+ * Hibernate 发送器关系主键。
  *
  * @author DwArFeng
  * @since 1.0.0
  */
-public class HibernateRelationKey implements Bean, Serializable {
+public class HibernateSenderRelationKey implements Bean, Serializable {
 
-    private static final long serialVersionUID = 1899820438050294832L;
+    private static final long serialVersionUID = -2903220500018059637L;
 
     private Long notifySettingId;
     private String topicId;
 
-    public HibernateRelationKey() {
+    public HibernateSenderRelationKey() {
     }
 
-    public HibernateRelationKey(Long notifySettingId, String topicId) {
+    public HibernateSenderRelationKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -47,7 +47,7 @@ public class HibernateRelationKey implements Bean, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HibernateRelationKey that = (HibernateRelationKey) o;
+        HibernateSenderRelationKey that = (HibernateSenderRelationKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId))
             return false;
@@ -63,7 +63,7 @@ public class HibernateRelationKey implements Bean, Serializable {
 
     @Override
     public String toString() {
-        return "HibernateRelationKey{" +
+        return "HibernateSenderRelationKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

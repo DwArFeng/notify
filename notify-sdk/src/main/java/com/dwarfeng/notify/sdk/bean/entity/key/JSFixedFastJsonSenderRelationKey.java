@@ -1,46 +1,42 @@
 package com.dwarfeng.notify.sdk.bean.entity.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * WebInput 关系主键。
+ * JSFixed FastJson 发送器关系主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class WebInputRelationKey implements Key {
+public class JSFixedFastJsonSenderRelationKey implements Key {
 
-    private static final long serialVersionUID = -5594531411726729597L;
+    private static final long serialVersionUID = 2764518082210753277L;
 
-    public static RelationKey toStackBean(WebInputRelationKey webInputRelationKey) {
-        if (Objects.isNull(webInputRelationKey)) {
+    public static JSFixedFastJsonSenderRelationKey of(SenderRelationKey senderRelationKey) {
+        if (Objects.isNull(senderRelationKey)) {
             return null;
         } else {
-            return new RelationKey(
-                    webInputRelationKey.getNotifySettingId(), webInputRelationKey.getTopicId()
+            return new JSFixedFastJsonSenderRelationKey(
+                    senderRelationKey.getNotifySettingId(), senderRelationKey.getTopicId()
             );
         }
     }
 
-    @JSONField(name = "notify_setting_id")
-    @NotNull
+    @JSONField(name = "notify_setting_id", ordinal = 1, serializeUsing = ToStringSerializer.class)
     private Long notifySettingId;
 
-    @JSONField(name = "topic_id")
-    @NotNull
-    @NotEmpty
+    @JSONField(name = "topic_id", ordinal = 2)
     private String topicId;
 
-    public WebInputRelationKey() {
+    public JSFixedFastJsonSenderRelationKey() {
     }
 
-    public WebInputRelationKey(Long notifySettingId, String topicId) {
+    public JSFixedFastJsonSenderRelationKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -66,7 +62,7 @@ public class WebInputRelationKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        WebInputRelationKey that = (WebInputRelationKey) o;
+        JSFixedFastJsonSenderRelationKey that = (JSFixedFastJsonSenderRelationKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId)) return false;
         return Objects.equals(topicId, that.topicId);
@@ -81,7 +77,7 @@ public class WebInputRelationKey implements Key {
 
     @Override
     public String toString() {
-        return "WebInputRelationKey{" +
+        return "JSFixedFastJsonSenderRelationKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

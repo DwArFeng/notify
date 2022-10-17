@@ -1,41 +1,39 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.notify.stack.bean.entity.key.RelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 /**
- * 关系。
+ * 发送器关系。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class Relation implements Entity<RelationKey> {
+public class SenderRelation implements Entity<SenderRelationKey> {
 
-    private static final long serialVersionUID = -1133724242038268249L;
-    
-    private RelationKey key;
+    private static final long serialVersionUID = -1889462001218721327L;
+
+    private SenderRelationKey key;
     private LongIdKey senderInfoKey;
-    private LongIdKey dispatcherInfoKey;
     private String remark;
 
-    public Relation() {
+    public SenderRelation() {
     }
 
-    public Relation(RelationKey key, LongIdKey senderInfoKey, LongIdKey dispatcherInfoKey, String remark) {
+    public SenderRelation(SenderRelationKey key, LongIdKey senderInfoKey, String remark) {
         this.key = key;
         this.senderInfoKey = senderInfoKey;
-        this.dispatcherInfoKey = dispatcherInfoKey;
         this.remark = remark;
     }
 
     @Override
-    public RelationKey getKey() {
+    public SenderRelationKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(RelationKey key) {
+    public void setKey(SenderRelationKey key) {
         this.key = key;
     }
 
@@ -45,14 +43,6 @@ public class Relation implements Entity<RelationKey> {
 
     public void setSenderInfoKey(LongIdKey senderInfoKey) {
         this.senderInfoKey = senderInfoKey;
-    }
-
-    public LongIdKey getDispatcherInfoKey() {
-        return dispatcherInfoKey;
-    }
-
-    public void setDispatcherInfoKey(LongIdKey dispatcherInfoKey) {
-        this.dispatcherInfoKey = dispatcherInfoKey;
     }
 
     public String getRemark() {
@@ -65,10 +55,9 @@ public class Relation implements Entity<RelationKey> {
 
     @Override
     public String toString() {
-        return "Relation{" +
+        return "SenderRelation{" +
                 "key=" + key +
                 ", senderInfoKey=" + senderInfoKey +
-                ", dispatcherInfoKey=" + dispatcherInfoKey +
                 ", remark='" + remark + '\'' +
                 '}';
     }
