@@ -1,26 +1,26 @@
 package com.dwarfeng.notify.sdk.bean.entity.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import java.util.Objects;
 
 /**
- * FastJson 发送器关系主键。
+ * FastJson 发送器信息主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class FastJsonSenderRelationKey implements Key {
+public class FastJsonSenderInfoKey implements Key {
 
-    private static final long serialVersionUID = 9096788348465518923L;
+    private static final long serialVersionUID = 3157427500478571065L;
 
-    public static FastJsonSenderRelationKey of(SenderRelationKey senderRelationKey) {
-        if (Objects.isNull(senderRelationKey)) {
+    public static FastJsonSenderInfoKey of(SenderInfoKey senderInfoKey) {
+        if (Objects.isNull(senderInfoKey)) {
             return null;
         } else {
-            return new FastJsonSenderRelationKey(senderRelationKey.getNotifySettingId(), senderRelationKey.getTopicId());
+            return new FastJsonSenderInfoKey(senderInfoKey.getNotifySettingId(), senderInfoKey.getTopicId());
         }
     }
 
@@ -30,10 +30,10 @@ public class FastJsonSenderRelationKey implements Key {
     @JSONField(name = "topic_id", ordinal = 2)
     private String topicId;
 
-    public FastJsonSenderRelationKey() {
+    public FastJsonSenderInfoKey() {
     }
 
-    public FastJsonSenderRelationKey(Long notifySettingId, String topicId) {
+    public FastJsonSenderInfoKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -59,7 +59,7 @@ public class FastJsonSenderRelationKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FastJsonSenderRelationKey that = (FastJsonSenderRelationKey) o;
+        FastJsonSenderInfoKey that = (FastJsonSenderInfoKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId)) return false;
         return Objects.equals(topicId, that.topicId);
@@ -74,7 +74,7 @@ public class FastJsonSenderRelationKey implements Key {
 
     @Override
     public String toString() {
-        return "FastJsonSenderRelationKey{" +
+        return "FastJsonSenderInfoKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

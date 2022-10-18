@@ -3,7 +3,7 @@ package com.dwarfeng.notify.impl.handler;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.dto.Routing;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.handler.*;
@@ -26,7 +26,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private final NotifySettingMaintainService notifySettingMaintainService;
     private final RouterInfoMaintainService routerInfoMaintainService;
     private final SenderInfoMaintainService senderInfoMaintainService;
-    private final SenderRelationMaintainService senderRelationMaintainService;
     private final TopicMaintainService topicMaintainService;
     private final UserMaintainService userMaintainService;
 
@@ -41,7 +40,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
             NotifySettingMaintainService notifySettingMaintainService,
             RouterInfoMaintainService routerInfoMaintainService,
             SenderInfoMaintainService senderInfoMaintainService,
-            SenderRelationMaintainService senderRelationMaintainService,
             TopicMaintainService topicMaintainService,
             UserMaintainService userMaintainService,
             RouteLocalCacheHandler routeLocalCacheHandler,
@@ -52,7 +50,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.notifySettingMaintainService = notifySettingMaintainService;
         this.routerInfoMaintainService = routerInfoMaintainService;
         this.senderInfoMaintainService = senderInfoMaintainService;
-        this.senderRelationMaintainService = senderRelationMaintainService;
         this.topicMaintainService = topicMaintainService;
         this.userMaintainService = userMaintainService;
         this.routeLocalCacheHandler = routeLocalCacheHandler;
@@ -101,7 +98,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 }
             }
 
-            // 临时定义本地映射，这些映射缓存了主键与实体的对应发送器关系，避免后续代码频繁操作数据访问层进行读取。
+            // 临时定义本地映射，这些映射缓存了主键与实体的对应发送器信息，避免后续代码频繁操作数据访问层进行读取。
             Map<StringIdKey, Topic> topicMap = new HashMap<>();
             Map<StringIdKey, User> userMap = new HashMap<>();
 
@@ -178,20 +175,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
             LongIdKey notifySettingKey, StringIdKey topicKey, List<StringIdKey> userKeys, Object context,
             NotifySetting notifySetting, Topic topic, List<User> users
     ) throws Exception {
-        // 根据通知设置和主题找到对应的发送器，如果找不到，则警告并退出方法。
-        SenderRelationKey senderRelationKey = new SenderRelationKey(
-                notifySettingKey.getLongId(), topicKey.getStringId()
-        );
-        if (!senderRelationMaintainService.exists(senderRelationKey)) {
-            LOGGER.warn("找不到通知设置 {} 和主题 {} 对应的发送器", notifySettingKey, topicKey);
-            return;
-        }
-
-        // 拿到对应的发送器主键。
-        SenderRelation senderRelation = senderRelationMaintainService.get(senderRelationKey);
-        LongIdKey senderInfoKey = senderRelation.getSenderInfoKey();
-
         // 从本地缓存中拿到发送器，如果为 null，则警告并退出方法。
+        SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
         Sender sender = sendLocalCacheHandler.getSender(senderInfoKey);
         if (Objects.isNull(sender)) {
             SenderInfo senderInfo = senderInfoMaintainService.get(senderInfoKey);

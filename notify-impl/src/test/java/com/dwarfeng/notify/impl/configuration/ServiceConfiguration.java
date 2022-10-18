@@ -1,13 +1,12 @@
 package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
-import com.dwarfeng.notify.impl.service.operation.SenderInfoCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.UserCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
@@ -38,14 +37,12 @@ public class ServiceConfiguration {
     private final RouterSupportCache routerSupportCache;
     private final NotifySettingCrudOperation notifySettingCrudOperation;
     private final NotifySettingDao notifySettingDao;
-    private final SenderInfoCrudOperation senderInfoCrudOperation;
     private final SenderInfoDao senderInfoDao;
+    private final SenderInfoCache senderInfoCache;
     private final SenderSupportDao senderSupportDao;
     private final SenderSupportCache senderSupportCache;
     private final TopicCrudOperation topicCrudOperation;
     private final TopicDao topicDao;
-    private final SenderRelationDao senderRelationDao;
-    private final SenderRelationCache senderRelationCache;
     private final DispatcherInfoDao dispatcherInfoDao;
     private final DispatcherInfoCache dispatcherInfoCache;
     private final DispatcherSupportDao dispatcherSupportDao;
@@ -63,10 +60,10 @@ public class ServiceConfiguration {
     private long routerInfoTimeout;
     @Value("${cache.timeout.entity.router_support}")
     private long routerSupportTimeout;
+    @Value("${cache.timeout.entity.sender_info}")
+    private long senderInfoTimeout;
     @Value("${cache.timeout.entity.sender_support}")
     private long senderSupportTimeout;
-    @Value("${cache.timeout.entity.sender_relation}")
-    private long senderRelationTimeout;
     @Value("${cache.timeout.entity.dispatcher_info}")
     private long dispatcherInfoTimeout;
     @Value("${cache.timeout.entity.dispatcher_support}")
@@ -86,10 +83,9 @@ public class ServiceConfiguration {
             RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
             RouterSupportDao routerSupportDao, RouterSupportCache routerSupportCache,
             NotifySettingCrudOperation notifySettingCrudOperation, NotifySettingDao notifySettingDao,
-            SenderInfoCrudOperation senderInfoCrudOperation, SenderInfoDao senderInfoDao,
+            SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
             SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache,
             TopicCrudOperation topicCrudOperation, TopicDao topicDao,
-            SenderRelationDao senderRelationDao, SenderRelationCache senderRelationCache,
             DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
             DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
             PreferenceDao preferenceDao, PreferenceCache preferenceCache,
@@ -106,14 +102,12 @@ public class ServiceConfiguration {
         this.routerSupportCache = routerSupportCache;
         this.notifySettingCrudOperation = notifySettingCrudOperation;
         this.notifySettingDao = notifySettingDao;
-        this.senderInfoCrudOperation = senderInfoCrudOperation;
         this.senderInfoDao = senderInfoDao;
+        this.senderInfoCache = senderInfoCache;
         this.senderSupportDao = senderSupportDao;
         this.senderSupportCache = senderSupportCache;
         this.topicCrudOperation = topicCrudOperation;
         this.topicDao = topicDao;
-        this.senderRelationDao = senderRelationDao;
-        this.senderRelationCache = senderRelationCache;
         this.dispatcherInfoDao = dispatcherInfoDao;
         this.dispatcherInfoCache = dispatcherInfoCache;
         this.dispatcherSupportDao = dispatcherSupportDao;
@@ -250,12 +244,14 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public CustomBatchCrudService<LongIdKey, SenderInfo> senderInfoCustomBatchCrudService() {
-        return new CustomBatchCrudService<>(
-                senderInfoCrudOperation,
-                longIdKeyKeyFetcher(),
+    public GeneralBatchCrudService<SenderInfoKey, SenderInfo> senderInfoCustomBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                senderInfoDao,
+                senderInfoCache,
+                new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
+                LogLevel.WARN,
+                senderInfoTimeout
         );
     }
 
@@ -330,36 +326,6 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<Topic> topicDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 topicDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public GeneralBatchCrudService<SenderRelationKey, SenderRelation> senderRelationGeneralBatchCrudService() {
-        return new GeneralBatchCrudService<>(
-                senderRelationDao,
-                senderRelationCache,
-                new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN,
-                senderRelationTimeout
-        );
-    }
-
-    @Bean
-    public DaoOnlyEntireLookupService<SenderRelation> senderRelationDaoOnlyEntireLookupService() {
-        return new DaoOnlyEntireLookupService<>(
-                senderRelationDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public DaoOnlyPresetLookupService<SenderRelation> senderRelationDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
-                senderRelationDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

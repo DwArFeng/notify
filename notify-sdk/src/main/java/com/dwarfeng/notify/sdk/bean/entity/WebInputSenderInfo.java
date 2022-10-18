@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.entity.key.WebInputSenderInfoKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 import org.hibernate.validator.constraints.Length;
 
@@ -21,14 +21,14 @@ import java.util.Objects;
  */
 public class WebInputSenderInfo implements Bean {
 
-    private static final long serialVersionUID = -8050305036684218699L;
+    private static final long serialVersionUID = 642134954620997364L;
 
     public static SenderInfo toStackBean(WebInputSenderInfo webInputSenderInfo) {
         if (Objects.isNull(webInputSenderInfo)) {
             return null;
         } else {
             return new SenderInfo(
-                    WebInputLongIdKey.toStackBean(webInputSenderInfo.getKey()),
+                    WebInputSenderInfoKey.toStackBean(webInputSenderInfo.getKey()),
                     webInputSenderInfo.getLabel(), webInputSenderInfo.getType(), webInputSenderInfo.getParam(),
                     webInputSenderInfo.getRemark()
             );
@@ -38,7 +38,7 @@ public class WebInputSenderInfo implements Bean {
     @JSONField(name = "key")
     @Valid
     @NotNull(groups = Default.class)
-    private WebInputLongIdKey key;
+    private WebInputSenderInfoKey key;
 
     @JSONField(name = "label")
     @NotNull
@@ -62,11 +62,11 @@ public class WebInputSenderInfo implements Bean {
     public WebInputSenderInfo() {
     }
 
-    public WebInputLongIdKey getKey() {
+    public WebInputSenderInfoKey getKey() {
         return key;
     }
 
-    public void setKey(WebInputLongIdKey key) {
+    public void setKey(WebInputSenderInfoKey key) {
         this.key = key;
     }
 

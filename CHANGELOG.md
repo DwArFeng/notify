@@ -10,6 +10,9 @@
 - 新增实体字段。
   - com.dwarfeng.notify.stack.bean.entity.User.enabled。
 
+- 变更实体主键类型。
+  - com.dwarfeng.notify.stack.bean.entity.SenderInfo。
+
 - 新增实体及其维护服务。
   - com.dwarfeng.notify.stack.bean.entity.DispatcherInfo。
   - com.dwarfeng.notify.stack.bean.entity.DispatcherSupport。
@@ -26,6 +29,9 @@
 - (无)
 
 #### 功能移除
+
+- 删除实体。
+  - com.dwarfeng.notify.stack.bean.entity.SendRelation。
 
 - 删除实体字段。
   - com.dwarfeng.notify.stack.bean.entity.RouterInfo.notifySettingKey。

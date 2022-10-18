@@ -1,8 +1,8 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.entity.key.JSFixedFastJsonSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.JSFixedFastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -15,21 +15,21 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonSenderInfo implements Bean {
 
-    private static final long serialVersionUID = -2634302868797996706L;
+    private static final long serialVersionUID = 3782354829995688189L;
 
     public static JSFixedFastJsonSenderInfo of(SenderInfo senderInfo) {
         if (Objects.isNull(senderInfo)) {
             return null;
         } else {
             return new JSFixedFastJsonSenderInfo(
-                    JSFixedFastJsonLongIdKey.of(senderInfo.getKey()),
+                    JSFixedFastJsonSenderInfoKey.of(senderInfo.getKey()),
                     senderInfo.getLabel(), senderInfo.getType(), senderInfo.getParam(), senderInfo.getRemark()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private JSFixedFastJsonLongIdKey key;
+    private JSFixedFastJsonSenderInfoKey key;
 
     @JSONField(name = "label", ordinal = 2)
     private String label;
@@ -47,7 +47,7 @@ public class JSFixedFastJsonSenderInfo implements Bean {
     }
 
     public JSFixedFastJsonSenderInfo(
-            JSFixedFastJsonLongIdKey key, String label, String type, String param, String remark
+            JSFixedFastJsonSenderInfoKey key, String label, String type, String param, String remark
     ) {
         this.key = key;
         this.label = label;
@@ -56,11 +56,11 @@ public class JSFixedFastJsonSenderInfo implements Bean {
         this.remark = remark;
     }
 
-    public JSFixedFastJsonLongIdKey getKey() {
+    public JSFixedFastJsonSenderInfoKey getKey() {
         return key;
     }
 
-    public void setKey(JSFixedFastJsonLongIdKey key) {
+    public void setKey(JSFixedFastJsonSenderInfoKey key) {
         this.key = key;
     }
 

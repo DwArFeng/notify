@@ -2,11 +2,11 @@ package com.dwarfeng.notify.impl.cache;
 
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonSenderInfo;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.SenderInfoCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,10 +16,10 @@ import java.util.List;
 @Repository
 public class SenderInfoCacheImpl implements SenderInfoCache {
 
-    private final RedisBatchBaseCache<LongIdKey, SenderInfo, FastJsonSenderInfo> senderInfoBatchBaseDelegate;
+    private final RedisBatchBaseCache<SenderInfoKey, SenderInfo, FastJsonSenderInfo> senderInfoBatchBaseDelegate;
 
     public SenderInfoCacheImpl(
-            RedisBatchBaseCache<LongIdKey, SenderInfo, FastJsonSenderInfo> senderInfoBatchBaseDelegate
+            RedisBatchBaseCache<SenderInfoKey, SenderInfo, FastJsonSenderInfo> senderInfoBatchBaseDelegate
     ) {
         this.senderInfoBatchBaseDelegate = senderInfoBatchBaseDelegate;
     }
@@ -27,14 +27,14 @@ public class SenderInfoCacheImpl implements SenderInfoCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(LongIdKey key) throws CacheException {
+    public boolean exists(SenderInfoKey key) throws CacheException {
         return senderInfoBatchBaseDelegate.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderInfo get(LongIdKey key) throws CacheException {
+    public SenderInfo get(SenderInfoKey key) throws CacheException {
         return senderInfoBatchBaseDelegate.get(key);
     }
 
@@ -48,7 +48,7 @@ public class SenderInfoCacheImpl implements SenderInfoCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(LongIdKey key) throws CacheException {
+    public void delete(SenderInfoKey key) throws CacheException {
         senderInfoBatchBaseDelegate.delete(key);
     }
 
@@ -62,14 +62,14 @@ public class SenderInfoCacheImpl implements SenderInfoCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
+    public boolean allExists(@SkipRecord List<SenderInfoKey> keys) throws CacheException {
         return senderInfoBatchBaseDelegate.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
+    public boolean nonExists(@SkipRecord List<SenderInfoKey> keys) throws CacheException {
         return senderInfoBatchBaseDelegate.nonExists(keys);
     }
 
@@ -77,7 +77,7 @@ public class SenderInfoCacheImpl implements SenderInfoCache {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderInfo> batchGet(@SkipRecord List<LongIdKey> keys) throws CacheException {
+    public List<SenderInfo> batchGet(@SkipRecord List<SenderInfoKey> keys) throws CacheException {
         return senderInfoBatchBaseDelegate.batchGet(keys);
     }
 
@@ -91,7 +91,7 @@ public class SenderInfoCacheImpl implements SenderInfoCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws CacheException {
+    public void batchDelete(@SkipRecord List<SenderInfoKey> keys) throws CacheException {
         senderInfoBatchBaseDelegate.batchDelete(keys);
     }
 }

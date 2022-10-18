@@ -1,25 +1,27 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.Objects;
 
 @Entity
-@IdClass(HibernateLongIdKey.class)
+@IdClass(HibernateSenderInfoKey.class)
 @Table(name = "tbl_sender_info")
 public class HibernateSenderInfo implements Bean {
 
-    private static final long serialVersionUID = -5732523855262935190L;
+    private static final long serialVersionUID = -8972981011771816048L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "id", nullable = false, unique = true)
-    private Long longId;
+    @Column(name = "notify_setting_id", nullable = false)
+    private Long notifySettingId;
+
+    @Id
+    @Column(name = "topic_id", length = Constraints.LENGTH_ID, nullable = false)
+    private String topicId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
@@ -34,29 +36,52 @@ public class HibernateSenderInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "senderInfo")
-    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
+    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    @ManyToOne(targetEntity = HibernateNotifySetting.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "notify_setting_id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateNotifySetting notifySetting;
+
+    @ManyToOne(targetEntity = HibernateTopic.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "topic_id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateTopic topic;
 
     public HibernateSenderInfo() {
     }
 
     // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
-    public HibernateLongIdKey getKey() {
-        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
+    public HibernateSenderInfoKey getKey() {
+        return new HibernateSenderInfoKey(notifySettingId, topicId);
     }
 
-    public void setKey(HibernateLongIdKey key) {
-        this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
+    public void setKey(HibernateSenderInfoKey key) {
+        if (Objects.isNull(key)) {
+            this.notifySettingId = null;
+            this.topicId = null;
+        } else {
+            this.notifySettingId = key.getNotifySettingId();
+            this.topicId = key.getTopicId();
+        }
     }
 
     // -----------------------------------------------------------常规属性区-----------------------------------------------------------
-    public Long getLongId() {
-        return longId;
+    public Long getNotifySettingId() {
+        return notifySettingId;
     }
 
-    public void setLongId(Long longId) {
-        this.longId = longId;
+    public void setNotifySettingId(Long notifySettingId) {
+        this.notifySettingId = notifySettingId;
+    }
+
+    public String getTopicId() {
+        return topicId;
+    }
+
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
     public String getLabel() {
@@ -91,21 +116,32 @@ public class HibernateSenderInfo implements Bean {
         this.remark = remark;
     }
 
-    public Set<HibernateSenderRelation> getSenderRelations() {
-        return senderRelations;
+    public HibernateNotifySetting getNotifySetting() {
+        return notifySetting;
     }
 
-    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
-        this.senderRelations = senderRelations;
+    public void setNotifySetting(HibernateNotifySetting notifySetting) {
+        this.notifySetting = notifySetting;
+    }
+
+    public HibernateTopic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(HibernateTopic topic) {
+        this.topic = topic;
     }
 
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "longId = " + longId + ", " +
+                "notifySettingId = " + notifySettingId + ", " +
+                "topicId = " + topicId + ", " +
                 "label = " + label + ", " +
                 "type = " + type + ", " +
                 "param = " + param + ", " +
-                "remark = " + remark + ")";
+                "remark = " + remark + ", " +
+                "notifySetting = " + notifySetting + ", " +
+                "topic = " + topic + ")";
     }
 }

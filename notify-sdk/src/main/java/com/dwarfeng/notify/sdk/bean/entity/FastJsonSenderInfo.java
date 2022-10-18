@@ -1,8 +1,8 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -15,21 +15,21 @@ import java.util.Objects;
  */
 public class FastJsonSenderInfo implements Bean {
 
-    private static final long serialVersionUID = 8548356347008196646L;
+    private static final long serialVersionUID = 6170981211262956758L;
 
     public static FastJsonSenderInfo of(SenderInfo senderInfo) {
         if (Objects.isNull(senderInfo)) {
             return null;
         } else {
             return new FastJsonSenderInfo(
-                    FastJsonLongIdKey.of(senderInfo.getKey()),
+                    FastJsonSenderInfoKey.of(senderInfo.getKey()),
                     senderInfo.getLabel(), senderInfo.getType(), senderInfo.getParam(), senderInfo.getRemark()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonLongIdKey key;
+    private FastJsonSenderInfoKey key;
 
     @JSONField(name = "label", ordinal = 2)
     private String label;
@@ -46,7 +46,7 @@ public class FastJsonSenderInfo implements Bean {
     public FastJsonSenderInfo() {
     }
 
-    public FastJsonSenderInfo(FastJsonLongIdKey key, String label, String type, String param, String remark) {
+    public FastJsonSenderInfo(FastJsonSenderInfoKey key, String label, String type, String param, String remark) {
         this.key = key;
         this.label = label;
         this.type = type;
@@ -54,11 +54,11 @@ public class FastJsonSenderInfo implements Bean {
         this.remark = remark;
     }
 
-    public FastJsonLongIdKey getKey() {
+    public FastJsonSenderInfoKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonLongIdKey key) {
+    public void setKey(FastJsonSenderInfoKey key) {
         this.key = key;
     }
 

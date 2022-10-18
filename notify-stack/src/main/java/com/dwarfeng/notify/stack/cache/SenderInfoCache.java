@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.cache;
 
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 
 /**
@@ -10,5 +10,5 @@ import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
  * @author DwArFeng
  * @since 1.0.0
  */
-public interface SenderInfoCache extends BatchBaseCache<LongIdKey, SenderInfo> {
+public interface SenderInfoCache extends BatchBaseCache<SenderInfoKey, SenderInfo> {
 }

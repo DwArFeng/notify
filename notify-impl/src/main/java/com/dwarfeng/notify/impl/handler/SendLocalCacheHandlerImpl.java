@@ -1,11 +1,11 @@
 package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.SendLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.handler.SenderHandler;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,8 +20,8 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
     private final SenderFetcher senderFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<LongIdKey, Sender> senderMap = new HashMap<>();
-    private final Set<LongIdKey> notExistSettings = new HashSet<>();
+    private final Map<SenderInfoKey, Sender> senderMap = new HashMap<>();
+    private final Set<SenderInfoKey> notExistSettings = new HashSet<>();
 
     public SendLocalCacheHandlerImpl(SenderFetcher senderFetcher) {
         this.senderFetcher = senderFetcher;
@@ -29,7 +29,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public Sender getSender(LongIdKey sendInfoKey) throws HandlerException {
+    public Sender getSender(SenderInfoKey sendInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
@@ -89,7 +89,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
         }
 
         @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public Sender fetchSender(LongIdKey commandSettingKey) throws Exception {
+        public Sender fetchSender(SenderInfoKey commandSettingKey) throws Exception {
             if (!senderInfoMaintainService.exists(commandSettingKey)) {
                 return null;
             }

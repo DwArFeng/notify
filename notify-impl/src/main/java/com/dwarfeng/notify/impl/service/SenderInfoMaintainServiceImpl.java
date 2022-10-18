@@ -1,15 +1,15 @@
 package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, SenderInfo> crudService;
+    private final GeneralBatchCrudService<SenderInfoKey, SenderInfo> crudService;
     private final DaoOnlyEntireLookupService<SenderInfo> entireLookupService;
     private final DaoOnlyPresetLookupService<SenderInfo> presetLookupService;
 
     public SenderInfoMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, SenderInfo> crudService,
+            GeneralBatchCrudService<SenderInfoKey, SenderInfo> crudService,
             DaoOnlyEntireLookupService<SenderInfo> entireLookupService,
             DaoOnlyPresetLookupService<SenderInfo> presetLookupService
     ) {
@@ -36,21 +36,21 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(LongIdKey key) throws ServiceException {
+    public boolean exists(SenderInfoKey key) throws ServiceException {
         return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderInfo get(LongIdKey key) throws ServiceException {
+    public SenderInfo get(SenderInfoKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insert(SenderInfo element) throws ServiceException {
+    public SenderInfoKey insert(SenderInfo element) throws ServiceException {
         return crudService.insert(element);
     }
 
@@ -64,21 +64,21 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(LongIdKey key) throws ServiceException {
+    public void delete(SenderInfoKey key) throws ServiceException {
         crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderInfo getIfExists(LongIdKey key) throws ServiceException {
+    public SenderInfo getIfExists(SenderInfoKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insertIfNotExists(SenderInfo element) throws ServiceException {
+    public SenderInfoKey insertIfNotExists(SenderInfo element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
@@ -92,28 +92,28 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void deleteIfExists(LongIdKey key) throws ServiceException {
+    public void deleteIfExists(SenderInfoKey key) throws ServiceException {
         crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insertOrUpdate(SenderInfo element) throws ServiceException {
+    public SenderInfoKey insertOrUpdate(SenderInfo element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public boolean allExists(@SkipRecord List<SenderInfoKey> keys) throws ServiceException {
         return crudService.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public boolean nonExists(@SkipRecord List<SenderInfoKey> keys) throws ServiceException {
         return crudService.nonExists(keys);
     }
 
@@ -121,7 +121,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderInfo> batchGet(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public List<SenderInfo> batchGet(@SkipRecord List<SenderInfoKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -129,7 +129,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(@SkipRecord List<SenderInfo> elements) throws ServiceException {
+    public List<SenderInfoKey> batchInsert(@SkipRecord List<SenderInfo> elements) throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
@@ -143,7 +143,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public void batchDelete(@SkipRecord List<SenderInfoKey> keys) throws ServiceException {
         crudService.batchDelete(keys);
     }
 
@@ -151,7 +151,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderInfo> batchGetIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public List<SenderInfo> batchGetIfExists(@SkipRecord List<SenderInfoKey> keys) throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -159,7 +159,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertIfExists(@SkipRecord List<SenderInfo> elements) throws ServiceException {
+    public List<SenderInfoKey> batchInsertIfExists(@SkipRecord List<SenderInfo> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
@@ -173,7 +173,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDeleteIfExists(@SkipRecord List<LongIdKey> keys) throws ServiceException {
+    public void batchDeleteIfExists(@SkipRecord List<SenderInfoKey> keys) throws ServiceException {
         crudService.batchDeleteIfExists(keys);
     }
 
@@ -181,7 +181,7 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsertOrUpdate(@SkipRecord List<SenderInfo> elements) throws ServiceException {
+    public List<SenderInfoKey> batchInsertOrUpdate(@SkipRecord List<SenderInfo> elements) throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 

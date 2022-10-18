@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
 /**
  * 发送器信息。
@@ -9,11 +9,11 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  * @author DwArFeng
  * @since 1.0.0
  */
-public class SenderInfo implements Entity<LongIdKey> {
+public class SenderInfo implements Entity<SenderInfoKey> {
 
-    private static final long serialVersionUID = -7255275533811395996L;
+    private static final long serialVersionUID = 2783393926867564423L;
 
-    private LongIdKey key;
+    private SenderInfoKey key;
     private String label;
     private String type;
     private String param;
@@ -22,7 +22,7 @@ public class SenderInfo implements Entity<LongIdKey> {
     public SenderInfo() {
     }
 
-    public SenderInfo(LongIdKey key, String label, String type, String param, String remark) {
+    public SenderInfo(SenderInfoKey key, String label, String type, String param, String remark) {
         this.key = key;
         this.label = label;
         this.type = type;
@@ -31,12 +31,12 @@ public class SenderInfo implements Entity<LongIdKey> {
     }
 
     @Override
-    public LongIdKey getKey() {
+    public SenderInfoKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(LongIdKey key) {
+    public void setKey(SenderInfoKey key) {
         this.key = key;
     }
 

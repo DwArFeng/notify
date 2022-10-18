@@ -1,27 +1,26 @@
-package com.dwarfeng.notify.impl.bean.entity.key;
+package com.dwarfeng.notify.stack.bean.entity.key;
 
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.stack.bean.key.Key;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Hibernate 发送器关系主键。
+ * 发送器信息主键。
  *
  * @author DwArFeng
- * @since 1.0.0
+ * @since 1.1.0
  */
-public class HibernateSenderRelationKey implements Bean, Serializable {
+public class SenderInfoKey implements Key {
 
-    private static final long serialVersionUID = -2903220500018059637L;
+    private static final long serialVersionUID = -3791850333095277450L;
 
     private Long notifySettingId;
     private String topicId;
 
-    public HibernateSenderRelationKey() {
+    public SenderInfoKey() {
     }
 
-    public HibernateSenderRelationKey(Long notifySettingId, String topicId) {
+    public SenderInfoKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -47,7 +46,7 @@ public class HibernateSenderRelationKey implements Bean, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HibernateSenderRelationKey that = (HibernateSenderRelationKey) o;
+        SenderInfoKey that = (SenderInfoKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId))
             return false;
@@ -63,7 +62,7 @@ public class HibernateSenderRelationKey implements Bean, Serializable {
 
     @Override
     public String toString() {
-        return "HibernateSenderRelationKey{" +
+        return "SenderInfoKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

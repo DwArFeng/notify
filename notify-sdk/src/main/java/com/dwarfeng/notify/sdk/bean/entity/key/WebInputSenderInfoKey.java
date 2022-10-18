@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.sdk.bean.entity.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderRelationKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,21 +9,21 @@ import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * WebInput 发送器关系主键。
+ * WebInput 发送器信息主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class WebInputSenderRelationKey implements Key {
+public class WebInputSenderInfoKey implements Key {
 
-    private static final long serialVersionUID = -3915986514109007538L;
+    private static final long serialVersionUID = 4132991678396778975L;
 
-    public static SenderRelationKey toStackBean(WebInputSenderRelationKey webInputSenderRelationKey) {
-        if (Objects.isNull(webInputSenderRelationKey)) {
+    public static SenderInfoKey toStackBean(WebInputSenderInfoKey webInputSenderInfoKey) {
+        if (Objects.isNull(webInputSenderInfoKey)) {
             return null;
         } else {
-            return new SenderRelationKey(
-                    webInputSenderRelationKey.getNotifySettingId(), webInputSenderRelationKey.getTopicId()
+            return new SenderInfoKey(
+                    webInputSenderInfoKey.getNotifySettingId(), webInputSenderInfoKey.getTopicId()
             );
         }
     }
@@ -37,10 +37,10 @@ public class WebInputSenderRelationKey implements Key {
     @NotEmpty
     private String topicId;
 
-    public WebInputSenderRelationKey() {
+    public WebInputSenderInfoKey() {
     }
 
-    public WebInputSenderRelationKey(Long notifySettingId, String topicId) {
+    public WebInputSenderInfoKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -66,7 +66,7 @@ public class WebInputSenderRelationKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        WebInputSenderRelationKey that = (WebInputSenderRelationKey) o;
+        WebInputSenderInfoKey that = (WebInputSenderInfoKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId)) return false;
         return Objects.equals(topicId, that.topicId);
@@ -81,7 +81,7 @@ public class WebInputSenderRelationKey implements Key {
 
     @Override
     public String toString() {
-        return "WebInputSenderRelationKey{" +
+        return "WebInputSenderInfoKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

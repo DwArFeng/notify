@@ -14,8 +14,8 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = -7654183737668339023L;
-    
+    private static final long serialVersionUID = 1481238128233525805L;
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -36,8 +36,8 @@ public class HibernateNotifySetting implements Bean {
     private HibernateRouterInfo routerInfo;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "notifySetting")
-    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "notifySetting")
+    private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "notifySetting")
     private Set<HibernatePreference> preferences = new HashSet<>();
@@ -101,12 +101,12 @@ public class HibernateNotifySetting implements Bean {
         this.routerInfo = routerInfo;
     }
 
-    public Set<HibernateSenderRelation> getSenderRelations() {
-        return senderRelations;
+    public Set<HibernateSenderInfo> getSenderInfos() {
+        return senderInfos;
     }
 
-    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
-        this.senderRelations = senderRelations;
+    public void setSenderInfos(Set<HibernateSenderInfo> senderInfos) {
+        this.senderInfos = senderInfos;
     }
 
     public Set<HibernatePreference> getPreferences() {

@@ -1,16 +1,16 @@
 package com.dwarfeng.notify.impl.dao;
 
 import com.dwarfeng.notify.impl.bean.entity.HibernateSenderInfo;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.dao.SenderInfoDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +20,13 @@ import java.util.List;
 @Repository
 public class SenderInfoDaoImpl implements SenderInfoDao {
 
-    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, SenderInfo, HibernateSenderInfo>
+    private final HibernateBatchBaseDao<SenderInfoKey, HibernateSenderInfoKey, SenderInfo, HibernateSenderInfo>
             batchBaseDao;
     private final HibernateEntireLookupDao<SenderInfo, HibernateSenderInfo> entireLookupDao;
     private final HibernatePresetLookupDao<SenderInfo, HibernateSenderInfo> presetLookupDao;
 
     public SenderInfoDaoImpl(
-            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, SenderInfo, HibernateSenderInfo> batchBaseDao,
+            HibernateBatchBaseDao<SenderInfoKey, HibernateSenderInfoKey, SenderInfo, HibernateSenderInfo> batchBaseDao,
             HibernateEntireLookupDao<SenderInfo, HibernateSenderInfo> entireLookupDao,
             HibernatePresetLookupDao<SenderInfo, HibernateSenderInfo> presetLookupDao
     ) {
@@ -38,7 +38,7 @@ public class SenderInfoDaoImpl implements SenderInfoDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public LongIdKey insert(SenderInfo element) throws DaoException {
+    public SenderInfoKey insert(SenderInfo element) throws DaoException {
         return batchBaseDao.insert(element);
     }
 
@@ -52,21 +52,21 @@ public class SenderInfoDaoImpl implements SenderInfoDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(LongIdKey key) throws DaoException {
+    public void delete(SenderInfoKey key) throws DaoException {
         batchBaseDao.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(LongIdKey key) throws DaoException {
+    public boolean exists(SenderInfoKey key) throws DaoException {
         return batchBaseDao.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public SenderInfo get(LongIdKey key) throws DaoException {
+    public SenderInfo get(SenderInfoKey key) throws DaoException {
         return batchBaseDao.get(key);
     }
 
@@ -74,7 +74,7 @@ public class SenderInfoDaoImpl implements SenderInfoDao {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<LongIdKey> batchInsert(@SkipRecord List<SenderInfo> elements) throws DaoException {
+    public List<SenderInfoKey> batchInsert(@SkipRecord List<SenderInfo> elements) throws DaoException {
         return batchBaseDao.batchInsert(elements);
     }
 
@@ -88,21 +88,21 @@ public class SenderInfoDaoImpl implements SenderInfoDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<LongIdKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<SenderInfoKey> keys) throws DaoException {
         batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<SenderInfoKey> keys) throws DaoException {
         return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<SenderInfoKey> keys) throws DaoException {
         return batchBaseDao.nonExists(keys);
     }
 
@@ -110,7 +110,7 @@ public class SenderInfoDaoImpl implements SenderInfoDao {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<SenderInfo> batchGet(@SkipRecord List<LongIdKey> keys) throws DaoException {
+    public List<SenderInfo> batchGet(@SkipRecord List<SenderInfoKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

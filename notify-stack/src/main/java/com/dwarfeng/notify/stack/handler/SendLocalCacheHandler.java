@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.stack.handler;
 
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
@@ -23,7 +23,7 @@ public interface SendLocalCacheHandler extends Handler {
      * @return 指定部件的评估上下文，如果主键对应的发送器信息不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
-    Sender getSender(LongIdKey senderInfoKey) throws HandlerException;
+    Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException;
 
     /**
      * 清除本地缓存。

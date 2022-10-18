@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -8204493164273117658L;
+    private static final long serialVersionUID = -999533512806696391L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -39,8 +39,8 @@ public class HibernateTopic implements Bean {
     private HibernateDispatcherInfo dispatcherInfo;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderRelation.class, mappedBy = "topic")
-    private Set<HibernateSenderRelation> senderRelations = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "topic")
+    private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "topic")
     private Set<HibernatePreference> preferences = new HashSet<>();
@@ -115,12 +115,12 @@ public class HibernateTopic implements Bean {
         this.dispatcherInfo = dispatcherInfo;
     }
 
-    public Set<HibernateSenderRelation> getSenderRelations() {
-        return senderRelations;
+    public Set<HibernateSenderInfo> getSenderInfos() {
+        return senderInfos;
     }
 
-    public void setSenderRelations(Set<HibernateSenderRelation> senderRelations) {
-        this.senderRelations = senderRelations;
+    public void setSenderInfos(Set<HibernateSenderInfo> senderInfos) {
+        this.senderInfos = senderInfos;
     }
 
     public Set<HibernatePreference> getPreferences() {
