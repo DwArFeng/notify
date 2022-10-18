@@ -14,14 +14,15 @@ import java.util.Date;
  */
 public class SendHistory implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -3680956971305126819L;
-
+    private static final long serialVersionUID = -3307006469637819607L;
+    
     private LongIdKey key;
     private LongIdKey notifySettingKey;
     private StringIdKey topicKey;
     private StringIdKey userKey;
     private Date happenedDate;
     private String routeInfo;
+    private String dispatchInfo;
     private String sendInfo;
     private boolean succeedFlag;
     private String remark;
@@ -31,7 +32,7 @@ public class SendHistory implements Entity<LongIdKey> {
 
     public SendHistory(
             LongIdKey key, LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, Date happenedDate,
-            String routeInfo, String sendInfo, boolean succeedFlag, String remark
+            String routeInfo, String dispatchInfo, String sendInfo, boolean succeedFlag, String remark
     ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
@@ -39,6 +40,7 @@ public class SendHistory implements Entity<LongIdKey> {
         this.userKey = userKey;
         this.happenedDate = happenedDate;
         this.routeInfo = routeInfo;
+        this.dispatchInfo = dispatchInfo;
         this.sendInfo = sendInfo;
         this.succeedFlag = succeedFlag;
         this.remark = remark;
@@ -94,6 +96,14 @@ public class SendHistory implements Entity<LongIdKey> {
         this.routeInfo = routeInfo;
     }
 
+    public String getDispatchInfo() {
+        return dispatchInfo;
+    }
+
+    public void setDispatchInfo(String dispatchInfo) {
+        this.dispatchInfo = dispatchInfo;
+    }
+
     public String getSendInfo() {
         return sendInfo;
     }
@@ -127,6 +137,7 @@ public class SendHistory implements Entity<LongIdKey> {
                 ", userKey=" + userKey +
                 ", happenedDate=" + happenedDate +
                 ", routeInfo='" + routeInfo + '\'' +
+                ", dispatchInfo='" + dispatchInfo + '\'' +
                 ", sendInfo='" + sendInfo + '\'' +
                 ", succeedFlag=" + succeedFlag +
                 ", remark='" + remark + '\'' +

@@ -56,7 +56,7 @@ public class SendHistoryMaintainServiceImplTest {
         for (int i = 0; i < 5; i++) {
             SendHistory sendHistory = new SendHistory(
                     null, new LongIdKey(NOTIFY_SETTING_ID), new StringIdKey(TOPIC_ID), new StringIdKey(USER_ID),
-                    new Date(), "routeInfo", "sendInfo", true, "remark"
+                    new Date(), "routeInfo", "dispatchInfo", "sendInfo", true, "remark"
             );
             sendHistories.add(sendHistory);
         }

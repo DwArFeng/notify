@@ -14,7 +14,7 @@ import java.util.Optional;
 @Table(name = "tbl_send_history")
 public class HibernateSendHistory implements Bean {
 
-    private static final long serialVersionUID = -3288703817361388043L;
+    private static final long serialVersionUID = -1310567845712622283L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -38,6 +38,9 @@ public class HibernateSendHistory implements Bean {
 
     @Column(name = "route_info", columnDefinition = "TEXT")
     private String routeInfo;
+
+    @Column(name = "dispatch_info", columnDefinition = "TEXT")
+    private String dispatchInfo;
 
     @Column(name = "send_info", columnDefinition = "TEXT")
     private String sendInfo;
@@ -152,6 +155,14 @@ public class HibernateSendHistory implements Bean {
         this.routeInfo = routeInfo;
     }
 
+    public String getDispatchInfo() {
+        return dispatchInfo;
+    }
+
+    public void setDispatchInfo(String dispatchInfo) {
+        this.dispatchInfo = dispatchInfo;
+    }
+
     public String getSendInfo() {
         return sendInfo;
     }
@@ -209,6 +220,7 @@ public class HibernateSendHistory implements Bean {
                 "userStringId = " + userStringId + ", " +
                 "happenedDate = " + happenedDate + ", " +
                 "routeInfo = " + routeInfo + ", " +
+                "dispatchInfo = " + dispatchInfo + ", " +
                 "sendInfo = " + sendInfo + ", " +
                 "succeedFlag = " + succeedFlag + ", " +
                 "remark = " + remark + ", " +
