@@ -4,7 +4,6 @@ import com.dwarfeng.notify.stack.service.PreferenceIndicatorMaintainService;
 import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
@@ -18,36 +17,14 @@ public class PreferenceIndicatorPresetCriteriaMaker implements PresetCriteriaMak
     @Override
     public void makeCriteria(DetachedCriteria detachedCriteria, String s, Object[] objects) {
         switch (s) {
-            case PreferenceIndicatorMaintainService.ID_LIKE:
-                idLike(detachedCriteria, objects);
-                break;
-            case PreferenceIndicatorMaintainService.LABEL_LIKE:
-                labelLike(detachedCriteria, objects);
-                break;
             case PreferenceIndicatorMaintainService.CHILD_FOR_TOPIC:
                 childForTopic(detachedCriteria, objects);
                 break;
+            case PreferenceIndicatorMaintainService.CHILD_FOR_TOPIC_PREFERENCE_ID_ASC:
+                childForTopicPreferenceIdAsc(detachedCriteria, objects);
+                break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
-        }
-    }
-
-    private void idLike(DetachedCriteria detachedCriteria, Object[] objects) {
-        try {
-            String pattern = (String) objects[0];
-            detachedCriteria.add(Restrictions.like("stringId", pattern, MatchMode.ANYWHERE));
-            detachedCriteria.addOrder(Order.asc("stringId"));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
-        }
-    }
-
-    private void labelLike(DetachedCriteria detachedCriteria, Object[] objects) {
-        try {
-            String pattern = (String) objects[0];
-            detachedCriteria.add(Restrictions.like("label", pattern, MatchMode.ANYWHERE));
-        } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }
     }
 
@@ -60,6 +37,21 @@ public class PreferenceIndicatorPresetCriteriaMaker implements PresetCriteriaMak
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
                 detachedCriteria.add(Restrictions.eqOrIsNull("topicId", stringIdKey.getStringId()));
             }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    private void childForTopicPreferenceIdAsc(DetachedCriteria detachedCriteria, Object[] objects) {
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("topicId"));
+            } else {
+                StringIdKey stringIdKey = (StringIdKey) objects[0];
+                detachedCriteria.add(Restrictions.eqOrIsNull("topicId", stringIdKey.getStringId()));
+            }
+            detachedCriteria.addOrder(Order.asc("preferenceId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }

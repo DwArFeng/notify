@@ -16,7 +16,6 @@ public interface PreferenceIndicatorMaintainService extends
         BatchCrudService<PreferenceIndicatorKey, PreferenceIndicator>, EntireLookupService<PreferenceIndicator>,
         PresetLookupService<PreferenceIndicator> {
 
-    String ID_LIKE = "id_like";
-    String LABEL_LIKE = "label_like";
     String CHILD_FOR_TOPIC = "child_for_topic";
+    String CHILD_FOR_TOPIC_PREFERENCE_ID_ASC = "child_for_topic_preference_id_asc";
 }

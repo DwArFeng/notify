@@ -18,4 +18,5 @@ public interface SendHistoryMaintainService extends BatchCrudService<LongIdKey, 
     String CHILD_FOR_NOTIFY_SETTING = "child_for_notify_setting";
     String CHILD_FOR_TOPIC = "child_for_topic";
     String CHILD_FOR_USER = "child_for_user";
+    String HAPPENED_DATE_DESC = "happened_date_desc";
 }
