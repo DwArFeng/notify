@@ -2,10 +2,10 @@ package com.dwarfeng.notify.impl.handler.router;
 
 import com.dwarfeng.dutil.basic.io.IOUtil;
 import com.dwarfeng.dutil.basic.io.StringOutputStream;
-import com.dwarfeng.notify.stack.bean.dto.Routing;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,8 +100,8 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<Routing> parseRouting(Object context) throws RouterException {
-            return processor.parseRouting(context);
+        public List<StringIdKey> route(String routeInfo, Context context) throws RouterException {
+            return processor.route(routeInfo, context);
         }
 
         @Override
@@ -121,12 +121,14 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
     public interface Processor {
 
         /**
-         * 解析路径。
+         * 路由操作。
          *
-         * @param context 上下文对象。
-         * @return 解析的路径组成的列表。
+         * @param routeInfo 路由信息。
+         * @param context   上下文。
+         * @return 路由返回的用户主键组成的列表。
          * @throws RouterException 路由器异常。
+         * @see Router#route(String, Router.Context)
          */
-        List<Routing> parseRouting(Object context) throws RouterException;
+        List<StringIdKey> route(String routeInfo, Router.Context context) throws RouterException;
     }
 }

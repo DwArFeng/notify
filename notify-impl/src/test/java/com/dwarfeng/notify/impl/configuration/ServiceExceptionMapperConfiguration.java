@@ -33,6 +33,8 @@ public class ServiceExceptionMapperConfiguration {
         destination.put(DispatcherMakeException.class, ServiceExceptionCodes.DISPATCHER_MAKE_FAILED);
         destination.put(UnsupportedDispatcherTypeException.class, ServiceExceptionCodes.UNSUPPORTED_DISPATCHER_TYPE);
         destination.put(RouterInfoNotExistsException.class, ServiceExceptionCodes.ROUTER_INFO_NOT_EXISTED);
+        destination.put(DispatcherInfoNotExistsException.class, ServiceExceptionCodes.DISPATCHER_INFO_NOT_EXISTED);
+        destination.put(SenderInfoNotExistsException.class, ServiceExceptionCodes.SENDER_INFO_NOT_EXISTED);
         return new MapServiceExceptionMapper(destination, com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes.UNDEFINE);
     }
 }

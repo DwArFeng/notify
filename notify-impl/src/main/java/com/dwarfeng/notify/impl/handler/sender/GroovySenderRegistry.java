@@ -100,13 +100,8 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public void send(StringIdKey userKey, Object context) throws SenderException {
-            processor.send(userKey, context);
-        }
-
-        @Override
-        public void batchSend(List<StringIdKey> userKeys, Object context) throws SenderException {
-            processor.batchSend(userKeys, context);
+        public void send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException {
+            processor.send(sendInfo, userKeys, context);
         }
 
         @Override
@@ -126,25 +121,14 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
     public interface Processor {
 
         /**
-         * 向指定的用户发送信息。
+         * 发送操作。
          *
-         * @param userKey 指定的用户主键。
-         * @param context 上下文。
-         * @throws SenderException 发送器异常。
-         */
-        void send(StringIdKey userKey, Object context) throws SenderException;
-
-        /**
-         * 向一批用户发送信息。
-         *
-         * @param userKeys 指定的用户组成的列表。
+         * @param sendInfo 发送信息。
+         * @param userKeys 用户列表。
          * @param context  上下文。
-         * @throws SenderException 发送器异常
+         * @throws SenderException 发送器异常。
+         * @see Sender#send(String, List, Sender.Context)
          */
-        default void batchSend(List<StringIdKey> userKeys, Object context) throws SenderException {
-            for (StringIdKey userKey : userKeys) {
-                send(userKey, context);
-            }
-        }
+        void send(String sendInfo, List<StringIdKey> userKeys, Sender.Context context) throws SenderException;
     }
 }

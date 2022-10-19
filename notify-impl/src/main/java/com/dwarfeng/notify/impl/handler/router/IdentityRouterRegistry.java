@@ -1,19 +1,22 @@
 package com.dwarfeng.notify.impl.handler.router;
 
-import com.dwarfeng.notify.stack.bean.dto.Routing;
 import com.dwarfeng.notify.stack.exception.RouterException;
-import com.dwarfeng.notify.stack.exception.RouterExecutionException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
- * 特定路由器注册。
+ * 本体路由器注册。
  *
  * @author DwArFeng
  * @since 1.0.1
@@ -32,23 +35,23 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
     @Override
     public String provideLabel() {
-        return "特定主题与用户路由器";
+        return "本体路由器";
     }
 
     @Override
     public String provideDescription() {
-        return "将 List<Routing> 作为 routerContext 传入路由器，路由器直接返回此结果。";
+        return "以 param 参数中的内容为分隔符（支持正则表达式），拆分 routeInfo，拆分的结果作为用户的 ID。";
     }
 
     @Override
     public String provideExampleParam() {
-        return "";
+        return ",";
     }
 
     @Override
     public Router makeRouter(String type, String param) throws RouterException {
         try {
-            return ctx.getBean(IdentityRouter.class);
+            return ctx.getBean(IdentityRouter.class, param);
         } catch (Exception e) {
             throw new RouterMakeException(e, type, param);
         }
@@ -58,14 +61,18 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
     public static class IdentityRouter implements Router {
 
+        private final String delimiter;
+
+        public IdentityRouter(String delimiter) {
+            this.delimiter = delimiter;
+        }
+
         @Override
-        public List<Routing> parseRouting(Object context) throws RouterException {
-            try {
-                @SuppressWarnings("unchecked") List<Routing> result = (List<Routing>) context;
-                return result;
-            } catch (Exception e) {
-                throw new RouterExecutionException(e);
+        public List<StringIdKey> route(String routeInfo, Context context) {
+            if (Objects.isNull(routeInfo)) {
+                return Collections.emptyList();
             }
+            return Arrays.stream(routeInfo.split(delimiter)).map(StringIdKey::new).collect(Collectors.toList());
         }
     }
 }

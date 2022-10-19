@@ -1,9 +1,7 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
 import com.dwarfeng.notify.impl.handler.Pusher;
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,10 +50,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context) {
+    public void notifySent(SendHistory sendHistory) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.notifyHappened(notifySetting, topic, user, context);
+                delegate.notifySent(sendHistory);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }
@@ -63,10 +61,10 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context) {
+    public void notifySent(List<SendHistory> sendHistories) {
         for (Pusher delegate : delegates) {
             try {
-                delegate.notifyHappened(notifySetting, topic, users, context);
+                delegate.notifySent(sendHistories);
             } catch (Exception e) {
                 LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
             }

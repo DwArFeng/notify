@@ -58,7 +58,7 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
 
     @Override
     public String provideDescription() {
-        return "将发送的内容直接打印在日志上";
+        return "将发送的内容打印在日志上";
     }
 
     @Override
@@ -97,8 +97,17 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public void send(StringIdKey userKey, Object context) {
-            logger.log("向用户 {} 发送消息，上下文为 {}", userKey, context);
+        public void send(String sendInfo, List<StringIdKey> userKeys, Context context) {
+            for (StringIdKey userKey : userKeys) {
+                logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfo);
+            }
+        }
+
+        @Override
+        public String toString() {
+            return "LogSender{" +
+                    "logger=" + logger +
+                    '}';
         }
     }
 }

@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化通知操作的整体流程。
+  - com.dwarfeng.notify.impl.handler.NotifyHandlerImpl。
+
 - 新增预设查询。
   - com.dwarfeng.notify.stack.service.TopicMaintainService.ENABLED。
 

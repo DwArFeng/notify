@@ -1,45 +1,33 @@
 package groovy
 
 import com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry
-import com.dwarfeng.notify.stack.bean.dto.Routing
-import com.dwarfeng.notify.stack.bean.entity.Topic
-import com.dwarfeng.notify.stack.bean.entity.User
 import com.dwarfeng.notify.stack.exception.RouterException
-import com.dwarfeng.notify.stack.service.TopicMaintainService
-import com.dwarfeng.notify.stack.service.UserMaintainService
-import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo
-import org.springframework.beans.factory.annotation.Autowired
+import com.dwarfeng.notify.stack.handler.Router
+import com.dwarfeng.subgrade.stack.bean.key.StringIdKey
 import org.springframework.stereotype.Component
+
+import java.util.stream.Collectors
 
 /**
  * 示例路由器。
  *
  * <p>
- * 该路由器将从主题表中取出最多前 {@link #MAX_TOPIC} 个主题；并从用户表中取出最多 {@link #MAX_USER} 个用户。<br>
- * 随后，将用主题和用户排列，返回其所有的排列组合。
+ * 该路由器以 {@link #DELIMITER} 为分隔符，对 routerInfo 进行分隔，并将结果数组作为用户的 ID 进行返回。
  */
 @SuppressWarnings("GrPackage")
 @Component
 class ExampleRouterProcessor implements GroovyRouterRegistry.Processor {
 
-    private static final int MAX_TOPIC = 2
-    private static final int MAX_USER = 3
-
-    @Autowired
-    private TopicMaintainService topicMaintainService
-    @Autowired
-    private UserMaintainService userMaintainService
+    /**
+     * 路由实现中 routeInfo 的分隔符。
+     */
+    private static final String DELIMITER = ","
 
     @Override
-    List<Routing> parseRouting(Object context) throws RouterException {
-        List<Topic> topics = topicMaintainService.lookupAsList(new PagingInfo(0, MAX_TOPIC))
-        List<User> users = userMaintainService.lookupAsList(new PagingInfo(0, MAX_USER))
-        List<Routing> result = new ArrayList<>()
-        for (Topic topic in topics) {
-            for (User user in users) {
-                result.add(new Routing(topic.getKey(), user.getKey()))
-            }
+    List<StringIdKey> route(String routeInfo, Router.Context context) throws RouterException {
+        if (Objects.isNull(routeInfo)) {
+            return Collections.emptyList()
         }
-        return result
+        return Arrays.stream(routeInfo.split(DELIMITER)).map(StringIdKey::new).collect(Collectors.toList())
     }
 }

@@ -100,13 +100,9 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
         }
 
         @Override
-        public void dispatch(StringIdKey userKey, Object context) throws DispatcherException {
-            processor.dispatch(userKey, context);
-        }
-
-        @Override
-        public void batchDispatch(List<StringIdKey> userKeys, Object context) throws DispatcherException {
-            processor.batchDispatch(userKeys, context);
+        public List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context)
+                throws DispatcherException {
+            return processor.dispatch(dispatchInfo, userKeys, context);
         }
 
         @Override
@@ -126,25 +122,16 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
     public interface Processor {
 
         /**
-         * 向指定的用户调度信息。
+         * 调度操作。
          *
-         * @param userKey 指定的用户主键。
-         * @param context 上下文。
+         * @param dispatchInfo 调度信息。
+         * @param userKeys     用户空间。
+         * @param context      上下文。
+         * @return 调度返回的用户主键组成的列表。
          * @throws DispatcherException 调度器异常。
+         * @see Dispatcher#dispatch(String, List, Dispatcher.Context)
          */
-        void dispatch(StringIdKey userKey, Object context) throws DispatcherException;
-
-        /**
-         * 向一批用户调度信息。
-         *
-         * @param userKeys 指定的用户组成的列表。
-         * @param context  上下文。
-         * @throws DispatcherException 调度器异常
-         */
-        default void batchDispatch(List<StringIdKey> userKeys, Object context) throws DispatcherException {
-            for (StringIdKey userKey : userKeys) {
-                dispatch(userKey, context);
-            }
-        }
+        List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context)
+                throws DispatcherException;
     }
 }

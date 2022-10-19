@@ -1,13 +1,14 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * 将信息输出至日志的推送器。
@@ -36,13 +37,17 @@ public class LogPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context)
-            throws HandlerException {
-        String title = "通知发生事件:";
-        String message = String.format(
-                "通知设置: %s, 主题: %s, 用户: %s, 上下文对象: %s", notifySetting, topic, user, context
-        );
+    public void notifySent(SendHistory sendHistory) throws HandlerException {
+        String title = "通知被发送事件:";
+        String message = Objects.toString(sendHistory);
         logData(title, message);
+    }
+
+    @Override
+    public void notifySent(List<SendHistory> sendHistories) throws HandlerException {
+        for (SendHistory sendHistory : sendHistories) {
+            notifySent(sendHistory);
+        }
     }
 
     private void logData(String title, String message) throws HandlerException {

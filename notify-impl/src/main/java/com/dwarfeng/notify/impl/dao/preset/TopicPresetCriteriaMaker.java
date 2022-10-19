@@ -25,6 +25,9 @@ public class TopicPresetCriteriaMaker implements PresetCriteriaMaker {
             case TopicMaintainService.ENABLED:
                 enabled(detachedCriteria, objects);
                 break;
+            case TopicMaintainService.ENABLED_SORTED:
+                enabledSorted(detachedCriteria, objects);
+                break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
         }
@@ -53,6 +56,16 @@ public class TopicPresetCriteriaMaker implements PresetCriteriaMaker {
     private void enabled(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             detachedCriteria.add(Restrictions.eq("enabled", true));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    private void enabledSorted(DetachedCriteria detachedCriteria, Object[] objects) {
+        try {
+            detachedCriteria.add(Restrictions.eq("enabled", true));
+            detachedCriteria.addOrder(Order.desc("priority"));
+            detachedCriteria.addOrder(Order.asc("stringId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }

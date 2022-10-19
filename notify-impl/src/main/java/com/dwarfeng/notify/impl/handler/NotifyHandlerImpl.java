@@ -1,18 +1,25 @@
 package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.dto.Routing;
 import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
+import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
+import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.handler.*;
 import com.dwarfeng.notify.stack.service.*;
+import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -23,100 +30,76 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotifyHandlerImpl.class);
 
-    private final NotifySettingMaintainService notifySettingMaintainService;
-    private final RouterInfoMaintainService routerInfoMaintainService;
-    private final SenderInfoMaintainService senderInfoMaintainService;
+    private final ApplicationContext ctx;
+
     private final TopicMaintainService topicMaintainService;
     private final UserMaintainService userMaintainService;
+    private final PreferenceMaintainService preferenceMaintainService;
+    private final PreferenceIndicatorMaintainService preferenceIndicatorMaintainService;
+    private final VariableMaintainService variableMaintainService;
+    private final SendHistoryMaintainService sendHistoryMaintainService;
 
     private final RouteLocalCacheHandler routeLocalCacheHandler;
+    private final DispatchLocalCacheHandler dispatchLocalCacheHandler;
     private final SendLocalCacheHandler sendLocalCacheHandler;
 
     private final PushHandler pushHandler;
 
     private final HandlerValidator handlerValidator;
 
+    private final KeyFetcher<LongIdKey> keyFetcher;
+
     public NotifyHandlerImpl(
-            NotifySettingMaintainService notifySettingMaintainService,
-            RouterInfoMaintainService routerInfoMaintainService,
-            SenderInfoMaintainService senderInfoMaintainService,
+            ApplicationContext ctx,
             TopicMaintainService topicMaintainService,
             UserMaintainService userMaintainService,
-            RouteLocalCacheHandler routeLocalCacheHandler,
+            PreferenceMaintainService preferenceMaintainService,
+            PreferenceIndicatorMaintainService preferenceIndicatorMaintainService,
+            VariableMaintainService variableMaintainService,
+            SendHistoryMaintainService sendHistoryMaintainService, RouteLocalCacheHandler routeLocalCacheHandler,
+            DispatchLocalCacheHandler dispatchLocalCacheHandler,
             SendLocalCacheHandler sendLocalCacheHandler,
             PushHandler pushHandler,
-            HandlerValidator handlerValidator
+            HandlerValidator handlerValidator,
+            KeyFetcher<LongIdKey> keyFetcher
     ) {
-        this.notifySettingMaintainService = notifySettingMaintainService;
-        this.routerInfoMaintainService = routerInfoMaintainService;
-        this.senderInfoMaintainService = senderInfoMaintainService;
+        this.ctx = ctx;
         this.topicMaintainService = topicMaintainService;
         this.userMaintainService = userMaintainService;
+        this.preferenceMaintainService = preferenceMaintainService;
+        this.preferenceIndicatorMaintainService = preferenceIndicatorMaintainService;
+        this.variableMaintainService = variableMaintainService;
+        this.sendHistoryMaintainService = sendHistoryMaintainService;
         this.routeLocalCacheHandler = routeLocalCacheHandler;
+        this.dispatchLocalCacheHandler = dispatchLocalCacheHandler;
         this.sendLocalCacheHandler = sendLocalCacheHandler;
         this.pushHandler = pushHandler;
         this.handlerValidator = handlerValidator;
+        this.keyFetcher = keyFetcher;
     }
 
     @Override
     public void notify(NotifyInfo notifyInfo) throws HandlerException {
         try {
             LongIdKey notifySettingKey = notifyInfo.getNotifySettingKey();
-            Object routerContext = notifyInfo.getRouterContext();
-            Object senderContext = notifyInfo.getSenderContext();
+            String routeInfo = notifyInfo.getRouteInfo();
+            String dispatchInfo = notifyInfo.getDispatchInfo();
+            String sendInfo = notifyInfo.getSendInfo();
 
-            // 确认通知设置存在。
-            handlerValidator.makeSureNotifySettingExists(notifySettingKey);
+            // 确认通知设置有效。
+            handlerValidator.makeSureNotifySettingValid(notifySettingKey);
 
-            // 确认通知设置使能。
-            handlerValidator.makeSureNotifySettingEnabled(notifySettingKey);
+            // 进行路由操作。
+            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfo);
 
-            // 确认路由器信息存在。
-            handlerValidator.makeSureRouterInfoExists(notifySettingKey);
+            // 进行调度操作。
+            List<DispatchedItem> dispatchedItems = dispatching(notifySettingKey, dispatchInfo, routedUserKeys);
 
-            NotifySetting notifySetting = notifySettingMaintainService.get(notifySettingKey);
+            // 进行发送操作。
+            List<SentItem> sentItems = sending(notifySettingKey, sendInfo, dispatchedItems);
 
-            // 查找 notifySettingKey 对应的所有使能的路由器信息，并通过本地缓存拿出路由器。
-            List<RouterInfo> routerInfos = routerInfoMaintainService.lookupAsList();
-            List<Router> routers = new ArrayList<>();
-            for (RouterInfo routerInfo : routerInfos) {
-                Router router = routeLocalCacheHandler.getRouter(notifySettingKey);
-                if (Objects.isNull(router)) {
-                    LOGGER.warn("未能获取路由器信息 {} 对应的路由器，请检查配置", routerInfo);
-                } else {
-                    routers.add(router);
-                }
-            }
-
-            // 对每个 router 调用解析方法，获得路径的集合（去重）。
-            Set<Routing> routingSet = new HashSet<>();
-            for (Router router : routers) {
-                try {
-                    routingSet.addAll(router.parseRouting(routerContext));
-                } catch (RouterException e) {
-                    LOGGER.warn("路由 " + router + " 解析路径时发生异常，部分路径将不会发送通知，异常信息如下: ", e);
-                }
-            }
-
-            // 临时定义本地映射，这些映射缓存了主键与实体的对应发送器信息，避免后续代码频繁操作数据访问层进行读取。
-            Map<StringIdKey, Topic> topicMap = new HashMap<>();
-            Map<StringIdKey, User> userMap = new HashMap<>();
-
-            // 以主题为键，将路径汇聚为映射。
-            Map<StringIdKey, List<StringIdKey>> routingMap = mapRouting(topicMap, userMap, routingSet);
-            // 取出主题的键，按照主题的优先级进行升序排序，获得排序好的主题键列表。
-            List<StringIdKey> orderedTopicKey = topicMap.values().stream().sorted(TopicComparator.INSTANCE)
-                    .map(Topic::getKey).collect(Collectors.toList());
-
-            // 遍历排序好的主题键，发送数据。
-            for (StringIdKey topicKey : orderedTopicKey) {
-                List<StringIdKey> userKeys = routingMap.get(topicKey);
-                Topic topic = topicMap.get(topicKey);
-                List<User> users = userKeys.stream().map(userMap::get).collect(Collectors.toList());
-                notifySingleTopic(
-                        notifySettingKey, topicKey, userKeys, senderContext, notifySetting, topic, users
-                );
-            }
+            // 进行后处理操作。
+            postprocessing(notifySettingKey, routeInfo, dispatchInfo, sendInfo, sentItems);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -124,91 +107,626 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
     }
 
-    private Map<StringIdKey, List<StringIdKey>> mapRouting(
-            Map<StringIdKey, Topic> topicMap, Map<StringIdKey, User> userMap, Set<Routing> routingSet
+    private List<StringIdKey> routing(LongIdKey notifySettingKey, String routeInfo) throws Exception {
+        // 通过本地缓存获取路由器。
+        Router router = routeLocalCacheHandler.getRouter(notifySettingKey);
+
+        // 调用路由方法，获取与通知相关的用户主键。
+        InternalRouterContext routerContext = ctx.getBean(InternalRouterContext.class, this);
+        routerContext.setNotifySettingKey(notifySettingKey);
+
+        // 返回结果列表。
+        return router.route(routeInfo, routerContext);
+    }
+
+    private List<DispatchedItem> dispatching(
+            LongIdKey notifySettingKey, String dispatchInfo, List<StringIdKey> routedUserKeys
     ) throws Exception {
-        Map<StringIdKey, List<StringIdKey>> routingMap = new HashMap<>();
-        for (Routing routing : routingSet) {
-            // 对主题进行使能判定，如果主题未使能，则不汇聚路径。
-            StringIdKey topicKey = routing.getTopicKey();
-            mayPutTopic(topicMap, topicKey);
-            Topic topic = topicMap.get(topicKey);
-            if (!topic.isEnabled()) {
-                continue;
+        // 查询所有使能的主题。
+        List<StringIdKey> topicKeys = topicMaintainService.lookupAsList(
+                TopicMaintainService.ENABLED_SORTED, new Object[0]
+        ).stream().map(Topic::getKey).collect(Collectors.toList());
+
+        // 对所有调度器执行启动调度方法，获取每个主题的目标用户，并转换为 Item 结构体。
+        List<DispatchedItem> dispatchedItems = new ArrayList<>();
+        InternalDispatcherContext dispatcherContext = ctx.getBean(InternalDispatcherContext.class, this);
+        dispatcherContext.setNotifySettingKey(notifySettingKey);
+        dispatcherContext.setRoutedUserKeys(new HashSet<>(routedUserKeys));
+        for (StringIdKey topicKey : topicKeys) {
+            try {
+                // 对上下文设置当前主题。
+                dispatcherContext.setTopicKey(topicKey);
+
+                // 获取主题的调度器。
+                Dispatcher dispatcher = dispatchLocalCacheHandler.getDispatcher(topicKey);
+
+                // 调用调度器，获取需要通过此主题发送通知的用户列表。
+                List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
+                        dispatchInfo, routedUserKeys, dispatcherContext
+                );
+
+                // 生成 Item 结构体，并添加到结果列表。
+                dispatchedItems.add(new DispatchedItem(topicKey, dispatchedUserKeys));
+            } catch (DispatcherException e) {
+                LOGGER.warn("主题 " + topicKey + " 调度失败, 将不参与发送, 异常信息如下: ", e);
+            }
+        }
+
+        // 返回 Item 结构体。
+        return dispatchedItems;
+    }
+
+    private List<SentItem> sending(LongIdKey notifySettingKey, String sendInfo, List<DispatchedItem> dispatchedItems)
+            throws Exception {
+        // 定义 Item 结构体列表。
+        List<SentItem> sentItems = new ArrayList<>();
+
+        // 遍历 Item 结构体，对每个主题发送通知，生成发送结果并添加到发送列表中。
+        InternalSenderContext senderContext = ctx.getBean(InternalSenderContext.class, this);
+        senderContext.setNotifySettingKey(notifySettingKey);
+        for (DispatchedItem item : dispatchedItems) {
+            // 获取结构体的参数。
+            StringIdKey topicKey = item.getTopicKey();
+            List<StringIdKey> userKeys = item.getUserKeys();
+
+            // 为发送历史实体定义标志位。
+            boolean succeedFlag;
+
+            try {
+                // 对上下文设置当前主题。
+                senderContext.setTopicKey(topicKey);
+
+                // 获取当前通知设置与当前主题下的发送器。
+                Sender sender = sendLocalCacheHandler.getSender(
+                        new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId())
+                );
+
+                // 执行发生动作。
+                sender.send(sendInfo, userKeys, senderContext);
+
+                // 置成功标志位。
+                succeedFlag = true;
+            } catch (SenderException e) {
+                LOGGER.warn("主题 " + topicKey + " 发送失败, 异常信息如下: ", e);
+
+                // 置成功标志位。
+                succeedFlag = false;
             }
 
-            // 对于使能的映射，汇聚路径。
-            StringIdKey userKey = routing.getUserKey();
-            mayPutUser(userMap, userKey);
-            if (routingMap.containsKey(topicKey)) {
-                routingMap.get(topicKey).add(userKey);
-            } else {
-                List<StringIdKey> userKeys = new ArrayList<>();
-                userKeys.add(userKey);
-                routingMap.put(topicKey, userKeys);
+            // 构建发送历史。
+            sentItems.add(new SentItem(topicKey, userKeys, new Date(), succeedFlag));
+        }
+
+        // 返回 Item 结构体。
+        return sentItems;
+    }
+
+    private void postprocessing(
+            LongIdKey notifySettingKey, String routeInfo, String dispatchInfo, String sendInfo,
+            List<SentItem> sentItems
+    ) throws Exception {
+        // 构造发送历史实体。
+        List<SendHistory> sendHistories = new ArrayList<>();
+        for (SentItem item : sentItems) {
+            // 获取 Item 结构体中的参数。
+            StringIdKey topicKey = item.getTopicKey();
+            List<StringIdKey> userKeys = item.getUerKeys();
+            Date happenedDate = item.getHappenedDate();
+            boolean succeedFlag = item.isSucceedFlag();
+
+            for (StringIdKey userKey : userKeys) {
+                SendHistory sendHistory = new SendHistory(
+                        keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, happenedDate,
+                        routeInfo, dispatchInfo, sendInfo, succeedFlag, "通过 NotifyHandlerImpl 生成"
+                );
+                sendHistories.add(sendHistory);
             }
         }
-        return routingMap;
+
+        // 记录数据。
+        insertSendHistories(sendHistories);
+
+        // 推送数据。
+        pushSendHistories(sendHistories);
     }
 
-    private void mayPutTopic(Map<StringIdKey, Topic> topicMap, StringIdKey topicKey) throws Exception {
-        if (topicMap.containsKey(topicKey)) {
-            return;
-        }
-
-        handlerValidator.makeSureTopicExists(topicKey);
-        Topic topic = topicMaintainService.get(topicKey);
-        topicMap.put(topicKey, topic);
-    }
-
-    private void mayPutUser(Map<StringIdKey, User> userMap, StringIdKey userKey) throws Exception {
-        if (userMap.containsKey(userKey)) {
-            return;
-        }
-
-        handlerValidator.makeSureUserExists(userKey);
-        User user = userMaintainService.get(userKey);
-        userMap.put(userKey, user);
-    }
-
-    private void notifySingleTopic(
-            LongIdKey notifySettingKey, StringIdKey topicKey, List<StringIdKey> userKeys, Object context,
-            NotifySetting notifySetting, Topic topic, List<User> users
-    ) throws Exception {
-        // 从本地缓存中拿到发送器，如果为 null，则警告并退出方法。
-        SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-        Sender sender = sendLocalCacheHandler.getSender(senderInfoKey);
-        if (Objects.isNull(sender)) {
-            SenderInfo senderInfo = senderInfoMaintainService.get(senderInfoKey);
-            LOGGER.warn("未能获取发送器信息 {} 对应的发送器，请检查配置", senderInfo);
-            return;
-        }
-
-        // 调用发送器的批量发送方法。
+    private void insertSendHistories(List<SendHistory> sendHistories) {
         try {
-            sender.batchSend(userKeys, context);
-            pushHandler.notifyHappened(notifySetting, topic, users, context);
-        } catch (SenderException e) {
-            LOGGER.warn("发送器 " + sender + " 发送信息失败，异常信息如下: ", e);
+            sendHistoryMaintainService.batchInsert(sendHistories);
+        } catch (Exception e) {
+            LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 逐条插入", e);
+        }
+
+        List<SendHistory> failedList = new ArrayList<>();
+
+        for (SendHistory sendHistory : sendHistories) {
+            try {
+                sendHistoryMaintainService.insert(sendHistory);
+            } catch (Exception e) {
+                LOGGER.warn("数据插入失败, 放弃对数据的插入: " + sendHistory, e);
+                failedList.add(sendHistory);
+            }
+        }
+
+        if (!failedList.isEmpty()) {
+            LOGGER.warn("记录数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
+            failedList.forEach(sendHistory -> LOGGER.debug(sendHistory + ""));
         }
     }
 
-    private static class TopicComparator implements Comparator<Topic> {
+    private void pushSendHistories(List<SendHistory> sendHistories) {
+        try {
+            pushHandler.notifySent(sendHistories);
+            return;
+        } catch (Exception e) {
+            LOGGER.warn("数据推送失败, 试图使用不同的策略进行推送: 逐条推送", e);
+        }
 
-        public static final TopicComparator INSTANCE = new TopicComparator();
+        List<SendHistory> failedList = new ArrayList<>();
+
+        for (SendHistory sendHistory : sendHistories) {
+            try {
+                pushHandler.notifySent(sendHistory);
+            } catch (Exception e) {
+                LOGGER.warn("数据推送失败, 放弃对数据的推送: " + sendHistory, e);
+                failedList.add(sendHistory);
+            }
+        }
+
+        if (!failedList.isEmpty()) {
+            LOGGER.warn("推送数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
+            failedList.forEach(sendHistory -> LOGGER.debug(sendHistory + ""));
+        }
+    }
+
+    private static class DispatchedItem {
+
+        private final StringIdKey topicKey;
+        private final List<StringIdKey> userKeys;
+
+        public DispatchedItem(StringIdKey topicKey, List<StringIdKey> userKeys) {
+            this.topicKey = topicKey;
+            this.userKeys = userKeys;
+        }
+
+        public StringIdKey getTopicKey() {
+            return topicKey;
+        }
+
+        public List<StringIdKey> getUserKeys() {
+            return userKeys;
+        }
 
         @Override
-        public int compare(Topic o1, Topic o2) {
-            int p1 = o1.getPriority();
-            int p2 = o2.getPriority();
-            if (p1 != p2) {
-                // 优先级高的主题要排在优先级低的主题前面，所以优先级高的要小于优先级低的，因此参数是 p2, p1。
-                return Integer.compare(p2, p1);
+        public String toString() {
+            return "DispatchedItem{" +
+                    "topicKey=" + topicKey +
+                    ", userKeys=" + userKeys +
+                    '}';
+        }
+    }
+
+    private static class SentItem {
+
+        private final StringIdKey topicKey;
+        private final List<StringIdKey> uerKeys;
+        private final Date happenedDate;
+        private final boolean succeedFlag;
+
+        public SentItem(StringIdKey topicKey, List<StringIdKey> uerKeys, Date happenedDate, boolean succeedFlag) {
+            this.topicKey = topicKey;
+            this.uerKeys = uerKeys;
+            this.happenedDate = happenedDate;
+            this.succeedFlag = succeedFlag;
+        }
+
+        public StringIdKey getTopicKey() {
+            return topicKey;
+        }
+
+        public List<StringIdKey> getUerKeys() {
+            return uerKeys;
+        }
+
+        public Date getHappenedDate() {
+            return happenedDate;
+        }
+
+        public boolean isSucceedFlag() {
+            return succeedFlag;
+        }
+
+        @Override
+        public String toString() {
+            return "SentItem{" +
+                    "topicKey=" + topicKey +
+                    ", userKeys=" + uerKeys +
+                    ", happenedDate=" + happenedDate +
+                    ", succeedFlag=" + succeedFlag +
+                    '}';
+        }
+    }
+
+    @Component
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    class InternalRouterContext implements Router.Context {
+
+        private LongIdKey notifySettingKey;
+
+        @Override
+        public LongIdKey getNotifySettingKey() {
+            return notifySettingKey;
+        }
+
+        public void setNotifySettingKey(LongIdKey notifySettingKey) {
+            this.notifySettingKey = notifySettingKey;
+        }
+
+        @Override
+        public List<StringIdKey> availableTopicKeys() throws RouterException {
+            try {
+                return topicMaintainService.lookupAsList(
+                        TopicMaintainService.ENABLED_SORTED, new Object[0]
+                ).stream().map(Topic::getKey).collect(Collectors.toList());
+            } catch (Exception e) {
+                throw new RouterException(e);
             }
-            // 如果优先级相等，则按照 id 进行比较。
-            String id1 = o1.getKey().getStringId();
-            String id2 = o2.getKey().getStringId();
-            return id1.compareTo(id2);
+        }
+
+        @Override
+        public boolean existsPreference(StringIdKey topicKey, StringIdKey userKey, String preferenceId)
+                throws RouterException {
+            try {
+                return preferenceMaintainService.exists(new PreferenceKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                ));
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
+        public String getPreference(StringIdKey topicKey, StringIdKey userKey, String preferenceId)
+                throws RouterException {
+            try {
+                Preference preference = preferenceMaintainService.getIfExists(new PreferenceKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                ));
+                if (Objects.isNull(preference)) {
+                    return null;
+                }
+                return preference.getValue();
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
+        public String getDefaultPreference(StringIdKey topicKey, String preferenceId) throws RouterException {
+            try {
+                PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
+                        new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
+                );
+                if (Objects.isNull(preferenceIndicator)) {
+                    return null;
+                }
+                return preferenceIndicator.getDefaultValue();
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
+        public boolean existsVariable(StringIdKey topicKey, StringIdKey userKey, String variableId)
+                throws RouterException {
+            try {
+                return variableMaintainService.exists(new VariableKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
+                ));
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
+        public String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId) throws RouterException {
+            try {
+                Variable variable = variableMaintainService.getIfExists(new VariableKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
+                ));
+                if (Objects.isNull(variable)) {
+                    return null;
+                }
+                return variable.getValue();
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
+        public void putVariable(StringIdKey topicKey, StringIdKey userKey, String variableId, String value)
+                throws RouterException {
+            try {
+                Variable variable = new Variable(
+                        new VariableKey(
+                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
+                                variableId
+                        ),
+                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
+                );
+                variableMaintainService.insertOrUpdate(variable);
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
+        public List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws RouterException {
+            try {
+                // 遍历用户主键，将合法的用户添加到结果列表。
+                List<StringIdKey> filteredUserKeys = new ArrayList<>();
+                for (StringIdKey userKey : userKeys) {
+                    if (!userMaintainService.exists(userKey)) {
+                        continue;
+                    }
+                    User user = userMaintainService.get(userKey);
+                    if (!user.isEnabled()) {
+                        continue;
+                    }
+                    filteredUserKeys.add(userKey);
+                }
+
+                // 返回结果列表。
+                return filteredUserKeys;
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+    }
+
+    @Component
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    class InternalDispatcherContext implements Dispatcher.Context {
+
+        private LongIdKey notifySettingKey;
+        private StringIdKey topicKey;
+        private Set<StringIdKey> routedUserKeys;
+
+        @Override
+        public LongIdKey getNotifySettingKey() {
+            return notifySettingKey;
+        }
+
+        public void setNotifySettingKey(LongIdKey notifySettingKey) {
+            this.notifySettingKey = notifySettingKey;
+        }
+
+        @Override
+        public StringIdKey getTopicKey() {
+            return topicKey;
+        }
+
+        public void setTopicKey(StringIdKey topicKey) {
+            this.topicKey = topicKey;
+        }
+
+        public Set<StringIdKey> getRoutedUserKeys() {
+            return routedUserKeys;
+        }
+
+        public void setRoutedUserKeys(Set<StringIdKey> routedUserKeys) {
+            this.routedUserKeys = routedUserKeys;
+        }
+
+        @Override
+        public boolean existsPreference(StringIdKey userKey, String preferenceId) throws DispatcherException {
+            try {
+                return preferenceMaintainService.exists(new PreferenceKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                ));
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public String getPreference(StringIdKey userKey, String preferenceId) throws DispatcherException {
+            try {
+                Preference preference = preferenceMaintainService.getIfExists(new PreferenceKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                ));
+                if (Objects.isNull(preference)) {
+                    return null;
+                }
+                return preference.getValue();
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public String getDefaultPreference(StringIdKey userKey, String preferenceId) throws DispatcherException {
+            try {
+                PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
+                        new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
+                );
+                if (Objects.isNull(preferenceIndicator)) {
+                    return null;
+                }
+                return preferenceIndicator.getDefaultValue();
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public boolean existsVariable(StringIdKey userKey, String variableId) throws DispatcherException {
+            try {
+                return variableMaintainService.exists(new VariableKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
+                ));
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public String getVariable(StringIdKey userKey, String variableId) throws DispatcherException {
+            try {
+                Variable variable = variableMaintainService.getIfExists(new VariableKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
+                ));
+                if (Objects.isNull(variable)) {
+                    return null;
+                }
+                return variable.getValue();
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public void putVariable(StringIdKey userKey, String variableId, String value) throws DispatcherException {
+            try {
+                Variable variable = new Variable(
+                        new VariableKey(
+                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
+                                variableId
+                        ),
+                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
+                );
+                variableMaintainService.insertOrUpdate(variable);
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws DispatcherException {
+            try {
+                // 遍历用户主键，将合法的用户添加到结果列表。
+                List<StringIdKey> filteredUserKeys = new ArrayList<>();
+                for (StringIdKey userKey : userKeys) {
+                    if (!routedUserKeys.contains(userKey)) {
+                        continue;
+                    }
+                    filteredUserKeys.add(userKey);
+                }
+
+                // 返回结果列表。
+                return filteredUserKeys;
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+    }
+
+    @Component
+    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
+    class InternalSenderContext implements Sender.Context {
+
+        private LongIdKey notifySettingKey;
+        private StringIdKey topicKey;
+
+        @Override
+        public LongIdKey getNotifySettingKey() {
+            return notifySettingKey;
+        }
+
+        public void setNotifySettingKey(LongIdKey notifySettingKey) {
+            this.notifySettingKey = notifySettingKey;
+        }
+
+        @Override
+        public StringIdKey getTopicKey() {
+            return topicKey;
+        }
+
+        public void setTopicKey(StringIdKey topicKey) {
+            this.topicKey = topicKey;
+        }
+
+        @Override
+        public boolean existsPreference(StringIdKey userKey, String preferenceId) throws SenderException {
+            try {
+                return preferenceMaintainService.exists(new PreferenceKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                ));
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
+        }
+
+        @Override
+        public String getPreference(StringIdKey userKey, String preferenceId) throws SenderException {
+            try {
+                Preference preference = preferenceMaintainService.getIfExists(new PreferenceKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                ));
+                if (Objects.isNull(preference)) {
+                    return null;
+                }
+                return preference.getValue();
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
+        }
+
+        @Override
+        public String getDefaultPreference(StringIdKey userKey, String preferenceId) throws SenderException {
+            try {
+                PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
+                        new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
+                );
+                if (Objects.isNull(preferenceIndicator)) {
+                    return null;
+                }
+                return preferenceIndicator.getDefaultValue();
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
+        }
+
+        @Override
+        public boolean existsVariable(StringIdKey userKey, String variableId) throws SenderException {
+            try {
+                return variableMaintainService.exists(new VariableKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
+                ));
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
+        }
+
+        @Override
+        public String getVariable(StringIdKey userKey, String variableId) throws SenderException {
+            try {
+                Variable variable = variableMaintainService.getIfExists(new VariableKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
+                ));
+                if (Objects.isNull(variable)) {
+                    return null;
+                }
+                return variable.getValue();
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
+        }
+
+        @Override
+        public void putVariable(StringIdKey userKey, String variableId, String value) throws SenderException {
+            try {
+                Variable variable = new Variable(
+                        new VariableKey(
+                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
+                                variableId
+                        ),
+                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
+                );
+                variableMaintainService.insertOrUpdate(variable);
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
         }
     }
 }

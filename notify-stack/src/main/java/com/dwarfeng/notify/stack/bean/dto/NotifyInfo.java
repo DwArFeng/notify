@@ -11,19 +11,21 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class NotifyInfo implements Dto {
 
-    private static final long serialVersionUID = 4505514778249069224L;
+    private static final long serialVersionUID = 4636026866629218486L;
 
     private LongIdKey notifySettingKey;
-    private Object routerContext;
-    private Object senderContext;
+    private String routeInfo;
+    private String dispatchInfo;
+    private String sendInfo;
 
     public NotifyInfo() {
     }
 
-    public NotifyInfo(LongIdKey notifySettingKey, Object routerContext, Object senderContext) {
+    public NotifyInfo(LongIdKey notifySettingKey, String routeInfo, String dispatchInfo, String sendInfo) {
         this.notifySettingKey = notifySettingKey;
-        this.routerContext = routerContext;
-        this.senderContext = senderContext;
+        this.routeInfo = routeInfo;
+        this.dispatchInfo = dispatchInfo;
+        this.sendInfo = sendInfo;
     }
 
     public LongIdKey getNotifySettingKey() {
@@ -34,28 +36,37 @@ public class NotifyInfo implements Dto {
         this.notifySettingKey = notifySettingKey;
     }
 
-    public Object getRouterContext() {
-        return routerContext;
+    public String getRouteInfo() {
+        return routeInfo;
     }
 
-    public void setRouterContext(Object routerContext) {
-        this.routerContext = routerContext;
+    public void setRouteInfo(String routeInfo) {
+        this.routeInfo = routeInfo;
     }
 
-    public Object getSenderContext() {
-        return senderContext;
+    public String getDispatchInfo() {
+        return dispatchInfo;
     }
 
-    public void setSenderContext(Object senderContext) {
-        this.senderContext = senderContext;
+    public void setDispatchInfo(String dispatchInfo) {
+        this.dispatchInfo = dispatchInfo;
+    }
+
+    public String getSendInfo() {
+        return sendInfo;
+    }
+
+    public void setSendInfo(String sendInfo) {
+        this.sendInfo = sendInfo;
     }
 
     @Override
     public String toString() {
         return "NotifyInfo{" +
                 "notifySettingKey=" + notifySettingKey +
-                ", routerContext=" + routerContext +
-                ", senderContext=" + senderContext +
+                ", routeInfo='" + routeInfo + '\'' +
+                ", dispatchInfo='" + dispatchInfo + '\'' +
+                ", sendInfo='" + sendInfo + '\'' +
                 '}';
     }
 }

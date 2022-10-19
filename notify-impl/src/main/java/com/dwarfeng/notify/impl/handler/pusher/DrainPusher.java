@@ -1,8 +1,6 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -23,10 +21,10 @@ public class DrainPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context) {
+    public void notifySent(SendHistory sendHistory) {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context) {
+    public void notifySent(List<SendHistory> sendHistories) {
     }
 }

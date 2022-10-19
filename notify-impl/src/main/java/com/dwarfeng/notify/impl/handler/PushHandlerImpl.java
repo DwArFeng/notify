@@ -1,8 +1,6 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
-import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.notify.stack.handler.PushHandler;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,14 +29,12 @@ public class PushHandlerImpl implements PushHandler {
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, User user, Object context)
-            throws HandlerException {
-        pusher.notifyHappened(notifySetting, topic, user, context);
+    public void notifySent(SendHistory sendHistory) throws HandlerException {
+        pusher.notifySent(sendHistory);
     }
 
     @Override
-    public void notifyHappened(NotifySetting notifySetting, Topic topic, List<User> users, Object context)
-            throws HandlerException {
-        pusher.notifyHappened(notifySetting, topic, users, context);
+    public void notifySent(List<SendHistory> sendHistories) throws HandlerException {
+        pusher.notifySent(sendHistories);
     }
 }
