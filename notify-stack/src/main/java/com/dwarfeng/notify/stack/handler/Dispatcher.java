@@ -10,7 +10,7 @@ import java.util.List;
  * 调度器。
  *
  * @author DwArFeng
- * @since 1.0.0
+ * @since 1.1.0
  */
 public interface Dispatcher {
 
@@ -51,7 +51,7 @@ public interface Dispatcher {
      * 上下文。
      *
      * @author DwArFeng
-     * @since 1.0.0
+     * @since 1.1.0
      */
     interface Context {
 

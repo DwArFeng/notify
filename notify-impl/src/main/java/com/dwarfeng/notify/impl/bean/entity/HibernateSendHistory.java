@@ -14,7 +14,7 @@ import java.util.Optional;
 @Table(name = "tbl_send_history")
 public class HibernateSendHistory implements Bean {
 
-    private static final long serialVersionUID = -1310567845712622283L;
+    private static final long serialVersionUID = 8673053052958347822L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -47,6 +47,9 @@ public class HibernateSendHistory implements Bean {
 
     @Column(name = "succeed_flag")
     private boolean succeedFlag;
+
+    @Column(name = "sender_message", length = Constraints.LENGTH_MESSAGE)
+    private String senderMessage;
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
@@ -179,6 +182,14 @@ public class HibernateSendHistory implements Bean {
         this.succeedFlag = succeedFlag;
     }
 
+    public String getSenderMessage() {
+        return senderMessage;
+    }
+
+    public void setSenderMessage(String senderMessage) {
+        this.senderMessage = senderMessage;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -223,6 +234,7 @@ public class HibernateSendHistory implements Bean {
                 "dispatchInfo = " + dispatchInfo + ", " +
                 "sendInfo = " + sendInfo + ", " +
                 "succeedFlag = " + succeedFlag + ", " +
+                "senderMessage = " + senderMessage + ", " +
                 "remark = " + remark + ", " +
                 "notifySetting = " + notifySetting + ", " +
                 "topic = " + topic + ", " +

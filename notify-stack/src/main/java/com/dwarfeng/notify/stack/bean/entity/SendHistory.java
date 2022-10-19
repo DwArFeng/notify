@@ -14,7 +14,7 @@ import java.util.Date;
  */
 public class SendHistory implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -3307006469637819607L;
+    private static final long serialVersionUID = 5255243526066422439L;
     
     private LongIdKey key;
     private LongIdKey notifySettingKey;
@@ -25,6 +25,7 @@ public class SendHistory implements Entity<LongIdKey> {
     private String dispatchInfo;
     private String sendInfo;
     private boolean succeedFlag;
+    private String senderMessage;
     private String remark;
 
     public SendHistory() {
@@ -32,7 +33,8 @@ public class SendHistory implements Entity<LongIdKey> {
 
     public SendHistory(
             LongIdKey key, LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, Date happenedDate,
-            String routeInfo, String dispatchInfo, String sendInfo, boolean succeedFlag, String remark
+            String routeInfo, String dispatchInfo, String sendInfo, boolean succeedFlag, String senderMessage,
+            String remark
     ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
@@ -43,6 +45,7 @@ public class SendHistory implements Entity<LongIdKey> {
         this.dispatchInfo = dispatchInfo;
         this.sendInfo = sendInfo;
         this.succeedFlag = succeedFlag;
+        this.senderMessage = senderMessage;
         this.remark = remark;
     }
 
@@ -120,6 +123,14 @@ public class SendHistory implements Entity<LongIdKey> {
         this.succeedFlag = succeedFlag;
     }
 
+    public String getSenderMessage() {
+        return senderMessage;
+    }
+
+    public void setSenderMessage(String senderMessage) {
+        this.senderMessage = senderMessage;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -140,6 +151,7 @@ public class SendHistory implements Entity<LongIdKey> {
                 ", dispatchInfo='" + dispatchInfo + '\'' +
                 ", sendInfo='" + sendInfo + '\'' +
                 ", succeedFlag=" + succeedFlag +
+                ", senderMessage='" + senderMessage + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';
     }

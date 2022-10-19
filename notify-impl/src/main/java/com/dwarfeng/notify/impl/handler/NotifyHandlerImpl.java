@@ -169,9 +169,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
             StringIdKey topicKey = item.getTopicKey();
             List<StringIdKey> userKeys = item.getUserKeys();
 
-            // 为发送历史实体定义标志位。
-            boolean succeedFlag;
-
             try {
                 // 对上下文设置当前主题。
                 senderContext.setTopicKey(topicKey);
@@ -182,19 +179,13 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 );
 
                 // 执行发生动作。
-                sender.send(sendInfo, userKeys, senderContext);
+                List<Sender.Result> senderResult = sender.send(sendInfo, userKeys, senderContext);
 
-                // 置成功标志位。
-                succeedFlag = true;
+                // 构建发送结构体，添加到结构体列表中。
+                sentItems.add(new SentItem(topicKey, senderResult, new Date()));
             } catch (SenderException e) {
                 LOGGER.warn("主题 " + topicKey + " 发送失败, 异常信息如下: ", e);
-
-                // 置成功标志位。
-                succeedFlag = false;
             }
-
-            // 构建发送历史。
-            sentItems.add(new SentItem(topicKey, userKeys, new Date(), succeedFlag));
         }
 
         // 返回 Item 结构体。
@@ -210,14 +201,16 @@ public class NotifyHandlerImpl implements NotifyHandler {
         for (SentItem item : sentItems) {
             // 获取 Item 结构体中的参数。
             StringIdKey topicKey = item.getTopicKey();
-            List<StringIdKey> userKeys = item.getUerKeys();
+            List<Sender.Result> senderResults = item.getSenderResults();
             Date happenedDate = item.getHappenedDate();
-            boolean succeedFlag = item.isSucceedFlag();
 
-            for (StringIdKey userKey : userKeys) {
+            for (Sender.Result senderResult : senderResults) {
+                StringIdKey userKey = senderResult.getUserKey();
+                boolean succeedFlag = senderResult.isSucceedFlag();
+                String senderMessage = senderResult.getMessage();
                 SendHistory sendHistory = new SendHistory(
                         keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, happenedDate,
-                        routeInfo, dispatchInfo, sendInfo, succeedFlag, "通过 NotifyHandlerImpl 生成"
+                        routeInfo, dispatchInfo, sendInfo, succeedFlag, senderMessage, "通过 NotifyHandlerImpl 生成"
                 );
                 sendHistories.add(sendHistory);
             }
@@ -309,40 +302,33 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private static class SentItem {
 
         private final StringIdKey topicKey;
-        private final List<StringIdKey> uerKeys;
+        private final List<Sender.Result> senderResults;
         private final Date happenedDate;
-        private final boolean succeedFlag;
 
-        public SentItem(StringIdKey topicKey, List<StringIdKey> uerKeys, Date happenedDate, boolean succeedFlag) {
+        public SentItem(StringIdKey topicKey, List<Sender.Result> senderResults, Date happenedDate) {
             this.topicKey = topicKey;
-            this.uerKeys = uerKeys;
+            this.senderResults = senderResults;
             this.happenedDate = happenedDate;
-            this.succeedFlag = succeedFlag;
         }
 
         public StringIdKey getTopicKey() {
             return topicKey;
         }
 
-        public List<StringIdKey> getUerKeys() {
-            return uerKeys;
+        public List<Sender.Result> getSenderResults() {
+            return senderResults;
         }
 
         public Date getHappenedDate() {
             return happenedDate;
         }
 
-        public boolean isSucceedFlag() {
-            return succeedFlag;
-        }
-
         @Override
         public String toString() {
             return "SentItem{" +
                     "topicKey=" + topicKey +
-                    ", userKeys=" + uerKeys +
+                    ", senderResults=" + senderResults +
                     ", happenedDate=" + happenedDate +
-                    ", succeedFlag=" + succeedFlag +
                     '}';
         }
     }
@@ -429,7 +415,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId) throws RouterException {
+        public String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId)
+                throws RouterException {
             try {
                 Variable variable = variableMaintainService.getIfExists(new VariableKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId

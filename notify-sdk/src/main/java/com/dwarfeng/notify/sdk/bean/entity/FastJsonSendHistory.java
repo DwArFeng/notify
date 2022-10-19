@@ -17,7 +17,7 @@ import java.util.Objects;
  */
 public class FastJsonSendHistory implements Bean {
 
-    private static final long serialVersionUID = -3706903684741501662L;
+    private static final long serialVersionUID = 1773589893199765725L;
 
     public static FastJsonSendHistory of(SendHistory sendHistory) {
         if (Objects.isNull(sendHistory)) {
@@ -29,7 +29,8 @@ public class FastJsonSendHistory implements Bean {
                     FastJsonStringIdKey.of(sendHistory.getTopicKey()),
                     FastJsonStringIdKey.of(sendHistory.getUserKey()),
                     sendHistory.getHappenedDate(), sendHistory.getRouteInfo(), sendHistory.getDispatchInfo(),
-                    sendHistory.getSendInfo(), sendHistory.isSucceedFlag(), sendHistory.getRemark()
+                    sendHistory.getSendInfo(), sendHistory.isSucceedFlag(), sendHistory.getSenderMessage(),
+                    sendHistory.getRemark()
             );
         }
     }
@@ -61,7 +62,10 @@ public class FastJsonSendHistory implements Bean {
     @JSONField(name = "succeed_flag", ordinal = 9)
     private boolean succeedFlag;
 
-    @JSONField(name = "remark", ordinal = 10)
+    @JSONField(name = "sender_message", ordinal = 10)
+    private String senderMessage;
+
+    @JSONField(name = "remark", ordinal = 11)
     private String remark;
 
     public FastJsonSendHistory() {
@@ -70,7 +74,7 @@ public class FastJsonSendHistory implements Bean {
     public FastJsonSendHistory(
             FastJsonLongIdKey key, FastJsonLongIdKey notifySettingKey, FastJsonStringIdKey topicKey,
             FastJsonStringIdKey userKey, Date happenedDate, String routeInfo, String dispatchInfo, String sendInfo,
-            boolean succeedFlag, String remark
+            boolean succeedFlag, String senderMessage, String remark
     ) {
         this.key = key;
         this.notifySettingKey = notifySettingKey;
@@ -81,6 +85,7 @@ public class FastJsonSendHistory implements Bean {
         this.dispatchInfo = dispatchInfo;
         this.sendInfo = sendInfo;
         this.succeedFlag = succeedFlag;
+        this.senderMessage = senderMessage;
         this.remark = remark;
     }
 
@@ -156,6 +161,14 @@ public class FastJsonSendHistory implements Bean {
         this.succeedFlag = succeedFlag;
     }
 
+    public String getSenderMessage() {
+        return senderMessage;
+    }
+
+    public void setSenderMessage(String senderMessage) {
+        this.senderMessage = senderMessage;
+    }
+
     public String getRemark() {
         return remark;
     }
@@ -176,6 +189,7 @@ public class FastJsonSendHistory implements Bean {
                 ", dispatchInfo='" + dispatchInfo + '\'' +
                 ", sendInfo='" + sendInfo + '\'' +
                 ", succeedFlag=" + succeedFlag +
+                ", senderMessage='" + senderMessage + '\'' +
                 ", remark='" + remark + '\'' +
                 '}';
     }

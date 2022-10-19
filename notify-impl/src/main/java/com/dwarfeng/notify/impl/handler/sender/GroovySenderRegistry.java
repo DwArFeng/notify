@@ -100,8 +100,8 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public void send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException {
-            processor.send(sendInfo, userKeys, context);
+        public List<Result> send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException {
+            return processor.send(sendInfo, userKeys, context);
         }
 
         @Override
@@ -126,9 +126,10 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
          * @param sendInfo 发送信息。
          * @param userKeys 用户列表。
          * @param context  上下文。
+         * @return 发送结果组成的列表。
          * @throws SenderException 发送器异常。
          * @see Sender#send(String, List, Sender.Context)
          */
-        void send(String sendInfo, List<StringIdKey> userKeys, Sender.Context context) throws SenderException;
+        List<Sender.Result> send(String sendInfo, List<StringIdKey> userKeys, Sender.Context context) throws SenderException;
     }
 }
