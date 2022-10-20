@@ -1,15 +1,9 @@
 package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.sdk.bean.entity.*;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.PreferenceIndicatorStringKeyFormatter;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.PreferenceStringKeyFormatter;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.SenderInfoStringKeyFormatter;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.VariableStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
+import com.dwarfeng.notify.stack.bean.entity.key.*;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
@@ -54,6 +48,8 @@ public class CacheConfiguration {
     private String sendHistoryPrefix;
     @Value("${cache.prefix.entity.preference_indicator}")
     private String preferenceIndicatorPrefix;
+    @Value("${cache.prefix.entity.variable_indicator}")
+    private String variableIndicatorPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -190,6 +186,17 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonPreferenceIndicator>) template,
                 new PreferenceIndicatorStringKeyFormatter(preferenceIndicatorPrefix),
                 new DozerBeanTransformer<>(PreferenceIndicator.class, FastJsonPreferenceIndicator.class, mapper)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<VariableIndicatorKey, VariableIndicator, FastJsonVariableIndicator>
+    variableIndicatorRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonVariableIndicator>) template,
+                new VariableIndicatorStringKeyFormatter(variableIndicatorPrefix),
+                new DozerBeanTransformer<>(VariableIndicator.class, FastJsonVariableIndicator.class, mapper)
         );
     }
 }

@@ -1,10 +1,7 @@
 package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
+import com.dwarfeng.notify.stack.bean.entity.key.*;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.notify.stack.service.*;
@@ -39,6 +36,9 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final VariableDao variableDao;
     private final VariableCache variableCache;
 
+    private final VariableIndicatorDao variableIndicatorDao;
+    private final VariableIndicatorCache variableIndicatorCache;
+
     private final SendHistoryDao sendHistoryDao;
     private final SendHistoryCache sendHistoryCache;
 
@@ -52,6 +52,7 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
             PreferenceDao preferenceDao, PreferenceCache preferenceCache,
             PreferenceIndicatorDao preferenceIndicatorDao, PreferenceIndicatorCache preferenceIndicatorCache,
             VariableDao variableDao, VariableCache variableCache,
+            VariableIndicatorDao variableIndicatorDao, VariableIndicatorCache variableIndicatorCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
         this.topicDao = topicDao;
@@ -66,6 +67,8 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         this.preferenceIndicatorCache = preferenceIndicatorCache;
         this.variableDao = variableDao;
         this.variableCache = variableCache;
+        this.variableIndicatorDao = variableIndicatorDao;
+        this.variableIndicatorCache = variableIndicatorCache;
         this.sendHistoryDao = sendHistoryDao;
         this.sendHistoryCache = sendHistoryCache;
     }
@@ -136,6 +139,13 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         ).stream().map(Variable::getKey).collect(Collectors.toList());
         variableDao.batchDelete(variableKeys);
         variableCache.batchDelete(variableKeys);
+
+        // 删除与变量设置相关的偏好指示器。
+        List<VariableIndicatorKey> variableIndicatorKeys = variableIndicatorDao.lookup(
+                VariableIndicatorMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(VariableIndicator::getKey).collect(Collectors.toList());
+        variableIndicatorDao.batchDelete(variableIndicatorKeys);
+        variableIndicatorCache.batchDelete(variableIndicatorKeys);
 
         // 删除与通知设置相关的发送历史的关联。
         List<SendHistory> sendHistories = sendHistoryDao.lookup(

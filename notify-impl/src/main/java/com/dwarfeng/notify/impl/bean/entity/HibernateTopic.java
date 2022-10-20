@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -999533512806696391L;
+    private static final long serialVersionUID = -6528959641509133362L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -50,6 +50,9 @@ public class HibernateTopic implements Bean {
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "topic")
     private Set<HibernateVariable> variables = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariableIndicator.class, mappedBy = "topic")
+    private Set<HibernateVariableIndicator> variableIndicators = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSendHistory.class, mappedBy = "topic")
     private Set<HibernateSendHistory> sendHistories = new HashSet<>();
@@ -145,6 +148,14 @@ public class HibernateTopic implements Bean {
 
     public void setVariables(Set<HibernateVariable> variables) {
         this.variables = variables;
+    }
+
+    public Set<HibernateVariableIndicator> getVariableIndicators() {
+        return variableIndicators;
+    }
+
+    public void setVariableIndicators(Set<HibernateVariableIndicator> variableIndicators) {
+        this.variableIndicators = variableIndicators;
     }
 
     public Set<HibernateSendHistory> getSendHistories() {
