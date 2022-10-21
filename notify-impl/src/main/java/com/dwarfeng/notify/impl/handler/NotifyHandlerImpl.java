@@ -2,10 +2,7 @@ package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
+import com.dwarfeng.notify.stack.bean.entity.key.*;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;
@@ -37,6 +34,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private final PreferenceMaintainService preferenceMaintainService;
     private final PreferenceIndicatorMaintainService preferenceIndicatorMaintainService;
     private final VariableMaintainService variableMaintainService;
+    private final VariableIndicatorMaintainService variableIndicatorMaintainService;
     private final SendHistoryMaintainService sendHistoryMaintainService;
 
     private final RouteLocalCacheHandler routeLocalCacheHandler;
@@ -56,7 +54,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
             PreferenceMaintainService preferenceMaintainService,
             PreferenceIndicatorMaintainService preferenceIndicatorMaintainService,
             VariableMaintainService variableMaintainService,
-            SendHistoryMaintainService sendHistoryMaintainService, RouteLocalCacheHandler routeLocalCacheHandler,
+            VariableIndicatorMaintainService variableIndicatorMaintainService,
+            SendHistoryMaintainService sendHistoryMaintainService,
+            RouteLocalCacheHandler routeLocalCacheHandler,
             DispatchLocalCacheHandler dispatchLocalCacheHandler,
             SendLocalCacheHandler sendLocalCacheHandler,
             PushHandler pushHandler,
@@ -69,6 +69,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.preferenceMaintainService = preferenceMaintainService;
         this.preferenceIndicatorMaintainService = preferenceIndicatorMaintainService;
         this.variableMaintainService = variableMaintainService;
+        this.variableIndicatorMaintainService = variableIndicatorMaintainService;
         this.sendHistoryMaintainService = sendHistoryMaintainService;
         this.routeLocalCacheHandler = routeLocalCacheHandler;
         this.dispatchLocalCacheHandler = dispatchLocalCacheHandler;
@@ -431,6 +432,21 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
+        public String getDefaultVariable(StringIdKey topicKey, String variableId) throws RouterException {
+            try {
+                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
+                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
+                );
+                if (Objects.isNull(variableIndicator)) {
+                    return null;
+                }
+                return variableIndicator.getDefaultValue();
+            } catch (Exception e) {
+                throw new RouterException(e);
+            }
+        }
+
+        @Override
         public void putVariable(StringIdKey topicKey, StringIdKey userKey, String variableId, String value)
                 throws RouterException {
             try {
@@ -532,7 +548,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public String getDefaultPreference(StringIdKey userKey, String preferenceId) throws DispatcherException {
+        public String getDefaultPreference(String preferenceId) throws DispatcherException {
             try {
                 PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
                         new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
@@ -567,6 +583,21 @@ public class NotifyHandlerImpl implements NotifyHandler {
                     return null;
                 }
                 return variable.getValue();
+            } catch (Exception e) {
+                throw new DispatcherException(e);
+            }
+        }
+
+        @Override
+        public String getDefaultVariable(String variableId) throws DispatcherException {
+            try {
+                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
+                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
+                );
+                if (Objects.isNull(variableIndicator)) {
+                    return null;
+                }
+                return variableIndicator.getDefaultValue();
             } catch (Exception e) {
                 throw new DispatcherException(e);
             }
@@ -660,7 +691,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public String getDefaultPreference(StringIdKey userKey, String preferenceId) throws SenderException {
+        public String getDefaultPreference(String preferenceId) throws SenderException {
             try {
                 PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
                         new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
@@ -695,6 +726,21 @@ public class NotifyHandlerImpl implements NotifyHandler {
                     return null;
                 }
                 return variable.getValue();
+            } catch (Exception e) {
+                throw new SenderException(e);
+            }
+        }
+
+        @Override
+        public String getDefaultVariable(String variableId) throws SenderException {
+            try {
+                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
+                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
+                );
+                if (Objects.isNull(variableIndicator)) {
+                    return null;
+                }
+                return variableIndicator.getDefaultValue();
             } catch (Exception e) {
                 throw new SenderException(e);
             }

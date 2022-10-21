@@ -151,6 +151,40 @@ public interface Router {
         String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId) throws RouterException;
 
         /**
+         * 获取指定的变量的默认值。
+         *
+         * <p>
+         * 如果指定的变量的默认值不存在，则返回 null。
+         *
+         * @param topicKey   变量主题的主键。
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的默认值。
+         * @throws RouterException 路由器异常。
+         */
+        String getDefaultVariable(StringIdKey topicKey, String variableId) throws RouterException;
+
+        /**
+         * 获取指定的变量的值或默认值。
+         *
+         * <p>
+         * 如果指定的变量的值存在，则放回变量值；否则，返回指定的变量的默认值；如果默认值也不存在则返回 null。
+         *
+         * @param topicKey   变量主题的主键。
+         * @param userKey    变量用户的主键。
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的值或默认值。
+         * @throws RouterException 路由器异常。
+         */
+        default String getVariableOrDefault(StringIdKey topicKey, StringIdKey userKey, String variableId)
+                throws RouterException {
+            if (existsVariable(topicKey, userKey, variableId)) {
+                return getVariable(topicKey, userKey, variableId);
+            } else {
+                return getDefaultVariable(topicKey, variableId);
+            }
+        }
+
+        /**
          * 设置指定的变量的值。
          *
          * @param topicKey   变量主题的主键。

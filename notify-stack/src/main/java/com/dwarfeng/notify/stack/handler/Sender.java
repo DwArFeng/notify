@@ -134,7 +134,7 @@ public interface Sender {
          * @return 指定的偏好的默认值。
          * @throws SenderException 发送器异常。
          */
-        String getDefaultPreference(StringIdKey userKey, String preferenceId) throws SenderException;
+        String getDefaultPreference(String preferenceId) throws SenderException;
 
         /**
          * 获取指定的偏好的值或默认值。
@@ -151,7 +151,7 @@ public interface Sender {
             if (existsPreference(userKey, preferenceId)) {
                 return getPreference(userKey, preferenceId);
             } else {
-                return getDefaultPreference(userKey, preferenceId);
+                return getDefaultPreference(preferenceId);
             }
         }
 
@@ -178,6 +178,37 @@ public interface Sender {
          * @throws SenderException 发送器异常。
          */
         String getVariable(StringIdKey userKey, String variableId) throws SenderException;
+
+        /**
+         * 获取指定的变量的默认值。
+         *
+         * <p>
+         * 如果指定的变量的默认值不存在，则返回 null。
+         *
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的默认值。
+         * @throws SenderException 发送器异常。
+         */
+        String getDefaultVariable(String variableId) throws SenderException;
+
+        /**
+         * 获取指定的变量的值或默认值。
+         *
+         * <p>
+         * 如果指定的变量的值存在，则放回变量值；否则，返回指定的变量的默认值；如果默认值也不存在则返回 null。
+         *
+         * @param userKey    变量用户的主键。
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的值或默认值。
+         * @throws SenderException 发送器异常。
+         */
+        default String getVariableOrDefault(StringIdKey userKey, String variableId) throws SenderException {
+            if (existsVariable(userKey, variableId)) {
+                return getVariable(userKey, variableId);
+            } else {
+                return getDefaultVariable(variableId);
+            }
+        }
 
         /**
          * 设置指定的变量的值。
