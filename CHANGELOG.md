@@ -4,6 +4,12 @@
 
 #### 功能构建
 
+- 完善预设的路由器注册。
+  - com.dwarfeng.notify.impl.handler.router.EntireRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.router.EmptyRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.router.IdentityRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.router.StaticRouterRegistry。
+
 - 优化通知操作的整体流程。
   - com.dwarfeng.notify.impl.handler.NotifyHandlerImpl。
 
