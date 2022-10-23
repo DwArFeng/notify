@@ -46,7 +46,7 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
 
     @Override
     public String provideDescription() {
-        return "通过自定义的Groovy脚本调度信息。";
+        return "通过自定义的 Groovy 脚本调度信息。";
     }
 
     @Override

@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 完善预设的调度器。
+  - com.dwarfeng.notify.impl.handler.dispatcher.EmptyDispatcherRegistry。
+  - com.dwarfeng.notify.impl.handler.dispatcher.EntireDispatcherRegistry。
+
 - 完善预设的路由器注册。
   - com.dwarfeng.notify.impl.handler.router.EntireRouterRegistry。
   - com.dwarfeng.notify.impl.handler.router.EmptyRouterRegistry。
