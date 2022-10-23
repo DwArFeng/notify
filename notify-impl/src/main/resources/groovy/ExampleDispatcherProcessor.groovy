@@ -2,6 +2,7 @@ import com.dwarfeng.notify.impl.handler.dispatcher.GroovyDispatcherRegistry
 import com.dwarfeng.notify.stack.exception.DispatcherException
 import com.dwarfeng.notify.stack.handler.Dispatcher
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey
+import org.apache.commons.lang3.StringUtils
 
 import java.util.stream.Collectors
 
@@ -23,7 +24,7 @@ class ExampleDispatcherProcessor implements GroovyDispatcherRegistry.Processor {
     @Override
     List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context)
             throws DispatcherException {
-        if (Objects.isNull(dispatchInfo)) {
+        if (StringUtils.isEmpty(dispatchInfo)) {
             return Collections.emptyList()
         }
         List<StringIdKey> tempUserKeys = Arrays.stream(dispatchInfo.split(DELIMITER)).map(StringIdKey::new)

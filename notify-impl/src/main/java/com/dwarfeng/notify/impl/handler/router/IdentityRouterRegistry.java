@@ -6,6 +6,7 @@ import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -94,7 +94,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
         @Override
         public List<StringIdKey> route(String routeInfo, Context context) throws RouterException {
-            if (Objects.isNull(routeInfo)) {
+            if (StringUtils.isEmpty(routeInfo)) {
                 return Collections.emptyList();
             }
             List<StringIdKey> userKeys = parseRouteInfo(routeInfo);

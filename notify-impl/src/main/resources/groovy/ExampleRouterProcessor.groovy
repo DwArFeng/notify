@@ -4,6 +4,7 @@ import com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry
 import com.dwarfeng.notify.stack.exception.RouterException
 import com.dwarfeng.notify.stack.handler.Router
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey
+import org.apache.commons.lang3.StringUtils
 import org.springframework.stereotype.Component
 
 import java.util.stream.Collectors
@@ -25,7 +26,7 @@ class ExampleRouterProcessor implements GroovyRouterRegistry.Processor {
 
     @Override
     List<StringIdKey> route(String routeInfo, Router.Context context) throws RouterException {
-        if (Objects.isNull(routeInfo)) {
+        if (StringUtils.isEmpty(routeInfo)) {
             return Collections.emptyList()
         }
         return Arrays.stream(routeInfo.split(DELIMITER)).map(StringIdKey::new).collect(Collectors.toList())
