@@ -273,6 +273,36 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
     }
 
+    @Override
+    public Router getRouter(LongIdKey routerInfoKey) throws HandlerException {
+        return routeLocalCacheHandler.getRouter(routerInfoKey);
+    }
+
+    @Override
+    public void clearRouterLocalCache() throws HandlerException {
+        routeLocalCacheHandler.clear();
+    }
+
+    @Override
+    public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException {
+        return dispatchLocalCacheHandler.getDispatcher(dispatcherInfoKey);
+    }
+
+    @Override
+    public void clearDispatcherLocalCache() throws HandlerException {
+        dispatchLocalCacheHandler.clear();
+    }
+
+    @Override
+    public Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException {
+        return sendLocalCacheHandler.getSender(senderInfoKey);
+    }
+
+    @Override
+    public void clearSenderLocalCache() throws HandlerException {
+        sendLocalCacheHandler.clear();
+    }
+
     private static class DispatchedItem {
 
         private final StringIdKey topicKey;

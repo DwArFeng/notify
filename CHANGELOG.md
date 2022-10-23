@@ -4,6 +4,12 @@
 
 #### 功能构建
 
+- 实现运维指令。
+  - com.dwarfeng.notify.impl.service.telqos.DlcCommand。
+  - com.dwarfeng.notify.impl.service.telqos.NotifyCommand。
+  - com.dwarfeng.notify.impl.service.telqos.RlcCommand。
+  - com.dwarfeng.notify.impl.service.telqos.SlcCommand。
+
 - 完善预设的调度器。
   - com.dwarfeng.notify.impl.handler.dispatcher.EmptyDispatcherRegistry。
   - com.dwarfeng.notify.impl.handler.dispatcher.EntireDispatcherRegistry。
