@@ -19,7 +19,7 @@ public interface Dispatcher {
      *
      * <p>
      * 调度操作需要在给定的用户空间 <code>userKeys</code> 中决定具体的调度用户。<br>
-     * 通常，用户的偏好和过去的调度信息会决定是否需要调度指定的用户，这些信息可以在 <code>context</code> 中获取。
+     * 通常，用户的元数据和过去的调度信息会决定是否需要调度指定的用户，这些信息可以在 <code>context</code> 中获取。
      *
      * <p>
      * 实现调度操作时，需要注意以下规约：
@@ -72,57 +72,57 @@ public interface Dispatcher {
         StringIdKey getTopicKey() throws DispatcherException;
 
         /**
-         * 查询指定的偏好是否存在。
+         * 查询指定的元数据是否存在。
          *
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好是否存在。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据是否存在。
          * @throws DispatcherException 调度器异常。
          */
-        boolean existsPreference(StringIdKey userKey, String preferenceId)
+        boolean existsMeta(StringIdKey userKey, String metaId)
                 throws DispatcherException;
 
         /**
-         * 获取指定的偏好的值。
+         * 获取指定的元数据的值。
          *
          * <p>
-         * 如果指定的偏好值不存在，则返回 null。
+         * 如果指定的元数据值不存在，则返回 null。
          *
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的值。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据的值。
          * @throws DispatcherException 调度器异常。
          */
-        String getPreference(StringIdKey userKey, String preferenceId) throws DispatcherException;
+        String getMeta(StringIdKey userKey, String metaId) throws DispatcherException;
 
         /**
-         * 获取指定的偏好的默认值。
+         * 获取指定的元数据的默认值。
          *
          * <p>
-         * 如果指定的偏好的默认值不存在，则返回 null。
+         * 如果指定的元数据的默认值不存在，则返回 null。
          *
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的默认值。
+         * @param metaId 元数据的 ID。
+         * @return 指定的元数据的默认值。
          * @throws DispatcherException 调度器异常。
          */
-        String getDefaultPreference(String preferenceId) throws DispatcherException;
+        String getDefaultMeta(String metaId) throws DispatcherException;
 
         /**
-         * 获取指定的偏好的值或默认值。
+         * 获取指定的元数据的值或默认值。
          *
          * <p>
-         * 如果指定的偏好的值存在，则放回偏好值；否则，返回指定的偏好的默认值；如果默认值也不存在则返回 null。
+         * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的值或默认值。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据的值或默认值。
          * @throws DispatcherException 调度器异常。
          */
-        default String getPreferenceOrDefault(StringIdKey userKey, String preferenceId) throws DispatcherException {
-            if (existsPreference(userKey, preferenceId)) {
-                return getPreference(userKey, preferenceId);
+        default String getMetaOrDefault(StringIdKey userKey, String metaId) throws DispatcherException {
+            if (existsMeta(userKey, metaId)) {
+                return getMeta(userKey, metaId);
             } else {
-                return getDefaultPreference(preferenceId);
+                return getDefaultMeta(metaId);
             }
         }
 

@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -6528959641509133362L;
+    private static final long serialVersionUID = -1767104220065034768L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -42,11 +42,11 @@ public class HibernateTopic implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "topic")
     private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "topic")
-    private Set<HibernatePreference> preferences = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "topic")
+    private Set<HibernateMeta> metas = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreferenceIndicator.class, mappedBy = "topic")
-    private Set<HibernatePreferenceIndicator> preferenceIndicators = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMetaIndicator.class, mappedBy = "topic")
+    private Set<HibernateMetaIndicator> metaIndicators = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "topic")
     private Set<HibernateVariable> variables = new HashSet<>();
@@ -126,20 +126,20 @@ public class HibernateTopic implements Bean {
         this.senderInfos = senderInfos;
     }
 
-    public Set<HibernatePreference> getPreferences() {
-        return preferences;
+    public Set<HibernateMeta> getMetas() {
+        return metas;
     }
 
-    public void setPreferences(Set<HibernatePreference> preferences) {
-        this.preferences = preferences;
+    public void setMetas(Set<HibernateMeta> metas) {
+        this.metas = metas;
     }
 
-    public Set<HibernatePreferenceIndicator> getPreferenceIndicators() {
-        return preferenceIndicators;
+    public Set<HibernateMetaIndicator> getMetaIndicators() {
+        return metaIndicators;
     }
 
-    public void setPreferenceIndicators(Set<HibernatePreferenceIndicator> preferenceIndicators) {
-        this.preferenceIndicators = preferenceIndicators;
+    public void setMetaIndicators(Set<HibernateMetaIndicator> metaIndicators) {
+        this.metaIndicators = metaIndicators;
     }
 
     public Set<HibernateVariable> getVariables() {

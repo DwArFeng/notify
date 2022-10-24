@@ -1,12 +1,12 @@
 package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
-import com.dwarfeng.notify.stack.service.PreferenceMaintainService;
+import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
 import com.dwarfeng.notify.stack.service.VariableMaintainService;
@@ -32,8 +32,8 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     private final SenderInfoDao senderInfoDao;
     private final SenderInfoCache senderInfoCache;
 
-    private final PreferenceDao preferenceDao;
-    private final PreferenceCache preferenceCache;
+    private final MetaDao metaDao;
+    private final MetaCache metaCache;
 
     private final VariableDao variableDao;
     private final VariableCache variableCache;
@@ -48,7 +48,7 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
             NotifySettingDao notifySettingDao, NotifySettingCache notifySettingCache,
             RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
             SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
-            PreferenceDao preferenceDao, PreferenceCache preferenceCache,
+            MetaDao metaDao, MetaCache metaCache,
             VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
@@ -58,8 +58,8 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
         this.routerInfoCache = routerInfoCache;
         this.senderInfoDao = senderInfoDao;
         this.senderInfoCache = senderInfoCache;
-        this.preferenceDao = preferenceDao;
-        this.preferenceCache = preferenceCache;
+        this.metaDao = metaDao;
+        this.metaCache = metaCache;
         this.variableDao = variableDao;
         this.variableCache = variableCache;
         this.sendHistoryDao = sendHistoryDao;
@@ -112,12 +112,12 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
         senderInfoDao.batchDelete(senderInfoKeys);
         senderInfoCache.batchDelete(senderInfoKeys);
 
-        // 删除与通知设置相关的偏好。
-        List<PreferenceKey> preferenceKeys = preferenceDao.lookup(
-                PreferenceMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{key}
-        ).stream().map(Preference::getKey).collect(Collectors.toList());
-        preferenceDao.batchDelete(preferenceKeys);
-        preferenceCache.batchDelete(preferenceKeys);
+        // 删除与通知设置相关的元数据。
+        List<MetaKey> metaKeys = metaDao.lookup(
+                MetaMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{key}
+        ).stream().map(Meta::getKey).collect(Collectors.toList());
+        metaDao.batchDelete(metaKeys);
+        metaCache.batchDelete(metaKeys);
 
         // 删除与通知设置相关的变量。
         List<VariableKey> variableKeys = variableDao.lookup(

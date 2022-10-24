@@ -14,8 +14,8 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 1481238128233525805L;
-
+    private static final long serialVersionUID = 3880615843260110534L;
+    
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -39,8 +39,8 @@ public class HibernateNotifySetting implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "notifySetting")
     private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "notifySetting")
-    private Set<HibernatePreference> preferences = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "notifySetting")
+    private Set<HibernateMeta> metas = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "notifySetting")
     private Set<HibernateVariable> variables = new HashSet<>();
@@ -109,12 +109,12 @@ public class HibernateNotifySetting implements Bean {
         this.senderInfos = senderInfos;
     }
 
-    public Set<HibernatePreference> getPreferences() {
-        return preferences;
+    public Set<HibernateMeta> getMetas() {
+        return metas;
     }
 
-    public void setPreferences(Set<HibernatePreference> preferences) {
-        this.preferences = preferences;
+    public void setMetas(Set<HibernateMeta> metas) {
+        this.metas = metas;
     }
 
     public Set<HibernateVariable> getVariables() {

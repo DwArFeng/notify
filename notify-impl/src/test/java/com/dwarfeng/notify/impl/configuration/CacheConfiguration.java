@@ -40,14 +40,14 @@ public class CacheConfiguration {
     private String dispatcherInfoPrefix;
     @Value("${cache.prefix.entity.dispatcher_support}")
     private String dispatcherSupportPrefix;
-    @Value("${cache.prefix.entity.preference}")
-    private String preferencePrefix;
+    @Value("${cache.prefix.entity.meta}")
+    private String metaPrefix;
     @Value("${cache.prefix.entity.variable}")
     private String variablePrefix;
     @Value("${cache.prefix.entity.send_history}")
     private String sendHistoryPrefix;
-    @Value("${cache.prefix.entity.preference_indicator}")
-    private String preferenceIndicatorPrefix;
+    @Value("${cache.prefix.entity.meta_indicator}")
+    private String metaIndicatorPrefix;
     @Value("${cache.prefix.entity.variable_indicator}")
     private String variableIndicatorPrefix;
 
@@ -150,11 +150,11 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<PreferenceKey, Preference, FastJsonPreference> preferenceRedisBatchBaseCache() {
+    public RedisBatchBaseCache<MetaKey, Meta, FastJsonMeta> metaRedisBatchBaseCache() {
         return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonPreference>) template,
-                new PreferenceStringKeyFormatter(preferencePrefix),
-                new DozerBeanTransformer<>(Preference.class, FastJsonPreference.class, mapper)
+                (RedisTemplate<String, FastJsonMeta>) template,
+                new MetaStringKeyFormatter(metaPrefix),
+                new DozerBeanTransformer<>(Meta.class, FastJsonMeta.class, mapper)
         );
     }
 
@@ -180,12 +180,12 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<PreferenceIndicatorKey, PreferenceIndicator, FastJsonPreferenceIndicator>
-    preferenceIndicatorRedisBatchBaseCache() {
+    public RedisBatchBaseCache<MetaIndicatorKey, MetaIndicator, FastJsonMetaIndicator>
+    metaIndicatorRedisBatchBaseCache() {
         return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonPreferenceIndicator>) template,
-                new PreferenceIndicatorStringKeyFormatter(preferenceIndicatorPrefix),
-                new DozerBeanTransformer<>(PreferenceIndicator.class, FastJsonPreferenceIndicator.class, mapper)
+                (RedisTemplate<String, FastJsonMetaIndicator>) template,
+                new MetaIndicatorStringKeyFormatter(metaIndicatorPrefix),
+                new DozerBeanTransformer<>(MetaIndicator.class, FastJsonMetaIndicator.class, mapper)
         );
     }
 

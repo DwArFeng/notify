@@ -31,8 +31,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     private final TopicMaintainService topicMaintainService;
     private final UserMaintainService userMaintainService;
-    private final PreferenceMaintainService preferenceMaintainService;
-    private final PreferenceIndicatorMaintainService preferenceIndicatorMaintainService;
+    private final MetaMaintainService metaMaintainService;
+    private final MetaIndicatorMaintainService metaIndicatorMaintainService;
     private final VariableMaintainService variableMaintainService;
     private final VariableIndicatorMaintainService variableIndicatorMaintainService;
     private final SendHistoryMaintainService sendHistoryMaintainService;
@@ -51,8 +51,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
             ApplicationContext ctx,
             TopicMaintainService topicMaintainService,
             UserMaintainService userMaintainService,
-            PreferenceMaintainService preferenceMaintainService,
-            PreferenceIndicatorMaintainService preferenceIndicatorMaintainService,
+            MetaMaintainService metaMaintainService,
+            MetaIndicatorMaintainService metaIndicatorMaintainService,
             VariableMaintainService variableMaintainService,
             VariableIndicatorMaintainService variableIndicatorMaintainService,
             SendHistoryMaintainService sendHistoryMaintainService,
@@ -66,8 +66,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.ctx = ctx;
         this.topicMaintainService = topicMaintainService;
         this.userMaintainService = userMaintainService;
-        this.preferenceMaintainService = preferenceMaintainService;
-        this.preferenceIndicatorMaintainService = preferenceIndicatorMaintainService;
+        this.metaMaintainService = metaMaintainService;
+        this.metaIndicatorMaintainService = metaIndicatorMaintainService;
         this.variableMaintainService = variableMaintainService;
         this.variableIndicatorMaintainService = variableIndicatorMaintainService;
         this.sendHistoryMaintainService = sendHistoryMaintainService;
@@ -391,11 +391,11 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public boolean existsPreference(StringIdKey topicKey, StringIdKey userKey, String preferenceId)
+        public boolean existsMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
                 throws RouterException {
             try {
-                return preferenceMaintainService.exists(new PreferenceKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                return metaMaintainService.exists(new MetaKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
             } catch (Exception e) {
                 throw new RouterException(e);
@@ -403,31 +403,31 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public String getPreference(StringIdKey topicKey, StringIdKey userKey, String preferenceId)
+        public String getMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
                 throws RouterException {
             try {
-                Preference preference = preferenceMaintainService.getIfExists(new PreferenceKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                Meta meta = metaMaintainService.getIfExists(new MetaKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
-                if (Objects.isNull(preference)) {
+                if (Objects.isNull(meta)) {
                     return null;
                 }
-                return preference.getValue();
+                return meta.getValue();
             } catch (Exception e) {
                 throw new RouterException(e);
             }
         }
 
         @Override
-        public String getDefaultPreference(StringIdKey topicKey, String preferenceId) throws RouterException {
+        public String getDefaultMeta(StringIdKey topicKey, String metaId) throws RouterException {
             try {
-                PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
-                        new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
+                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
+                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
                 );
-                if (Objects.isNull(preferenceIndicator)) {
+                if (Objects.isNull(metaIndicator)) {
                     return null;
                 }
-                return preferenceIndicator.getDefaultValue();
+                return metaIndicator.getDefaultValue();
             } catch (Exception e) {
                 throw new RouterException(e);
             }
@@ -552,10 +552,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public boolean existsPreference(StringIdKey userKey, String preferenceId) throws DispatcherException {
+        public boolean existsMeta(StringIdKey userKey, String metaId) throws DispatcherException {
             try {
-                return preferenceMaintainService.exists(new PreferenceKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                return metaMaintainService.exists(new MetaKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
             } catch (Exception e) {
                 throw new DispatcherException(e);
@@ -563,30 +563,30 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public String getPreference(StringIdKey userKey, String preferenceId) throws DispatcherException {
+        public String getMeta(StringIdKey userKey, String metaId) throws DispatcherException {
             try {
-                Preference preference = preferenceMaintainService.getIfExists(new PreferenceKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                Meta meta = metaMaintainService.getIfExists(new MetaKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
-                if (Objects.isNull(preference)) {
+                if (Objects.isNull(meta)) {
                     return null;
                 }
-                return preference.getValue();
+                return meta.getValue();
             } catch (Exception e) {
                 throw new DispatcherException(e);
             }
         }
 
         @Override
-        public String getDefaultPreference(String preferenceId) throws DispatcherException {
+        public String getDefaultMeta(String metaId) throws DispatcherException {
             try {
-                PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
-                        new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
+                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
+                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
                 );
-                if (Objects.isNull(preferenceIndicator)) {
+                if (Objects.isNull(metaIndicator)) {
                     return null;
                 }
-                return preferenceIndicator.getDefaultValue();
+                return metaIndicator.getDefaultValue();
             } catch (Exception e) {
                 throw new DispatcherException(e);
             }
@@ -695,10 +695,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public boolean existsPreference(StringIdKey userKey, String preferenceId) throws SenderException {
+        public boolean existsMeta(StringIdKey userKey, String metaId) throws SenderException {
             try {
-                return preferenceMaintainService.exists(new PreferenceKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                return metaMaintainService.exists(new MetaKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
             } catch (Exception e) {
                 throw new SenderException(e);
@@ -706,30 +706,30 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public String getPreference(StringIdKey userKey, String preferenceId) throws SenderException {
+        public String getMeta(StringIdKey userKey, String metaId) throws SenderException {
             try {
-                Preference preference = preferenceMaintainService.getIfExists(new PreferenceKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), preferenceId
+                Meta meta = metaMaintainService.getIfExists(new MetaKey(
+                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
-                if (Objects.isNull(preference)) {
+                if (Objects.isNull(meta)) {
                     return null;
                 }
-                return preference.getValue();
+                return meta.getValue();
             } catch (Exception e) {
                 throw new SenderException(e);
             }
         }
 
         @Override
-        public String getDefaultPreference(String preferenceId) throws SenderException {
+        public String getDefaultMeta(String metaId) throws SenderException {
             try {
-                PreferenceIndicator preferenceIndicator = preferenceIndicatorMaintainService.getIfExists(
-                        new PreferenceIndicatorKey(topicKey.getStringId(), preferenceId)
+                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
+                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
                 );
-                if (Objects.isNull(preferenceIndicator)) {
+                if (Objects.isNull(metaIndicator)) {
                     return null;
                 }
-                return preferenceIndicator.getDefaultValue();
+                return metaIndicator.getDefaultValue();
             } catch (Exception e) {
                 throw new SenderException(e);
             }

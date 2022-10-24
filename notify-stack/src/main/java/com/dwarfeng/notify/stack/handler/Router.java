@@ -67,62 +67,62 @@ public interface Router {
         List<StringIdKey> availableTopicKeys() throws RouterException;
 
         /**
-         * 查询指定的偏好是否存在。
+         * 查询指定的元数据是否存在。
          *
-         * @param topicKey     偏好主题的主键。
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好是否存在。
+         * @param topicKey 元数据主题的主键。
+         * @param userKey  元数据用户的主键。
+         * @param metaId   元数据的 ID。
+         * @return 指定的元数据是否存在。
          * @throws RouterException 路由器异常。
          */
-        boolean existsPreference(StringIdKey topicKey, StringIdKey userKey, String preferenceId)
+        boolean existsMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
                 throws RouterException;
 
         /**
-         * 获取指定的偏好的值。
+         * 获取指定的元数据的值。
          *
          * <p>
-         * 如果指定的偏好值不存在，则返回 null。
+         * 如果指定的元数据值不存在，则返回 null。
          *
-         * @param topicKey     偏好主题的主键。
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的值。
+         * @param topicKey 元数据主题的主键。
+         * @param userKey  元数据用户的主键。
+         * @param metaId   元数据的 ID。
+         * @return 指定的元数据的值。
          * @throws RouterException 路由器异常。
          */
-        String getPreference(StringIdKey topicKey, StringIdKey userKey, String preferenceId) throws RouterException;
+        String getMeta(StringIdKey topicKey, StringIdKey userKey, String metaId) throws RouterException;
 
         /**
-         * 获取指定的偏好的默认值。
+         * 获取指定的元数据的默认值。
          *
          * <p>
-         * 如果指定的偏好的默认值不存在，则返回 null。
+         * 如果指定的元数据的默认值不存在，则返回 null。
          *
-         * @param topicKey     偏好主题的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的默认值。
+         * @param topicKey 元数据主题的主键。
+         * @param metaId   元数据的 ID。
+         * @return 指定的元数据的默认值。
          * @throws RouterException 路由器异常。
          */
-        String getDefaultPreference(StringIdKey topicKey, String preferenceId) throws RouterException;
+        String getDefaultMeta(StringIdKey topicKey, String metaId) throws RouterException;
 
         /**
-         * 获取指定的偏好的值或默认值。
+         * 获取指定的元数据的值或默认值。
          *
          * <p>
-         * 如果指定的偏好的值存在，则放回偏好值；否则，返回指定的偏好的默认值；如果默认值也不存在则返回 null。
+         * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param topicKey     偏好主题的主键。
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的值或默认值。
+         * @param topicKey     元数据主题的主键。
+         * @param userKey      元数据用户的主键。
+         * @param metaId 元数据的 ID。
+         * @return 指定的元数据的值或默认值。
          * @throws RouterException 路由器异常。
          */
-        default String getPreferenceOrDefault(StringIdKey topicKey, StringIdKey userKey, String preferenceId)
+        default String getMetaOrDefault(StringIdKey topicKey, StringIdKey userKey, String metaId)
                 throws RouterException {
-            if (existsPreference(topicKey, userKey, preferenceId)) {
-                return getPreference(topicKey, userKey, preferenceId);
+            if (existsMeta(topicKey, userKey, metaId)) {
+                return getMeta(topicKey, userKey, metaId);
             } else {
-                return getDefaultPreference(topicKey, preferenceId);
+                return getDefaultMeta(topicKey, metaId);
             }
         }
 

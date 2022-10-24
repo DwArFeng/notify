@@ -38,14 +38,14 @@
                    ref="dispatcherInfoMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService"
                    ref="dispatcherSupportMaintainServiceImpl"/>
-    <dubbo:service interface="com.dwarfeng.notify.stack.service.PreferenceMaintainService"
-                   ref="preferenceMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.notify.stack.service.MetaMaintainService"
+                   ref="metaMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.VariableMaintainService"
                    ref="variableMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.SendHistoryMaintainService"
                    ref="sendHistoryMaintainServiceImpl"/>
-    <dubbo:service interface="com.dwarfeng.notify.stack.service.PreferenceIndicatorMaintainService"
-                   ref="preferenceIndicatorMaintainServiceImpl"/>
+    <dubbo:service interface="com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService"
+                   ref="metaIndicatorMaintainServiceImpl"/>
     <dubbo:service interface="com.dwarfeng.notify.stack.service.VariableIndicatorMaintainService"
                    ref="variableIndicatorMaintainServiceImpl"/>
 

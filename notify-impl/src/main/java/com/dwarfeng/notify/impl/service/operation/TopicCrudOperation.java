@@ -27,11 +27,11 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final SenderInfoDao senderInfoDao;
     private final SenderInfoCache senderInfoCache;
 
-    private final PreferenceDao preferenceDao;
-    private final PreferenceCache preferenceCache;
+    private final MetaDao metaDao;
+    private final MetaCache metaCache;
 
-    private final PreferenceIndicatorDao preferenceIndicatorDao;
-    private final PreferenceIndicatorCache preferenceIndicatorCache;
+    private final MetaIndicatorDao metaIndicatorDao;
+    private final MetaIndicatorCache metaIndicatorCache;
 
     private final VariableDao variableDao;
     private final VariableCache variableCache;
@@ -49,8 +49,8 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
             TopicDao topicDao, TopicCache topicCache,
             DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
             SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
-            PreferenceDao preferenceDao, PreferenceCache preferenceCache,
-            PreferenceIndicatorDao preferenceIndicatorDao, PreferenceIndicatorCache preferenceIndicatorCache,
+            MetaDao metaDao, MetaCache metaCache,
+            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
             VariableDao variableDao, VariableCache variableCache,
             VariableIndicatorDao variableIndicatorDao, VariableIndicatorCache variableIndicatorCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
@@ -61,10 +61,10 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         this.dispatcherInfoCache = dispatcherInfoCache;
         this.senderInfoDao = senderInfoDao;
         this.senderInfoCache = senderInfoCache;
-        this.preferenceDao = preferenceDao;
-        this.preferenceCache = preferenceCache;
-        this.preferenceIndicatorDao = preferenceIndicatorDao;
-        this.preferenceIndicatorCache = preferenceIndicatorCache;
+        this.metaDao = metaDao;
+        this.metaCache = metaCache;
+        this.metaIndicatorDao = metaIndicatorDao;
+        this.metaIndicatorCache = metaIndicatorCache;
         this.variableDao = variableDao;
         this.variableCache = variableCache;
         this.variableIndicatorDao = variableIndicatorDao;
@@ -119,19 +119,19 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         senderInfoDao.batchDelete(senderInfoKeys);
         senderInfoCache.batchDelete(senderInfoKeys);
 
-        // 删除与通知设置相关的偏好。
-        List<PreferenceKey> preferenceKeys = preferenceDao.lookup(
-                PreferenceMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ).stream().map(Preference::getKey).collect(Collectors.toList());
-        preferenceDao.batchDelete(preferenceKeys);
-        preferenceCache.batchDelete(preferenceKeys);
+        // 删除与通知设置相关的元数据。
+        List<MetaKey> metaKeys = metaDao.lookup(
+                MetaMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(Meta::getKey).collect(Collectors.toList());
+        metaDao.batchDelete(metaKeys);
+        metaCache.batchDelete(metaKeys);
 
-        // 删除与通知设置相关的偏好指示器。
-        List<PreferenceIndicatorKey> preferenceIndicatorKeys = preferenceIndicatorDao.lookup(
-                PreferenceIndicatorMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ).stream().map(PreferenceIndicator::getKey).collect(Collectors.toList());
-        preferenceIndicatorDao.batchDelete(preferenceIndicatorKeys);
-        preferenceIndicatorCache.batchDelete(preferenceIndicatorKeys);
+        // 删除与通知设置相关的元数据指示器。
+        List<MetaIndicatorKey> metaIndicatorKeys = metaIndicatorDao.lookup(
+                MetaIndicatorMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
+        ).stream().map(MetaIndicator::getKey).collect(Collectors.toList());
+        metaIndicatorDao.batchDelete(metaIndicatorKeys);
+        metaIndicatorCache.batchDelete(metaIndicatorKeys);
 
         // 删除与通知设置相关的变量。
         List<VariableKey> variableKeys = variableDao.lookup(
@@ -140,7 +140,7 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         variableDao.batchDelete(variableKeys);
         variableCache.batchDelete(variableKeys);
 
-        // 删除与变量设置相关的偏好指示器。
+        // 删除与变量设置相关的元数据指示器。
         List<VariableIndicatorKey> variableIndicatorKeys = variableIndicatorDao.lookup(
                 VariableIndicatorMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
         ).stream().map(VariableIndicator::getKey).collect(Collectors.toList());

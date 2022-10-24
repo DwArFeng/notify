@@ -35,8 +35,8 @@
 - 新增实体及其维护服务。
   - com.dwarfeng.notify.stack.bean.entity.DispatcherInfo。
   - com.dwarfeng.notify.stack.bean.entity.DispatcherSupport。
-  - com.dwarfeng.notify.stack.bean.entity.Preference。
-  - com.dwarfeng.notify.stack.bean.entity.PreferenceIndicator。
+  - com.dwarfeng.notify.stack.bean.entity.Meta。
+  - com.dwarfeng.notify.stack.bean.entity.MetaIndicator。
   - com.dwarfeng.notify.stack.bean.entity.SendHistory。
   - com.dwarfeng.notify.stack.bean.entity.Variable。
   - com.dwarfeng.notify.stack.bean.entity.VariableIndicator。

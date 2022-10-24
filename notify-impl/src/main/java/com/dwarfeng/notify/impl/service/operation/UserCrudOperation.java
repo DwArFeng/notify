@@ -1,20 +1,20 @@
 package com.dwarfeng.notify.impl.service.operation;
 
-import com.dwarfeng.notify.stack.bean.entity.Preference;
+import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.bean.entity.Variable;
-import com.dwarfeng.notify.stack.bean.entity.key.PreferenceKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
 import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
-import com.dwarfeng.notify.stack.cache.PreferenceCache;
+import com.dwarfeng.notify.stack.cache.MetaCache;
 import com.dwarfeng.notify.stack.cache.SendHistoryCache;
 import com.dwarfeng.notify.stack.cache.UserCache;
 import com.dwarfeng.notify.stack.cache.VariableCache;
-import com.dwarfeng.notify.stack.dao.PreferenceDao;
+import com.dwarfeng.notify.stack.dao.MetaDao;
 import com.dwarfeng.notify.stack.dao.SendHistoryDao;
 import com.dwarfeng.notify.stack.dao.UserDao;
 import com.dwarfeng.notify.stack.dao.VariableDao;
-import com.dwarfeng.notify.stack.service.PreferenceMaintainService;
+import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.VariableMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
@@ -33,8 +33,8 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
     private final UserDao userDao;
     private final UserCache userCache;
 
-    private final PreferenceDao preferenceDao;
-    private final PreferenceCache preferenceCache;
+    private final MetaDao metaDao;
+    private final MetaCache metaCache;
 
     private final VariableDao variableDao;
     private final VariableCache variableCache;
@@ -47,14 +47,14 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
 
     public UserCrudOperation(
             UserDao userDao, UserCache userCache,
-            PreferenceDao preferenceDao, PreferenceCache preferenceCache,
+            MetaDao metaDao, MetaCache metaCache,
             VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
         this.userDao = userDao;
         this.userCache = userCache;
-        this.preferenceDao = preferenceDao;
-        this.preferenceCache = preferenceCache;
+        this.metaDao = metaDao;
+        this.metaCache = metaCache;
         this.variableDao = variableDao;
         this.variableCache = variableCache;
         this.sendHistoryDao = sendHistoryDao;
@@ -94,12 +94,12 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
 
     @Override
     public void delete(StringIdKey key) throws Exception {
-        // 删除与通知设置相关的偏好。
-        List<PreferenceKey> preferenceKeys = preferenceDao.lookup(
-                PreferenceMaintainService.CHILD_FOR_USER, new Object[]{key}
-        ).stream().map(Preference::getKey).collect(Collectors.toList());
-        preferenceDao.batchDelete(preferenceKeys);
-        preferenceCache.batchDelete(preferenceKeys);
+        // 删除与通知设置相关的元数据。
+        List<MetaKey> metaKeys = metaDao.lookup(
+                MetaMaintainService.CHILD_FOR_USER, new Object[]{key}
+        ).stream().map(Meta::getKey).collect(Collectors.toList());
+        metaDao.batchDelete(metaKeys);
+        metaCache.batchDelete(metaKeys);
 
         // 删除与通知设置相关的变量。
         List<VariableKey> variableKeys = variableDao.lookup(

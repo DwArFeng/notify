@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_user")
 public class HibernateUser implements Bean {
 
-    private static final long serialVersionUID = 8173138834953655924L;
+    private static final long serialVersionUID = -5861047313264769134L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -29,8 +29,8 @@ public class HibernateUser implements Bean {
     private boolean enabled;
 
     // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernatePreference.class, mappedBy = "user")
-    private Set<HibernatePreference> preferences = new HashSet<>();
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "user")
+    private Set<HibernateMeta> metas = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "user")
     private Set<HibernateVariable> variables = new HashSet<>();
@@ -75,12 +75,12 @@ public class HibernateUser implements Bean {
         this.enabled = enabled;
     }
 
-    public Set<HibernatePreference> getPreferences() {
-        return preferences;
+    public Set<HibernateMeta> getMetas() {
+        return metas;
     }
 
-    public void setPreferences(Set<HibernatePreference> preferences) {
-        this.preferences = preferences;
+    public void setMetas(Set<HibernateMeta> metas) {
+        this.metas = metas;
     }
 
     public Set<HibernateVariable> getVariables() {

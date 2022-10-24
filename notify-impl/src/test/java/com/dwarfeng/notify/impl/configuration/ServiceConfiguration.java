@@ -44,14 +44,14 @@ public class ServiceConfiguration {
     private final DispatcherInfoCache dispatcherInfoCache;
     private final DispatcherSupportDao dispatcherSupportDao;
     private final DispatcherSupportCache dispatcherSupportCache;
-    private final PreferenceDao preferenceDao;
-    private final PreferenceCache preferenceCache;
+    private final MetaDao metaDao;
+    private final MetaCache metaCache;
     private final VariableDao variableDao;
     private final VariableCache variableCache;
     private final SendHistoryDao sendHistoryDao;
     private final SendHistoryCache sendHistoryCache;
-    private final PreferenceIndicatorDao preferenceIndicatorDao;
-    private final PreferenceIndicatorCache preferenceIndicatorCache;
+    private final MetaIndicatorDao metaIndicatorDao;
+    private final MetaIndicatorCache metaIndicatorCache;
     private final VariableIndicatorDao variableIndicatorDao;
     private final VariableIndicatorCache variableIndicatorCache;
 
@@ -67,14 +67,14 @@ public class ServiceConfiguration {
     private long dispatcherInfoTimeout;
     @Value("${cache.timeout.entity.dispatcher_support}")
     private long dispatcherSupportTimeout;
-    @Value("${cache.timeout.entity.preference}")
-    private long preferenceTimeout;
+    @Value("${cache.timeout.entity.meta}")
+    private long metaTimeout;
     @Value("${cache.timeout.entity.variable}")
     private long variableTimeout;
     @Value("${cache.timeout.entity.send_history}")
     private long sendHistoryTimeout;
-    @Value("${cache.timeout.entity.preference_indicator}")
-    private long preferenceIndicatorTimeout;
+    @Value("${cache.timeout.entity.meta_indicator}")
+    private long metaIndicatorTimeout;
     @Value("${cache.timeout.entity.variable_indicator}")
     private long variableIndicatorTimeout;
 
@@ -89,10 +89,10 @@ public class ServiceConfiguration {
             TopicCrudOperation topicCrudOperation, TopicDao topicDao,
             DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
             DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
-            PreferenceDao preferenceDao, PreferenceCache preferenceCache,
+            MetaDao metaDao, MetaCache metaCache,
             VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache,
-            PreferenceIndicatorDao preferenceIndicatorDao, PreferenceIndicatorCache preferenceIndicatorCache,
+            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
             VariableIndicatorDao variableIndicatorDao, VariableIndicatorCache variableIndicatorCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
@@ -114,14 +114,14 @@ public class ServiceConfiguration {
         this.dispatcherInfoCache = dispatcherInfoCache;
         this.dispatcherSupportDao = dispatcherSupportDao;
         this.dispatcherSupportCache = dispatcherSupportCache;
-        this.preferenceDao = preferenceDao;
-        this.preferenceCache = preferenceCache;
+        this.metaDao = metaDao;
+        this.metaCache = metaCache;
         this.variableDao = variableDao;
         this.variableCache = variableCache;
         this.sendHistoryDao = sendHistoryDao;
         this.sendHistoryCache = sendHistoryCache;
-        this.preferenceIndicatorDao = preferenceIndicatorDao;
-        this.preferenceIndicatorCache = preferenceIndicatorCache;
+        this.metaIndicatorDao = metaIndicatorDao;
+        this.metaIndicatorCache = metaIndicatorCache;
         this.variableIndicatorDao = variableIndicatorDao;
         this.variableIndicatorCache = variableIndicatorCache;
     }
@@ -396,30 +396,30 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<PreferenceKey, Preference> preferenceGeneralBatchCrudService() {
+    public GeneralBatchCrudService<MetaKey, Meta> metaGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
-                preferenceDao,
-                preferenceCache,
+                metaDao,
+                metaCache,
                 new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
-                preferenceTimeout
+                metaTimeout
         );
     }
 
     @Bean
-    public DaoOnlyEntireLookupService<Preference> preferenceDaoOnlyEntireLookupService() {
+    public DaoOnlyEntireLookupService<Meta> metaDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                preferenceDao,
+                metaDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
     }
 
     @Bean
-    public DaoOnlyPresetLookupService<Preference> preferenceDaoOnlyPresetLookupService() {
+    public DaoOnlyPresetLookupService<Meta> metaDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                preferenceDao,
+                metaDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -486,31 +486,31 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<PreferenceIndicatorKey, PreferenceIndicator>
-    preferenceIndicatorGeneralBatchCrudService() {
+    public GeneralBatchCrudService<MetaIndicatorKey, MetaIndicator>
+    metaIndicatorGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
-                preferenceIndicatorDao,
-                preferenceIndicatorCache,
+                metaIndicatorDao,
+                metaIndicatorCache,
                 new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
-                preferenceIndicatorTimeout
+                metaIndicatorTimeout
         );
     }
 
     @Bean
-    public DaoOnlyEntireLookupService<PreferenceIndicator> preferenceIndicatorDaoOnlyEntireLookupService() {
+    public DaoOnlyEntireLookupService<MetaIndicator> metaIndicatorDaoOnlyEntireLookupService() {
         return new DaoOnlyEntireLookupService<>(
-                preferenceIndicatorDao,
+                metaIndicatorDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
     }
 
     @Bean
-    public DaoOnlyPresetLookupService<PreferenceIndicator> preferenceIndicatorDaoOnlyPresetLookupService() {
+    public DaoOnlyPresetLookupService<MetaIndicator> metaIndicatorDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
-                preferenceIndicatorDao,
+                metaIndicatorDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

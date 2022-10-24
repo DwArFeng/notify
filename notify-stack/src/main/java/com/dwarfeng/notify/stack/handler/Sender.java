@@ -102,56 +102,56 @@ public interface Sender {
         StringIdKey getTopicKey() throws SenderException;
 
         /**
-         * 查询指定的偏好是否存在。
+         * 查询指定的元数据是否存在。
          *
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好是否存在。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据是否存在。
          * @throws SenderException 发送器异常。
          */
-        boolean existsPreference(StringIdKey userKey, String preferenceId) throws SenderException;
+        boolean existsMeta(StringIdKey userKey, String metaId) throws SenderException;
 
         /**
-         * 获取指定的偏好的值。
+         * 获取指定的元数据的值。
          *
          * <p>
-         * 如果指定的偏好值不存在，则返回 null。
+         * 如果指定的元数据值不存在，则返回 null。
          *
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的值。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据的值。
          * @throws SenderException 发送器异常。
          */
-        String getPreference(StringIdKey userKey, String preferenceId) throws SenderException;
+        String getMeta(StringIdKey userKey, String metaId) throws SenderException;
 
         /**
-         * 获取指定的偏好的默认值。
+         * 获取指定的元数据的默认值。
          *
          * <p>
-         * 如果指定的偏好的默认值不存在，则返回 null。
+         * 如果指定的元数据的默认值不存在，则返回 null。
          *
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的默认值。
+         * @param metaId 元数据的 ID。
+         * @return 指定的元数据的默认值。
          * @throws SenderException 发送器异常。
          */
-        String getDefaultPreference(String preferenceId) throws SenderException;
+        String getDefaultMeta(String metaId) throws SenderException;
 
         /**
-         * 获取指定的偏好的值或默认值。
+         * 获取指定的元数据的值或默认值。
          *
          * <p>
-         * 如果指定的偏好的值存在，则放回偏好值；否则，返回指定的偏好的默认值；如果默认值也不存在则返回 null。
+         * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param userKey      偏好用户的主键。
-         * @param preferenceId 偏好的 ID。
-         * @return 指定的偏好的值或默认值。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据的值或默认值。
          * @throws SenderException 发送器异常。
          */
-        default String getPreferenceOrDefault(StringIdKey userKey, String preferenceId) throws SenderException {
-            if (existsPreference(userKey, preferenceId)) {
-                return getPreference(userKey, preferenceId);
+        default String getMetaOrDefault(StringIdKey userKey, String metaId) throws SenderException {
+            if (existsMeta(userKey, metaId)) {
+                return getMeta(userKey, metaId);
             } else {
-                return getDefaultPreference(preferenceId);
+                return getDefaultMeta(metaId);
             }
         }
 

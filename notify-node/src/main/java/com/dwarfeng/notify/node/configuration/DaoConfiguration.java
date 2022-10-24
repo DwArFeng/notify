@@ -35,10 +35,10 @@ public class DaoConfiguration {
     private final TopicPresetCriteriaMaker topicPresetCriteriaMaker;
     private final DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker;
     private final DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker;
-    private final PreferencePresetCriteriaMaker preferencePresetCriteriaMaker;
+    private final MetaPresetCriteriaMaker metaPresetCriteriaMaker;
     private final VariablePresetCriteriaMaker variablePresetCriteriaMaker;
     private final SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker;
-    private final PreferenceIndicatorPresetCriteriaMaker preferenceIndicatorPresetCriteriaMaker;
+    private final MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker;
     private final VariableIndicatorPresetCriteriaMaker variableIndicatorPresetCriteriaMaker;
 
     @Autowired
@@ -58,10 +58,10 @@ public class DaoConfiguration {
             TopicPresetCriteriaMaker topicPresetCriteriaMaker,
             DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker,
             DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker,
-            PreferencePresetCriteriaMaker preferencePresetCriteriaMaker,
+            MetaPresetCriteriaMaker metaPresetCriteriaMaker,
             VariablePresetCriteriaMaker variablePresetCriteriaMaker,
             SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker,
-            PreferenceIndicatorPresetCriteriaMaker preferenceIndicatorPresetCriteriaMaker,
+            MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker,
             VariableIndicatorPresetCriteriaMaker variableIndicatorPresetCriteriaMaker
     ) {
         this.hibernateTemplate = hibernateTemplate;
@@ -74,10 +74,10 @@ public class DaoConfiguration {
         this.topicPresetCriteriaMaker = topicPresetCriteriaMaker;
         this.dispatcherInfoPresetCriteriaMaker = dispatcherInfoPresetCriteriaMaker;
         this.dispatcherSupportPresetCriteriaMaker = dispatcherSupportPresetCriteriaMaker;
-        this.preferencePresetCriteriaMaker = preferencePresetCriteriaMaker;
+        this.metaPresetCriteriaMaker = metaPresetCriteriaMaker;
         this.variablePresetCriteriaMaker = variablePresetCriteriaMaker;
         this.sendHistoryPresetCriteriaMaker = sendHistoryPresetCriteriaMaker;
-        this.preferenceIndicatorPresetCriteriaMaker = preferenceIndicatorPresetCriteriaMaker;
+        this.metaIndicatorPresetCriteriaMaker = metaIndicatorPresetCriteriaMaker;
         this.variableIndicatorPresetCriteriaMaker = variableIndicatorPresetCriteriaMaker;
     }
 
@@ -372,34 +372,34 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<PreferenceKey, HibernatePreferenceKey, Preference, HibernatePreference>
-    preferenceHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<MetaKey, HibernateMetaKey, Meta, HibernateMeta>
+    metaHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PreferenceKey.class, HibernatePreferenceKey.class, mapper),
-                new DozerBeanTransformer<>(Preference.class, HibernatePreference.class, mapper),
-                HibernatePreference.class,
+                new DozerBeanTransformer<>(MetaKey.class, HibernateMetaKey.class, mapper),
+                new DozerBeanTransformer<>(Meta.class, HibernateMeta.class, mapper),
+                HibernateMeta.class,
                 new DefaultDeletionMod<>(),
                 batchSize
         );
     }
 
     @Bean
-    public HibernateEntireLookupDao<Preference, HibernatePreference> preferenceHibernateEntireLookupDao() {
+    public HibernateEntireLookupDao<Meta, HibernateMeta> metaHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(Preference.class, HibernatePreference.class, mapper),
-                HibernatePreference.class
+                new DozerBeanTransformer<>(Meta.class, HibernateMeta.class, mapper),
+                HibernateMeta.class
         );
     }
 
     @Bean
-    public HibernatePresetLookupDao<Preference, HibernatePreference> preferenceHibernatePresetLookupDao() {
+    public HibernatePresetLookupDao<Meta, HibernateMeta> metaHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(Preference.class, HibernatePreference.class, mapper),
-                HibernatePreference.class,
-                preferencePresetCriteriaMaker
+                new DozerBeanTransformer<>(Meta.class, HibernateMeta.class, mapper),
+                HibernateMeta.class,
+                metaPresetCriteriaMaker
         );
     }
 
@@ -468,36 +468,36 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<PreferenceIndicatorKey, HibernatePreferenceIndicatorKey, PreferenceIndicator,
-            HibernatePreferenceIndicator> preferenceIndicatorHibernateBatchBaseDao() {
+    public HibernateBatchBaseDao<MetaIndicatorKey, HibernateMetaIndicatorKey, MetaIndicator,
+            HibernateMetaIndicator> metaIndicatorHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PreferenceIndicatorKey.class, HibernatePreferenceIndicatorKey.class, mapper),
-                new DozerBeanTransformer<>(PreferenceIndicator.class, HibernatePreferenceIndicator.class, mapper),
-                HibernatePreferenceIndicator.class,
+                new DozerBeanTransformer<>(MetaIndicatorKey.class, HibernateMetaIndicatorKey.class, mapper),
+                new DozerBeanTransformer<>(MetaIndicator.class, HibernateMetaIndicator.class, mapper),
+                HibernateMetaIndicator.class,
                 new DefaultDeletionMod<>(),
                 batchSize
         );
     }
 
     @Bean
-    public HibernateEntireLookupDao<PreferenceIndicator, HibernatePreferenceIndicator>
-    preferenceIndicatorHibernateEntireLookupDao() {
+    public HibernateEntireLookupDao<MetaIndicator, HibernateMetaIndicator>
+    metaIndicatorHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PreferenceIndicator.class, HibernatePreferenceIndicator.class, mapper),
-                HibernatePreferenceIndicator.class
+                new DozerBeanTransformer<>(MetaIndicator.class, HibernateMetaIndicator.class, mapper),
+                HibernateMetaIndicator.class
         );
     }
 
     @Bean
-    public HibernatePresetLookupDao<PreferenceIndicator, HibernatePreferenceIndicator>
-    preferenceIndicatorHibernatePresetLookupDao() {
+    public HibernatePresetLookupDao<MetaIndicator, HibernateMetaIndicator>
+    metaIndicatorHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
                 hibernateTemplate,
-                new DozerBeanTransformer<>(PreferenceIndicator.class, HibernatePreferenceIndicator.class, mapper),
-                HibernatePreferenceIndicator.class,
-                preferenceIndicatorPresetCriteriaMaker
+                new DozerBeanTransformer<>(MetaIndicator.class, HibernateMetaIndicator.class, mapper),
+                HibernateMetaIndicator.class,
+                metaIndicatorPresetCriteriaMaker
         );
     }
 
