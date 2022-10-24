@@ -162,7 +162,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         // 定义 Item 结构体列表。
         List<SentItem> sentItems = new ArrayList<>();
 
-        // 遍历 Item 结构体，对每个主题发送通知，生成发送结果并添加到发送列表中。
+        // 遍历 Item 结构体，对每个主题发送通知，生成发送响应并添加到发送列表中。
         InternalSenderContext senderContext = ctx.getBean(InternalSenderContext.class, this);
         senderContext.setNotifySettingKey(notifySettingKey);
         for (DispatchedItem item : dispatchedItems) {
@@ -180,10 +180,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 );
 
                 // 执行发生动作。
-                List<Sender.Result> senderResult = sender.send(sendInfo, userKeys, senderContext);
+                List<Sender.Response> senderResponse = sender.send(sendInfo, userKeys, senderContext);
 
                 // 构建发送结构体，添加到结构体列表中。
-                sentItems.add(new SentItem(topicKey, senderResult, new Date()));
+                sentItems.add(new SentItem(topicKey, senderResponse, new Date()));
             } catch (SenderException e) {
                 LOGGER.warn("主题 " + topicKey + " 发送失败, 异常信息如下: ", e);
             }
@@ -202,13 +202,13 @@ public class NotifyHandlerImpl implements NotifyHandler {
         for (SentItem item : sentItems) {
             // 获取 Item 结构体中的参数。
             StringIdKey topicKey = item.getTopicKey();
-            List<Sender.Result> senderResults = item.getSenderResults();
+            List<Sender.Response> senderResponses = item.getSenderResults();
             Date happenedDate = item.getHappenedDate();
 
-            for (Sender.Result senderResult : senderResults) {
-                StringIdKey userKey = senderResult.getUserKey();
-                boolean succeedFlag = senderResult.isSucceedFlag();
-                String senderMessage = senderResult.getMessage();
+            for (Sender.Response senderResponse : senderResponses) {
+                StringIdKey userKey = senderResponse.getUserKey();
+                boolean succeedFlag = senderResponse.isSucceedFlag();
+                String senderMessage = senderResponse.getMessage();
                 SendHistory sendHistory = new SendHistory(
                         keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, happenedDate,
                         routeInfo, dispatchInfo, sendInfo, succeedFlag, senderMessage, "通过 NotifyHandlerImpl 生成"
@@ -333,12 +333,12 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private static class SentItem {
 
         private final StringIdKey topicKey;
-        private final List<Sender.Result> senderResults;
+        private final List<Sender.Response> senderResponses;
         private final Date happenedDate;
 
-        public SentItem(StringIdKey topicKey, List<Sender.Result> senderResults, Date happenedDate) {
+        public SentItem(StringIdKey topicKey, List<Sender.Response> senderResponses, Date happenedDate) {
             this.topicKey = topicKey;
-            this.senderResults = senderResults;
+            this.senderResponses = senderResponses;
             this.happenedDate = happenedDate;
         }
 
@@ -346,8 +346,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
             return topicKey;
         }
 
-        public List<Sender.Result> getSenderResults() {
-            return senderResults;
+        public List<Sender.Response> getSenderResults() {
+            return senderResponses;
         }
 
         public Date getHappenedDate() {
@@ -358,7 +358,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         public String toString() {
             return "SentItem{" +
                     "topicKey=" + topicKey +
-                    ", senderResults=" + senderResults +
+                    ", senderResults=" + senderResponses +
                     ", happenedDate=" + happenedDate +
                     '}';
         }

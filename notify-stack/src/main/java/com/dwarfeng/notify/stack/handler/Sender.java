@@ -24,32 +24,32 @@ public interface Sender {
      * <code>userKeys</code> 只可读不可写，禁止以任何形式对 <code>userKeys</code> 以及其中的元素进行更改操作。
      * </li>
      * <li>
-     * 返回的发送结果组成的列表的长度必须与 <code>userKeys</code> 的长度相等，
-     * 且发送结果的字段 {@link Result#userKey} 必须与 <code>userKeys</code> 相对应（数据一致且顺序相同）。
+     * 返回的发送响应组成的列表的长度必须与 <code>userKeys</code> 的长度相等，
+     * 且发送响应的字段 {@link Response#userKey} 必须与 <code>userKeys</code> 相对应（数据一致且顺序相同）。
      * </li>
      * </ol>
      *
      * @param sendInfo 发送信息。
      * @param userKeys 用户列表。
      * @param context  上下文。
-     * @return 发送结果组成的列表。
+     * @return 发送响应组成的列表。
      * @throws SenderException 发送器异常。
      */
-    List<Result> send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException;
+    List<Response> send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException;
 
     /**
-     * 结果结构体。
+     * 响应结构体。
      *
      * @author DwArFeng
      * @since 1.1.0
      */
-    class Result {
+    class Response {
 
         private final StringIdKey userKey;
         private final boolean succeedFlag;
         private final String message;
 
-        public Result(StringIdKey userKey, boolean succeedFlag, String message) {
+        public Response(StringIdKey userKey, boolean succeedFlag, String message) {
             this.userKey = userKey;
             this.succeedFlag = succeedFlag;
             this.message = message;
@@ -69,7 +69,7 @@ public interface Sender {
 
         @Override
         public String toString() {
-            return "Result{" +
+            return "Response{" +
                     "userKey=" + userKey +
                     ", succeedFlag=" + succeedFlag +
                     ", message='" + message + '\'' +
