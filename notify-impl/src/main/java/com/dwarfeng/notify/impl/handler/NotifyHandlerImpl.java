@@ -406,6 +406,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         public String getMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
                 throws RouterException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureTopicExists(topicKey);
+                handlerValidator.makeSureUserExists(userKey);
+
                 Meta meta = metaMaintainService.getIfExists(new MetaKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
@@ -421,6 +425,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public String getDefaultMeta(StringIdKey topicKey, String metaId) throws RouterException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureTopicExists(topicKey);
+
                 MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
                         new MetaIndicatorKey(topicKey.getStringId(), metaId)
                 );
@@ -449,6 +456,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         public String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId)
                 throws RouterException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureTopicExists(topicKey);
+                handlerValidator.makeSureUserExists(userKey);
+
                 Variable variable = variableMaintainService.getIfExists(new VariableKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
                 ));
@@ -464,6 +475,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public String getDefaultVariable(StringIdKey topicKey, String variableId) throws RouterException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureTopicExists(topicKey);
+
                 VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
                         new VariableIndicatorKey(topicKey.getStringId(), variableId)
                 );
@@ -480,6 +494,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         public void putVariable(StringIdKey topicKey, StringIdKey userKey, String variableId, String value)
                 throws RouterException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureTopicExists(topicKey);
+                handlerValidator.makeSureUserExists(userKey);
+
                 Variable variable = new Variable(
                         new VariableKey(
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
@@ -565,6 +583,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public String getMeta(StringIdKey userKey, String metaId) throws DispatcherException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureUserExists(userKey);
+
                 Meta meta = metaMaintainService.getIfExists(new MetaKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
@@ -606,6 +627,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public String getVariable(StringIdKey userKey, String variableId) throws DispatcherException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureUserExists(userKey);
+
                 Variable variable = variableMaintainService.getIfExists(new VariableKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
                 ));
@@ -636,6 +660,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public void putVariable(StringIdKey userKey, String variableId, String value) throws DispatcherException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureUserExists(userKey);
+
                 Variable variable = new Variable(
                         new VariableKey(
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
@@ -708,6 +735,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public String getMeta(StringIdKey userKey, String metaId) throws SenderException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureUserExists(userKey);
+
                 Meta meta = metaMaintainService.getIfExists(new MetaKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
                 ));
@@ -749,6 +779,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public String getVariable(StringIdKey userKey, String variableId) throws SenderException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureUserExists(userKey);
+
                 Variable variable = variableMaintainService.getIfExists(new VariableKey(
                         notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
                 ));
@@ -779,6 +812,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         @Override
         public void putVariable(StringIdKey userKey, String variableId, String value) throws SenderException {
             try {
+                // 参数有效性验证。
+                handlerValidator.makeSureUserExists(userKey);
+
                 Variable variable = new Variable(
                         new VariableKey(
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
