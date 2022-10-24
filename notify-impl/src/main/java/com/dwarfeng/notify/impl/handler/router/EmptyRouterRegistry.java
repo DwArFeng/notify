@@ -18,6 +18,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.1.0
  */
+@Component
 public class EmptyRouterRegistry extends AbstractRouterRegistry {
 
     public static final String ROUTER_TYPE = "empty_router";

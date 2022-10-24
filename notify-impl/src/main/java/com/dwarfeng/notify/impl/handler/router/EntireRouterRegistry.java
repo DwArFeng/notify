@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
  * @author DwArFeng
  * @since 1.1.0
  */
+@Component
 public class EntireRouterRegistry extends AbstractRouterRegistry {
 
     public static final String ROUTER_TYPE = "entire_router";

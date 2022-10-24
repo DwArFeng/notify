@@ -17,6 +17,7 @@ import java.util.List;
  * @author DwArFeng
  * @since 1.1.0
  */
+@Component
 public class EntireDispatcherRegistry extends AbstractDispatcherRegistry {
 
     public static final String DISPATCHER_TYPE = "entire_dispatcher";

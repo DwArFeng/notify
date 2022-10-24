@@ -21,6 +21,7 @@ import java.util.stream.Collectors;
  * @author DwArFeng
  * @since 1.1.0
  */
+@Component
 public class StaticRouterRegistry extends AbstractRouterRegistry {
 
     public static final String ROUTER_TYPE = "static_router";
