@@ -1,11 +1,8 @@
-package groovy
-
 import com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry
 import com.dwarfeng.notify.stack.exception.RouterException
 import com.dwarfeng.notify.stack.handler.Router
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey
 import org.apache.commons.lang3.StringUtils
-import org.springframework.stereotype.Component
 
 import java.util.stream.Collectors
 
@@ -15,8 +12,7 @@ import java.util.stream.Collectors
  * <p>
  * 该路由器以 {@link #DELIMITER} 为分隔符，对 routerInfo 进行分隔，并将结果数组作为用户的 ID 进行返回。
  */
-@SuppressWarnings("GrPackage")
-@Component
+@SuppressWarnings('GrPackage')
 class ExampleRouterProcessor implements GroovyRouterRegistry.Processor {
 
     /**

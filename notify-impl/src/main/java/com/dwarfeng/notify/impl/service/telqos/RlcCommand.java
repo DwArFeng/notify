@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
-import com.dwarfeng.notify.stack.handler.Router;
+import com.dwarfeng.notify.stack.bean.dto.RouteContext;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
@@ -82,11 +82,11 @@ public class RlcCommand extends CliCommand {
 
     private void handleLookup(Context context, CommandLine cmd) throws Exception {
         LongIdKey routerInfoKey = new LongIdKey(((Number) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP)).longValue());
-        Router router = notifyQosService.getRouter(routerInfoKey);
-        if (Objects.isNull(router)) {
+        RouteContext routeContext = notifyQosService.getRouteContext(routerInfoKey);
+        if (Objects.isNull(routeContext)) {
             context.sendMessage("not exists");
         } else {
-            context.sendMessage(router.toString());
+            context.sendMessage(routeContext.toString());
         }
     }
 }

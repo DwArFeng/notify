@@ -15,7 +15,7 @@ import java.util.List;
 public interface Dispatcher {
 
     /**
-     * 调度操作。
+     * 用户调度操作。
      *
      * <p>
      * 调度操作需要在给定的用户空间 <code>userKeys</code> 中决定具体的调度用户。<br>
@@ -34,7 +34,7 @@ public interface Dispatcher {
      * </ol>
      *
      * <p>
-     * 如果无法确定用户的规范性，可以调用 {@link Context#filterUser(List)} 方法筛选出一组用户中符合要求的用户。<br>
+     * 如果无法确定用户的规范性，可以调用 {@link UserContext#filterUser(List)} 方法筛选出一组用户中符合要求的用户。<br>
      * 这个操作会有额外的性能开销，如果有其它的途径保证返回结果的规范性
      * （尤其是服务集成在一个工程中，与其它服务组合使用时），则不需要调用此方法。
      *
@@ -44,16 +44,33 @@ public interface Dispatcher {
      * @return 调度返回的用户主键组成的列表。
      * @throws DispatcherException 调度器异常。
      */
-    List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context)
+    List<StringIdKey> dispatchUser(String dispatchInfo, List<StringIdKey> userKeys, UserContext context)
             throws DispatcherException;
 
     /**
-     * 上下文。
+     * 响应调度操作。
+     *
+     * <p>
+     * 该方法用于处理发送器的发送结果。
+     * 如果该调度器的调度流程需要参考发送器的发送结果，那么可以利用该方法对发送结果做额外的处理。<br>
+     * 一种典型的处理方式是利用项目的变量机制，将发送结果转换成调度操作需要使用的变量，并进行持久化。<br>
+     * 利用方法 {@link ResponseContext#putVariable(StringIdKey, String, String)}，可以方便地实现变量的存储。
+     *
+     * @param dispatchInfo 调度信息。
+     * @param responses    发送器响应结构体。
+     * @param context      上下文。
+     * @throws DispatcherException 调度器异常。
+     */
+    void dispatchResponse(String dispatchInfo, List<Sender.Response> responses, ResponseContext context)
+            throws DispatcherException;
+
+    /**
+     * 调度用户上下文。
      *
      * @author DwArFeng
      * @since 1.1.0
      */
-    interface Context {
+    interface UserContext {
 
         /**
          * 获取本次通知操作相关的通知设置。
@@ -200,5 +217,148 @@ public interface Dispatcher {
          * @throws DispatcherException 调度器异常。
          */
         List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws DispatcherException;
+    }
+
+    /**
+     * 调度响应上下文。
+     *
+     * @author DwArFeng
+     * @since 1.1.0
+     */
+    interface ResponseContext {
+
+        /**
+         * 获取本次通知操作相关的通知设置。
+         *
+         * @return 通知设置的主键。
+         * @throws DispatcherException 调度器异常。
+         */
+        LongIdKey getNotifySettingKey() throws DispatcherException;
+
+        /**
+         * 获取本次通知操作相关的主题。
+         *
+         * @return 主题的主键。
+         * @throws DispatcherException 调度器异常。
+         */
+        StringIdKey getTopicKey() throws DispatcherException;
+
+        /**
+         * 查询指定的元数据是否存在。
+         *
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据是否存在。
+         * @throws DispatcherException 调度器异常。
+         */
+        boolean existsMeta(StringIdKey userKey, String metaId)
+                throws DispatcherException;
+
+        /**
+         * 获取指定的元数据的值。
+         *
+         * <p>
+         * 如果指定的元数据值不存在，则返回 null。
+         *
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据的值。
+         * @throws DispatcherException 调度器异常。
+         */
+        String getMeta(StringIdKey userKey, String metaId) throws DispatcherException;
+
+        /**
+         * 获取指定的元数据的默认值。
+         *
+         * <p>
+         * 如果指定的元数据的默认值不存在，则返回 null。
+         *
+         * @param metaId 元数据的 ID。
+         * @return 指定的元数据的默认值。
+         * @throws DispatcherException 调度器异常。
+         */
+        String getDefaultMeta(String metaId) throws DispatcherException;
+
+        /**
+         * 获取指定的元数据的值或默认值。
+         *
+         * <p>
+         * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
+         *
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @return 指定的元数据的值或默认值。
+         * @throws DispatcherException 调度器异常。
+         */
+        default String getMetaOrDefault(StringIdKey userKey, String metaId) throws DispatcherException {
+            if (existsMeta(userKey, metaId)) {
+                return getMeta(userKey, metaId);
+            } else {
+                return getDefaultMeta(metaId);
+            }
+        }
+
+        /**
+         * 查询指定的变量是否存在。
+         *
+         * @param userKey    变量用户的主键。
+         * @param variableId 变量的 ID。
+         * @return 指定的变量是否存在。
+         * @throws DispatcherException 调度器异常。
+         */
+        boolean existsVariable(StringIdKey userKey, String variableId) throws DispatcherException;
+
+        /**
+         * 获取指定的变量的默认值。
+         *
+         * <p>
+         * 如果指定的变量的默认值不存在，则返回 null。
+         *
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的默认值。
+         * @throws DispatcherException 调度器异常。
+         */
+        String getVariable(StringIdKey userKey, String variableId) throws DispatcherException;
+
+        /**
+         * 获取指定的变量的默认值。
+         *
+         * <p>
+         * 如果指定的变量的默认值不存在，则返回 null。
+         *
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的默认值。
+         * @throws DispatcherException 调度器异常。
+         */
+        String getDefaultVariable(String variableId) throws DispatcherException;
+
+        /**
+         * 获取指定的变量的值或默认值。
+         *
+         * <p>
+         * 如果指定的变量的值存在，则放回变量值；否则，返回指定的变量的默认值；如果默认值也不存在则返回 null。
+         *
+         * @param userKey    变量用户的主键。
+         * @param variableId 变量的 ID。
+         * @return 指定的变量的值或默认值。
+         * @throws DispatcherException 调度器异常。
+         */
+        default String getVariableOrDefault(StringIdKey userKey, String variableId) throws DispatcherException {
+            if (existsVariable(userKey, variableId)) {
+                return getVariable(userKey, variableId);
+            } else {
+                return getDefaultVariable(variableId);
+            }
+        }
+
+        /**
+         * 设置指定的变量的值。
+         *
+         * @param userKey    变量用户的主键。
+         * @param variableId 变量的 ID。
+         * @param value      变量的新值。
+         * @throws DispatcherException 调度器异常。
+         */
+        void putVariable(StringIdKey userKey, String variableId, String value) throws DispatcherException;
     }
 }

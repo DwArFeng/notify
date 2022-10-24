@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.stack.handler;
 
+import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
@@ -17,13 +18,13 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
 public interface DispatchLocalCacheHandler extends Handler {
 
     /**
-     * 获取指定主键对应的调度器。
+     * 获取指定主键对应的调度上下文。
      *
      * @param dispatcherInfoKey 指定的主键。
-     * @return 指定部件的评估上下文，如果主键对应的调度器信息不存在，则返回 null。
+     * @return 指定主键对应的调度上下文，如果不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
-    Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException;
+    DispatchContext getContext(StringIdKey dispatcherInfoKey) throws HandlerException;
 
     /**
      * 清除本地缓存。

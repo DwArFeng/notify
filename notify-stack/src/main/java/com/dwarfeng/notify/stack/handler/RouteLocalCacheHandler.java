@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.stack.handler;
 
+import com.dwarfeng.notify.stack.bean.dto.RouteContext;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
@@ -17,13 +18,13 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
 public interface RouteLocalCacheHandler extends Handler {
 
     /**
-     * 获取指定主键对应的路由器。
+     * 获取指定主键对应的路由上下文。
      *
      * @param routerInfoKey 指定的主键。
-     * @return 指定部件的评估上下文，如果主键对应的路由器信息不存在，则返回 null。
+     * @return 指定主键对应的路由上下文，如果不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
-    Router getRouter(LongIdKey routerInfoKey) throws HandlerException;
+    RouteContext getContext(LongIdKey routerInfoKey) throws HandlerException;
 
     /**
      * 清除本地缓存。

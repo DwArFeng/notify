@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.stack.bean.dto.RouteContext;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.handler.RouteLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Router;
@@ -20,7 +21,7 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
     private final RouterFetcher routerFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<LongIdKey, Router> routerMap = new HashMap<>();
+    private final Map<LongIdKey, RouteContext> routeContextMap = new HashMap<>();
     private final Set<LongIdKey> notExistSettings = new HashSet<>();
 
     public RouteLocalCacheHandlerImpl(RouterFetcher routerFetcher) {
@@ -29,14 +30,14 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public Router getRouter(LongIdKey routerInfoKey) throws HandlerException {
+    public RouteContext getContext(LongIdKey routeInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
-                if (routerMap.containsKey(routerInfoKey)) {
-                    return routerMap.get(routerInfoKey);
+                if (routeContextMap.containsKey(routeInfoKey)) {
+                    return routeContextMap.get(routeInfoKey);
                 }
-                if (notExistSettings.contains(routerInfoKey)) {
+                if (notExistSettings.contains(routeInfoKey)) {
                     return null;
                 }
             } finally {
@@ -44,18 +45,18 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
             }
             lock.writeLock().lock();
             try {
-                if (routerMap.containsKey(routerInfoKey)) {
-                    return routerMap.get(routerInfoKey);
+                if (routeContextMap.containsKey(routeInfoKey)) {
+                    return routeContextMap.get(routeInfoKey);
                 }
-                if (notExistSettings.contains(routerInfoKey)) {
+                if (notExistSettings.contains(routeInfoKey)) {
                     return null;
                 }
-                Router router = routerFetcher.fetchRouter(routerInfoKey);
-                if (Objects.nonNull(router)) {
-                    routerMap.put(routerInfoKey, router);
-                    return router;
+                RouteContext routeContext = routerFetcher.fetchRouter(routeInfoKey);
+                if (Objects.nonNull(routeContext)) {
+                    routeContextMap.put(routeInfoKey, routeContext);
+                    return routeContext;
                 }
-                notExistSettings.add(routerInfoKey);
+                notExistSettings.add(routeInfoKey);
                 return null;
             } finally {
                 lock.writeLock().unlock();
@@ -69,7 +70,7 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
     public void clear() throws HandlerException {
         lock.writeLock().lock();
         try {
-            routerMap.clear();
+            routeContextMap.clear();
             notExistSettings.clear();
         } finally {
             lock.writeLock().unlock();
@@ -88,13 +89,16 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
             this.routerHandler = routerHandler;
         }
 
-        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public Router fetchRouter(LongIdKey routerInfoKey) throws Exception {
-            if (!routerInfoMaintainService.exists(routerInfoKey)) {
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public RouteContext fetchRouter(LongIdKey commandSettingKey) throws Exception {
+            if (!routerInfoMaintainService.exists(commandSettingKey)) {
                 return null;
             }
-            RouterInfo routerInfo = routerInfoMaintainService.get(routerInfoKey);
-            return routerHandler.make(routerInfo.getType(), routerInfo.getParam());
+            RouterInfo routerInfo = routerInfoMaintainService.get(commandSettingKey);
+            Router router = routerHandler.make(routerInfo.getType(), routerInfo.getParam());
+            return new RouteContext(routerInfo, router);
         }
     }
 }

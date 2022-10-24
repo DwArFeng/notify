@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
+import com.dwarfeng.notify.stack.bean.dto.SendContext;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
@@ -100,11 +100,11 @@ public class SlcCommand extends CliCommand {
         }
         long notifySettingId = ((Number) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP_NSID)).longValue();
         String topicId = (String) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP_TID);
-        Sender sender = notifyQosService.getSender(new SenderInfoKey(notifySettingId, topicId));
-        if (Objects.isNull(sender)) {
+        SendContext sendContext = notifyQosService.getSendContext(new SenderInfoKey(notifySettingId, topicId));
+        if (Objects.isNull(sendContext)) {
             context.sendMessage("not exists");
         } else {
-            context.sendMessage(sender.toString());
+            context.sendMessage(sendContext.toString());
         }
     }
 }

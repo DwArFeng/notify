@@ -1,11 +1,11 @@
 package com.dwarfeng.notify.impl.service;
 
+import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
+import com.dwarfeng.notify.stack.bean.dto.RouteContext;
+import com.dwarfeng.notify.stack.bean.dto.SendContext;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.handler.NotifyHandler;
-import com.dwarfeng.notify.stack.handler.Router;
-import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -37,11 +37,11 @@ public class NotifyQosServiceImpl implements NotifyQosService {
     }
 
     @Override
-    public Router getRouter(LongIdKey routerInfoKey) throws ServiceException {
+    public RouteContext getRouteContext(LongIdKey routerInfoKey) throws ServiceException {
         try {
-            return notifyHandler.getRouter(routerInfoKey);
+            return notifyHandler.getRouteContext(routerInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的路由器时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的路由上下文时发生异常", LogLevel.WARN, sem, e);
         }
     }
 
@@ -55,11 +55,11 @@ public class NotifyQosServiceImpl implements NotifyQosService {
     }
 
     @Override
-    public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws ServiceException {
+    public DispatchContext getDispatchContext(StringIdKey dispatcherInfoKey) throws ServiceException {
         try {
-            return notifyHandler.getDispatcher(dispatcherInfoKey);
+            return notifyHandler.getDispatchContext(dispatcherInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的调度器时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的调度上下文时发生异常", LogLevel.WARN, sem, e);
         }
     }
 
@@ -73,11 +73,11 @@ public class NotifyQosServiceImpl implements NotifyQosService {
     }
 
     @Override
-    public Sender getSender(SenderInfoKey senderInfoKey) throws ServiceException {
+    public SendContext getSendContext(SenderInfoKey senderInfoKey) throws ServiceException {
         try {
-            return notifyHandler.getSender(senderInfoKey);
+            return notifyHandler.getSendContext(senderInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的发送器时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的发送上下文时发生异常", LogLevel.WARN, sem, e);
         }
     }
 
