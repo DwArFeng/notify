@@ -290,6 +290,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private void insertSendHistories(List<SendHistory> sendHistories) {
         try {
             sendHistoryMaintainService.batchInsert(sendHistories);
+            return;
         } catch (Exception e) {
             LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 逐条插入", e);
         }
