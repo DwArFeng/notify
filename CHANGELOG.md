@@ -6,7 +6,6 @@
 
 - 实现运维指令。
   - com.dwarfeng.notify.impl.service.telqos.DlcCommand。
-  - com.dwarfeng.notify.impl.service.telqos.NotifyCommand。
   - com.dwarfeng.notify.impl.service.telqos.RlcCommand。
   - com.dwarfeng.notify.impl.service.telqos.SlcCommand。
 

@@ -2,22 +2,26 @@ package com.dwarfeng.notify.sdk.bean.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
+import com.dwarfeng.notify.stack.bean.dto.NotifyInfo.InfoDetail;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * WebInput 通知信息。
  *
  * @author DwArFeng
- * @since 1.0.0
+ * @since 1.1.0
  */
 public class WebInputNotifyInfo implements Dto {
 
-    private static final long serialVersionUID = -6375412197497372943L;
+    private static final long serialVersionUID = -3668319529952065134L;
 
     public static NotifyInfo toStackBean(WebInputNotifyInfo webInputNotifyInfo) {
         if (Objects.isNull(webInputNotifyInfo)) {
@@ -25,25 +29,35 @@ public class WebInputNotifyInfo implements Dto {
         } else {
             return new NotifyInfo(
                     WebInputLongIdKey.toStackBean(webInputNotifyInfo.getNotifySettingKey()),
-                    webInputNotifyInfo.getRouteInfo(), webInputNotifyInfo.getDispatchInfo(),
-                    webInputNotifyInfo.getSendInfo()
+                    webInputNotifyInfo.getRouteInfoDetails().stream().map(WebInputInfoDetail::toStackBean)
+                            .collect(Collectors.toList()),
+                    webInputNotifyInfo.getDispatchInfoDetails().stream().map(WebInputInfoDetail::toStackBean)
+                            .collect(Collectors.toList()),
+                    webInputNotifyInfo.getSendInfoDetails().stream().map(WebInputInfoDetail::toStackBean)
+                            .collect(Collectors.toList())
             );
         }
     }
 
     @JSONField(name = "notify_setting_key")
-    @Valid
     @NotNull
+    @Valid
     private WebInputLongIdKey notifySettingKey;
 
-    @JSONField(name = "route_info")
-    private String routeInfo;
+    @JSONField(name = "route_info_details")
+    @NotNull
+    @Valid
+    private List<WebInputInfoDetail> routeInfoDetails;
 
-    @JSONField(name = "dispatch_info")
-    private String dispatchInfo;
+    @JSONField(name = "dispatch_info_details")
+    @NotNull
+    @Valid
+    private List<WebInputInfoDetail> dispatchInfoDetails;
 
-    @JSONField(name = "send_info")
-    private String sendInfo;
+    @JSONField(name = "send_info_details")
+    @NotNull
+    @Valid
+    private List<WebInputInfoDetail> sendInfoDetails;
 
     public WebInputNotifyInfo() {
     }
@@ -56,37 +70,93 @@ public class WebInputNotifyInfo implements Dto {
         this.notifySettingKey = notifySettingKey;
     }
 
-    public String getRouteInfo() {
-        return routeInfo;
+    public List<WebInputInfoDetail> getRouteInfoDetails() {
+        return routeInfoDetails;
     }
 
-    public void setRouteInfo(String routeInfo) {
-        this.routeInfo = routeInfo;
+    public void setRouteInfoDetails(List<WebInputInfoDetail> routeInfoDetails) {
+        this.routeInfoDetails = routeInfoDetails;
     }
 
-    public String getDispatchInfo() {
-        return dispatchInfo;
+    public List<WebInputInfoDetail> getDispatchInfoDetails() {
+        return dispatchInfoDetails;
     }
 
-    public void setDispatchInfo(String dispatchInfo) {
-        this.dispatchInfo = dispatchInfo;
+    public void setDispatchInfoDetails(List<WebInputInfoDetail> dispatchInfoDetails) {
+        this.dispatchInfoDetails = dispatchInfoDetails;
     }
 
-    public String getSendInfo() {
-        return sendInfo;
+    public List<WebInputInfoDetail> getSendInfoDetails() {
+        return sendInfoDetails;
     }
 
-    public void setSendInfo(String sendInfo) {
-        this.sendInfo = sendInfo;
+    public void setSendInfoDetails(List<WebInputInfoDetail> sendInfoDetails) {
+        this.sendInfoDetails = sendInfoDetails;
     }
 
     @Override
     public String toString() {
         return "WebInputNotifyInfo{" +
                 "notifySettingKey=" + notifySettingKey +
-                ", routeInfo='" + routeInfo + '\'' +
-                ", dispatchInfo='" + dispatchInfo + '\'' +
-                ", sendInfo='" + sendInfo + '\'' +
+                ", routeInfoDetails=" + routeInfoDetails +
+                ", dispatchInfoDetails=" + dispatchInfoDetails +
+                ", sendInfoDetails=" + sendInfoDetails +
                 '}';
+    }
+
+    /**
+     * WebInput 信息详情。
+     *
+     * @author DwArFeng
+     * @since 1.1.0
+     */
+    public static class WebInputInfoDetail implements Dto {
+
+        private static final long serialVersionUID = -4651918349655167801L;
+
+        public static InfoDetail toStackBean(WebInputInfoDetail webInputInfoDetail) {
+            if (Objects.isNull(webInputInfoDetail)) {
+                return null;
+            } else {
+                return new InfoDetail(
+                        webInputInfoDetail.getType(), webInputInfoDetail.getInfo()
+                );
+            }
+        }
+
+        @JSONField(name = "type")
+        @NotNull
+        @NotEmpty
+        private String type;
+
+        @JSONField(name = "info")
+        private String info;
+
+        public WebInputInfoDetail() {
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getInfo() {
+            return info;
+        }
+
+        public void setInfo(String info) {
+            this.info = info;
+        }
+
+        @Override
+        public String toString() {
+            return "WebInputInfoDetail{" +
+                    "type='" + type + '\'' +
+                    ", info='" + info + '\'' +
+                    '}';
+        }
     }
 }
