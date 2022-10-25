@@ -111,9 +111,9 @@ public interface Router {
          * <p>
          * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param topicKey     元数据主题的主键。
-         * @param userKey      元数据用户的主键。
-         * @param metaId 元数据的 ID。
+         * @param topicKey 元数据主题的主键。
+         * @param userKey  元数据用户的主键。
+         * @param metaId   元数据的 ID。
          * @return 指定的元数据的值或默认值。
          * @throws RouterException 路由器异常。
          */
@@ -127,73 +127,15 @@ public interface Router {
         }
 
         /**
-         * 查询指定的变量是否存在。
+         * 设置指定的元数据的值。
          *
-         * @param topicKey   变量主题的主键。
-         * @param userKey    变量用户的主键。
-         * @param variableId 变量的 ID。
-         * @return 指定的变量是否存在。
+         * @param topicKey 元数据主题的主键。
+         * @param userKey  元数据用户的主键。
+         * @param metaId   元数据的 ID。
+         * @param value    元数据的新值。
          * @throws RouterException 路由器异常。
          */
-        boolean existsVariable(StringIdKey topicKey, StringIdKey userKey, String variableId) throws RouterException;
-
-        /**
-         * 获取指定的变量的默认值。
-         *
-         * <p>
-         * 如果指定的变量的默认值不存在，则返回 null。
-         *
-         * @param topicKey   变量主题的主键。
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的默认值。
-         * @throws RouterException 路由器异常。
-         */
-        String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId) throws RouterException;
-
-        /**
-         * 获取指定的变量的默认值。
-         *
-         * <p>
-         * 如果指定的变量的默认值不存在，则返回 null。
-         *
-         * @param topicKey   变量主题的主键。
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的默认值。
-         * @throws RouterException 路由器异常。
-         */
-        String getDefaultVariable(StringIdKey topicKey, String variableId) throws RouterException;
-
-        /**
-         * 获取指定的变量的值或默认值。
-         *
-         * <p>
-         * 如果指定的变量的值存在，则放回变量值；否则，返回指定的变量的默认值；如果默认值也不存在则返回 null。
-         *
-         * @param topicKey   变量主题的主键。
-         * @param userKey    变量用户的主键。
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的值或默认值。
-         * @throws RouterException 路由器异常。
-         */
-        default String getVariableOrDefault(StringIdKey topicKey, StringIdKey userKey, String variableId)
-                throws RouterException {
-            if (existsVariable(topicKey, userKey, variableId)) {
-                return getVariable(topicKey, userKey, variableId);
-            } else {
-                return getDefaultVariable(topicKey, variableId);
-            }
-        }
-
-        /**
-         * 设置指定的变量的值。
-         *
-         * @param topicKey   变量主题的主键。
-         * @param userKey    变量用户的主键。
-         * @param variableId 变量的 ID。
-         * @param value      变量的新值。
-         * @throws RouterException 路由器异常。
-         */
-        void putVariable(StringIdKey topicKey, StringIdKey userKey, String variableId, String value)
+        void putMeta(StringIdKey topicKey, StringIdKey userKey, String metaId, String value)
                 throws RouterException;
 
         /**

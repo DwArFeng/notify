@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_user")
 public class HibernateUser implements Bean {
 
-    private static final long serialVersionUID = -5861047313264769134L;
+    private static final long serialVersionUID = 9017787846802909284L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -31,9 +31,6 @@ public class HibernateUser implements Bean {
     // -----------------------------------------------------------一对多-----------------------------------------------------------
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "user")
     private Set<HibernateMeta> metas = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "user")
-    private Set<HibernateVariable> variables = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSendHistory.class, mappedBy = "user")
     private Set<HibernateSendHistory> sendHistories = new HashSet<>();
@@ -81,14 +78,6 @@ public class HibernateUser implements Bean {
 
     public void setMetas(Set<HibernateMeta> metas) {
         this.metas = metas;
-    }
-
-    public Set<HibernateVariable> getVariables() {
-        return variables;
-    }
-
-    public void setVariables(Set<HibernateVariable> variables) {
-        this.variables = variables;
     }
 
     public Set<HibernateSendHistory> getSendHistories() {

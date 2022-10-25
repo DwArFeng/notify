@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "tbl_topic")
 public class HibernateTopic implements Bean {
 
-    private static final long serialVersionUID = -1767104220065034768L;
+    private static final long serialVersionUID = -1842471086189436367L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -47,12 +47,6 @@ public class HibernateTopic implements Bean {
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMetaIndicator.class, mappedBy = "topic")
     private Set<HibernateMetaIndicator> metaIndicators = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariable.class, mappedBy = "topic")
-    private Set<HibernateVariable> variables = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateVariableIndicator.class, mappedBy = "topic")
-    private Set<HibernateVariableIndicator> variableIndicators = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSendHistory.class, mappedBy = "topic")
     private Set<HibernateSendHistory> sendHistories = new HashSet<>();
@@ -140,22 +134,6 @@ public class HibernateTopic implements Bean {
 
     public void setMetaIndicators(Set<HibernateMetaIndicator> metaIndicators) {
         this.metaIndicators = metaIndicators;
-    }
-
-    public Set<HibernateVariable> getVariables() {
-        return variables;
-    }
-
-    public void setVariables(Set<HibernateVariable> variables) {
-        this.variables = variables;
-    }
-
-    public Set<HibernateVariableIndicator> getVariableIndicators() {
-        return variableIndicators;
-    }
-
-    public void setVariableIndicators(Set<HibernateVariableIndicator> variableIndicators) {
-        this.variableIndicators = variableIndicators;
     }
 
     public Set<HibernateSendHistory> getSendHistories() {

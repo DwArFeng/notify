@@ -1,15 +1,16 @@
 package com.dwarfeng.notify.impl.service.operation;
 
-import com.dwarfeng.notify.stack.bean.entity.*;
+import com.dwarfeng.notify.stack.bean.entity.Meta;
+import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
+import com.dwarfeng.notify.stack.bean.entity.SendHistory;
+import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.notify.stack.bean.entity.key.VariableKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
-import com.dwarfeng.notify.stack.service.VariableMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -35,9 +36,6 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     private final MetaDao metaDao;
     private final MetaCache metaCache;
 
-    private final VariableDao variableDao;
-    private final VariableCache variableCache;
-
     private final SendHistoryDao sendHistoryDao;
     private final SendHistoryCache sendHistoryCache;
 
@@ -49,7 +47,6 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
             RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
             SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
             MetaDao metaDao, MetaCache metaCache,
-            VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
         this.notifySettingDao = notifySettingDao;
@@ -60,8 +57,6 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
         this.senderInfoCache = senderInfoCache;
         this.metaDao = metaDao;
         this.metaCache = metaCache;
-        this.variableDao = variableDao;
-        this.variableCache = variableCache;
         this.sendHistoryDao = sendHistoryDao;
         this.sendHistoryCache = sendHistoryCache;
     }
@@ -118,13 +113,6 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
         ).stream().map(Meta::getKey).collect(Collectors.toList());
         metaDao.batchDelete(metaKeys);
         metaCache.batchDelete(metaKeys);
-
-        // 删除与通知设置相关的变量。
-        List<VariableKey> variableKeys = variableDao.lookup(
-                VariableMaintainService.CHILD_FOR_NOTIFY_SETTING, new Object[]{key}
-        ).stream().map(Variable::getKey).collect(Collectors.toList());
-        variableDao.batchDelete(variableKeys);
-        variableCache.batchDelete(variableKeys);
 
         // 删除与通知设置相关的发送历史的关联。
         List<SendHistory> sendHistories = sendHistoryDao.lookup(

@@ -1,9 +1,13 @@
 package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.sdk.bean.entity.*;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.*;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.MetaIndicatorStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.MetaStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.entity.key.formatter.SenderInfoStringKeyFormatter;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.*;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;
@@ -42,14 +46,10 @@ public class CacheConfiguration {
     private String dispatcherSupportPrefix;
     @Value("${cache.prefix.entity.meta}")
     private String metaPrefix;
-    @Value("${cache.prefix.entity.variable}")
-    private String variablePrefix;
     @Value("${cache.prefix.entity.send_history}")
     private String sendHistoryPrefix;
     @Value("${cache.prefix.entity.meta_indicator}")
     private String metaIndicatorPrefix;
-    @Value("${cache.prefix.entity.variable_indicator}")
-    private String variableIndicatorPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template, Mapper mapper) {
         this.template = template;
@@ -160,16 +160,6 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<VariableKey, Variable, FastJsonVariable> variableRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonVariable>) template,
-                new VariableStringKeyFormatter(variablePrefix),
-                new DozerBeanTransformer<>(Variable.class, FastJsonVariable.class, mapper)
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
     public RedisBatchBaseCache<LongIdKey, SendHistory, FastJsonSendHistory> sendHistoryRedisBatchBaseCache() {
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonSendHistory>) template,
@@ -186,17 +176,6 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonMetaIndicator>) template,
                 new MetaIndicatorStringKeyFormatter(metaIndicatorPrefix),
                 new DozerBeanTransformer<>(MetaIndicator.class, FastJsonMetaIndicator.class, mapper)
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<VariableIndicatorKey, VariableIndicator, FastJsonVariableIndicator>
-    variableIndicatorRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonVariableIndicator>) template,
-                new VariableIndicatorStringKeyFormatter(variableIndicatorPrefix),
-                new DozerBeanTransformer<>(VariableIndicator.class, FastJsonVariableIndicator.class, mapper)
         );
     }
 }

@@ -1,10 +1,15 @@
 package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.*;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
-import com.dwarfeng.notify.stack.service.*;
+import com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService;
+import com.dwarfeng.notify.stack.service.MetaMaintainService;
+import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
+import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -33,12 +38,6 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final MetaIndicatorDao metaIndicatorDao;
     private final MetaIndicatorCache metaIndicatorCache;
 
-    private final VariableDao variableDao;
-    private final VariableCache variableCache;
-
-    private final VariableIndicatorDao variableIndicatorDao;
-    private final VariableIndicatorCache variableIndicatorCache;
-
     private final SendHistoryDao sendHistoryDao;
     private final SendHistoryCache sendHistoryCache;
 
@@ -51,8 +50,6 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
             SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
             MetaDao metaDao, MetaCache metaCache,
             MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
-            VariableDao variableDao, VariableCache variableCache,
-            VariableIndicatorDao variableIndicatorDao, VariableIndicatorCache variableIndicatorCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache
     ) {
         this.topicDao = topicDao;
@@ -65,10 +62,6 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         this.metaCache = metaCache;
         this.metaIndicatorDao = metaIndicatorDao;
         this.metaIndicatorCache = metaIndicatorCache;
-        this.variableDao = variableDao;
-        this.variableCache = variableCache;
-        this.variableIndicatorDao = variableIndicatorDao;
-        this.variableIndicatorCache = variableIndicatorCache;
         this.sendHistoryDao = sendHistoryDao;
         this.sendHistoryCache = sendHistoryCache;
     }
@@ -132,20 +125,6 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         ).stream().map(MetaIndicator::getKey).collect(Collectors.toList());
         metaIndicatorDao.batchDelete(metaIndicatorKeys);
         metaIndicatorCache.batchDelete(metaIndicatorKeys);
-
-        // 删除与通知设置相关的变量。
-        List<VariableKey> variableKeys = variableDao.lookup(
-                VariableMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ).stream().map(Variable::getKey).collect(Collectors.toList());
-        variableDao.batchDelete(variableKeys);
-        variableCache.batchDelete(variableKeys);
-
-        // 删除与变量设置相关的元数据指示器。
-        List<VariableIndicatorKey> variableIndicatorKeys = variableIndicatorDao.lookup(
-                VariableIndicatorMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ).stream().map(VariableIndicator::getKey).collect(Collectors.toList());
-        variableIndicatorDao.batchDelete(variableIndicatorKeys);
-        variableIndicatorCache.batchDelete(variableIndicatorKeys);
 
         // 删除与通知设置相关的发送历史的关联。
         List<SendHistory> sendHistories = sendHistoryDao.lookup(

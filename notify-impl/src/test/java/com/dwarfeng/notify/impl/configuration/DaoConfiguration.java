@@ -1,10 +1,14 @@
 package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.impl.bean.entity.*;
-import com.dwarfeng.notify.impl.bean.entity.key.*;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaIndicatorKey;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaKey;
+import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.impl.dao.preset.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.*;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.DozerBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
@@ -36,10 +40,8 @@ public class DaoConfiguration {
     private final DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker;
     private final DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker;
     private final MetaPresetCriteriaMaker metaPresetCriteriaMaker;
-    private final VariablePresetCriteriaMaker variablePresetCriteriaMaker;
     private final SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker;
     private final MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker;
-    private final VariableIndicatorPresetCriteriaMaker variableIndicatorPresetCriteriaMaker;
 
     @Autowired
     private Mapper mapper;
@@ -59,10 +61,8 @@ public class DaoConfiguration {
             DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker,
             DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker,
             MetaPresetCriteriaMaker metaPresetCriteriaMaker,
-            VariablePresetCriteriaMaker variablePresetCriteriaMaker,
             SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker,
-            MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker,
-            VariableIndicatorPresetCriteriaMaker variableIndicatorPresetCriteriaMaker
+            MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker
     ) {
         this.hibernateTemplate = hibernateTemplate;
         this.userPresetCriteriaMaker = userPresetCriteriaMaker;
@@ -75,10 +75,8 @@ public class DaoConfiguration {
         this.dispatcherInfoPresetCriteriaMaker = dispatcherInfoPresetCriteriaMaker;
         this.dispatcherSupportPresetCriteriaMaker = dispatcherSupportPresetCriteriaMaker;
         this.metaPresetCriteriaMaker = metaPresetCriteriaMaker;
-        this.variablePresetCriteriaMaker = variablePresetCriteriaMaker;
         this.sendHistoryPresetCriteriaMaker = sendHistoryPresetCriteriaMaker;
         this.metaIndicatorPresetCriteriaMaker = metaIndicatorPresetCriteriaMaker;
-        this.variableIndicatorPresetCriteriaMaker = variableIndicatorPresetCriteriaMaker;
     }
 
     @Bean
@@ -404,38 +402,6 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<VariableKey, HibernateVariableKey, Variable, HibernateVariable>
-    variableHibernateBatchBaseDao() {
-        return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
-                new DozerBeanTransformer<>(VariableKey.class, HibernateVariableKey.class, mapper),
-                new DozerBeanTransformer<>(Variable.class, HibernateVariable.class, mapper),
-                HibernateVariable.class,
-                new DefaultDeletionMod<>(),
-                batchSize
-        );
-    }
-
-    @Bean
-    public HibernateEntireLookupDao<Variable, HibernateVariable> variableHibernateEntireLookupDao() {
-        return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
-                new DozerBeanTransformer<>(Variable.class, HibernateVariable.class, mapper),
-                HibernateVariable.class
-        );
-    }
-
-    @Bean
-    public HibernatePresetLookupDao<Variable, HibernateVariable> variableHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
-                new DozerBeanTransformer<>(Variable.class, HibernateVariable.class, mapper),
-                HibernateVariable.class,
-                variablePresetCriteriaMaker
-        );
-    }
-
-    @Bean
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, SendHistory, HibernateSendHistory>
     sendHistoryHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
@@ -498,40 +464,6 @@ public class DaoConfiguration {
                 new DozerBeanTransformer<>(MetaIndicator.class, HibernateMetaIndicator.class, mapper),
                 HibernateMetaIndicator.class,
                 metaIndicatorPresetCriteriaMaker
-        );
-    }
-
-    @Bean
-    public HibernateBatchBaseDao<VariableIndicatorKey, HibernateVariableIndicatorKey, VariableIndicator,
-            HibernateVariableIndicator> variableIndicatorHibernateBatchBaseDao() {
-        return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
-                new DozerBeanTransformer<>(VariableIndicatorKey.class, HibernateVariableIndicatorKey.class, mapper),
-                new DozerBeanTransformer<>(VariableIndicator.class, HibernateVariableIndicator.class, mapper),
-                HibernateVariableIndicator.class,
-                new DefaultDeletionMod<>(),
-                batchSize
-        );
-    }
-
-    @Bean
-    public HibernateEntireLookupDao<VariableIndicator, HibernateVariableIndicator>
-    variableIndicatorHibernateEntireLookupDao() {
-        return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
-                new DozerBeanTransformer<>(VariableIndicator.class, HibernateVariableIndicator.class, mapper),
-                HibernateVariableIndicator.class
-        );
-    }
-
-    @Bean
-    public HibernatePresetLookupDao<VariableIndicator, HibernateVariableIndicator>
-    variableIndicatorHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
-                new DozerBeanTransformer<>(VariableIndicator.class, HibernateVariableIndicator.class, mapper),
-                HibernateVariableIndicator.class,
-                variableIndicatorPresetCriteriaMaker
         );
     }
 }

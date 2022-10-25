@@ -4,7 +4,9 @@ import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.UserCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.*;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
@@ -46,14 +48,10 @@ public class ServiceConfiguration {
     private final DispatcherSupportCache dispatcherSupportCache;
     private final MetaDao metaDao;
     private final MetaCache metaCache;
-    private final VariableDao variableDao;
-    private final VariableCache variableCache;
     private final SendHistoryDao sendHistoryDao;
     private final SendHistoryCache sendHistoryCache;
     private final MetaIndicatorDao metaIndicatorDao;
     private final MetaIndicatorCache metaIndicatorCache;
-    private final VariableIndicatorDao variableIndicatorDao;
-    private final VariableIndicatorCache variableIndicatorCache;
 
     @Value("${cache.timeout.entity.router_info}")
     private long routerInfoTimeout;
@@ -69,14 +67,10 @@ public class ServiceConfiguration {
     private long dispatcherSupportTimeout;
     @Value("${cache.timeout.entity.meta}")
     private long metaTimeout;
-    @Value("${cache.timeout.entity.variable}")
-    private long variableTimeout;
     @Value("${cache.timeout.entity.send_history}")
     private long sendHistoryTimeout;
     @Value("${cache.timeout.entity.meta_indicator}")
     private long metaIndicatorTimeout;
-    @Value("${cache.timeout.entity.variable_indicator}")
-    private long variableIndicatorTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
@@ -90,10 +84,8 @@ public class ServiceConfiguration {
             DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
             DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
             MetaDao metaDao, MetaCache metaCache,
-            VariableDao variableDao, VariableCache variableCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache,
-            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
-            VariableIndicatorDao variableIndicatorDao, VariableIndicatorCache variableIndicatorCache
+            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.userCrudOperation = userCrudOperation;
@@ -116,14 +108,10 @@ public class ServiceConfiguration {
         this.dispatcherSupportCache = dispatcherSupportCache;
         this.metaDao = metaDao;
         this.metaCache = metaCache;
-        this.variableDao = variableDao;
-        this.variableCache = variableCache;
         this.sendHistoryDao = sendHistoryDao;
         this.sendHistoryCache = sendHistoryCache;
         this.metaIndicatorDao = metaIndicatorDao;
         this.metaIndicatorCache = metaIndicatorCache;
-        this.variableIndicatorDao = variableIndicatorDao;
-        this.variableIndicatorCache = variableIndicatorCache;
     }
 
     @Bean
@@ -426,36 +414,6 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<VariableKey, Variable> variableGeneralBatchCrudService() {
-        return new GeneralBatchCrudService<>(
-                variableDao,
-                variableCache,
-                new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN,
-                variableTimeout
-        );
-    }
-
-    @Bean
-    public DaoOnlyEntireLookupService<Variable> variableDaoOnlyEntireLookupService() {
-        return new DaoOnlyEntireLookupService<>(
-                variableDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public DaoOnlyPresetLookupService<Variable> variableDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
-                variableDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
     public GeneralBatchCrudService<LongIdKey, SendHistory> sendHistoryGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
                 sendHistoryDao,
@@ -511,37 +469,6 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MetaIndicator> metaIndicatorDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 metaIndicatorDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public GeneralBatchCrudService<VariableIndicatorKey, VariableIndicator>
-    variableIndicatorGeneralBatchCrudService() {
-        return new GeneralBatchCrudService<>(
-                variableIndicatorDao,
-                variableIndicatorCache,
-                new ExceptionKeyFetcher<>(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN,
-                variableIndicatorTimeout
-        );
-    }
-
-    @Bean
-    public DaoOnlyEntireLookupService<VariableIndicator> variableIndicatorDaoOnlyEntireLookupService() {
-        return new DaoOnlyEntireLookupService<>(
-                variableIndicatorDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public DaoOnlyPresetLookupService<VariableIndicator> variableIndicatorDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
-                variableIndicatorDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

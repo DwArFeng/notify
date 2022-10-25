@@ -37,8 +37,6 @@
   - com.dwarfeng.notify.stack.bean.entity.Meta。
   - com.dwarfeng.notify.stack.bean.entity.MetaIndicator。
   - com.dwarfeng.notify.stack.bean.entity.SendHistory。
-  - com.dwarfeng.notify.stack.bean.entity.Variable。
-  - com.dwarfeng.notify.stack.bean.entity.VariableIndicator。
 
 - 依赖升级。
   - 升级 `subgrade` 依赖版本为 `1.2.13.a` 以规避漏洞。

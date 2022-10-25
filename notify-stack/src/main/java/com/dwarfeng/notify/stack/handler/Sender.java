@@ -156,68 +156,13 @@ public interface Sender {
         }
 
         /**
-         * 获取指定的变量的默认值。
+         * 设置指定的元数据的值。
          *
-         * <p>
-         * 如果指定的变量的默认值不存在，则返回 null。
-         *
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的默认值。
+         * @param userKey 元数据用户的主键。
+         * @param metaId  元数据的 ID。
+         * @param value   元数据的新值。
          * @throws SenderException 发送器异常。
          */
-        boolean existsVariable(StringIdKey userKey, String variableId) throws SenderException;
-
-        /**
-         * 获取指定的变量的默认值。
-         *
-         * <p>
-         * 如果指定的变量的默认值不存在，则返回 null。
-         *
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的默认值。
-         * @throws SenderException 发送器异常。
-         */
-        String getVariable(StringIdKey userKey, String variableId) throws SenderException;
-
-        /**
-         * 获取指定的变量的默认值。
-         *
-         * <p>
-         * 如果指定的变量的默认值不存在，则返回 null。
-         *
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的默认值。
-         * @throws SenderException 发送器异常。
-         */
-        String getDefaultVariable(String variableId) throws SenderException;
-
-        /**
-         * 获取指定的变量的值或默认值。
-         *
-         * <p>
-         * 如果指定的变量的值存在，则放回变量值；否则，返回指定的变量的默认值；如果默认值也不存在则返回 null。
-         *
-         * @param userKey    变量用户的主键。
-         * @param variableId 变量的 ID。
-         * @return 指定的变量的值或默认值。
-         * @throws SenderException 发送器异常。
-         */
-        default String getVariableOrDefault(StringIdKey userKey, String variableId) throws SenderException {
-            if (existsVariable(userKey, variableId)) {
-                return getVariable(userKey, variableId);
-            } else {
-                return getDefaultVariable(variableId);
-            }
-        }
-
-        /**
-         * 设置指定的变量的值。
-         *
-         * @param userKey    变量用户的主键。
-         * @param variableId 变量的 ID。
-         * @param value      变量的新值。
-         * @throws SenderException 发送器异常。
-         */
-        void putVariable(StringIdKey userKey, String variableId, String value) throws SenderException;
+        void putMeta(StringIdKey userKey, String metaId, String value) throws SenderException;
     }
 }

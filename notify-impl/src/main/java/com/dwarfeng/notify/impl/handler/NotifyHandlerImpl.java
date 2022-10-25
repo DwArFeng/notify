@@ -2,7 +2,9 @@ package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.*;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;
@@ -33,8 +35,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private final UserMaintainService userMaintainService;
     private final MetaMaintainService metaMaintainService;
     private final MetaIndicatorMaintainService metaIndicatorMaintainService;
-    private final VariableMaintainService variableMaintainService;
-    private final VariableIndicatorMaintainService variableIndicatorMaintainService;
     private final SendHistoryMaintainService sendHistoryMaintainService;
     private final RouterInfoMaintainService routerInfoMaintainService;
     private final DispatcherInfoMaintainService dispatcherInfoMaintainService;
@@ -56,8 +56,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
             UserMaintainService userMaintainService,
             MetaMaintainService metaMaintainService,
             MetaIndicatorMaintainService metaIndicatorMaintainService,
-            VariableMaintainService variableMaintainService,
-            VariableIndicatorMaintainService variableIndicatorMaintainService,
             SendHistoryMaintainService sendHistoryMaintainService,
             RouterInfoMaintainService routerInfoMaintainService,
             DispatcherInfoMaintainService dispatcherInfoMaintainService,
@@ -74,8 +72,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.userMaintainService = userMaintainService;
         this.metaMaintainService = metaMaintainService;
         this.metaIndicatorMaintainService = metaIndicatorMaintainService;
-        this.variableMaintainService = variableMaintainService;
-        this.variableIndicatorMaintainService = variableIndicatorMaintainService;
         this.sendHistoryMaintainService = sendHistoryMaintainService;
         this.routerInfoMaintainService = routerInfoMaintainService;
         this.dispatcherInfoMaintainService = dispatcherInfoMaintainService;
@@ -491,71 +487,21 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public boolean existsVariable(StringIdKey topicKey, StringIdKey userKey, String variableId)
-                throws RouterException {
-            try {
-                return variableMaintainService.exists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public String getVariable(StringIdKey topicKey, StringIdKey userKey, String variableId)
+        public void putMeta(StringIdKey topicKey, StringIdKey userKey, String metaId, String value)
                 throws RouterException {
             try {
                 // 参数有效性验证。
                 handlerValidator.makeSureTopicExists(topicKey);
                 handlerValidator.makeSureUserExists(userKey);
 
-                Variable variable = variableMaintainService.getIfExists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-                if (Objects.isNull(variable)) {
-                    return null;
-                }
-                return variable.getValue();
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultVariable(StringIdKey topicKey, String variableId) throws RouterException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureTopicExists(topicKey);
-
-                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
-                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
-                );
-                if (Objects.isNull(variableIndicator)) {
-                    return null;
-                }
-                return variableIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public void putVariable(StringIdKey topicKey, StringIdKey userKey, String variableId, String value)
-                throws RouterException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureTopicExists(topicKey);
-                handlerValidator.makeSureUserExists(userKey);
-
-                Variable variable = new Variable(
-                        new VariableKey(
+                Meta meta = new Meta(
+                        new MetaKey(
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                variableId
+                                metaId
                         ),
                         value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
                 );
-                variableMaintainService.insertOrUpdate(variable);
+                metaMaintainService.insertOrUpdate(meta);
             } catch (Exception e) {
                 throw new RouterException(e);
             }
@@ -664,63 +610,19 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public boolean existsVariable(StringIdKey userKey, String variableId) throws DispatcherException {
-            try {
-                return variableMaintainService.exists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public String getVariable(StringIdKey userKey, String variableId) throws DispatcherException {
+        public void putMeta(StringIdKey userKey, String metaId, String value) throws DispatcherException {
             try {
                 // 参数有效性验证。
                 handlerValidator.makeSureUserExists(userKey);
 
-                Variable variable = variableMaintainService.getIfExists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-                if (Objects.isNull(variable)) {
-                    return null;
-                }
-                return variable.getValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultVariable(String variableId) throws DispatcherException {
-            try {
-                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
-                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
-                );
-                if (Objects.isNull(variableIndicator)) {
-                    return null;
-                }
-                return variableIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public void putVariable(StringIdKey userKey, String variableId, String value) throws DispatcherException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Variable variable = new Variable(
-                        new VariableKey(
+                Meta meta = new Meta(
+                        new MetaKey(
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                variableId
+                                metaId
                         ),
                         value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
                 );
-                variableMaintainService.insertOrUpdate(variable);
+                metaMaintainService.insertOrUpdate(meta);
             } catch (Exception e) {
                 throw new DispatcherException(e);
             }
@@ -816,63 +718,19 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         @Override
-        public boolean existsVariable(StringIdKey userKey, String variableId) throws SenderException {
-            try {
-                return variableMaintainService.exists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
-        }
-
-        @Override
-        public String getVariable(StringIdKey userKey, String variableId) throws SenderException {
+        public void putMeta(StringIdKey userKey, String metaId, String value) throws SenderException {
             try {
                 // 参数有效性验证。
                 handlerValidator.makeSureUserExists(userKey);
 
-                Variable variable = variableMaintainService.getIfExists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-                if (Objects.isNull(variable)) {
-                    return null;
-                }
-                return variable.getValue();
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultVariable(String variableId) throws SenderException {
-            try {
-                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
-                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
-                );
-                if (Objects.isNull(variableIndicator)) {
-                    return null;
-                }
-                return variableIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
-        }
-
-        @Override
-        public void putVariable(StringIdKey userKey, String variableId, String value) throws SenderException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Variable variable = new Variable(
-                        new VariableKey(
+                Meta meta = new Meta(
+                        new MetaKey(
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                variableId
+                                metaId
                         ),
                         value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
                 );
-                variableMaintainService.insertOrUpdate(variable);
+                metaMaintainService.insertOrUpdate(meta);
             } catch (Exception e) {
                 throw new SenderException(e);
             }
