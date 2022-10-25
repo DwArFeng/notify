@@ -39,7 +39,7 @@
   - com.dwarfeng.notify.stack.bean.entity.SendHistory。
 
 - 依赖升级。
-  - 升级 `subgrade` 依赖版本为 `1.2.13.a` 以规避漏洞。
+  - 升级 `subgrade` 依赖版本为 `1.2.13.b` 以应用其新功能/规避漏洞。
 
 #### Bug修复
 
