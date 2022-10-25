@@ -1,9 +1,6 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.dto.RouteContext;
-import com.dwarfeng.notify.stack.bean.dto.SendContext;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.entity.key.*;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
@@ -39,6 +36,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private final VariableMaintainService variableMaintainService;
     private final VariableIndicatorMaintainService variableIndicatorMaintainService;
     private final SendHistoryMaintainService sendHistoryMaintainService;
+    private final RouterInfoMaintainService routerInfoMaintainService;
+    private final DispatcherInfoMaintainService dispatcherInfoMaintainService;
+    private final SenderInfoMaintainService senderInfoMaintainService;
 
     private final RouteLocalCacheHandler routeLocalCacheHandler;
     private final DispatchLocalCacheHandler dispatchLocalCacheHandler;
@@ -59,6 +59,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
             VariableMaintainService variableMaintainService,
             VariableIndicatorMaintainService variableIndicatorMaintainService,
             SendHistoryMaintainService sendHistoryMaintainService,
+            RouterInfoMaintainService routerInfoMaintainService,
+            DispatcherInfoMaintainService dispatcherInfoMaintainService,
+            SenderInfoMaintainService senderInfoMaintainService,
             RouteLocalCacheHandler routeLocalCacheHandler,
             DispatchLocalCacheHandler dispatchLocalCacheHandler,
             SendLocalCacheHandler sendLocalCacheHandler,
@@ -74,6 +77,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.variableMaintainService = variableMaintainService;
         this.variableIndicatorMaintainService = variableIndicatorMaintainService;
         this.sendHistoryMaintainService = sendHistoryMaintainService;
+        this.routerInfoMaintainService = routerInfoMaintainService;
+        this.dispatcherInfoMaintainService = dispatcherInfoMaintainService;
+        this.senderInfoMaintainService = senderInfoMaintainService;
         this.routeLocalCacheHandler = routeLocalCacheHandler;
         this.dispatchLocalCacheHandler = dispatchLocalCacheHandler;
         this.sendLocalCacheHandler = sendLocalCacheHandler;
@@ -85,6 +91,11 @@ public class NotifyHandlerImpl implements NotifyHandler {
     @Override
     public void notify(NotifyInfo notifyInfo) throws HandlerException {
         try {
+            // 定义缓存，增加程序的运行速度。
+            Map<LongIdKey, String> cachedRouteInfo = new HashMap<>();
+            Map<StringIdKey, String> cachedDispatchInfo = new HashMap<>();
+            Map<SenderInfoKey, String> cachedSendInfo = new HashMap<>();
+
             // 获取并处理 notifyInfo 中的字段。
             LongIdKey notifySettingKey = notifyInfo.getNotifySettingKey();
             Map<String, String> routeInfoMap = notifyInfo.getRouteInfoDetails().stream().collect(
@@ -101,19 +112,18 @@ public class NotifyHandlerImpl implements NotifyHandler {
             handlerValidator.makeSureNotifySettingValid(notifySettingKey);
 
             // 进行路由操作。
-            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfoMap);
+            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfoMap, cachedRouteInfo);
 
-            // 进行用户调度操作。
-            List<DispatchedItem> dispatchedItems = dispatchingUser(notifySettingKey, dispatchInfoMap, routedUserKeys);
+            // 进行调度操作。
+            List<DispatchedItem> dispatchedItems = dispatching(
+                    notifySettingKey, dispatchInfoMap, routedUserKeys, cachedDispatchInfo
+            );
 
             // 进行发送操作。
-            List<SentItem> sentItems = sending(notifySettingKey, sendInfoMap, dispatchedItems);
-
-            // 进行响应调度操作。
-            dispatchingResponse(notifySettingKey, dispatchInfoMap, sentItems);
+            List<SentItem> sentItems = sending(notifySettingKey, sendInfoMap, dispatchedItems, cachedSendInfo);
 
             // 进行后处理操作。
-            postprocessing(notifySettingKey, routeInfoMap, dispatchInfoMap, sendInfoMap, sentItems);
+            postprocessing(notifySettingKey, sentItems, cachedRouteInfo, cachedDispatchInfo, cachedSendInfo);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -121,22 +131,28 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
     }
 
-    private List<StringIdKey> routing(LongIdKey notifySettingKey, Map<String, String> routeInfoMap) throws Exception {
+    private List<StringIdKey> routing(
+            LongIdKey notifySettingKey, Map<String, String> routeInfoMap, Map<LongIdKey, String> cachedRouteInfo
+    ) throws Exception {
+        // 通过本地缓存获取路由器。
+        Router router = routeLocalCacheHandler.getRouter(notifySettingKey);
+
+        // 根据信息映射以及路由器信息获取路由器的路由信息，并存储到缓存中。
+        RouterInfo routerInfo = routerInfoMaintainService.get(notifySettingKey);
+        String routeInfo = routeInfoMap.getOrDefault(routerInfo.getType(), null);
+        cachedRouteInfo.put(notifySettingKey, routeInfo);
+
         // 调用路由方法，获取与通知相关的用户主键。
         InternalRouterContext routerContext = ctx.getBean(InternalRouterContext.class, this);
         routerContext.setNotifySettingKey(notifySettingKey);
-
-        // 获取路由方法所需的参数。
-        RouteContext routeContext = routeLocalCacheHandler.getContext(notifySettingKey);
-        Router router = routeContext.getRouter();
-        String routeInfo = routeInfoMap.getOrDefault(routeContext.getRouterInfo().getType(), null);
 
         // 返回结果列表。
         return router.route(routeInfo, routerContext);
     }
 
-    private List<DispatchedItem> dispatchingUser(
-            LongIdKey notifySettingKey, Map<String, String> dispatchInfoMap, List<StringIdKey> routedUserKeys
+    private List<DispatchedItem> dispatching(
+            LongIdKey notifySettingKey, Map<String, String> dispatchInfoMap, List<StringIdKey> routedUserKeys,
+            Map<StringIdKey, String> cachedDispatchInfo
     ) throws Exception {
         // 查询所有使能的主题。
         List<StringIdKey> topicKeys = topicMaintainService.lookupAsList(
@@ -145,7 +161,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
         // 对所有调度器执行启动调度方法，获取每个主题的目标用户，并转换为 Item 结构体。
         List<DispatchedItem> dispatchedItems = new ArrayList<>();
-        InternalDispatcherUserContext dispatcherContext = ctx.getBean(InternalDispatcherUserContext.class, this);
+        InternalDispatcherContext dispatcherContext = ctx.getBean(InternalDispatcherContext.class, this);
         dispatcherContext.setNotifySettingKey(notifySettingKey);
         dispatcherContext.setRoutedUserKeys(new HashSet<>(routedUserKeys));
         for (StringIdKey topicKey : topicKeys) {
@@ -153,15 +169,16 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 对上下文设置当前主题。
                 dispatcherContext.setTopicKey(topicKey);
 
-                // 获取调度方法所需的参数。
-                DispatchContext dispatchContext = dispatchLocalCacheHandler.getContext(topicKey);
-                Dispatcher dispatcher = dispatchContext.getDispatcher();
-                String dispatchInfo = dispatchInfoMap.getOrDefault(
-                        dispatchContext.getDispatcherInfo().getType(), null
-                );
+                // 获取主题的调度器。
+                Dispatcher dispatcher = dispatchLocalCacheHandler.getDispatcher(topicKey);
+
+                // 根据信息映射以及调度器信息获取调度器的调度信息，并存储到缓存中。
+                DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(topicKey);
+                String dispatchInfo = dispatchInfoMap.getOrDefault(dispatcherInfo.getType(), null);
+                cachedDispatchInfo.put(topicKey, dispatchInfo);
 
                 // 调用调度器，获取需要通过此主题发送通知的用户列表。
-                List<StringIdKey> dispatchedUserKeys = dispatcher.dispatchUser(
+                List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
                         dispatchInfo, routedUserKeys, dispatcherContext
                 );
 
@@ -177,7 +194,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     private List<SentItem> sending(
-            LongIdKey notifySettingKey, Map<String, String> sendInfoMap, List<DispatchedItem> dispatchedItems
+            LongIdKey notifySettingKey, Map<String, String> sendInfoMap, List<DispatchedItem> dispatchedItems,
+            Map<SenderInfoKey, String> cachedSendInfo
     )
             throws Exception {
         // 定义 Item 结构体列表。
@@ -195,17 +213,22 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 对上下文设置当前主题。
                 senderContext.setTopicKey(topicKey);
 
-                // 获取发送方法所需的参数。
+                // 构建 SenderInfoKey;
                 SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                SendContext sendContext = sendLocalCacheHandler.getContext(senderInfoKey);
-                Sender sender = sendContext.getSender();
-                String sendInfo = sendInfoMap.getOrDefault(sendContext.getSenderInfo().getType(), null);
+
+                // 获取当前通知设置与当前主题下的发送器。
+                Sender sender = sendLocalCacheHandler.getSender(senderInfoKey);
+
+                // 根据信息映射以及发送器信息获取发送器的发送信息，并存储到缓存中。
+                SenderInfo senderInfo = senderInfoMaintainService.get(senderInfoKey);
+                String sendInfo = sendInfoMap.getOrDefault(senderInfo.getType(), null);
+                cachedSendInfo.put(senderInfoKey, sendInfo);
 
                 // 执行发生动作。
                 List<Sender.Response> senderResponse = sender.send(sendInfo, userKeys, senderContext);
 
                 // 构建发送结构体，添加到结构体列表中。
-                sentItems.add(new SentItem(topicKey, senderResponse));
+                sentItems.add(new SentItem(topicKey, senderResponse, new Date()));
             } catch (SenderException e) {
                 LOGGER.warn("主题 " + topicKey + " 发送失败, 异常信息如下: ", e);
             }
@@ -215,40 +238,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         return sentItems;
     }
 
-    private void dispatchingResponse(
-            LongIdKey notifySettingKey, Map<String, String> dispatchInfoMap, List<SentItem> sentItems
-    ) throws Exception {
-        // 对所有调度器执行启动调度方法，处理发送器响应。
-        InternalDispatcherResponseContext dispatcherContext = ctx.getBean(
-                InternalDispatcherResponseContext.class, this
-        );
-        dispatcherContext.setNotifySettingKey(notifySettingKey);
-        for (SentItem sentItem : sentItems) {
-            StringIdKey topicKey = sentItem.getTopicKey();
-            List<Sender.Response> responses = sentItem.getSenderResults();
-
-            try {
-                // 对上下文设置当前主题。
-                dispatcherContext.setTopicKey(topicKey);
-
-                // 获取调度方法所需的参数。
-                DispatchContext dispatchContext = dispatchLocalCacheHandler.getContext(topicKey);
-                Dispatcher dispatcher = dispatchContext.getDispatcher();
-                String dispatchInfo = dispatchInfoMap.getOrDefault(
-                        dispatchContext.getDispatcherInfo().getType(), null
-                );
-
-                // 调用调度器，处理发送器响应。
-                dispatcher.dispatchResponse(dispatchInfo, responses, dispatcherContext);
-            } catch (DispatcherException e) {
-                LOGGER.warn("主题 " + topicKey + " 调度失败, 将不处理发送器响应, 异常信息如下: ", e);
-            }
-        }
-    }
-
     private void postprocessing(
-            LongIdKey notifySettingKey, Map<String, String> routeInfoMap, Map<String, String> dispatchInfoMap,
-            Map<String, String> sendInfoMap, List<SentItem> sentItems
+            LongIdKey notifySettingKey, List<SentItem> sentItems, Map<LongIdKey, String> cachedRouteInfo,
+            Map<StringIdKey, String> cachedDispatchInfo, Map<SenderInfoKey, String> cachedSendInfo
     ) throws Exception {
         // 构造发送历史实体。
         List<SendHistory> sendHistories = new ArrayList<>();
@@ -256,22 +248,16 @@ public class NotifyHandlerImpl implements NotifyHandler {
             // 获取 Item 结构体中的参数。
             StringIdKey topicKey = item.getTopicKey();
             List<Sender.Response> senderResponses = item.getSenderResults();
+            Date happenedDate = item.getHappenedDate();
 
             for (Sender.Response senderResponse : senderResponses) {
                 StringIdKey userKey = senderResponse.getUserKey();
-                Date happenedDate = senderResponse.getHappenedDate();
-                RouteContext routeContext = routeLocalCacheHandler.getContext(notifySettingKey);
-                String routeInfo = routeInfoMap.getOrDefault(routeContext.getRouterInfo().getType(), null);
-                DispatchContext dispatchContext = dispatchLocalCacheHandler.getContext(topicKey);
-                String dispatchInfo = dispatchInfoMap.getOrDefault(
-                        dispatchContext.getDispatcherInfo().getType(), null
-                );
-                SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                SendContext sendContext = sendLocalCacheHandler.getContext(senderInfoKey);
-                String sendInfo = sendInfoMap.getOrDefault(sendContext.getSenderInfo().getType(), null);
                 boolean succeedFlag = senderResponse.isSucceedFlag();
                 String senderMessage = senderResponse.getMessage();
-
+                String routeInfo = cachedRouteInfo.get(notifySettingKey);
+                String dispatchInfo = cachedDispatchInfo.get(topicKey);
+                SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
+                String sendInfo = cachedSendInfo.get(senderInfoKey);
                 SendHistory sendHistory = new SendHistory(
                         keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, happenedDate,
                         routeInfo, dispatchInfo, sendInfo, succeedFlag, senderMessage, "通过 NotifyHandlerImpl 生成"
@@ -338,8 +324,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     @Override
-    public RouteContext getRouteContext(LongIdKey routerInfoKey) throws HandlerException {
-        return routeLocalCacheHandler.getContext(routerInfoKey);
+    public Router getRouter(LongIdKey routerInfoKey) throws HandlerException {
+        return routeLocalCacheHandler.getRouter(routerInfoKey);
     }
 
     @Override
@@ -348,8 +334,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     @Override
-    public DispatchContext getDispatchContext(StringIdKey dispatcherInfoKey) throws HandlerException {
-        return dispatchLocalCacheHandler.getContext(dispatcherInfoKey);
+    public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException {
+        return dispatchLocalCacheHandler.getDispatcher(dispatcherInfoKey);
     }
 
     @Override
@@ -358,8 +344,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     @Override
-    public SendContext getSendContext(SenderInfoKey senderInfoKey) throws HandlerException {
-        return sendLocalCacheHandler.getContext(senderInfoKey);
+    public Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException {
+        return sendLocalCacheHandler.getSender(senderInfoKey);
     }
 
     @Override
@@ -397,11 +383,13 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private static class SentItem {
 
         private final StringIdKey topicKey;
-        private final List<Sender.Response> responses;
+        private final List<Sender.Response> senderResponses;
+        private final Date happenedDate;
 
-        public SentItem(StringIdKey topicKey, List<Sender.Response> responses) {
+        public SentItem(StringIdKey topicKey, List<Sender.Response> senderResponses, Date happenedDate) {
             this.topicKey = topicKey;
-            this.responses = responses;
+            this.senderResponses = senderResponses;
+            this.happenedDate = happenedDate;
         }
 
         public StringIdKey getTopicKey() {
@@ -409,14 +397,19 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
 
         public List<Sender.Response> getSenderResults() {
-            return responses;
+            return senderResponses;
+        }
+
+        public Date getHappenedDate() {
+            return happenedDate;
         }
 
         @Override
         public String toString() {
             return "SentItem{" +
                     "topicKey=" + topicKey +
-                    ", responses=" + responses +
+                    ", senderResults=" + senderResponses +
+                    ", happenedDate=" + happenedDate +
                     '}';
         }
     }
@@ -594,7 +587,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    class InternalDispatcherUserContext implements Dispatcher.UserContext {
+    class InternalDispatcherContext implements Dispatcher.Context {
 
         private LongIdKey notifySettingKey;
         private StringIdKey topicKey;
@@ -637,7 +630,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
             }
         }
 
-        @SuppressWarnings("DuplicatedCode")
         @Override
         public String getMeta(StringIdKey userKey, String metaId) throws DispatcherException {
             try {
@@ -682,7 +674,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
             }
         }
 
-        @SuppressWarnings("DuplicatedCode")
         @Override
         public String getVariable(StringIdKey userKey, String variableId) throws DispatcherException {
             try {
@@ -716,7 +707,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
             }
         }
 
-        @SuppressWarnings("DuplicatedCode")
         @Override
         public void putVariable(StringIdKey userKey, String variableId, String value) throws DispatcherException {
             try {
@@ -750,151 +740,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
                 // 返回结果列表。
                 return filteredUserKeys;
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-    }
-
-    @Component
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    class InternalDispatcherResponseContext implements Dispatcher.ResponseContext {
-
-        private LongIdKey notifySettingKey;
-        private StringIdKey topicKey;
-        private Set<StringIdKey> routedUserKeys;
-
-        @Override
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
-
-        public void setNotifySettingKey(LongIdKey notifySettingKey) {
-            this.notifySettingKey = notifySettingKey;
-        }
-
-        @Override
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
-
-        public void setTopicKey(StringIdKey topicKey) {
-            this.topicKey = topicKey;
-        }
-
-        public Set<StringIdKey> getRoutedUserKeys() {
-            return routedUserKeys;
-        }
-
-        public void setRoutedUserKeys(Set<StringIdKey> routedUserKeys) {
-            this.routedUserKeys = routedUserKeys;
-        }
-
-        @Override
-        public boolean existsMeta(StringIdKey userKey, String metaId) throws DispatcherException {
-            try {
-                return metaMaintainService.exists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @SuppressWarnings("DuplicatedCode")
-        @Override
-        public String getMeta(StringIdKey userKey, String metaId) throws DispatcherException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = metaMaintainService.getIfExists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-                if (Objects.isNull(meta)) {
-                    return null;
-                }
-                return meta.getValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultMeta(String metaId) throws DispatcherException {
-            try {
-                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
-                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
-                );
-                if (Objects.isNull(metaIndicator)) {
-                    return null;
-                }
-                return metaIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public boolean existsVariable(StringIdKey userKey, String variableId) throws DispatcherException {
-            try {
-                return variableMaintainService.exists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @SuppressWarnings("DuplicatedCode")
-        @Override
-        public String getVariable(StringIdKey userKey, String variableId) throws DispatcherException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Variable variable = variableMaintainService.getIfExists(new VariableKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), variableId
-                ));
-                if (Objects.isNull(variable)) {
-                    return null;
-                }
-                return variable.getValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultVariable(String variableId) throws DispatcherException {
-            try {
-                VariableIndicator variableIndicator = variableIndicatorMaintainService.getIfExists(
-                        new VariableIndicatorKey(topicKey.getStringId(), variableId)
-                );
-                if (Objects.isNull(variableIndicator)) {
-                    return null;
-                }
-                return variableIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @SuppressWarnings("DuplicatedCode")
-        @Override
-        public void putVariable(StringIdKey userKey, String variableId, String value) throws DispatcherException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Variable variable = new Variable(
-                        new VariableKey(
-                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                variableId
-                        ),
-                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
-                );
-                variableMaintainService.insertOrUpdate(variable);
             } catch (Exception e) {
                 throw new DispatcherException(e);
             }

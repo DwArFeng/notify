@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.SendContext;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.SendLocalCacheHandler;
@@ -21,7 +20,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
     private final SenderFetcher senderFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<SenderInfoKey, SendContext> sendContextMap = new HashMap<>();
+    private final Map<SenderInfoKey, Sender> senderMap = new HashMap<>();
     private final Set<SenderInfoKey> notExistSettings = new HashSet<>();
 
     public SendLocalCacheHandlerImpl(SenderFetcher senderFetcher) {
@@ -30,12 +29,12 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public SendContext getContext(SenderInfoKey sendInfoKey) throws HandlerException {
+    public Sender getSender(SenderInfoKey sendInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
-                if (sendContextMap.containsKey(sendInfoKey)) {
-                    return sendContextMap.get(sendInfoKey);
+                if (senderMap.containsKey(sendInfoKey)) {
+                    return senderMap.get(sendInfoKey);
                 }
                 if (notExistSettings.contains(sendInfoKey)) {
                     return null;
@@ -45,16 +44,16 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
             }
             lock.writeLock().lock();
             try {
-                if (sendContextMap.containsKey(sendInfoKey)) {
-                    return sendContextMap.get(sendInfoKey);
+                if (senderMap.containsKey(sendInfoKey)) {
+                    return senderMap.get(sendInfoKey);
                 }
                 if (notExistSettings.contains(sendInfoKey)) {
                     return null;
                 }
-                SendContext sendContext = senderFetcher.fetchSender(sendInfoKey);
-                if (Objects.nonNull(sendContext)) {
-                    sendContextMap.put(sendInfoKey, sendContext);
-                    return sendContext;
+                Sender sender = senderFetcher.fetchSender(sendInfoKey);
+                if (Objects.nonNull(sender)) {
+                    senderMap.put(sendInfoKey, sender);
+                    return sender;
                 }
                 notExistSettings.add(sendInfoKey);
                 return null;
@@ -70,7 +69,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
     public void clear() throws HandlerException {
         lock.writeLock().lock();
         try {
-            sendContextMap.clear();
+            senderMap.clear();
             notExistSettings.clear();
         } finally {
             lock.writeLock().unlock();
@@ -89,16 +88,13 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
             this.senderHandler = senderHandler;
         }
 
-        @Transactional(
-                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
-        )
-        public SendContext fetchSender(SenderInfoKey commandSettingKey) throws Exception {
+        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+        public Sender fetchSender(SenderInfoKey commandSettingKey) throws Exception {
             if (!senderInfoMaintainService.exists(commandSettingKey)) {
                 return null;
             }
             SenderInfo senderInfo = senderInfoMaintainService.get(commandSettingKey);
-            Sender sender = senderHandler.make(senderInfo.getType(), senderInfo.getParam());
-            return new SendContext(senderInfo, sender);
+            return senderHandler.make(senderInfo.getType(), senderInfo.getParam());
         }
     }
 }

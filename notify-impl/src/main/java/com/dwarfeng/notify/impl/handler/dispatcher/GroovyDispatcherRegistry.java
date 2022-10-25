@@ -5,7 +5,6 @@ import com.dwarfeng.dutil.basic.io.StringOutputStream;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.DispatcherMakeException;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
-import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
@@ -101,15 +100,9 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
         }
 
         @Override
-        public List<StringIdKey> dispatchUser(String dispatchInfo, List<StringIdKey> userKeys, UserContext context)
+        public List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context)
                 throws DispatcherException {
-            return processor.dispatchUser(dispatchInfo, userKeys, context);
-        }
-
-        @Override
-        public void dispatchResponse(String dispatchInfo, List<Sender.Response> responses, ResponseContext context)
-                throws DispatcherException {
-            processor.dispatchResponse(dispatchInfo, responses, context);
+            return processor.dispatch(dispatchInfo, userKeys, context);
         }
 
         @Override
@@ -129,28 +122,16 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
     public interface Processor {
 
         /**
-         * 用户调度操作。
+         * 调度操作。
          *
          * @param dispatchInfo 调度信息。
          * @param userKeys     用户空间。
          * @param context      上下文。
          * @return 调度返回的用户主键组成的列表。
          * @throws DispatcherException 调度器异常。
-         * @see Dispatcher#dispatchUser(String, List, Dispatcher.UserContext)
+         * @see Dispatcher#dispatch(String, List, Dispatcher.Context)
          */
-        List<StringIdKey> dispatchUser(String dispatchInfo, List<StringIdKey> userKeys, Dispatcher.UserContext context)
-                throws DispatcherException;
-
-        /**
-         * 响应调度操作。
-         *
-         * @param dispatchInfo 调度信息。
-         * @param responses    发送器响应结构体。
-         * @param context      上下文。
-         * @throws DispatcherException 调度器异常。
-         * @see Dispatcher#dispatchResponse(String, List, Dispatcher.ResponseContext)
-         */
-        void dispatchResponse(String dispatchInfo, List<Sender.Response> responses, Dispatcher.ResponseContext context)
+        List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context)
                 throws DispatcherException;
     }
 }

@@ -1,10 +1,10 @@
 package com.dwarfeng.notify.stack.service;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.dto.RouteContext;
-import com.dwarfeng.notify.stack.bean.dto.SendContext;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.handler.Dispatcher;
+import com.dwarfeng.notify.stack.handler.Router;
+import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
@@ -26,13 +26,13 @@ public interface NotifyQosService {
     void notify(NotifyInfo notifyInfo) throws ServiceException;
 
     /**
-     * 获取指定主键对应的路由上下文。
+     * 获取指定主键对应的路由器。
      *
      * @param routerInfoKey 指定的主键。
-     * @return 指定主键对应的路由上下文，如果不存在，则返回 null。
+     * @return 指定部件的评估上下文，如果主键对应的路由器信息不存在，则返回 null。
      * @throws ServiceException 服务异常。
      */
-    RouteContext getRouteContext(LongIdKey routerInfoKey) throws ServiceException;
+    Router getRouter(LongIdKey routerInfoKey) throws ServiceException;
 
     /**
      * 清理路由器本地缓存。
@@ -42,13 +42,13 @@ public interface NotifyQosService {
     void clearRouterLocalCache() throws ServiceException;
 
     /**
-     * 获取指定主键对应的调度上下文。
+     * 获取指定主键对应的调度器。
      *
      * @param dispatcherInfoKey 指定的主键。
-     * @return 指定主键对应的调度上下文，如果不存在，则返回 null。
+     * @return 指定部件的评估上下文，如果主键对应的调度器信息不存在，则返回 null。
      * @throws ServiceException 服务异常。
      */
-    DispatchContext getDispatchContext(StringIdKey dispatcherInfoKey) throws ServiceException;
+    Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws ServiceException;
 
     /**
      * 清理调度器本地缓存。
@@ -58,13 +58,13 @@ public interface NotifyQosService {
     void clearDispatcherLocalCache() throws ServiceException;
 
     /**
-     * 获取指定主键对应的发送上下文。
+     * 获取指定主键对应的发送器。
      *
      * @param senderInfoKey 指定的主键。
-     * @return 指定主键对应的发送上下文，如果不存在，则返回 null。
+     * @return 指定部件的评估上下文，如果主键对应的发送器信息不存在，则返回 null。
      * @throws ServiceException 服务异常。
      */
-    SendContext getSendContext(SenderInfoKey senderInfoKey) throws ServiceException;
+    Sender getSender(SenderInfoKey senderInfoKey) throws ServiceException;
 
     /**
      * 清理发送器本地缓存。

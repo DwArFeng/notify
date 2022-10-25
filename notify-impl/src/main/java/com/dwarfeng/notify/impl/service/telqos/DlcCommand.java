@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
+import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
@@ -82,11 +82,11 @@ public class DlcCommand extends CliCommand {
 
     private void handleLookup(Context context, CommandLine cmd) throws Exception {
         StringIdKey dispatcherInfoKey = new StringIdKey((String) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP));
-        DispatchContext dispatchContext = notifyQosService.getDispatchContext(dispatcherInfoKey);
-        if (Objects.isNull(dispatchContext)) {
+        Dispatcher dispatcher = notifyQosService.getDispatcher(dispatcherInfoKey);
+        if (Objects.isNull(dispatcher)) {
             context.sendMessage("not exists");
         } else {
-            context.sendMessage(dispatchContext.toString());
+            context.sendMessage(dispatcher.toString());
         }
     }
 }

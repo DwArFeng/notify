@@ -1,9 +1,6 @@
 package com.dwarfeng.notify.stack.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.dto.RouteContext;
-import com.dwarfeng.notify.stack.bean.dto.SendContext;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -27,13 +24,13 @@ public interface NotifyHandler extends Handler {
     void notify(NotifyInfo notifyInfo) throws HandlerException;
 
     /**
-     * 获取指定主键对应的路由上下文。
+     * 获取指定主键对应的路由器。
      *
      * @param routerInfoKey 指定的主键。
-     * @return 指定主键对应的路由上下文，如果不存在，则返回 null。
+     * @return 指定部件的评估上下文，如果主键对应的路由器信息不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
-    RouteContext getRouteContext(LongIdKey routerInfoKey) throws HandlerException;
+    Router getRouter(LongIdKey routerInfoKey) throws HandlerException;
 
     /**
      * 清理路由器本地缓存。
@@ -43,13 +40,13 @@ public interface NotifyHandler extends Handler {
     void clearRouterLocalCache() throws HandlerException;
 
     /**
-     * 获取指定主键对应的调度上下文。
+     * 获取指定主键对应的调度器。
      *
      * @param dispatcherInfoKey 指定的主键。
-     * @return 指定主键对应的调度上下文，如果不存在，则返回 null。
+     * @return 指定部件的评估上下文，如果主键对应的调度器信息不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
-    DispatchContext getDispatchContext(StringIdKey dispatcherInfoKey) throws HandlerException;
+    Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException;
 
     /**
      * 清理调度器本地缓存。
@@ -59,13 +56,13 @@ public interface NotifyHandler extends Handler {
     void clearDispatcherLocalCache() throws HandlerException;
 
     /**
-     * 获取指定主键对应的发送上下文。
+     * 获取指定主键对应的发送器。
      *
      * @param senderInfoKey 指定的主键。
-     * @return 指定主键对应的发送上下文，如果不存在，则返回 null。
+     * @return 指定部件的评估上下文，如果主键对应的发送器信息不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
-    SendContext getSendContext(SenderInfoKey senderInfoKey) throws HandlerException;
+    Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException;
 
     /**
      * 清理发送器本地缓存。

@@ -1,3 +1,5 @@
+package groovy
+
 import com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry
 import com.dwarfeng.notify.stack.exception.SenderException
 import com.dwarfeng.notify.stack.handler.Sender
@@ -11,7 +13,7 @@ import org.slf4j.LoggerFactory
  * <p>
  * 将发送的内容以 info 等级打印在日志上。
  */
-@SuppressWarnings('GrPackage')
+@SuppressWarnings("GrPackage")
 class ExampleSenderProcessor implements GroovySenderRegistry.Processor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExampleSenderProcessor.class)
@@ -22,7 +24,7 @@ class ExampleSenderProcessor implements GroovySenderRegistry.Processor {
         List<Sender.Response> results = new ArrayList<>()
         for (StringIdKey userKey : userKeys) {
             LOGGER.info("向用户 {} 发生信息, 内容为 {}", userKey, context)
-            results.add(new Sender.Response(userKey, true, "发送成功", new Date()))
+            results.add(new Sender.Response(userKey, true, "发送成功"))
         }
         return results
     }

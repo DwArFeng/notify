@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchContext;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
 import com.dwarfeng.notify.stack.handler.DispatchLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
@@ -21,7 +20,7 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
     private final DispatcherFetcher dispatcherFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<StringIdKey, DispatchContext> dispatchContextMap = new HashMap<>();
+    private final Map<StringIdKey, Dispatcher> dispatcherMap = new HashMap<>();
     private final Set<StringIdKey> notExistSettings = new HashSet<>();
 
     public DispatchLocalCacheHandlerImpl(DispatcherFetcher dispatcherFetcher) {
@@ -30,12 +29,12 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public DispatchContext getContext(StringIdKey dispatchInfoKey) throws HandlerException {
+    public Dispatcher getDispatcher(StringIdKey dispatchInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
-                if (dispatchContextMap.containsKey(dispatchInfoKey)) {
-                    return dispatchContextMap.get(dispatchInfoKey);
+                if (dispatcherMap.containsKey(dispatchInfoKey)) {
+                    return dispatcherMap.get(dispatchInfoKey);
                 }
                 if (notExistSettings.contains(dispatchInfoKey)) {
                     return null;
@@ -45,16 +44,16 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
             }
             lock.writeLock().lock();
             try {
-                if (dispatchContextMap.containsKey(dispatchInfoKey)) {
-                    return dispatchContextMap.get(dispatchInfoKey);
+                if (dispatcherMap.containsKey(dispatchInfoKey)) {
+                    return dispatcherMap.get(dispatchInfoKey);
                 }
                 if (notExistSettings.contains(dispatchInfoKey)) {
                     return null;
                 }
-                DispatchContext dispatchContext = dispatcherFetcher.fetchDispatcher(dispatchInfoKey);
-                if (Objects.nonNull(dispatchContext)) {
-                    dispatchContextMap.put(dispatchInfoKey, dispatchContext);
-                    return dispatchContext;
+                Dispatcher dispatcher = dispatcherFetcher.fetchDispatcher(dispatchInfoKey);
+                if (Objects.nonNull(dispatcher)) {
+                    dispatcherMap.put(dispatchInfoKey, dispatcher);
+                    return dispatcher;
                 }
                 notExistSettings.add(dispatchInfoKey);
                 return null;
@@ -70,7 +69,7 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
     public void clear() throws HandlerException {
         lock.writeLock().lock();
         try {
-            dispatchContextMap.clear();
+            dispatcherMap.clear();
             notExistSettings.clear();
         } finally {
             lock.writeLock().unlock();
@@ -84,23 +83,18 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
         private final DispatcherHandler dispatcherHandler;
 
-        public DispatcherFetcher(
-                DispatcherInfoMaintainService dispatcherInfoMaintainService, DispatcherHandler dispatcherHandler
-        ) {
+        public DispatcherFetcher(DispatcherInfoMaintainService dispatcherInfoMaintainService, DispatcherHandler dispatcherHandler) {
             this.dispatcherInfoMaintainService = dispatcherInfoMaintainService;
             this.dispatcherHandler = dispatcherHandler;
         }
 
-        @Transactional(
-                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
-        )
-        public DispatchContext fetchDispatcher(StringIdKey commandSettingKey) throws Exception {
-            if (!dispatcherInfoMaintainService.exists(commandSettingKey)) {
+        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
+        public Dispatcher fetchDispatcher(StringIdKey dispatchInfoKey) throws Exception {
+            if (!dispatcherInfoMaintainService.exists(dispatchInfoKey)) {
                 return null;
             }
-            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(commandSettingKey);
-            Dispatcher dispatcher = dispatcherHandler.make(dispatcherInfo.getType(), dispatcherInfo.getParam());
-            return new DispatchContext(dispatcherInfo, dispatcher);
+            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(dispatchInfoKey);
+            return dispatcherHandler.make(dispatcherInfo.getType(), dispatcherInfo.getParam());
         }
     }
 }

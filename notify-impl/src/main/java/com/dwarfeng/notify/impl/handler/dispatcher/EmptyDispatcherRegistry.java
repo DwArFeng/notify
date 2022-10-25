@@ -3,7 +3,6 @@ package com.dwarfeng.notify.impl.handler.dispatcher;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.DispatcherMakeException;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
-import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -68,12 +67,8 @@ public class EmptyDispatcherRegistry extends AbstractDispatcherRegistry {
     public static class EmptyDispatcher implements Dispatcher {
 
         @Override
-        public List<StringIdKey> dispatchUser(String dispatchInfo, List<StringIdKey> userKeys, UserContext context) {
+        public List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context) {
             return Collections.emptyList();
-        }
-
-        @Override
-        public void dispatchResponse(String dispatchInfo, List<Sender.Response> responses, ResponseContext context) {
         }
 
         @Override
