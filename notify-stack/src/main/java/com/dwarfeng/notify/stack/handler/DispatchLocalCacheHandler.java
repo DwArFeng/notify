@@ -20,10 +20,19 @@ public interface DispatchLocalCacheHandler extends Handler {
      * 获取指定主键对应的调度器。
      *
      * @param dispatcherInfoKey 指定的主键。
-     * @return 指定部件的评估上下文，如果主键对应的调度器信息不存在，则返回 null。
+     * @return 指定主键对应的调度器，如果不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
     Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException;
+
+    /**
+     * 获取指定主键对应的调度器类型。
+     *
+     * @param dispatcherInfoKey 指定的主键。
+     * @return 指定主键对应的调度器类型，如果不存在，则返回 null。
+     * @throws HandlerException 处理器异常。
+     */
+    String getType(StringIdKey dispatcherInfoKey) throws HandlerException;
 
     /**
      * 清除本地缓存。

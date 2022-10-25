@@ -20,7 +20,7 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
     private final DispatcherFetcher dispatcherFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<StringIdKey, Dispatcher> dispatcherMap = new HashMap<>();
+    private final Map<StringIdKey, FetchedItem> itemMap = new HashMap<>();
     private final Set<StringIdKey> notExistSettings = new HashSet<>();
 
     public DispatchLocalCacheHandlerImpl(DispatcherFetcher dispatcherFetcher) {
@@ -29,14 +29,14 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public Dispatcher getDispatcher(StringIdKey dispatchInfoKey) throws HandlerException {
+    public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
-                if (dispatcherMap.containsKey(dispatchInfoKey)) {
-                    return dispatcherMap.get(dispatchInfoKey);
+                if (itemMap.containsKey(dispatcherInfoKey)) {
+                    return itemMap.get(dispatcherInfoKey).getDispatcher();
                 }
-                if (notExistSettings.contains(dispatchInfoKey)) {
+                if (notExistSettings.contains(dispatcherInfoKey)) {
                     return null;
                 }
             } finally {
@@ -44,18 +44,56 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
             }
             lock.writeLock().lock();
             try {
-                if (dispatcherMap.containsKey(dispatchInfoKey)) {
-                    return dispatcherMap.get(dispatchInfoKey);
+                if (itemMap.containsKey(dispatcherInfoKey)) {
+                    return itemMap.get(dispatcherInfoKey).getDispatcher();
                 }
-                if (notExistSettings.contains(dispatchInfoKey)) {
+                if (notExistSettings.contains(dispatcherInfoKey)) {
                     return null;
                 }
-                Dispatcher dispatcher = dispatcherFetcher.fetchDispatcher(dispatchInfoKey);
-                if (Objects.nonNull(dispatcher)) {
-                    dispatcherMap.put(dispatchInfoKey, dispatcher);
-                    return dispatcher;
+                FetchedItem fetchedItem = dispatcherFetcher.fetchDispatcher(dispatcherInfoKey);
+                if (Objects.nonNull(fetchedItem)) {
+                    itemMap.put(dispatcherInfoKey, fetchedItem);
+                    return fetchedItem.getDispatcher();
                 }
-                notExistSettings.add(dispatchInfoKey);
+                notExistSettings.add(dispatcherInfoKey);
+                return null;
+            } finally {
+                lock.writeLock().unlock();
+            }
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    @Override
+    public String getType(StringIdKey dispatcherInfoKey) throws HandlerException {
+        try {
+            lock.readLock().lock();
+            try {
+                if (itemMap.containsKey(dispatcherInfoKey)) {
+                    return itemMap.get(dispatcherInfoKey).getType();
+                }
+                if (notExistSettings.contains(dispatcherInfoKey)) {
+                    return null;
+                }
+            } finally {
+                lock.readLock().unlock();
+            }
+            lock.writeLock().lock();
+            try {
+                if (itemMap.containsKey(dispatcherInfoKey)) {
+                    return itemMap.get(dispatcherInfoKey).getType();
+                }
+                if (notExistSettings.contains(dispatcherInfoKey)) {
+                    return null;
+                }
+                FetchedItem fetchedItem = dispatcherFetcher.fetchDispatcher(dispatcherInfoKey);
+                if (Objects.nonNull(fetchedItem)) {
+                    itemMap.put(dispatcherInfoKey, fetchedItem);
+                    return fetchedItem.getType();
+                }
+                notExistSettings.add(dispatcherInfoKey);
                 return null;
             } finally {
                 lock.writeLock().unlock();
@@ -69,10 +107,37 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
     public void clear() throws HandlerException {
         lock.writeLock().lock();
         try {
-            dispatcherMap.clear();
+            itemMap.clear();
             notExistSettings.clear();
         } finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    private static class FetchedItem {
+
+        private final String type;
+        private final Dispatcher dispatcher;
+
+        public FetchedItem(String type, Dispatcher dispatcher) {
+            this.type = type;
+            this.dispatcher = dispatcher;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public Dispatcher getDispatcher() {
+            return dispatcher;
+        }
+
+        @Override
+        public String toString() {
+            return "FetchedItem{" +
+                    "type='" + type + '\'' +
+                    ", dispatcher=" + dispatcher +
+                    '}';
         }
     }
 
@@ -83,18 +148,24 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
         private final DispatcherHandler dispatcherHandler;
 
-        public DispatcherFetcher(DispatcherInfoMaintainService dispatcherInfoMaintainService, DispatcherHandler dispatcherHandler) {
+        public DispatcherFetcher(
+                DispatcherInfoMaintainService dispatcherInfoMaintainService,
+                DispatcherHandler dispatcherHandler
+        ) {
             this.dispatcherInfoMaintainService = dispatcherInfoMaintainService;
             this.dispatcherHandler = dispatcherHandler;
         }
 
-        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public Dispatcher fetchDispatcher(StringIdKey dispatchInfoKey) throws Exception {
-            if (!dispatcherInfoMaintainService.exists(dispatchInfoKey)) {
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public FetchedItem fetchDispatcher(StringIdKey dispatcherInfoKey) throws Exception {
+            if (!dispatcherInfoMaintainService.exists(dispatcherInfoKey)) {
                 return null;
             }
-            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(dispatchInfoKey);
-            return dispatcherHandler.make(dispatcherInfo.getType(), dispatcherInfo.getParam());
+            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(dispatcherInfoKey);
+            Dispatcher dispatcher = dispatcherHandler.make(dispatcherInfo.getType(), dispatcherInfo.getParam());
+            return new FetchedItem(dispatcherInfo.getType(), dispatcher);
         }
     }
 }

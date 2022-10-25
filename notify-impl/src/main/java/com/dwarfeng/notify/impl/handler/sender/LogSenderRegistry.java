@@ -101,7 +101,7 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
             List<Response> responses = new ArrayList<>();
             for (StringIdKey userKey : userKeys) {
                 logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfo);
-                responses.add(new Response(userKey, true, "发送成功"));
+                responses.add(new Response(userKey, new Date(), true, "发送成功"));
             }
             return responses;
         }

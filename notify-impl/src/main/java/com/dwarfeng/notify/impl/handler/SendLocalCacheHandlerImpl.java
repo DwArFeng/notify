@@ -20,7 +20,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
     private final SenderFetcher senderFetcher;
 
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<SenderInfoKey, Sender> senderMap = new HashMap<>();
+    private final Map<SenderInfoKey, FetchedItem> itemMap = new HashMap<>();
     private final Set<SenderInfoKey> notExistSettings = new HashSet<>();
 
     public SendLocalCacheHandlerImpl(SenderFetcher senderFetcher) {
@@ -29,14 +29,14 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
     @SuppressWarnings("DuplicatedCode")
     @Override
-    public Sender getSender(SenderInfoKey sendInfoKey) throws HandlerException {
+    public Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException {
         try {
             lock.readLock().lock();
             try {
-                if (senderMap.containsKey(sendInfoKey)) {
-                    return senderMap.get(sendInfoKey);
+                if (itemMap.containsKey(senderInfoKey)) {
+                    return itemMap.get(senderInfoKey).getSender();
                 }
-                if (notExistSettings.contains(sendInfoKey)) {
+                if (notExistSettings.contains(senderInfoKey)) {
                     return null;
                 }
             } finally {
@@ -44,18 +44,56 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
             }
             lock.writeLock().lock();
             try {
-                if (senderMap.containsKey(sendInfoKey)) {
-                    return senderMap.get(sendInfoKey);
+                if (itemMap.containsKey(senderInfoKey)) {
+                    return itemMap.get(senderInfoKey).getSender();
                 }
-                if (notExistSettings.contains(sendInfoKey)) {
+                if (notExistSettings.contains(senderInfoKey)) {
                     return null;
                 }
-                Sender sender = senderFetcher.fetchSender(sendInfoKey);
-                if (Objects.nonNull(sender)) {
-                    senderMap.put(sendInfoKey, sender);
-                    return sender;
+                FetchedItem fetchedItem = senderFetcher.fetchSender(senderInfoKey);
+                if (Objects.nonNull(fetchedItem)) {
+                    itemMap.put(senderInfoKey, fetchedItem);
+                    return fetchedItem.getSender();
                 }
-                notExistSettings.add(sendInfoKey);
+                notExistSettings.add(senderInfoKey);
+                return null;
+            } finally {
+                lock.writeLock().unlock();
+            }
+        } catch (Exception e) {
+            throw new HandlerException(e);
+        }
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    @Override
+    public String getType(SenderInfoKey senderInfoKey) throws HandlerException {
+        try {
+            lock.readLock().lock();
+            try {
+                if (itemMap.containsKey(senderInfoKey)) {
+                    return itemMap.get(senderInfoKey).getType();
+                }
+                if (notExistSettings.contains(senderInfoKey)) {
+                    return null;
+                }
+            } finally {
+                lock.readLock().unlock();
+            }
+            lock.writeLock().lock();
+            try {
+                if (itemMap.containsKey(senderInfoKey)) {
+                    return itemMap.get(senderInfoKey).getType();
+                }
+                if (notExistSettings.contains(senderInfoKey)) {
+                    return null;
+                }
+                FetchedItem fetchedItem = senderFetcher.fetchSender(senderInfoKey);
+                if (Objects.nonNull(fetchedItem)) {
+                    itemMap.put(senderInfoKey, fetchedItem);
+                    return fetchedItem.getType();
+                }
+                notExistSettings.add(senderInfoKey);
                 return null;
             } finally {
                 lock.writeLock().unlock();
@@ -69,10 +107,37 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
     public void clear() throws HandlerException {
         lock.writeLock().lock();
         try {
-            senderMap.clear();
+            itemMap.clear();
             notExistSettings.clear();
         } finally {
             lock.writeLock().unlock();
+        }
+    }
+
+    private static class FetchedItem {
+
+        private final String type;
+        private final Sender sender;
+
+        public FetchedItem(String type, Sender sender) {
+            this.type = type;
+            this.sender = sender;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public Sender getSender() {
+            return sender;
+        }
+
+        @Override
+        public String toString() {
+            return "FetchedItem{" +
+                    "type='" + type + '\'' +
+                    ", sender=" + sender +
+                    '}';
         }
     }
 
@@ -83,18 +148,24 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
         private final SenderHandler senderHandler;
 
-        public SenderFetcher(SenderInfoMaintainService senderInfoMaintainService, SenderHandler senderHandler) {
+        public SenderFetcher(
+                SenderInfoMaintainService senderInfoMaintainService,
+                SenderHandler senderHandler
+        ) {
             this.senderInfoMaintainService = senderInfoMaintainService;
             this.senderHandler = senderHandler;
         }
 
-        @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-        public Sender fetchSender(SenderInfoKey commandSettingKey) throws Exception {
-            if (!senderInfoMaintainService.exists(commandSettingKey)) {
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public FetchedItem fetchSender(SenderInfoKey senderInfoKey) throws Exception {
+            if (!senderInfoMaintainService.exists(senderInfoKey)) {
                 return null;
             }
-            SenderInfo senderInfo = senderInfoMaintainService.get(commandSettingKey);
-            return senderHandler.make(senderInfo.getType(), senderInfo.getParam());
+            SenderInfo senderInfo = senderInfoMaintainService.get(senderInfoKey);
+            Sender sender = senderHandler.make(senderInfo.getType(), senderInfo.getParam());
+            return new FetchedItem(senderInfo.getType(), sender);
         }
     }
 }

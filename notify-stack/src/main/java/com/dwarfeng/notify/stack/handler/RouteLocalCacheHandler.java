@@ -20,10 +20,19 @@ public interface RouteLocalCacheHandler extends Handler {
      * 获取指定主键对应的路由器。
      *
      * @param routerInfoKey 指定的主键。
-     * @return 指定部件的评估上下文，如果主键对应的路由器信息不存在，则返回 null。
+     * @return 指定主键对应的路由器，如果不存在，则返回 null。
      * @throws HandlerException 处理器异常。
      */
     Router getRouter(LongIdKey routerInfoKey) throws HandlerException;
+
+    /**
+     * 获取指定主键对应的路由器类型。
+     *
+     * @param routerInfoKey 指定的主键。
+     * @return 指定主键对应的路由器类型，如果不存在，则返回 null。
+     * @throws HandlerException 处理器异常。
+     */
+    String getType(LongIdKey routerInfoKey) throws HandlerException;
 
     /**
      * 清除本地缓存。

@@ -4,6 +4,7 @@ import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,17 +47,23 @@ public interface Sender {
     class Response {
 
         private final StringIdKey userKey;
+        private final Date happenedDate;
         private final boolean succeedFlag;
         private final String message;
 
-        public Response(StringIdKey userKey, boolean succeedFlag, String message) {
+        public Response(StringIdKey userKey, Date happenedDate, boolean succeedFlag, String message) {
             this.userKey = userKey;
+            this.happenedDate = happenedDate;
             this.succeedFlag = succeedFlag;
             this.message = message;
         }
 
         public StringIdKey getUserKey() {
             return userKey;
+        }
+
+        public Date getHappenedDate() {
+            return happenedDate;
         }
 
         public boolean isSucceedFlag() {
@@ -71,6 +78,7 @@ public interface Sender {
         public String toString() {
             return "Response{" +
                     "userKey=" + userKey +
+                    ", happenedDate=" + happenedDate +
                     ", succeedFlag=" + succeedFlag +
                     ", message='" + message + '\'' +
                     '}';
