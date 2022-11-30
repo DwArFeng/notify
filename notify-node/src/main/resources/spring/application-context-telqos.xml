@@ -12,7 +12,8 @@
     <telqos:config>
         <telqos:connection-setting
                 port="${telqos.port}" charset="${telqos.charset}" banner-url="classpath:telqos/my-banner.txt"
-                whitelist-regex="${telqos.whitelist_regex}" blacklist-regex="${telqos.blacklist_regex}"/>
+                whitelist-regex="${telqos.whitelist_regex}" blacklist-regex="${telqos.blacklist_regex}"
+        />
         <telqos:task-pool ref="executor"/>
         <telqos:command>
             <telqos:command-impl ref="shutdownCommand"/>
