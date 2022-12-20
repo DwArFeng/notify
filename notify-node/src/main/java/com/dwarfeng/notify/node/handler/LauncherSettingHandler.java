@@ -16,6 +16,9 @@ public class LauncherSettingHandler implements Handler {
     @Value("${launcher.reset_dispatcher_support}")
     private boolean resetDispatcherSupport;
 
+    @Value("${launcher.start_reset_delay}")
+    private long startResetDelay;
+
     public boolean isResetRouterSupport() {
         return resetRouterSupport;
     }
@@ -26,5 +29,9 @@ public class LauncherSettingHandler implements Handler {
 
     public boolean isResetDispatcherSupport() {
         return resetDispatcherSupport;
+    }
+
+    public long getStartResetDelay() {
+        return startResetDelay;
     }
 }

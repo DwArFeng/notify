@@ -22,6 +22,7 @@
             <telqos:command-impl ref="dlcCommand"/>
             <telqos:command-impl ref="rlcCommand"/>
             <telqos:command-impl ref="slcCommand"/>
+            <telqos:command-impl ref="resetCommand"/>
         </telqos:command>
     </telqos:config>
 

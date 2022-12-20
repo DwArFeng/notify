@@ -4,6 +4,12 @@
 
 #### 功能构建
 
+- 增加重置机制，实现路由、调度、发送本地缓存的动态重置。
+  - com.dwarfeng.notify.impl.handler.resetter.CronResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.FixedDelayResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.FixedRateResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.NeverResetter。
+
 - 使用 `subgrade` 预设的 `GeneralLocalCacheHandler` 重写本地缓存。
   - com.dwarfeng.notify.impl.handler.DispatchLocalCacheHandlerImpl。
   - com.dwarfeng.notify.impl.handler.RouteLocalCacheHandlerImpl。
