@@ -1,8 +1,8 @@
 package com.dwarfeng.notify.stack.handler;
 
+import com.dwarfeng.notify.stack.bean.dto.SendInfo;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.handler.Handler;
+import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
 
 /**
  * 发送本地缓存处理器。
@@ -14,30 +14,5 @@ import com.dwarfeng.subgrade.stack.handler.Handler;
  * @author DwArFeng
  * @since 1.0.0
  */
-public interface SendLocalCacheHandler extends Handler {
-
-    /**
-     * 获取指定主键对应的发送器。
-     *
-     * @param senderInfoKey 指定的主键。
-     * @return 指定主键对应的发送器，如果不存在，则返回 null。
-     * @throws HandlerException 处理器异常。
-     */
-    Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException;
-
-    /**
-     * 获取指定主键对应的发送器类型。
-     *
-     * @param senderInfoKey 指定的主键。
-     * @return 指定主键对应的发送器类型，如果不存在，则返回 null。
-     * @throws HandlerException 处理器异常。
-     */
-    String getType(SenderInfoKey senderInfoKey) throws HandlerException;
-
-    /**
-     * 清除本地缓存。
-     *
-     * @throws HandlerException 处理器异常。
-     */
-    void clear() throws HandlerException;
+public interface SendLocalCacheHandler extends LocalCacheHandler<SenderInfoKey, SendInfo> {
 }

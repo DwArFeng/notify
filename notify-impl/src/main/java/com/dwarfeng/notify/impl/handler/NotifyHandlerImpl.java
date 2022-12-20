@@ -113,8 +113,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     private List<StringIdKey> routing(LongIdKey notifySettingKey, Map<String, String> routeInfoMap) throws Exception {
         // 通过本地缓存获取路由器及其类型。
-        Router router = routeLocalCacheHandler.getRouter(notifySettingKey);
-        String type = routeLocalCacheHandler.getType(notifySettingKey);
+        String type = routeLocalCacheHandler.get(notifySettingKey).getType();
+        Router router = routeLocalCacheHandler.get(notifySettingKey).getRouter();
 
         // 调用路由方法，获取与通知相关的用户主键。
         InternalRouterContext routerContext = ctx.getBean(InternalRouterContext.class, this);
@@ -143,8 +143,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 dispatcherContext.setTopicKey(topicKey);
 
                 // 获取主题的调度器及其类型。
-                Dispatcher dispatcher = dispatchLocalCacheHandler.getDispatcher(topicKey);
-                String type = dispatchLocalCacheHandler.getType(topicKey);
+                String type = dispatchLocalCacheHandler.get(topicKey).getType();
+                Dispatcher dispatcher = dispatchLocalCacheHandler.get(topicKey).getDispatcher();
 
                 // 调用调度器，获取需要通过此主题发送通知的用户列表。
                 List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
@@ -182,8 +182,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
                 // 获取当前通知设置与当前主题下的发送器及其类型。
                 SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                Sender sender = sendLocalCacheHandler.getSender(senderInfoKey);
-                String type = sendLocalCacheHandler.getType(senderInfoKey);
+                String type = sendLocalCacheHandler.get(senderInfoKey).getType();
+                Sender sender = sendLocalCacheHandler.get(senderInfoKey).getSender();
 
                 // 执行发生动作。
                 List<Sender.Response> senderResponse = sender.send(
@@ -217,10 +217,14 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 获取发送历史的字段。
                 StringIdKey userKey = response.getUserKey();
                 Date happenedDate = response.getHappenedDate();
-                String routeInfo = routeInfoMap.getOrDefault(routeLocalCacheHandler.getType(notifySettingKey), null);
-                String dispatchInfo = dispatchInfoMap.getOrDefault(dispatchLocalCacheHandler.getType(topicKey), null);
+                String routeInfo = routeInfoMap.getOrDefault(
+                        routeLocalCacheHandler.get(notifySettingKey).getType(), null
+                );
+                String dispatchInfo = dispatchInfoMap.getOrDefault(
+                        dispatchLocalCacheHandler.get(topicKey).getType(), null
+                );
                 SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                String sendInfo = sendInfoMap.getOrDefault(sendLocalCacheHandler.getType(senderInfoKey), null);
+                String sendInfo = sendInfoMap.getOrDefault(sendLocalCacheHandler.get(senderInfoKey).getType(), null);
                 boolean succeedFlag = response.isSucceedFlag();
                 String senderMessage = response.getMessage();
 
@@ -292,7 +296,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Override
     public Router getRouter(LongIdKey routerInfoKey) throws HandlerException {
-        return routeLocalCacheHandler.getRouter(routerInfoKey);
+        return routeLocalCacheHandler.get(routerInfoKey).getRouter();
     }
 
     @Override
@@ -302,7 +306,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Override
     public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException {
-        return dispatchLocalCacheHandler.getDispatcher(dispatcherInfoKey);
+        return dispatchLocalCacheHandler.get(dispatcherInfoKey).getDispatcher();
     }
 
     @Override
@@ -312,7 +316,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Override
     public Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException {
-        return sendLocalCacheHandler.getSender(senderInfoKey);
+        return sendLocalCacheHandler.get(senderInfoKey).getSender();
     }
 
     @Override

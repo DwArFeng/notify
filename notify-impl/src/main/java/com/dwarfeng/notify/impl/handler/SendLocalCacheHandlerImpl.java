@@ -1,171 +1,83 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.stack.bean.dto.SendInfo;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.SendLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.handler.SenderHandler;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
+import com.dwarfeng.subgrade.impl.handler.Fetcher;
+import com.dwarfeng.subgrade.impl.handler.GeneralLocalCacheHandler;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 @Component
 public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
-    private final SenderFetcher senderFetcher;
+    private final GeneralLocalCacheHandler<SenderInfoKey, SendInfo> handler;
 
-    private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<SenderInfoKey, FetchedItem> itemMap = new HashMap<>();
-    private final Set<SenderInfoKey> notExistSettings = new HashSet<>();
-
-    public SendLocalCacheHandlerImpl(SenderFetcher senderFetcher) {
-        this.senderFetcher = senderFetcher;
+    public SendLocalCacheHandlerImpl(SendLocalCacheHandlerImpl.SenderFetcher senderFetcher) {
+        this.handler = new GeneralLocalCacheHandler<>(senderFetcher);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @BehaviorAnalyse
     @Override
-    public Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException {
-        try {
-            lock.readLock().lock();
-            try {
-                if (itemMap.containsKey(senderInfoKey)) {
-                    return itemMap.get(senderInfoKey).getSender();
-                }
-                if (notExistSettings.contains(senderInfoKey)) {
-                    return null;
-                }
-            } finally {
-                lock.readLock().unlock();
-            }
-            lock.writeLock().lock();
-            try {
-                if (itemMap.containsKey(senderInfoKey)) {
-                    return itemMap.get(senderInfoKey).getSender();
-                }
-                if (notExistSettings.contains(senderInfoKey)) {
-                    return null;
-                }
-                FetchedItem fetchedItem = senderFetcher.fetchSender(senderInfoKey);
-                if (Objects.nonNull(fetchedItem)) {
-                    itemMap.put(senderInfoKey, fetchedItem);
-                    return fetchedItem.getSender();
-                }
-                notExistSettings.add(senderInfoKey);
-                return null;
-            } finally {
-                lock.writeLock().unlock();
-            }
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+    public boolean exists(SenderInfoKey key) throws HandlerException {
+        return handler.exists(key);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @BehaviorAnalyse
     @Override
-    public String getType(SenderInfoKey senderInfoKey) throws HandlerException {
-        try {
-            lock.readLock().lock();
-            try {
-                if (itemMap.containsKey(senderInfoKey)) {
-                    return itemMap.get(senderInfoKey).getType();
-                }
-                if (notExistSettings.contains(senderInfoKey)) {
-                    return null;
-                }
-            } finally {
-                lock.readLock().unlock();
-            }
-            lock.writeLock().lock();
-            try {
-                if (itemMap.containsKey(senderInfoKey)) {
-                    return itemMap.get(senderInfoKey).getType();
-                }
-                if (notExistSettings.contains(senderInfoKey)) {
-                    return null;
-                }
-                FetchedItem fetchedItem = senderFetcher.fetchSender(senderInfoKey);
-                if (Objects.nonNull(fetchedItem)) {
-                    itemMap.put(senderInfoKey, fetchedItem);
-                    return fetchedItem.getType();
-                }
-                notExistSettings.add(senderInfoKey);
-                return null;
-            } finally {
-                lock.writeLock().unlock();
-            }
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+    public SendInfo get(SenderInfoKey key) throws HandlerException {
+        return handler.get(key);
     }
 
+    @BehaviorAnalyse
+    @Override
+    public boolean remove(SenderInfoKey key) {
+        return handler.remove(key);
+    }
+
+    @BehaviorAnalyse
     @Override
     public void clear() throws HandlerException {
-        lock.writeLock().lock();
-        try {
-            itemMap.clear();
-            notExistSettings.clear();
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
-
-    private static class FetchedItem {
-
-        private final String type;
-        private final Sender sender;
-
-        public FetchedItem(String type, Sender sender) {
-            this.type = type;
-            this.sender = sender;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public Sender getSender() {
-            return sender;
-        }
-
-        @Override
-        public String toString() {
-            return "FetchedItem{" +
-                    "type='" + type + '\'' +
-                    ", sender=" + sender +
-                    '}';
-        }
+        handler.clear();
     }
 
     @Component
-    public static class SenderFetcher {
+    public static class SenderFetcher implements Fetcher<SenderInfoKey, SendInfo> {
 
         private final SenderInfoMaintainService senderInfoMaintainService;
 
         private final SenderHandler senderHandler;
 
-        public SenderFetcher(
-                SenderInfoMaintainService senderInfoMaintainService,
-                SenderHandler senderHandler
-        ) {
+        public SenderFetcher(SenderInfoMaintainService senderInfoMaintainService, SenderHandler senderHandler) {
             this.senderInfoMaintainService = senderInfoMaintainService;
             this.senderHandler = senderHandler;
         }
 
+        @Override
+        @BehaviorAnalyse
         @Transactional(
                 transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
         )
-        public FetchedItem fetchSender(SenderInfoKey senderInfoKey) throws Exception {
-            if (!senderInfoMaintainService.exists(senderInfoKey)) {
-                return null;
-            }
-            SenderInfo senderInfo = senderInfoMaintainService.get(senderInfoKey);
-            Sender sender = senderHandler.make(senderInfo.getType(), senderInfo.getParam());
-            return new FetchedItem(senderInfo.getType(), sender);
+        public boolean exists(SenderInfoKey key) throws Exception {
+            return senderInfoMaintainService.exists(key);
+        }
+
+        @Override
+        @BehaviorAnalyse
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public SendInfo fetch(SenderInfoKey key) throws Exception {
+            SenderInfo senderInfo = senderInfoMaintainService.get(key);
+            String type = senderInfo.getType();
+            Sender sender = senderHandler.make(type, senderInfo.getParam());
+            return new SendInfo(type, sender);
         }
     }
 }

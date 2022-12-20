@@ -4,7 +4,10 @@
 
 #### 功能构建
 
-- (无)
+- 使用 `subgrade` 预设的 `GeneralLocalCacheHandler` 重写本地缓存。
+  - com.dwarfeng.notify.impl.handler.DispatchLocalCacheHandlerImpl。
+  - com.dwarfeng.notify.impl.handler.RouteLocalCacheHandlerImpl。
+  - com.dwarfeng.notify.impl.handler.SendLocalCacheHandlerImpl。
 
 #### Bug修复
 

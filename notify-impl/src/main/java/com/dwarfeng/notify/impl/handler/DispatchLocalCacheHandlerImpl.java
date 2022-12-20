@@ -1,171 +1,83 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.stack.bean.dto.DispatchInfo;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
 import com.dwarfeng.notify.stack.handler.DispatchLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.handler.DispatcherHandler;
 import com.dwarfeng.notify.stack.service.DispatcherInfoMaintainService;
+import com.dwarfeng.subgrade.impl.handler.Fetcher;
+import com.dwarfeng.subgrade.impl.handler.GeneralLocalCacheHandler;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
-import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
-
 @Component
 public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler {
 
-    private final DispatcherFetcher dispatcherFetcher;
+    private final GeneralLocalCacheHandler<StringIdKey, DispatchInfo> handler;
 
-    private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    private final Map<StringIdKey, FetchedItem> itemMap = new HashMap<>();
-    private final Set<StringIdKey> notExistSettings = new HashSet<>();
-
-    public DispatchLocalCacheHandlerImpl(DispatcherFetcher dispatcherFetcher) {
-        this.dispatcherFetcher = dispatcherFetcher;
+    public DispatchLocalCacheHandlerImpl(DispatchLocalCacheHandlerImpl.DispatcherFetcher dispatcherFetcher) {
+        this.handler = new GeneralLocalCacheHandler<>(dispatcherFetcher);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @BehaviorAnalyse
     @Override
-    public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException {
-        try {
-            lock.readLock().lock();
-            try {
-                if (itemMap.containsKey(dispatcherInfoKey)) {
-                    return itemMap.get(dispatcherInfoKey).getDispatcher();
-                }
-                if (notExistSettings.contains(dispatcherInfoKey)) {
-                    return null;
-                }
-            } finally {
-                lock.readLock().unlock();
-            }
-            lock.writeLock().lock();
-            try {
-                if (itemMap.containsKey(dispatcherInfoKey)) {
-                    return itemMap.get(dispatcherInfoKey).getDispatcher();
-                }
-                if (notExistSettings.contains(dispatcherInfoKey)) {
-                    return null;
-                }
-                FetchedItem fetchedItem = dispatcherFetcher.fetchDispatcher(dispatcherInfoKey);
-                if (Objects.nonNull(fetchedItem)) {
-                    itemMap.put(dispatcherInfoKey, fetchedItem);
-                    return fetchedItem.getDispatcher();
-                }
-                notExistSettings.add(dispatcherInfoKey);
-                return null;
-            } finally {
-                lock.writeLock().unlock();
-            }
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+    public boolean exists(StringIdKey key) throws HandlerException {
+        return handler.exists(key);
     }
 
-    @SuppressWarnings("DuplicatedCode")
+    @BehaviorAnalyse
     @Override
-    public String getType(StringIdKey dispatcherInfoKey) throws HandlerException {
-        try {
-            lock.readLock().lock();
-            try {
-                if (itemMap.containsKey(dispatcherInfoKey)) {
-                    return itemMap.get(dispatcherInfoKey).getType();
-                }
-                if (notExistSettings.contains(dispatcherInfoKey)) {
-                    return null;
-                }
-            } finally {
-                lock.readLock().unlock();
-            }
-            lock.writeLock().lock();
-            try {
-                if (itemMap.containsKey(dispatcherInfoKey)) {
-                    return itemMap.get(dispatcherInfoKey).getType();
-                }
-                if (notExistSettings.contains(dispatcherInfoKey)) {
-                    return null;
-                }
-                FetchedItem fetchedItem = dispatcherFetcher.fetchDispatcher(dispatcherInfoKey);
-                if (Objects.nonNull(fetchedItem)) {
-                    itemMap.put(dispatcherInfoKey, fetchedItem);
-                    return fetchedItem.getType();
-                }
-                notExistSettings.add(dispatcherInfoKey);
-                return null;
-            } finally {
-                lock.writeLock().unlock();
-            }
-        } catch (Exception e) {
-            throw new HandlerException(e);
-        }
+    public DispatchInfo get(StringIdKey key) throws HandlerException {
+        return handler.get(key);
     }
 
+    @BehaviorAnalyse
+    @Override
+    public boolean remove(StringIdKey key) {
+        return handler.remove(key);
+    }
+
+    @BehaviorAnalyse
     @Override
     public void clear() throws HandlerException {
-        lock.writeLock().lock();
-        try {
-            itemMap.clear();
-            notExistSettings.clear();
-        } finally {
-            lock.writeLock().unlock();
-        }
-    }
-
-    private static class FetchedItem {
-
-        private final String type;
-        private final Dispatcher dispatcher;
-
-        public FetchedItem(String type, Dispatcher dispatcher) {
-            this.type = type;
-            this.dispatcher = dispatcher;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public Dispatcher getDispatcher() {
-            return dispatcher;
-        }
-
-        @Override
-        public String toString() {
-            return "FetchedItem{" +
-                    "type='" + type + '\'' +
-                    ", dispatcher=" + dispatcher +
-                    '}';
-        }
+        handler.clear();
     }
 
     @Component
-    public static class DispatcherFetcher {
+    public static class DispatcherFetcher implements Fetcher<StringIdKey, DispatchInfo> {
 
         private final DispatcherInfoMaintainService dispatcherInfoMaintainService;
 
         private final DispatcherHandler dispatcherHandler;
 
-        public DispatcherFetcher(
-                DispatcherInfoMaintainService dispatcherInfoMaintainService,
-                DispatcherHandler dispatcherHandler
-        ) {
+        public DispatcherFetcher(DispatcherInfoMaintainService dispatcherInfoMaintainService, DispatcherHandler dispatcherHandler) {
             this.dispatcherInfoMaintainService = dispatcherInfoMaintainService;
             this.dispatcherHandler = dispatcherHandler;
         }
 
+        @Override
+        @BehaviorAnalyse
         @Transactional(
                 transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
         )
-        public FetchedItem fetchDispatcher(StringIdKey dispatcherInfoKey) throws Exception {
-            if (!dispatcherInfoMaintainService.exists(dispatcherInfoKey)) {
-                return null;
-            }
-            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(dispatcherInfoKey);
-            Dispatcher dispatcher = dispatcherHandler.make(dispatcherInfo.getType(), dispatcherInfo.getParam());
-            return new FetchedItem(dispatcherInfo.getType(), dispatcher);
+        public boolean exists(StringIdKey key) throws Exception {
+            return dispatcherInfoMaintainService.exists(key);
+        }
+
+        @Override
+        @BehaviorAnalyse
+        @Transactional(
+                transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
+        )
+        public DispatchInfo fetch(StringIdKey key) throws Exception {
+            DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(key);
+            String type = dispatcherInfo.getType();
+            Dispatcher dispatcher = dispatcherHandler.make(type, dispatcherInfo.getParam());
+            return new DispatchInfo(type, dispatcher);
         }
     }
 }
