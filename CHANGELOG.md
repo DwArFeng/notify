@@ -4,6 +4,13 @@
 
 #### 功能构建
 
+- 优化可选加载项的文件结构。
+  - opt/opt-dispatcher.xml。
+  - opt/opt-pusher.xml。
+  - opt/opt-resetter.xml。
+  - opt/opt-router.xml。
+  - opt/opt-sender.xml。
+
 - 增加系统事件。
   - 路由被重置系统事件。
   - 调度被重置系统事件。
@@ -23,7 +30,7 @@
 
 #### Bug修复
 
-- (无)
+- 修复 `opt/opt-dispatcher.xml` 配置文件缺失的问题。
 
 #### 功能移除
 

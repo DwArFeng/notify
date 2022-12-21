@@ -11,25 +11,25 @@
 >
 
     <!-- 扫描 handler 的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.pusher" use-default-filters="false">
-        <!-- 加载 DrainPusher -->
+    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.dispatcher" use-default-filters="false">
+        <!-- 加载 EmptyDispatcher -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.notify.impl.handler.pusher.DrainPusher"
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.dispatcher.EmptyDispatcherRegistry"
         />
         -->
 
-        <!-- 加载 LogPusher -->
+        <!-- 加载 EntireDispatcher -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.notify.impl.handler.pusher.LogPusher"
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.dispatcher.EntireDispatcherRegistry"
         />
         -->
 
-        <!-- 加载 MultiPusher -->
+        <!-- 加载 GroovyDispatcher -->
         <!--
         <context:include-filter
-                type="assignable" expression="com.dwarfeng.notify.impl.handler.pusher.MultiPusher"
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.dispatcher.GroovyDispatcherRegistry"
         />
         -->
     </context:component-scan>

@@ -10,6 +10,41 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.router"/>
+    <!-- 扫描 handler 的实现包。 -->
+    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.router" use-default-filters="false">
+        <!-- 加载 EmptyRouter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.router.EmptyRouterRegistry"
+        />
+        -->
+
+        <!-- 加载 EntireRouter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.router.EntireRouterRegistry"
+        />
+        -->
+
+        <!-- 加载 StaticRouter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.router.StaticRouterRegistry"
+        />
+        -->
+
+        <!-- 加载 IdentityRouter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.router.IdentityRouterRegistry"
+        />
+        -->
+
+        <!-- 加载 GroovyRouter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry"
+        />
+        -->
+    </context:component-scan>
 </beans>

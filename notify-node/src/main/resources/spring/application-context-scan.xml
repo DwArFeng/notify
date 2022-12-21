@@ -19,6 +19,7 @@
     <context:component-scan base-package="com.dwarfeng.notify.impl.handler">
         <context:exclude-filter type="regex" expression="^com\.dwarfeng\.notify\.impl\.handler\.pusher\..*$"/>
         <context:exclude-filter type="regex" expression="^com\.dwarfeng\.notify\.impl\.handler\.router\..*$"/>
+        <context:exclude-filter type="regex" expression="^com\.dwarfeng\.notify\.impl\.handler\.dispatcher\..*$"/>
         <context:exclude-filter type="regex" expression="^com\.dwarfeng\.notify\.impl\.handler\.sender\..*$"/>
         <context:exclude-filter type="regex" expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\..*$"/>
     </context:component-scan>

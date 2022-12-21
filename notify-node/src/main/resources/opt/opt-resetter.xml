@@ -10,27 +10,41 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.resetter">
-        <context:exclude-filter
-                type="regex"
-                expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.NeverResetter.*$"
+    <!-- 扫描 handler 的实现包。 -->
+    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.resetter" use-default-filters="false">
+        <!-- 加载 NeverResetter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.NeverResetter"
         />
-        <context:exclude-filter
-                type="regex"
-                expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.FixedDelayResetter.*$"
+        -->
+
+        <!-- 加载 FixedDelayResetter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.FixedDelayResetter"
         />
-        <context:exclude-filter
-                type="regex"
-                expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.FixedRateResetter.*$"
+        -->
+
+        <!-- 加载 FixedRateResetter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.FixedRateResetter"
         />
-        <context:exclude-filter
-                type="regex"
-                expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.CronResetter.*$"
+        -->
+
+        <!-- 加载 CronResetter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.CronResetter"
         />
-        <context:exclude-filter
-                type="regex"
-                expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.KafkaResetter.*$"
+        -->
+
+        <!-- 加载 KafkaResetter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.KafkaResetter"
         />
+        -->
     </context:component-scan>
 </beans>

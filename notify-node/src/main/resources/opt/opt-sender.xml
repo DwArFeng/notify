@@ -10,6 +10,20 @@
         http://www.springframework.org/schema/context/spring-context.xsd"
 >
 
-    <!--扫描handler的实现包。 -->
-    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.sender"/>
+    <!-- 扫描 handler 的实现包。 -->
+    <context:component-scan base-package="com.dwarfeng.notify.impl.handler.sender" use-default-filters="false">
+        <!-- 加载 LogSender -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.sender.LogSenderRegistry"
+        />
+        -->
+
+        <!-- 加载 GroovySender -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry"
+        />
+        -->
+    </context:component-scan>
 </beans>
