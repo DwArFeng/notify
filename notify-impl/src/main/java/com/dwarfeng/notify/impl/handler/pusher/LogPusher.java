@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.handler.pusher;
 
 import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -48,6 +49,27 @@ public class LogPusher extends AbstractPusher {
         for (SendHistory sendHistory : sendHistories) {
             notifySent(sendHistory);
         }
+    }
+
+    @Override
+    public void routeReset() throws HandlerException {
+        String title = "路由重置事件:";
+        String message = StringUtils.EMPTY;
+        logData(title, message);
+    }
+
+    @Override
+    public void dispatchReset() throws HandlerException {
+        String title = "调度重置事件:";
+        String message = StringUtils.EMPTY;
+        logData(title, message);
+    }
+
+    @Override
+    public void sendReset() throws HandlerException {
+        String title = "发送重置事件:";
+        String message = StringUtils.EMPTY;
+        logData(title, message);
     }
 
     private void logData(String title, String message) throws HandlerException {

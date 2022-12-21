@@ -36,4 +36,25 @@ public interface Pusher {
      * @throws HandlerException 处理器异常。
      */
     void notifySent(List<SendHistory> sendHistories) throws HandlerException;
+
+    /**
+     * 路由被重置时执行的调度。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void routeReset() throws HandlerException;
+
+    /**
+     * 调度被重置时执行的调度。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void dispatchReset() throws HandlerException;
+
+    /**
+     * 发送被重置时执行的调度。
+     *
+     * @throws HandlerException 处理器异常。
+     */
+    void sendReset() throws HandlerException;
 }

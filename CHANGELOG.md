@@ -4,6 +4,11 @@
 
 #### 功能构建
 
+- 增加系统事件。
+  - 路由被重置系统事件。
+  - 调度被重置系统事件。
+  - 发送被重置系统事件。
+
 - 增加重置机制，实现路由、调度、发送本地缓存的动态重置。
   - com.dwarfeng.notify.impl.handler.resetter.CronResetter。
   - com.dwarfeng.notify.impl.handler.resetter.FixedDelayResetter。

@@ -27,4 +27,16 @@ public class DrainPusher extends AbstractPusher {
     @Override
     public void notifySent(List<SendHistory> sendHistories) {
     }
+
+    @Override
+    public void routeReset() {
+    }
+
+    @Override
+    public void dispatchReset() {
+    }
+
+    @Override
+    public void sendReset() {
+    }
 }

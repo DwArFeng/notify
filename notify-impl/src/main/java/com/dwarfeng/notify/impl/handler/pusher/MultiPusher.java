@@ -72,6 +72,39 @@ public class MultiPusher extends AbstractPusher {
     }
 
     @Override
+    public void routeReset() {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.routeReset();
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
+    public void dispatchReset() {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.dispatchReset();
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
+    public void sendReset() {
+        for (Pusher delegate : delegates) {
+            try {
+                delegate.sendReset();
+            } catch (Exception e) {
+                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+            }
+        }
+    }
+
+    @Override
     public String toString() {
         return "MultiPusher{" +
                 "pusherType='" + pusherType + '\'' +

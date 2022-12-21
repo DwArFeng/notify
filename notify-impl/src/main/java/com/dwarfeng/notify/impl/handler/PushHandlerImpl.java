@@ -37,4 +37,19 @@ public class PushHandlerImpl implements PushHandler {
     public void notifySent(List<SendHistory> sendHistories) throws HandlerException {
         pusher.notifySent(sendHistories);
     }
+
+    @Override
+    public void routeReset() throws HandlerException {
+        pusher.routeReset();
+    }
+
+    @Override
+    public void dispatchReset() throws HandlerException {
+        pusher.dispatchReset();
+    }
+
+    @Override
+    public void sendReset() throws HandlerException {
+        pusher.sendReset();
+    }
 }
