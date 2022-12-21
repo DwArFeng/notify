@@ -9,6 +9,7 @@
   - com.dwarfeng.notify.impl.handler.resetter.FixedDelayResetter。
   - com.dwarfeng.notify.impl.handler.resetter.FixedRateResetter。
   - com.dwarfeng.notify.impl.handler.resetter.NeverResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.KafkaResetter。
 
 - 使用 `subgrade` 预设的 `GeneralLocalCacheHandler` 重写本地缓存。
   - com.dwarfeng.notify.impl.handler.DispatchLocalCacheHandlerImpl。

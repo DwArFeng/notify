@@ -28,5 +28,9 @@
                 type="regex"
                 expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.CronResetter.*$"
         />
+        <context:exclude-filter
+                type="regex"
+                expression="^com\.dwarfeng\.notify\.impl\.handler\.resetter\.KafkaResetter.*$"
+        />
     </context:component-scan>
 </beans>
