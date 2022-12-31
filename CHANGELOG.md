@@ -4,7 +4,8 @@
 
 #### 功能构建
 
-- (无)
+- 实现重置器。
+  - com.dwarfeng.notify.impl.handler.resetter.DubboResetter。
 
 #### Bug修复
 

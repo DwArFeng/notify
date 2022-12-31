@@ -46,5 +46,12 @@
                 type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.KafkaResetter"
         />
         -->
+
+        <!-- 加载 DubboResetter -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.resetter.DubboResetter"
+        />
+        -->
     </context:component-scan>
 </beans>
