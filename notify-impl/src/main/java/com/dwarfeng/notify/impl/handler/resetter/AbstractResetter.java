@@ -6,7 +6,7 @@ import com.dwarfeng.notify.stack.handler.Resetter;
  * 重置器的抽象实现。
  *
  * @author DwArFeng
- * @since 1.4.2
+ * @since 1.2.2
  */
 public abstract class AbstractResetter implements Resetter {
 

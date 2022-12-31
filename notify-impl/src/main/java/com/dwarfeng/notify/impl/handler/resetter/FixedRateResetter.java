@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledFuture;
  * 固定间隔的重置器。
  *
  * @author DwArFeng
- * @since 1.4.2
+ * @since 1.2.2
  */
 @Component
 public class FixedRateResetter extends AbstractResetter {

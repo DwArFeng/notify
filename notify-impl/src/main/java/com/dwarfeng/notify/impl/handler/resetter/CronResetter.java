@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledFuture;
  * 使用 CRON 表达式定时重置的重置器。
  *
  * @author DwArFeng
- * @since 1.4.2
+ * @since 1.2.2
  */
 @Component
 public class CronResetter extends AbstractResetter {

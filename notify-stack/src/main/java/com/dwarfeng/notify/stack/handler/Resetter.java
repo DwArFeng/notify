@@ -39,7 +39,7 @@ public interface Resetter {
      * 重置器上下文。
      *
      * @author DwArFeng
-     * @since 1.4.2
+     * @since 1.2.2
      */
     interface Context {
 

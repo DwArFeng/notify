@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
  * 重置处理器。
  *
  * @author DwArFeng
- * @since 1.4.2
+ * @since 1.2.2
  */
 @Component
 class ResetProcessor {
