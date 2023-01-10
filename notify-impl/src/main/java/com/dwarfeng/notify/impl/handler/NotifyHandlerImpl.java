@@ -107,7 +107,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     private List<StringIdKey> routing(LongIdKey notifySettingKey, Map<String, String> routeInfo) throws Exception {
         // 通过本地缓存获取路由器及其类型。
-        Router router = routeLocalCacheHandler.get(notifySettingKey).getRouter();
+        Router router = routeLocalCacheHandler.get(notifySettingKey);
 
         // 调用路由方法，获取与通知相关的用户主键。
         InternalRouterContext routerContext = ctx.getBean(InternalRouterContext.class, this);
@@ -136,7 +136,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 dispatcherContext.setTopicKey(topicKey);
 
                 // 获取主题的调度器及其类型。
-                Dispatcher dispatcher = dispatchLocalCacheHandler.get(topicKey).getDispatcher();
+                Dispatcher dispatcher = dispatchLocalCacheHandler.get(topicKey);
 
                 // 调用调度器，获取需要通过此主题发送通知的用户列表。
                 List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
@@ -172,8 +172,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 senderContext.setTopicKey(topicKey);
 
                 // 获取当前通知设置与当前主题下的发送器及其类型。
-                SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                Sender sender = sendLocalCacheHandler.get(senderInfoKey).getSender();
+                Sender sender = sendLocalCacheHandler.get(
+                        new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId())
+                );
 
                 // 执行发生动作。
                 List<Sender.Response> senderResponse = sender.send(sendInfo, userKeys, senderContext);
@@ -278,7 +279,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Override
     public Router getRouter(LongIdKey routerInfoKey) throws HandlerException {
-        return routeLocalCacheHandler.get(routerInfoKey).getRouter();
+        return routeLocalCacheHandler.get(routerInfoKey);
     }
 
     @Override
@@ -288,7 +289,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Override
     public Dispatcher getDispatcher(StringIdKey dispatcherInfoKey) throws HandlerException {
-        return dispatchLocalCacheHandler.get(dispatcherInfoKey).getDispatcher();
+        return dispatchLocalCacheHandler.get(dispatcherInfoKey);
     }
 
     @Override
@@ -298,7 +299,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     @Override
     public Sender getSender(SenderInfoKey senderInfoKey) throws HandlerException {
-        return sendLocalCacheHandler.get(senderInfoKey).getSender();
+        return sendLocalCacheHandler.get(senderInfoKey);
     }
 
     @Override

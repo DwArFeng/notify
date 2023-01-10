@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.SendInfo;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.SendLocalCacheHandler;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
-    private final GeneralLocalCacheHandler<SenderInfoKey, SendInfo> handler;
+    private final GeneralLocalCacheHandler<SenderInfoKey, Sender> handler;
 
     public SendLocalCacheHandlerImpl(SendLocalCacheHandlerImpl.SenderFetcher senderFetcher) {
         this.handler = new GeneralLocalCacheHandler<>(senderFetcher);
@@ -31,7 +30,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
     @BehaviorAnalyse
     @Override
-    public SendInfo get(SenderInfoKey key) throws HandlerException {
+    public Sender get(SenderInfoKey key) throws HandlerException {
         return handler.get(key);
     }
 
@@ -48,7 +47,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
     }
 
     @Component
-    public static class SenderFetcher implements Fetcher<SenderInfoKey, SendInfo> {
+    public static class SenderFetcher implements Fetcher<SenderInfoKey, Sender> {
 
         private final SenderInfoMaintainService senderInfoMaintainService;
 
@@ -73,11 +72,10 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
         @Transactional(
                 transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
         )
-        public SendInfo fetch(SenderInfoKey key) throws Exception {
+        public Sender fetch(SenderInfoKey key) throws Exception {
             SenderInfo senderInfo = senderInfoMaintainService.get(key);
             String type = senderInfo.getType();
-            Sender sender = senderHandler.make(type, senderInfo.getParam());
-            return new SendInfo(type, sender);
+            return senderHandler.make(type, senderInfo.getParam());
         }
     }
 }

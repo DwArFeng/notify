@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.stack.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
 
@@ -14,5 +13,5 @@ import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
  * @author DwArFeng
  * @since 1.0.0
  */
-public interface DispatchLocalCacheHandler extends LocalCacheHandler<StringIdKey, DispatchInfo> {
+public interface DispatchLocalCacheHandler extends LocalCacheHandler<StringIdKey, Dispatcher> {
 }

@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.RouteInfo;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.handler.RouteLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Router;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
 
-    private final GeneralLocalCacheHandler<LongIdKey, RouteInfo> handler;
+    private final GeneralLocalCacheHandler<LongIdKey, Router> handler;
 
     public RouteLocalCacheHandlerImpl(RouterFetcher routerFetcher) {
         this.handler = new GeneralLocalCacheHandler<>(routerFetcher);
@@ -31,7 +30,7 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
 
     @BehaviorAnalyse
     @Override
-    public RouteInfo get(LongIdKey key) throws HandlerException {
+    public Router get(LongIdKey key) throws HandlerException {
         return handler.get(key);
     }
 
@@ -48,7 +47,7 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
     }
 
     @Component
-    public static class RouterFetcher implements Fetcher<LongIdKey, RouteInfo> {
+    public static class RouterFetcher implements Fetcher<LongIdKey, Router> {
 
         private final RouterInfoMaintainService routerInfoMaintainService;
 
@@ -73,11 +72,10 @@ public class RouteLocalCacheHandlerImpl implements RouteLocalCacheHandler {
         @Transactional(
                 transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
         )
-        public RouteInfo fetch(LongIdKey key) throws Exception {
+        public Router fetch(LongIdKey key) throws Exception {
             RouterInfo routerInfo = routerInfoMaintainService.get(key);
             String type = routerInfo.getType();
-            Router router = routerHandler.make(type, routerInfo.getParam());
-            return new RouteInfo(type, router);
+            return routerHandler.make(type, routerInfo.getParam());
         }
     }
 }

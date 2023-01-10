@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.DispatchInfo;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
 import com.dwarfeng.notify.stack.handler.DispatchLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
@@ -17,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Component
 public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler {
 
-    private final GeneralLocalCacheHandler<StringIdKey, DispatchInfo> handler;
+    private final GeneralLocalCacheHandler<StringIdKey, Dispatcher> handler;
 
     public DispatchLocalCacheHandlerImpl(DispatchLocalCacheHandlerImpl.DispatcherFetcher dispatcherFetcher) {
         this.handler = new GeneralLocalCacheHandler<>(dispatcherFetcher);
@@ -31,7 +30,7 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
     @BehaviorAnalyse
     @Override
-    public DispatchInfo get(StringIdKey key) throws HandlerException {
+    public Dispatcher get(StringIdKey key) throws HandlerException {
         return handler.get(key);
     }
 
@@ -48,7 +47,7 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
     }
 
     @Component
-    public static class DispatcherFetcher implements Fetcher<StringIdKey, DispatchInfo> {
+    public static class DispatcherFetcher implements Fetcher<StringIdKey, Dispatcher> {
 
         private final DispatcherInfoMaintainService dispatcherInfoMaintainService;
 
@@ -73,11 +72,10 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
         @Transactional(
                 transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class
         )
-        public DispatchInfo fetch(StringIdKey key) throws Exception {
+        public Dispatcher fetch(StringIdKey key) throws Exception {
             DispatcherInfo dispatcherInfo = dispatcherInfoMaintainService.get(key);
             String type = dispatcherInfo.getType();
-            Dispatcher dispatcher = dispatcherHandler.make(type, dispatcherInfo.getParam());
-            return new DispatchInfo(type, dispatcher);
+            return dispatcherHandler.make(type, dispatcherInfo.getParam());
         }
     }
 }

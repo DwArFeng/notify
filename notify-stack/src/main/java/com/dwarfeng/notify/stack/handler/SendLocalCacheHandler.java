@@ -1,6 +1,5 @@
 package com.dwarfeng.notify.stack.handler;
 
-import com.dwarfeng.notify.stack.bean.dto.SendInfo;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
 
@@ -14,5 +13,5 @@ import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
  * @author DwArFeng
  * @since 1.0.0
  */
-public interface SendLocalCacheHandler extends LocalCacheHandler<SenderInfoKey, SendInfo> {
+public interface SendLocalCacheHandler extends LocalCacheHandler<SenderInfoKey, Sender> {
 }
