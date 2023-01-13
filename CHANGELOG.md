@@ -4,7 +4,8 @@
 
 #### 功能构建
 
-- (无)
+- 实现预设发送器。
+  - com.dwarfeng.notify.impl.handler.sender.DrainSenderRegistry。
 
 #### Bug修复
 

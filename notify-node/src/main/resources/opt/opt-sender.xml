@@ -25,5 +25,12 @@
                 type="assignable" expression="com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry"
         />
         -->
+
+        <!-- 加载 DrainSender -->
+        <!--
+        <context:include-filter
+                type="assignable" expression="com.dwarfeng.notify.impl.handler.sender.DrainSenderRegistry"
+        />
+        -->
     </context:component-scan>
 </beans>
