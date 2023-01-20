@@ -2,7 +2,7 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;

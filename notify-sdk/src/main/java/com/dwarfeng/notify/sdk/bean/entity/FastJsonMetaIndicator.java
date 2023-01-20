@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonMetaIndicatorKey;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonMetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class FastJsonMetaIndicator implements Bean {
 
-    private static final long serialVersionUID = -7359643661973672897L;
+    private static final long serialVersionUID = -2976132205130036158L;
 
     public static FastJsonMetaIndicator of(MetaIndicator metaIndicator) {
         if (Objects.isNull(metaIndicator)) {

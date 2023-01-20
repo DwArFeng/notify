@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "tbl_meta")
 public class HibernateMeta implements Bean {
 
-    private static final long serialVersionUID = 4532148166735845729L;
+    private static final long serialVersionUID = -2128593082064931893L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id

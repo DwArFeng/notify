@@ -1,12 +1,12 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaIndicatorKey;
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaKey;
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderInfoKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;

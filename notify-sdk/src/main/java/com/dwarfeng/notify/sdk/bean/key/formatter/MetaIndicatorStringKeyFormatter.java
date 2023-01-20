@@ -1,6 +1,6 @@
-package com.dwarfeng.notify.sdk.bean.entity.key.formatter;
+package com.dwarfeng.notify.sdk.bean.key.formatter;
 
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.subgrade.sdk.common.Constants;
 import com.dwarfeng.subgrade.sdk.redis.formatter.StringKeyFormatter;
 

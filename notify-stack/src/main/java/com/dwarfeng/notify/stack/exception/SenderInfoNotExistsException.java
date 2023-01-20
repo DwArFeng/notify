@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.stack.exception;
 
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 /**
@@ -11,8 +11,8 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class SenderInfoNotExistsException extends HandlerException {
 
-    private static final long serialVersionUID = -5946270273907577117L;
-
+    private static final long serialVersionUID = -2900362851034009419L;
+    
     private final SenderInfoKey senderInfoKey;
 
     public SenderInfoNotExistsException(SenderInfoKey senderInfoKey) {

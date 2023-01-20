@@ -1,8 +1,8 @@
-package com.dwarfeng.notify.sdk.bean.entity.key;
+package com.dwarfeng.notify.sdk.bean.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 import org.hibernate.validator.constraints.Length;
 
@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 public class WebInputMetaKey implements Key {
 
-    private static final long serialVersionUID = -1826726811191596349L;
+    private static final long serialVersionUID = 4878844719034806484L;
 
     public static MetaKey toStackBean(WebInputMetaKey webInputMetaKey) {
         if (Objects.isNull(webInputMetaKey)) {

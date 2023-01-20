@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.service;
 
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.stack.service.EntireLookupService;
 import com.dwarfeng.subgrade.stack.service.PresetLookupService;

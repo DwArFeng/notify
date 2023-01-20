@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;

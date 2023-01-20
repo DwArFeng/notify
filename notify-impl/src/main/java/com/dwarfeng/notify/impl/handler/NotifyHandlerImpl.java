@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;

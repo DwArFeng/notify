@@ -1,9 +1,13 @@
-package com.dwarfeng.notify.sdk.bean.entity.key;
+package com.dwarfeng.notify.sdk.bean.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
+import com.dwarfeng.notify.sdk.util.Constraints;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
+import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -12,32 +16,33 @@ import java.util.Objects;
  * @author DwArFeng
  * @since 1.1.0
  */
-public class FastJsonMetaIndicatorKey implements Key {
+public class WebInputMetaIndicatorKey implements Key {
 
-    private static final long serialVersionUID = 1554174096752551575L;
+    private static final long serialVersionUID = 9057753521968611666L;
 
-    public static FastJsonMetaIndicatorKey of(MetaIndicatorKey metaIndicatorKey) {
-        if (Objects.isNull(metaIndicatorKey)) {
+    public static MetaIndicatorKey toStackBean(WebInputMetaIndicatorKey webInputMetaIndicatorKey) {
+        if (Objects.isNull(webInputMetaIndicatorKey)) {
             return null;
         } else {
-            return new FastJsonMetaIndicatorKey(
-                    metaIndicatorKey.getTopicId(), metaIndicatorKey.getMetaId()
+            return new MetaIndicatorKey(
+                    webInputMetaIndicatorKey.getTopicId(), webInputMetaIndicatorKey.getMetaId()
             );
         }
     }
 
-    @JSONField(name = "topic_id", ordinal = 1)
+    @JSONField(name = "topic_id")
+    @NotNull
+    @NotEmpty
+    @Length(max = Constraints.LENGTH_ID)
     private String topicId;
 
-    @JSONField(name = "meta_id", ordinal = 2)
+    @JSONField(name = "meta_id")
+    @NotNull
+    @NotEmpty
+    @Length(max = Constraints.LENGTH_ID)
     private String metaId;
 
-    public FastJsonMetaIndicatorKey() {
-    }
-
-    public FastJsonMetaIndicatorKey(String topicId, String metaId) {
-        this.topicId = topicId;
-        this.metaId = metaId;
+    public WebInputMetaIndicatorKey() {
     }
 
     public String getTopicId() {
@@ -61,7 +66,7 @@ public class FastJsonMetaIndicatorKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FastJsonMetaIndicatorKey that = (FastJsonMetaIndicatorKey) o;
+        WebInputMetaIndicatorKey that = (WebInputMetaIndicatorKey) o;
 
         if (!Objects.equals(topicId, that.topicId)) return false;
         return Objects.equals(metaId, that.metaId);
@@ -76,7 +81,7 @@ public class FastJsonMetaIndicatorKey implements Key {
 
     @Override
     public String toString() {
-        return "FastJsonMetaIndicatorKey{" +
+        return "WebInputMetaIndicatorKey{" +
                 "topicId='" + topicId + '\'' +
                 ", metaId='" + metaId + '\'' +
                 '}';

@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.handler.NotifyHandler;
 import com.dwarfeng.notify.stack.handler.Router;

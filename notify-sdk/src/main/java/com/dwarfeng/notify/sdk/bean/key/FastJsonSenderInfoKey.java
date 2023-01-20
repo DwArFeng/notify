@@ -1,27 +1,39 @@
-package com.dwarfeng.notify.impl.bean.entity.key;
+package com.dwarfeng.notify.sdk.bean.key;
 
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
+import com.dwarfeng.subgrade.stack.bean.key.Key;
 
-import java.io.Serializable;
 import java.util.Objects;
 
 /**
- * Hibernate 发送器信息主键。
+ * FastJson 发送器信息主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class HibernateSenderInfoKey implements Bean, Serializable {
+public class FastJsonSenderInfoKey implements Key {
 
-    private static final long serialVersionUID = -7855492552193897714L;
+    private static final long serialVersionUID = 8036038219323798131L;
 
-    private Long notifySettingId;
-    private String topicId;
-
-    public HibernateSenderInfoKey() {
+    public static FastJsonSenderInfoKey of(SenderInfoKey senderInfoKey) {
+        if (Objects.isNull(senderInfoKey)) {
+            return null;
+        } else {
+            return new FastJsonSenderInfoKey(senderInfoKey.getNotifySettingId(), senderInfoKey.getTopicId());
+        }
     }
 
-    public HibernateSenderInfoKey(Long notifySettingId, String topicId) {
+    @JSONField(name = "notify_setting_id", ordinal = 1)
+    private Long notifySettingId;
+
+    @JSONField(name = "topic_id", ordinal = 2)
+    private String topicId;
+
+    public FastJsonSenderInfoKey() {
+    }
+
+    public FastJsonSenderInfoKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -47,10 +59,9 @@ public class HibernateSenderInfoKey implements Bean, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HibernateSenderInfoKey that = (HibernateSenderInfoKey) o;
+        FastJsonSenderInfoKey that = (FastJsonSenderInfoKey) o;
 
-        if (!Objects.equals(notifySettingId, that.notifySettingId))
-            return false;
+        if (!Objects.equals(notifySettingId, that.notifySettingId)) return false;
         return Objects.equals(topicId, that.topicId);
     }
 
@@ -63,7 +74,7 @@ public class HibernateSenderInfoKey implements Bean, Serializable {
 
     @Override
     public String toString() {
-        return "HibernateSenderInfoKey{" +
+        return "FastJsonSenderInfoKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

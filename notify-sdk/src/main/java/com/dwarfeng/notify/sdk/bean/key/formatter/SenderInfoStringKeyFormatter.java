@@ -1,30 +1,29 @@
-package com.dwarfeng.notify.sdk.bean.entity.key.formatter;
+package com.dwarfeng.notify.sdk.bean.key.formatter;
 
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.sdk.common.Constants;
 import com.dwarfeng.subgrade.sdk.redis.formatter.StringKeyFormatter;
 
 import java.util.Objects;
 
 /**
- * MetaKey 的文本格式化转换器。
+ * SenderInfoKey 的文本格式化转换器。
  *
  * @author DwArFeng
  * @since 1.0.0
  */
-public class MetaStringKeyFormatter implements StringKeyFormatter<MetaKey> {
+public class SenderInfoStringKeyFormatter implements StringKeyFormatter<SenderInfoKey> {
 
     private String prefix;
 
-    public MetaStringKeyFormatter(String prefix) {
+    public SenderInfoStringKeyFormatter(String prefix) {
         this.prefix = prefix;
     }
 
     @Override
-    public String format(MetaKey key) {
+    public String format(SenderInfoKey key) {
         Objects.requireNonNull(key);
-        return prefix + key.getNotifySettingId() + "_" + key.getTopicId() + "_" + key.getUserId() + "_"
-                + key.getMetaId();
+        return prefix + key.getNotifySettingId() + "_" + key.getTopicId();
     }
 
     @Override
@@ -42,7 +41,7 @@ public class MetaStringKeyFormatter implements StringKeyFormatter<MetaKey> {
 
     @Override
     public String toString() {
-        return "MetaStringKeyFormatter{" +
+        return "SenderInfoStringKeyFormatter{" +
                 "prefix='" + prefix + '\'' +
                 '}';
     }

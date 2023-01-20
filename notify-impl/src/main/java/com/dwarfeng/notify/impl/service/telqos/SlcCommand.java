@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
@@ -63,7 +63,6 @@ public class SlcCommand extends CliCommand {
         return list;
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {

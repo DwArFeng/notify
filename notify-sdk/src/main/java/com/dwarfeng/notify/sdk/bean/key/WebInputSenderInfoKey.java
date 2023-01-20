@@ -1,42 +1,46 @@
-package com.dwarfeng.notify.sdk.bean.entity.key;
+package com.dwarfeng.notify.sdk.bean.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * JSFixed FastJson 发送器信息主键。
+ * WebInput 发送器信息主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class JSFixedFastJsonSenderInfoKey implements Key {
+public class WebInputSenderInfoKey implements Key {
 
-    private static final long serialVersionUID = 2422124936557273101L;
+    private static final long serialVersionUID = 45962443872371671L;
 
-    public static JSFixedFastJsonSenderInfoKey of(SenderInfoKey senderInfoKey) {
-        if (Objects.isNull(senderInfoKey)) {
+    public static SenderInfoKey toStackBean(WebInputSenderInfoKey webInputSenderInfoKey) {
+        if (Objects.isNull(webInputSenderInfoKey)) {
             return null;
         } else {
-            return new JSFixedFastJsonSenderInfoKey(
-                    senderInfoKey.getNotifySettingId(), senderInfoKey.getTopicId()
+            return new SenderInfoKey(
+                    webInputSenderInfoKey.getNotifySettingId(), webInputSenderInfoKey.getTopicId()
             );
         }
     }
 
-    @JSONField(name = "notify_setting_id", ordinal = 1, serializeUsing = ToStringSerializer.class)
+    @JSONField(name = "notify_setting_id")
+    @NotNull
     private Long notifySettingId;
 
-    @JSONField(name = "topic_id", ordinal = 2)
+    @JSONField(name = "topic_id")
+    @NotNull
+    @NotEmpty
     private String topicId;
 
-    public JSFixedFastJsonSenderInfoKey() {
+    public WebInputSenderInfoKey() {
     }
 
-    public JSFixedFastJsonSenderInfoKey(Long notifySettingId, String topicId) {
+    public WebInputSenderInfoKey(Long notifySettingId, String topicId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
     }
@@ -62,7 +66,7 @@ public class JSFixedFastJsonSenderInfoKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        JSFixedFastJsonSenderInfoKey that = (JSFixedFastJsonSenderInfoKey) o;
+        WebInputSenderInfoKey that = (WebInputSenderInfoKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId)) return false;
         return Objects.equals(topicId, that.topicId);
@@ -77,7 +81,7 @@ public class JSFixedFastJsonSenderInfoKey implements Key {
 
     @Override
     public String toString() {
-        return "JSFixedFastJsonSenderInfoKey{" +
+        return "WebInputSenderInfoKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 '}';

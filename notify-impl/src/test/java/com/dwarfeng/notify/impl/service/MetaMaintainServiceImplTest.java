@@ -4,7 +4,7 @@ import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
 import com.dwarfeng.notify.stack.bean.entity.User;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;

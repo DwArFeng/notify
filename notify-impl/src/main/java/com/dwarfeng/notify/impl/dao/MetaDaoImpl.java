@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.impl.dao;
 
 import com.dwarfeng.notify.impl.bean.entity.HibernateMeta;
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.dao.MetaDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;

@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.Meta;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;

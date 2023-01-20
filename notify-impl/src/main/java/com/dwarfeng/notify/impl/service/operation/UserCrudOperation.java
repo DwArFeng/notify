@@ -3,7 +3,7 @@ package com.dwarfeng.notify.impl.service.operation;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.notify.stack.bean.entity.User;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.cache.MetaCache;
 import com.dwarfeng.notify.stack.cache.SendHistoryCache;
 import com.dwarfeng.notify.stack.cache.UserCache;

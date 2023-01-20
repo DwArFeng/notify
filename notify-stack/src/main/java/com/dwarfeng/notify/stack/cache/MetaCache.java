@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.cache;
 
 import com.dwarfeng.notify.stack.bean.entity.Meta;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 
 /**

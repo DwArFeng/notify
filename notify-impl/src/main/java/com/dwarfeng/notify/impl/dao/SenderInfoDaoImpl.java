@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.impl.dao;
 
 import com.dwarfeng.notify.impl.bean.entity.HibernateSenderInfo;
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderInfoKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.dao.SenderInfoDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;

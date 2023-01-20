@@ -1,12 +1,12 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
-import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonMetaIndicatorKey;
-import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonMetaKey;
-import com.dwarfeng.notify.sdk.bean.entity.key.FastJsonSenderInfoKey;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonMetaIndicatorKey;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonMetaKey;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;

@@ -1,4 +1,4 @@
-package com.dwarfeng.notify.stack.bean.entity.key;
+package com.dwarfeng.notify.stack.bean.key;
 
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 public class MetaIndicatorKey implements Key {
 
-    private static final long serialVersionUID = 8954728273780452721L;
-    
+    private static final long serialVersionUID = -1334435226320620928L;
+
     private String topicId;
     private String metaId;
 

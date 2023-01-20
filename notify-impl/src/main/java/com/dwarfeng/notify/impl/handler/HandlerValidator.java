@@ -2,7 +2,7 @@ package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.exception.*;
 import com.dwarfeng.notify.stack.service.*;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;

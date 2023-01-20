@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService;

@@ -2,7 +2,7 @@ package com.dwarfeng.notify.impl.cache;
 
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonMeta;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.cache.MetaCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;

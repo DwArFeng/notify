@@ -1,28 +1,48 @@
-package com.dwarfeng.notify.impl.bean.entity.key;
+package com.dwarfeng.notify.sdk.bean.key;
 
+import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import java.util.Objects;
 
 /**
- * 元数据主键。
+ * FastJson 元数据主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class HibernateMetaKey implements Key {
+public class FastJsonMetaKey implements Key {
 
-    private static final long serialVersionUID = 9211460534310272225L;
-    
-    private Long notifySettingId;
-    private String topicId;
-    private String userId;
-    private String metaId;
+    private static final long serialVersionUID = 6899595488597283751L;
 
-    public HibernateMetaKey() {
+    public static FastJsonMetaKey of(MetaKey metaKey) {
+        if (Objects.isNull(metaKey)) {
+            return null;
+        } else {
+            return new FastJsonMetaKey(
+                    metaKey.getNotifySettingId(), metaKey.getTopicId(), metaKey.getUserId(),
+                    metaKey.getMetaId()
+            );
+        }
     }
 
-    public HibernateMetaKey(Long notifySettingId, String topicId, String userId, String metaId) {
+    @JSONField(name = "notify_setting_id", ordinal = 1)
+    private Long notifySettingId;
+
+    @JSONField(name = "topic_id", ordinal = 2)
+    private String topicId;
+
+    @JSONField(name = "user_id", ordinal = 3)
+    private String userId;
+
+    @JSONField(name = "meta_id", ordinal = 4)
+    private String metaId;
+
+    public FastJsonMetaKey() {
+    }
+
+    public FastJsonMetaKey(Long notifySettingId, String topicId, String userId, String metaId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
         this.userId = userId;
@@ -66,7 +86,7 @@ public class HibernateMetaKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HibernateMetaKey that = (HibernateMetaKey) o;
+        FastJsonMetaKey that = (FastJsonMetaKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId))
             return false;
@@ -86,7 +106,7 @@ public class HibernateMetaKey implements Key {
 
     @Override
     public String toString() {
-        return "HibernateMetaKey{" +
+        return "FastJsonMetaKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 ", userId='" + userId + '\'' +

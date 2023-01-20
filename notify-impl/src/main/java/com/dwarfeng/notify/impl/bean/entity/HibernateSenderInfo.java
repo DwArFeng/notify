@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateSenderInfoKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "tbl_sender_info")
 public class HibernateSenderInfo implements Bean {
 
-    private static final long serialVersionUID = -8972981011771816048L;
+    private static final long serialVersionUID = 4227314445301257722L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id

@@ -3,7 +3,7 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;

@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.entity.key.JSFixedFastJsonMetaKey;
+import com.dwarfeng.notify.sdk.bean.key.JSFixedFastJsonMetaKey;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -15,7 +15,7 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonMeta implements Bean {
 
-    private static final long serialVersionUID = -7852466277403008558L;
+    private static final long serialVersionUID = -3273497524082325426L;
 
     public static JSFixedFastJsonMeta of(Meta meta) {
         if (Objects.isNull(meta)) {

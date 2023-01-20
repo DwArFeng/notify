@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
 
 /**
@@ -11,7 +11,7 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  */
 public class Meta implements Entity<MetaKey> {
 
-    private static final long serialVersionUID = -8671135881839377661L;
+    private static final long serialVersionUID = 1597526375281291335L;
     
     private MetaKey key;
     private String value;

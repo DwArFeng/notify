@@ -2,7 +2,7 @@ package com.dwarfeng.notify.impl.cache;
 
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonSenderInfo;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.SenderInfoCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;

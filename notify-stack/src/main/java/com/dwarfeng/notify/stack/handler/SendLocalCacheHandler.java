@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.SendInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
 
 /**

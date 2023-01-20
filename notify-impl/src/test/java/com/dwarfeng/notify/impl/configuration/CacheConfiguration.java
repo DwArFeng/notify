@@ -1,13 +1,13 @@
 package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.notify.sdk.bean.entity.*;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.MetaIndicatorStringKeyFormatter;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.MetaStringKeyFormatter;
-import com.dwarfeng.notify.sdk.bean.entity.key.formatter.SenderInfoStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.key.formatter.MetaIndicatorStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.key.formatter.MetaStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.key.formatter.SenderInfoStringKeyFormatter;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
+import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.redis.formatter.LongIdStringKeyFormatter;

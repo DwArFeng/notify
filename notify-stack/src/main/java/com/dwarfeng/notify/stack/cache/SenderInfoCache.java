@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.cache;
 
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
-import com.dwarfeng.notify.stack.bean.entity.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 
 /**

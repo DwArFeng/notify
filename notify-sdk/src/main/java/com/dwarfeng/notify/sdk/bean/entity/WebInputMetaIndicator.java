@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.entity.key.WebInputMetaIndicatorKey;
+import com.dwarfeng.notify.sdk.bean.key.WebInputMetaIndicatorKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -20,7 +20,7 @@ import java.util.Objects;
  */
 public class WebInputMetaIndicator implements Bean {
 
-    private static final long serialVersionUID = 8468957597464452011L;
+    private static final long serialVersionUID = 7541534600336100083L;
 
     public static MetaIndicator toStackBean(WebInputMetaIndicator webInputMetaIndicator) {
         if (Objects.isNull(webInputMetaIndicator)) {

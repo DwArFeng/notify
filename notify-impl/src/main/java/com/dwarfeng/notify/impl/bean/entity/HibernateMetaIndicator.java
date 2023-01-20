@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.entity.key.HibernateMetaIndicatorKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -12,7 +12,7 @@ import java.util.Objects;
 @Table(name = "tbl_meta_indicator")
 public class HibernateMetaIndicator implements Bean {
 
-    private static final long serialVersionUID = 8665026861175191651L;
+    private static final long serialVersionUID = -5594489097447095272L;
     
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id

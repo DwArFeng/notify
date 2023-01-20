@@ -1,48 +1,28 @@
-package com.dwarfeng.notify.sdk.bean.entity.key;
+package com.dwarfeng.notify.stack.bean.key;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.stack.bean.entity.key.MetaKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import java.util.Objects;
 
 /**
- * FastJson 元数据主键。
+ * 元数据主键。
  *
  * @author DwArFeng
  * @since 1.1.0
  */
-public class FastJsonMetaKey implements Key {
+public class MetaKey implements Key {
 
-    private static final long serialVersionUID = -720153490107180644L;
+    private static final long serialVersionUID = 1062577477259663474L;
 
-    public static FastJsonMetaKey of(MetaKey metaKey) {
-        if (Objects.isNull(metaKey)) {
-            return null;
-        } else {
-            return new FastJsonMetaKey(
-                    metaKey.getNotifySettingId(), metaKey.getTopicId(), metaKey.getUserId(),
-                    metaKey.getMetaId()
-            );
-        }
-    }
-
-    @JSONField(name = "notify_setting_id", ordinal = 1)
     private Long notifySettingId;
-
-    @JSONField(name = "topic_id", ordinal = 2)
     private String topicId;
-
-    @JSONField(name = "user_id", ordinal = 3)
     private String userId;
-
-    @JSONField(name = "meta_id", ordinal = 4)
     private String metaId;
 
-    public FastJsonMetaKey() {
+    public MetaKey() {
     }
 
-    public FastJsonMetaKey(Long notifySettingId, String topicId, String userId, String metaId) {
+    public MetaKey(Long notifySettingId, String topicId, String userId, String metaId) {
         this.notifySettingId = notifySettingId;
         this.topicId = topicId;
         this.userId = userId;
@@ -86,7 +66,7 @@ public class FastJsonMetaKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FastJsonMetaKey that = (FastJsonMetaKey) o;
+        MetaKey that = (MetaKey) o;
 
         if (!Objects.equals(notifySettingId, that.notifySettingId))
             return false;
@@ -106,7 +86,7 @@ public class FastJsonMetaKey implements Key {
 
     @Override
     public String toString() {
-        return "FastJsonMetaKey{" +
+        return "MetaKey{" +
                 "notifySettingId=" + notifySettingId +
                 ", topicId='" + topicId + '\'' +
                 ", userId='" + userId + '\'' +

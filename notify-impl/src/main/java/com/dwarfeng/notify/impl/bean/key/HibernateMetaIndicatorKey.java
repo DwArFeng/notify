@@ -1,4 +1,4 @@
-package com.dwarfeng.notify.impl.bean.entity.key;
+package com.dwarfeng.notify.impl.bean.key;
 
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
@@ -12,8 +12,8 @@ import java.util.Objects;
  */
 public class HibernateMetaIndicatorKey implements Key {
 
-    private static final long serialVersionUID = 1050453524185617817L;
-    
+    private static final long serialVersionUID = 5228900913232678472L;
+
     private String topicId;
     private String metaId;
 
