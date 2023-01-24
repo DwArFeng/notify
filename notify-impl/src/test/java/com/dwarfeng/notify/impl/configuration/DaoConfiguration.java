@@ -3,11 +3,13 @@ package com.dwarfeng.notify.impl.configuration;
 import com.dwarfeng.notify.impl.bean.entity.*;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateRecordKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.impl.dao.preset.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.RecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
@@ -40,6 +42,9 @@ public class DaoConfiguration {
     private final MetaPresetCriteriaMaker metaPresetCriteriaMaker;
     private final SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker;
     private final MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker;
+    private final NotifyHistoryPresetCriteriaMaker notifyHistoryPresetCriteriaMaker;
+    private final NotifyInfoRecordPresetCriteriaMaker notifyInfoRecordPresetCriteriaMaker;
+    private final NotifySendRecordPresetCriteriaMaker notifySendRecordPresetCriteriaMaker;
 
     @Value("${hibernate.jdbc.batch_size}")
     private int batchSize;
@@ -57,7 +62,10 @@ public class DaoConfiguration {
             DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker,
             MetaPresetCriteriaMaker metaPresetCriteriaMaker,
             SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker,
-            MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker
+            MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker,
+            NotifyHistoryPresetCriteriaMaker notifyHistoryPresetCriteriaMaker,
+            NotifyInfoRecordPresetCriteriaMaker notifyInfoRecordPresetCriteriaMaker,
+            NotifySendRecordPresetCriteriaMaker notifySendRecordPresetCriteriaMaker
     ) {
         this.hibernateTemplate = hibernateTemplate;
         this.userPresetCriteriaMaker = userPresetCriteriaMaker;
@@ -72,6 +80,9 @@ public class DaoConfiguration {
         this.metaPresetCriteriaMaker = metaPresetCriteriaMaker;
         this.sendHistoryPresetCriteriaMaker = sendHistoryPresetCriteriaMaker;
         this.metaIndicatorPresetCriteriaMaker = metaIndicatorPresetCriteriaMaker;
+        this.notifyHistoryPresetCriteriaMaker = notifyHistoryPresetCriteriaMaker;
+        this.notifyInfoRecordPresetCriteriaMaker = notifyInfoRecordPresetCriteriaMaker;
+        this.notifySendRecordPresetCriteriaMaker = notifySendRecordPresetCriteriaMaker;
     }
 
     @Bean
@@ -499,6 +510,102 @@ public class DaoConfiguration {
                 ),
                 HibernateMetaIndicator.class,
                 metaIndicatorPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, NotifyHistory, HibernateNotifyHistory>
+    notifyHistoryHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(NotifyHistory.class, HibernateNotifyHistory.class, HibernateMapper.class),
+                HibernateNotifyHistory.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<NotifyHistory, HibernateNotifyHistory> notifyHistoryHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(NotifyHistory.class, HibernateNotifyHistory.class, HibernateMapper.class),
+                HibernateNotifyHistory.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<NotifyHistory, HibernateNotifyHistory> notifyHistoryHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(NotifyHistory.class, HibernateNotifyHistory.class, HibernateMapper.class),
+                HibernateNotifyHistory.class,
+                notifyHistoryPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<RecordKey, HibernateRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
+    notifyInfoRecordHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(RecordKey.class, HibernateRecordKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(NotifyInfoRecord.class, HibernateNotifyInfoRecord.class, HibernateMapper.class),
+                HibernateNotifyInfoRecord.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> notifyInfoRecordHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(NotifyInfoRecord.class, HibernateNotifyInfoRecord.class, HibernateMapper.class),
+                HibernateNotifyInfoRecord.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> notifyInfoRecordHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(NotifyInfoRecord.class, HibernateNotifyInfoRecord.class, HibernateMapper.class),
+                HibernateNotifyInfoRecord.class,
+                notifyInfoRecordPresetCriteriaMaker
+        );
+    }
+
+    @Bean
+    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, NotifySendRecord, HibernateNotifySendRecord>
+    notifySendRecordHibernateBatchBaseDao() {
+        return new HibernateBatchBaseDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(NotifySendRecord.class, HibernateNotifySendRecord.class, HibernateMapper.class),
+                HibernateNotifySendRecord.class,
+                new DefaultDeletionMod<>(),
+                batchSize
+        );
+    }
+
+    @Bean
+    public HibernateEntireLookupDao<NotifySendRecord, HibernateNotifySendRecord> notifySendRecordHibernateEntireLookupDao() {
+        return new HibernateEntireLookupDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(NotifySendRecord.class, HibernateNotifySendRecord.class, HibernateMapper.class),
+                HibernateNotifySendRecord.class
+        );
+    }
+
+    @Bean
+    public HibernatePresetLookupDao<NotifySendRecord, HibernateNotifySendRecord> notifySendRecordHibernatePresetLookupDao() {
+        return new HibernatePresetLookupDao<>(
+                hibernateTemplate,
+                new MapStructBeanTransformer<>(NotifySendRecord.class, HibernateNotifySendRecord.class, HibernateMapper.class),
+                HibernateNotifySendRecord.class,
+                notifySendRecordPresetCriteriaMaker
         );
     }
 }

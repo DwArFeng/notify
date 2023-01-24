@@ -86,6 +86,21 @@
             ref="metaIndicatorMaintainServiceImpl"
             group="${dubbo.provider.group}"
     />
+    <dubbo:service
+            interface="com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService"
+            ref="notifyHistoryMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService"
+            ref="notifyInfoRecordMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
+    <dubbo:service
+            interface="com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService"
+            ref="notifySendRecordMaintainServiceImpl"
+            group="${dubbo.provider.group}"
+    />
 
     <!-- 向注册中心注册暴露服务地址,注册消费者服务 -->
     <dubbo:reference

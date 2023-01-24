@@ -4,6 +4,11 @@
 
 #### 功能构建
 
+- 新增实体及其维护服务。
+  - com.dwarfeng.notify.stack.bean.entity.NotifyHistory。
+  - com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord。
+  - com.dwarfeng.notify.stack.bean.entity.NotifySendRecord。
+
 - 实体主键包名优化。
 
 #### Bug修复

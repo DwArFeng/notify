@@ -2,10 +2,12 @@ package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateRecordKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.RecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
@@ -33,6 +35,11 @@ public interface HibernateMapper {
 
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
+
+    HibernateRecordKey recordKeyToHibernate(RecordKey recordKey);
+
+    @InheritInverseConfiguration
+    RecordKey recordKeyFromHibernate(HibernateRecordKey hibernateRecordKey);
 
     HibernateMetaIndicatorKey metaIndicatorKeyToHibernate(MetaIndicatorKey metaIndicatorKey);
 
@@ -85,6 +92,7 @@ public interface HibernateMapper {
     @Mapping(target = "senderInfos", ignore = true)
     @Mapping(target = "sendHistories", ignore = true)
     @Mapping(target = "routerInfo", ignore = true)
+    @Mapping(target = "notifyHistories", ignore = true)
     @Mapping(target = "metas", ignore = true)
     @Mapping(target = "longId", ignore = true)
     HibernateNotifySetting notifySettingToHibernate(NotifySetting notifySetting);
@@ -150,4 +158,32 @@ public interface HibernateMapper {
 
     @InheritInverseConfiguration
     User userFromHibernate(HibernateUser hibernateUser);
+
+    @Mapping(target = "notifySettingLongId", ignore = true)
+    @Mapping(target = "notifySetting", ignore = true)
+    @Mapping(target = "notifySendRecords", ignore = true)
+    @Mapping(target = "notifyInfoRecords", ignore = true)
+    @Mapping(target = "longId", ignore = true)
+    HibernateNotifyHistory notifyHistoryToHibernate(NotifyHistory notifyHistory);
+
+    @InheritInverseConfiguration
+    NotifyHistory notifyHistoryFromHibernate(HibernateNotifyHistory hibernateNotifyHistory);
+
+    @Mapping(target = "recordId", ignore = true)
+    @Mapping(target = "notifyHistoryId", ignore = true)
+    @Mapping(target = "notifyHistory", ignore = true)
+    HibernateNotifyInfoRecord notifyInfoRecordToHibernate(NotifyInfoRecord notifyInfoRecord);
+
+    @InheritInverseConfiguration
+    NotifyInfoRecord notifyInfoRecordFromHibernate(HibernateNotifyInfoRecord hibernateNotifyInfoRecord);
+
+    @Mapping(target = "userStringId", ignore = true)
+    @Mapping(target = "topicStringId", ignore = true)
+    @Mapping(target = "notifyHistoryLongId", ignore = true)
+    @Mapping(target = "notifyHistory", ignore = true)
+    @Mapping(target = "longId", ignore = true)
+    HibernateNotifySendRecord notifySendRecordToHibernate(NotifySendRecord notifySendRecord);
+
+    @InheritInverseConfiguration
+    NotifySendRecord notifySendRecordFromHibernate(HibernateNotifySendRecord hibernateNotifySendRecord);
 }

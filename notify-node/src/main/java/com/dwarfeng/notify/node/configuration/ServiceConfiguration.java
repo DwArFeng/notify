@@ -1,11 +1,13 @@
 package com.dwarfeng.notify.node.configuration;
 
+import com.dwarfeng.notify.impl.service.operation.NotifyHistoryCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.UserCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.RecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
@@ -52,6 +54,12 @@ public class ServiceConfiguration {
     private final SendHistoryCache sendHistoryCache;
     private final MetaIndicatorDao metaIndicatorDao;
     private final MetaIndicatorCache metaIndicatorCache;
+    private final NotifyHistoryCrudOperation notifyHistoryCrudOperation;
+    private final NotifyHistoryDao notifyHistoryDao;
+    private final NotifyInfoRecordDao notifyInfoRecordDao;
+    private final NotifyInfoRecordCache notifyInfoRecordCache;
+    private final NotifySendRecordDao notifySendRecordDao;
+    private final NotifySendRecordCache notifySendRecordCache;
 
     @Value("${cache.timeout.entity.router_info}")
     private long routerInfoTimeout;
@@ -71,6 +79,10 @@ public class ServiceConfiguration {
     private long sendHistoryTimeout;
     @Value("${cache.timeout.entity.meta_indicator}")
     private long metaIndicatorTimeout;
+    @Value("${cache.timeout.entity.notify_info_record}")
+    private long notifyInfoRecordTimeout;
+    @Value("${cache.timeout.entity.notify_send_record}")
+    private long notifySendRecordTimeout;
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
@@ -85,7 +97,10 @@ public class ServiceConfiguration {
             DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
             MetaDao metaDao, MetaCache metaCache,
             SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache,
-            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache
+            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
+            NotifyHistoryCrudOperation notifyHistoryCrudOperation, NotifyHistoryDao notifyHistoryDao,
+            NotifyInfoRecordDao notifyInfoRecordDao, NotifyInfoRecordCache notifyInfoRecordCache,
+            NotifySendRecordDao notifySendRecordDao, NotifySendRecordCache notifySendRecordCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
         this.userCrudOperation = userCrudOperation;
@@ -112,6 +127,12 @@ public class ServiceConfiguration {
         this.sendHistoryCache = sendHistoryCache;
         this.metaIndicatorDao = metaIndicatorDao;
         this.metaIndicatorCache = metaIndicatorCache;
+        this.notifyHistoryCrudOperation = notifyHistoryCrudOperation;
+        this.notifyHistoryDao = notifyHistoryDao;
+        this.notifyInfoRecordDao = notifyInfoRecordDao;
+        this.notifyInfoRecordCache = notifyInfoRecordCache;
+        this.notifySendRecordDao = notifySendRecordDao;
+        this.notifySendRecordCache = notifySendRecordCache;
     }
 
     @Bean
@@ -469,6 +490,94 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<MetaIndicator> metaIndicatorDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 metaIndicatorDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public CustomBatchCrudService<LongIdKey, NotifyHistory> notifyHistoryCustomBatchCrudService() {
+        return new CustomBatchCrudService<>(
+                notifyHistoryCrudOperation,
+                longIdKeyKeyFetcher(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<NotifyHistory> notifyHistoryDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                notifyHistoryDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<NotifyHistory> notifyHistoryDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                notifyHistoryDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<RecordKey, NotifyInfoRecord> notifyInfoRecordGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                notifyInfoRecordDao,
+                notifyInfoRecordCache,
+                new ExceptionKeyFetcher<>(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                notifyInfoRecordTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<NotifyInfoRecord> notifyInfoRecordDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                notifyInfoRecordDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<NotifyInfoRecord> notifyInfoRecordDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                notifyInfoRecordDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public GeneralBatchCrudService<LongIdKey, NotifySendRecord> notifySendRecordGeneralBatchCrudService() {
+        return new GeneralBatchCrudService<>(
+                notifySendRecordDao,
+                notifySendRecordCache,
+                longIdKeyKeyFetcher(),
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN,
+                notifySendRecordTimeout
+        );
+    }
+
+    @Bean
+    public DaoOnlyEntireLookupService<NotifySendRecord> notifySendRecordDaoOnlyEntireLookupService() {
+        return new DaoOnlyEntireLookupService<>(
+                notifySendRecordDao,
+                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
+                LogLevel.WARN
+        );
+    }
+
+    @Bean
+    public DaoOnlyPresetLookupService<NotifySendRecord> notifySendRecordDaoOnlyPresetLookupService() {
+        return new DaoOnlyPresetLookupService<>(
+                notifySendRecordDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

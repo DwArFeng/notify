@@ -3,10 +3,12 @@ package com.dwarfeng.notify.impl.configuration;
 import com.dwarfeng.notify.sdk.bean.entity.*;
 import com.dwarfeng.notify.sdk.bean.key.formatter.MetaIndicatorStringKeyFormatter;
 import com.dwarfeng.notify.sdk.bean.key.formatter.MetaStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.key.formatter.RecordStringKeyFormatter;
 import com.dwarfeng.notify.sdk.bean.key.formatter.SenderInfoStringKeyFormatter;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.RecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
@@ -48,6 +50,12 @@ public class CacheConfiguration {
     private String sendHistoryPrefix;
     @Value("${cache.prefix.entity.meta_indicator}")
     private String metaIndicatorPrefix;
+    @Value("${cache.prefix.entity.notify_history}")
+    private String notifyHistoryPrefix;
+    @Value("${cache.prefix.entity.notify_info_record}")
+    private String notifyInfoRecordPrefix;
+    @Value("${cache.prefix.entity.notify_send_record}")
+    private String notifySendRecordPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template) {
         this.template = template;
@@ -175,6 +183,42 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonMetaIndicator>) template,
                 new MetaIndicatorStringKeyFormatter(metaIndicatorPrefix),
                 new MapStructBeanTransformer<>(MetaIndicator.class, FastJsonMetaIndicator.class, FastJsonMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, NotifyHistory, FastJsonNotifyHistory> notifyHistoryRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonNotifyHistory>) template,
+                new LongIdStringKeyFormatter(notifyHistoryPrefix),
+                new MapStructBeanTransformer<>(NotifyHistory.class, FastJsonNotifyHistory.class, FastJsonMapper.class)
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<RecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord>
+    notifyInfoRecordRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonNotifyInfoRecord>) template,
+                new RecordStringKeyFormatter(notifyInfoRecordPrefix),
+                new MapStructBeanTransformer<>(
+                        NotifyInfoRecord.class, FastJsonNotifyInfoRecord.class, FastJsonMapper.class
+                )
+        );
+    }
+
+    @Bean
+    @SuppressWarnings("unchecked")
+    public RedisBatchBaseCache<LongIdKey, NotifySendRecord, FastJsonNotifySendRecord>
+    notifySendRecordRedisBatchBaseCache() {
+        return new RedisBatchBaseCache<>(
+                (RedisTemplate<String, FastJsonNotifySendRecord>) template,
+                new LongIdStringKeyFormatter(notifySendRecordPrefix),
+                new MapStructBeanTransformer<>(
+                        NotifySendRecord.class, FastJsonNotifySendRecord.class, FastJsonMapper.class
+                )
         );
     }
 }

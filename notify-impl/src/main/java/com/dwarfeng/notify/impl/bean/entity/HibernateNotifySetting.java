@@ -14,8 +14,8 @@ import java.util.Set;
 @Table(name = "tbl_notify_setting")
 public class HibernateNotifySetting implements Bean {
 
-    private static final long serialVersionUID = 138487680357767039L;
-    
+    private static final long serialVersionUID = 3429658583253298571L;
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -44,6 +44,9 @@ public class HibernateNotifySetting implements Bean {
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSendHistory.class, mappedBy = "notifySetting")
     private Set<HibernateSendHistory> sendHistories = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifyHistory.class, mappedBy = "notifySetting")
+    private Set<HibernateNotifyHistory> notifyHistories = new HashSet<>();
 
     public HibernateNotifySetting() {
     }
@@ -120,6 +123,14 @@ public class HibernateNotifySetting implements Bean {
 
     public void setSendHistories(Set<HibernateSendHistory> sendHistories) {
         this.sendHistories = sendHistories;
+    }
+
+    public Set<HibernateNotifyHistory> getNotifyHistories() {
+        return notifyHistories;
+    }
+
+    public void setNotifyHistories(Set<HibernateNotifyHistory> notifyHistories) {
+        this.notifyHistories = notifyHistories;
     }
 
     @Override
