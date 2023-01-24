@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Groovy路由器注册。
@@ -100,8 +101,8 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(String routeInfo, Context context) throws RouterException {
-            return processor.route(routeInfo, context);
+        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
+            return processor.route(routeInfoMap, context);
         }
 
         @Override
@@ -127,8 +128,8 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
          * @param context   上下文。
          * @return 路由返回的用户主键组成的列表。
          * @throws RouterException 路由器异常。
-         * @see Router#route(String, Router.Context)
+         * @see Router#route(Map, Router.Context)
          */
-        List<StringIdKey> route(String routeInfo, Router.Context context) throws RouterException;
+        List<StringIdKey> route(Map<String, String> routeInfo, Router.Context context) throws RouterException;
     }
 }

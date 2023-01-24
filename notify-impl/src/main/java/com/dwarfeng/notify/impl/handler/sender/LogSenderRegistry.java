@@ -97,10 +97,10 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public List<Response> send(String sendInfo, List<StringIdKey> userKeys, Context context) {
+        public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) {
             List<Response> responses = new ArrayList<>();
             for (StringIdKey userKey : userKeys) {
-                logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfo);
+                logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfoMap);
                 responses.add(new Response(userKey, new Date(), true, "发送成功"));
             }
             return responses;

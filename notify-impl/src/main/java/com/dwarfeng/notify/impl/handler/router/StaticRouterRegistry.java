@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -103,7 +104,7 @@ public class StaticRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(String routeInfo, Context context) throws RouterException {
+        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
             return context.filterUser(userKeys);
         }
 

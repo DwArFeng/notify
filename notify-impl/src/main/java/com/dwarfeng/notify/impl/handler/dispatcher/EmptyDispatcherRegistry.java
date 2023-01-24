@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 空调度器注册。
@@ -67,7 +68,7 @@ public class EmptyDispatcherRegistry extends AbstractDispatcherRegistry {
     public static class EmptyDispatcher implements Dispatcher {
 
         @Override
-        public List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context) {
+        public List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context) {
             return Collections.emptyList();
         }
 

@@ -80,30 +80,24 @@ public class NotifyHandlerImpl implements NotifyHandler {
         try {
             // 获取并处理 notifyInfo 中的字段。
             LongIdKey notifySettingKey = notifyInfo.getNotifySettingKey();
-            Map<String, String> routeInfoMap = notifyInfo.getRouteInfoDetails().stream().collect(
-                    Collectors.toMap(NotifyInfo.InfoDetail::getType, NotifyInfo.InfoDetail::getInfo)
-            );
-            Map<String, String> dispatchInfoMap = notifyInfo.getDispatchInfoDetails().stream().collect(
-                    Collectors.toMap(NotifyInfo.InfoDetail::getType, NotifyInfo.InfoDetail::getInfo)
-            );
-            Map<String, String> sendInfoMap = notifyInfo.getSendInfoDetails().stream().collect(
-                    Collectors.toMap(NotifyInfo.InfoDetail::getType, NotifyInfo.InfoDetail::getInfo)
-            );
+            Map<String, String> routeInfo = notifyInfo.getRouteInfoMap();
+            Map<String, String> dispatchInfo = notifyInfo.getDispatchInfoMap();
+            Map<String, String> sendInfo = notifyInfo.getSendInfoMap();
 
             // 确认通知设置有效。
             handlerValidator.makeSureNotifySettingValid(notifySettingKey);
 
             // 进行路由操作。
-            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfoMap);
+            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfo);
 
             // 进行调度操作。
-            List<DispatchedItem> dispatchedItems = dispatching(notifySettingKey, dispatchInfoMap, routedUserKeys);
+            List<DispatchedItem> dispatchedItems = dispatching(notifySettingKey, dispatchInfo, routedUserKeys);
 
             // 进行发送操作。
-            List<SentItem> sentItems = sending(notifySettingKey, sendInfoMap, dispatchedItems);
+            List<SentItem> sentItems = sending(notifySettingKey, sendInfo, dispatchedItems);
 
             // 进行后处理操作。
-            postprocessing(notifySettingKey, sentItems, routeInfoMap, dispatchInfoMap, sendInfoMap);
+            postprocessing(notifySettingKey, sentItems, routeInfo, dispatchInfo, sendInfo);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -111,9 +105,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
     }
 
-    private List<StringIdKey> routing(LongIdKey notifySettingKey, Map<String, String> routeInfoMap) throws Exception {
+    private List<StringIdKey> routing(LongIdKey notifySettingKey, Map<String, String> routeInfo) throws Exception {
         // 通过本地缓存获取路由器及其类型。
-        String type = routeLocalCacheHandler.get(notifySettingKey).getType();
         Router router = routeLocalCacheHandler.get(notifySettingKey).getRouter();
 
         // 调用路由方法，获取与通知相关的用户主键。
@@ -121,11 +114,11 @@ public class NotifyHandlerImpl implements NotifyHandler {
         routerContext.setNotifySettingKey(notifySettingKey);
 
         // 返回结果列表。
-        return router.route(routeInfoMap.getOrDefault(type, null), routerContext);
+        return router.route(routeInfo, routerContext);
     }
 
     private List<DispatchedItem> dispatching(
-            LongIdKey notifySettingKey, Map<String, String> dispatchInfoMap, List<StringIdKey> routedUserKeys
+            LongIdKey notifySettingKey, Map<String, String> dispatchInfo, List<StringIdKey> routedUserKeys
     ) throws Exception {
         // 查询所有使能的主题。
         List<StringIdKey> topicKeys = topicMaintainService.lookupAsList(
@@ -143,12 +136,11 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 dispatcherContext.setTopicKey(topicKey);
 
                 // 获取主题的调度器及其类型。
-                String type = dispatchLocalCacheHandler.get(topicKey).getType();
                 Dispatcher dispatcher = dispatchLocalCacheHandler.get(topicKey).getDispatcher();
 
                 // 调用调度器，获取需要通过此主题发送通知的用户列表。
                 List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
-                        dispatchInfoMap.getOrDefault(type, null), routedUserKeys, dispatcherContext
+                        dispatchInfo, routedUserKeys, dispatcherContext
                 );
 
                 // 生成 Item 结构体，并添加到结果列表。
@@ -162,9 +154,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         return dispatchedItems;
     }
 
-    private List<SentItem> sending(
-            LongIdKey notifySettingKey, Map<String, String> sendInfoMap, List<DispatchedItem> dispatchedItems
-    ) throws Exception {
+    private List<SentItem> sending(LongIdKey notifySettingKey, Map<String, String> sendInfo, List<DispatchedItem> dispatchedItems)
+            throws Exception {
         // 定义 Item 结构体列表。
         List<SentItem> sentItems = new ArrayList<>();
 
@@ -182,13 +173,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
                 // 获取当前通知设置与当前主题下的发送器及其类型。
                 SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                String type = sendLocalCacheHandler.get(senderInfoKey).getType();
                 Sender sender = sendLocalCacheHandler.get(senderInfoKey).getSender();
 
                 // 执行发生动作。
-                List<Sender.Response> senderResponse = sender.send(
-                        sendInfoMap.getOrDefault(type, null), userKeys, senderContext
-                );
+                List<Sender.Response> senderResponse = sender.send(sendInfo, userKeys, senderContext);
 
                 // 构建发送结构体，添加到结构体列表中。
                 sentItems.add(new SentItem(topicKey, senderResponse));
@@ -202,8 +190,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     private void postprocessing(
-            LongIdKey notifySettingKey, List<SentItem> sentItems, Map<String, String> routeInfoMap,
-            Map<String, String> dispatchInfoMap, Map<String, String> sendInfoMap
+            LongIdKey notifySettingKey, List<SentItem> sentItems, Map<String, String> routeInfo,
+            Map<String, String> dispatchInfo, Map<String, String> sendInfo
     ) throws Exception {
         // 构造发送历史实体。
         List<SendHistory> sendHistories = new ArrayList<>();
@@ -217,21 +205,15 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 获取发送历史的字段。
                 StringIdKey userKey = response.getUserKey();
                 Date happenedDate = response.getHappenedDate();
-                String routeInfo = routeInfoMap.getOrDefault(
-                        routeLocalCacheHandler.get(notifySettingKey).getType(), null
-                );
-                String dispatchInfo = dispatchInfoMap.getOrDefault(
-                        dispatchLocalCacheHandler.get(topicKey).getType(), null
-                );
-                SenderInfoKey senderInfoKey = new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId());
-                String sendInfo = sendInfoMap.getOrDefault(sendLocalCacheHandler.get(senderInfoKey).getType(), null);
                 boolean succeedFlag = response.isSucceedFlag();
                 String senderMessage = response.getMessage();
 
                 // 构建发送历史并添加到列表中。
+                // TODO 将历史记录用新实体代替。
                 SendHistory sendHistory = new SendHistory(
                         keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, happenedDate,
-                        routeInfo, dispatchInfo, sendInfo, succeedFlag, senderMessage, "通过 NotifyHandlerImpl 生成"
+                        "routeInfo", "dispatchInfo", "sendInfo", succeedFlag, senderMessage,
+                        "通过 NotifyHandlerImpl 生成"
                 );
                 sendHistories.add(sendHistory);
             }

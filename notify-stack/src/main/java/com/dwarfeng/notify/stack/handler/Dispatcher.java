@@ -5,6 +5,7 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 调度器。
@@ -38,13 +39,13 @@ public interface Dispatcher {
      * 这个操作会有额外的性能开销，如果有其它的途径保证返回结果的规范性
      * （尤其是服务集成在一个工程中，与其它服务组合使用时），则不需要调用此方法。
      *
-     * @param dispatchInfo 调度信息。
-     * @param userKeys     用户空间。
-     * @param context      上下文。
+     * @param dispatchInfoMap 调度信息映射。
+     * @param userKeys        用户空间。
+     * @param context         上下文。
      * @return 调度返回的用户主键组成的列表。
      * @throws DispatcherException 调度器异常。
      */
-    List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context)
+    List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context)
             throws DispatcherException;
 
     /**

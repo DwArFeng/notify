@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Groovy调度器注册。
@@ -100,9 +101,9 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
         }
 
         @Override
-        public List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context)
+        public List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context)
                 throws DispatcherException {
-            return processor.dispatch(dispatchInfo, userKeys, context);
+            return processor.dispatch(dispatchInfoMap, userKeys, context);
         }
 
         @Override
@@ -129,9 +130,9 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
          * @param context      上下文。
          * @return 调度返回的用户主键组成的列表。
          * @throws DispatcherException 调度器异常。
-         * @see Dispatcher#dispatch(String, List, Dispatcher.Context)
+         * @see Dispatcher#dispatch(Map, List, Dispatcher.Context)
          */
-        List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context)
+        List<StringIdKey> dispatch(Map<String, String> dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context)
                 throws DispatcherException;
     }
 }

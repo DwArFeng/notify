@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Groovy发送器注册。
@@ -100,8 +101,8 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public List<Response> send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException {
-            return processor.send(sendInfo, userKeys, context);
+        public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) throws SenderException {
+            return processor.send(sendInfoMap, userKeys, context);
         }
 
         @Override
@@ -128,8 +129,8 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
          * @param context  上下文。
          * @return 发送响应组成的列表。
          * @throws SenderException 发送器异常。
-         * @see Sender#send(String, List, Sender.Context)
+         * @see Sender#send(Map, List, Sender.Context)
          */
-        List<Sender.Response> send(String sendInfo, List<StringIdKey> userKeys, Sender.Context context) throws SenderException;
+        List<Sender.Response> send(Map<String, String> sendInfo, List<StringIdKey> userKeys, Sender.Context context) throws SenderException;
     }
 }

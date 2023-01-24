@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 空路由注册。
@@ -66,7 +67,7 @@ public class EmptyRouterRegistry extends AbstractRouterRegistry {
     public static class EmptyRouter implements Router {
 
         @Override
-        public List<StringIdKey> route(String routeInfo, Context context) {
+        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) {
             return Collections.emptyList();
         }
 

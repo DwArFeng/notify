@@ -6,6 +6,7 @@ import com.dwarfeng.notify.stack.handler.Sender
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.stereotype.Component
 
 /**
  * 示例发送器。
@@ -14,12 +15,13 @@ import org.slf4j.LoggerFactory
  * 将发送的内容以 info 等级打印在日志上。
  */
 @SuppressWarnings("GrPackage")
+@Component
 class ExampleSenderProcessor implements GroovySenderRegistry.Processor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExampleSenderProcessor.class)
 
     @Override
-    List<Sender.Response> send(String sendInfo, List<StringIdKey> userKeys, Sender.Context context)
+    List<Sender.Response> send(Map<String, String> sendInfo, List<StringIdKey> userKeys, Sender.Context context)
             throws SenderException {
         List<Sender.Response> results = new ArrayList<>()
         for (StringIdKey userKey : userKeys) {

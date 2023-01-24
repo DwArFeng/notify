@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 全体调度器注册。
@@ -66,7 +67,7 @@ public class EntireDispatcherRegistry extends AbstractDispatcherRegistry {
     public static class EntireDispatcher implements Dispatcher {
 
         @Override
-        public List<StringIdKey> dispatch(String dispatchInfo, List<StringIdKey> userKeys, Context context) {
+        public List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context) {
             return userKeys;
         }
 

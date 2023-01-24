@@ -2,26 +2,23 @@ package com.dwarfeng.notify.sdk.bean.dto;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.dto.NotifyInfo.InfoDetail;
 import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * WebInput 通知信息。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.3.0
  */
 public class WebInputNotifyInfo implements Dto {
 
-    private static final long serialVersionUID = -3668319529952065134L;
+    private static final long serialVersionUID = 543189554207402052L;
 
     public static NotifyInfo toStackBean(WebInputNotifyInfo webInputNotifyInfo) {
         if (Objects.isNull(webInputNotifyInfo)) {
@@ -29,12 +26,9 @@ public class WebInputNotifyInfo implements Dto {
         } else {
             return new NotifyInfo(
                     WebInputLongIdKey.toStackBean(webInputNotifyInfo.getNotifySettingKey()),
-                    webInputNotifyInfo.getRouteInfoDetails().stream().map(WebInputInfoDetail::toStackBean)
-                            .collect(Collectors.toList()),
-                    webInputNotifyInfo.getDispatchInfoDetails().stream().map(WebInputInfoDetail::toStackBean)
-                            .collect(Collectors.toList()),
-                    webInputNotifyInfo.getSendInfoDetails().stream().map(WebInputInfoDetail::toStackBean)
-                            .collect(Collectors.toList())
+                    webInputNotifyInfo.getRouteInfoMap(),
+                    webInputNotifyInfo.getDispatchInfoMap(),
+                    webInputNotifyInfo.getSendInfoMap()
             );
         }
     }
@@ -44,20 +38,14 @@ public class WebInputNotifyInfo implements Dto {
     @Valid
     private WebInputLongIdKey notifySettingKey;
 
-    @JSONField(name = "route_info_details")
-    @NotNull
-    @Valid
-    private List<WebInputInfoDetail> routeInfoDetails;
+    @JSONField(name = "route_infos")
+    private Map<String, String> routeInfoMap;
 
-    @JSONField(name = "dispatch_info_details")
-    @NotNull
-    @Valid
-    private List<WebInputInfoDetail> dispatchInfoDetails;
+    @JSONField(name = "dispatch_infos")
+    private Map<String, String> dispatchInfoMap;
 
-    @JSONField(name = "send_info_details")
-    @NotNull
-    @Valid
-    private List<WebInputInfoDetail> sendInfoDetails;
+    @JSONField(name = "send_infos")
+    private Map<String, String> sendInfoMap;
 
     public WebInputNotifyInfo() {
     }
@@ -70,93 +58,37 @@ public class WebInputNotifyInfo implements Dto {
         this.notifySettingKey = notifySettingKey;
     }
 
-    public List<WebInputInfoDetail> getRouteInfoDetails() {
-        return routeInfoDetails;
+    public Map<String, String> getRouteInfoMap() {
+        return routeInfoMap;
     }
 
-    public void setRouteInfoDetails(List<WebInputInfoDetail> routeInfoDetails) {
-        this.routeInfoDetails = routeInfoDetails;
+    public void setRouteInfoMap(Map<String, String> routeInfoMap) {
+        this.routeInfoMap = routeInfoMap;
     }
 
-    public List<WebInputInfoDetail> getDispatchInfoDetails() {
-        return dispatchInfoDetails;
+    public Map<String, String> getDispatchInfoMap() {
+        return dispatchInfoMap;
     }
 
-    public void setDispatchInfoDetails(List<WebInputInfoDetail> dispatchInfoDetails) {
-        this.dispatchInfoDetails = dispatchInfoDetails;
+    public void setDispatchInfoMap(Map<String, String> dispatchInfoMap) {
+        this.dispatchInfoMap = dispatchInfoMap;
     }
 
-    public List<WebInputInfoDetail> getSendInfoDetails() {
-        return sendInfoDetails;
+    public Map<String, String> getSendInfoMap() {
+        return sendInfoMap;
     }
 
-    public void setSendInfoDetails(List<WebInputInfoDetail> sendInfoDetails) {
-        this.sendInfoDetails = sendInfoDetails;
+    public void setSendInfoMap(Map<String, String> sendInfoMap) {
+        this.sendInfoMap = sendInfoMap;
     }
 
     @Override
     public String toString() {
         return "WebInputNotifyInfo{" +
                 "notifySettingKey=" + notifySettingKey +
-                ", routeInfoDetails=" + routeInfoDetails +
-                ", dispatchInfoDetails=" + dispatchInfoDetails +
-                ", sendInfoDetails=" + sendInfoDetails +
+                ", routeInfoMap='" + routeInfoMap + '\'' +
+                ", dispatchInfoMap='" + dispatchInfoMap + '\'' +
+                ", sendInfoMap='" + sendInfoMap + '\'' +
                 '}';
-    }
-
-    /**
-     * WebInput 信息详情。
-     *
-     * @author DwArFeng
-     * @since 1.1.0
-     */
-    public static class WebInputInfoDetail implements Dto {
-
-        private static final long serialVersionUID = -4651918349655167801L;
-
-        public static InfoDetail toStackBean(WebInputInfoDetail webInputInfoDetail) {
-            if (Objects.isNull(webInputInfoDetail)) {
-                return null;
-            } else {
-                return new InfoDetail(
-                        webInputInfoDetail.getType(), webInputInfoDetail.getInfo()
-                );
-            }
-        }
-
-        @JSONField(name = "type")
-        @NotNull
-        @NotEmpty
-        private String type;
-
-        @JSONField(name = "info")
-        private String info;
-
-        public WebInputInfoDetail() {
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-
-        @Override
-        public String toString() {
-            return "WebInputInfoDetail{" +
-                    "type='" + type + '\'' +
-                    ", info='" + info + '\'' +
-                    '}';
-        }
     }
 }

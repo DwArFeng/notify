@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 下水道发送器注册。
@@ -61,7 +62,7 @@ public class DrainSenderRegistry extends AbstractSenderRegistry {
     public static class DrainSender implements Sender {
 
         @Override
-        public List<Response> send(String sendInfo, List<StringIdKey> userKeys, Context context) {
+        public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) {
             List<Response> responses = new ArrayList<>();
 
             Date currentDate = new Date();

@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化通知信息的结构。
+  - 将路由、调度、发送信息由与类型强相关的键值实体改为与类型无关的文本映射，提高了信息密度。
+
 - 新增实体及其维护服务。
   - com.dwarfeng.notify.stack.bean.entity.NotifyHistory。
   - com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord。

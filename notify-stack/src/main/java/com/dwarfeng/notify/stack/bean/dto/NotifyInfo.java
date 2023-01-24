@@ -3,34 +3,34 @@ package com.dwarfeng.notify.stack.bean.dto;
 import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * 通知信息。
  *
  * @author DwArFeng
- * @since 1.1.0
+ * @since 1.3.0
  */
 public class NotifyInfo implements Dto {
 
-    private static final long serialVersionUID = -2087796177459172443L;
-
+    private static final long serialVersionUID = -5383204390541718933L;
+    
     private LongIdKey notifySettingKey;
-    private List<InfoDetail> routeInfoDetails;
-    private List<InfoDetail> dispatchInfoDetails;
-    private List<InfoDetail> sendInfoDetails;
+    private Map<String, String> routeInfoMap;
+    private Map<String, String> dispatchInfoMap;
+    private Map<String, String> sendInfoMap;
 
     public NotifyInfo() {
     }
 
     public NotifyInfo(
-            LongIdKey notifySettingKey, List<InfoDetail> routeInfoDetails, List<InfoDetail> dispatchInfoDetails,
-            List<InfoDetail> sendInfoDetails
+            LongIdKey notifySettingKey,
+            Map<String, String> routeInfoMap, Map<String, String> dispatchInfoMap, Map<String, String> sendInfoMap
     ) {
         this.notifySettingKey = notifySettingKey;
-        this.routeInfoDetails = routeInfoDetails;
-        this.dispatchInfoDetails = dispatchInfoDetails;
-        this.sendInfoDetails = sendInfoDetails;
+        this.routeInfoMap = routeInfoMap;
+        this.dispatchInfoMap = dispatchInfoMap;
+        this.sendInfoMap = sendInfoMap;
     }
 
     public LongIdKey getNotifySettingKey() {
@@ -41,83 +41,37 @@ public class NotifyInfo implements Dto {
         this.notifySettingKey = notifySettingKey;
     }
 
-    public List<InfoDetail> getRouteInfoDetails() {
-        return routeInfoDetails;
+    public Map<String, String> getRouteInfoMap() {
+        return routeInfoMap;
     }
 
-    public void setRouteInfoDetails(List<InfoDetail> routeInfoDetails) {
-        this.routeInfoDetails = routeInfoDetails;
+    public void setRouteInfoMap(Map<String, String> routeInfoMap) {
+        this.routeInfoMap = routeInfoMap;
     }
 
-    public List<InfoDetail> getDispatchInfoDetails() {
-        return dispatchInfoDetails;
+    public Map<String, String> getDispatchInfoMap() {
+        return dispatchInfoMap;
     }
 
-    public void setDispatchInfoDetails(List<InfoDetail> dispatchInfoDetails) {
-        this.dispatchInfoDetails = dispatchInfoDetails;
+    public void setDispatchInfoMap(Map<String, String> dispatchInfoMap) {
+        this.dispatchInfoMap = dispatchInfoMap;
     }
 
-    public List<InfoDetail> getSendInfoDetails() {
-        return sendInfoDetails;
+    public Map<String, String> getSendInfoMap() {
+        return sendInfoMap;
     }
 
-    public void setSendInfoDetails(List<InfoDetail> sendInfoDetails) {
-        this.sendInfoDetails = sendInfoDetails;
+    public void setSendInfoMap(Map<String, String> sendInfoMap) {
+        this.sendInfoMap = sendInfoMap;
     }
 
     @Override
     public String toString() {
         return "NotifyInfo{" +
                 "notifySettingKey=" + notifySettingKey +
-                ", routeInfoDetails=" + routeInfoDetails +
-                ", dispatchInfoDetails=" + dispatchInfoDetails +
-                ", sendInfoDetails=" + sendInfoDetails +
+                ", routeInfoMap='" + routeInfoMap + '\'' +
+                ", dispatchInfoMap='" + dispatchInfoMap + '\'' +
+                ", sendInfoMap='" + sendInfoMap + '\'' +
                 '}';
-    }
-
-    /**
-     * 信息详情。
-     *
-     * @author DwArFeng
-     * @since 1.1.0
-     */
-    public static class InfoDetail implements Dto {
-
-        private static final long serialVersionUID = -2380963124946745200L;
-
-        private String type;
-        private String info;
-
-        public InfoDetail() {
-        }
-
-        public InfoDetail(String type, String info) {
-            this.type = type;
-            this.info = info;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public String getInfo() {
-            return info;
-        }
-
-        public void setInfo(String info) {
-            this.info = info;
-        }
-
-        @Override
-        public String toString() {
-            return "InfoDetail{" +
-                    "type='" + type + '\'' +
-                    ", info='" + info + '\'' +
-                    '}';
-        }
     }
 }

@@ -20,12 +20,19 @@ import java.util.stream.Collectors
 class ExampleRouterProcessor implements GroovyRouterRegistry.Processor {
 
     /**
-     * 路由实现中 routeInfo 的分隔符。
+     * 路由信息主键。
+     */
+    private static final String ROUTE_INFO_KEY = "key"
+
+    /**
+     * 路由实现中 routeInfoMap 的分隔符。
      */
     private static final String DELIMITER = ","
 
     @Override
-    List<StringIdKey> route(String routeInfo, Router.Context context) throws RouterException {
+    List<StringIdKey> route(Map<String, String> routeInfoMap, Router.Context context) throws RouterException {
+        String routeInfo = Optional.ofNullable(routeInfoMap).map(map -> map.get(ROUTE_INFO_KEY))
+                .orElse(StringUtils.EMPTY)
         if (StringUtils.isEmpty(routeInfo)) {
             return Collections.emptyList()
         }

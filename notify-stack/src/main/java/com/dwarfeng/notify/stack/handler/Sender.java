@@ -6,6 +6,7 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 发送器。
@@ -30,13 +31,13 @@ public interface Sender {
      * </li>
      * </ol>
      *
-     * @param sendInfo 发送信息。
-     * @param userKeys 用户列表。
-     * @param context  上下文。
+     * @param sendInfoMap 发送信息映射。
+     * @param userKeys    用户列表。
+     * @param context     上下文。
      * @return 发送响应组成的列表。
      * @throws SenderException 发送器异常。
      */
-    List<Response> send(String sendInfo, List<StringIdKey> userKeys, Context context) throws SenderException;
+    List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) throws SenderException;
 
     /**
      * 响应结构体。
