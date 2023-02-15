@@ -1,27 +1,28 @@
 package com.dwarfeng.notify.sdk.bean.key;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import java.util.Objects;
 
 /**
- * FastJson 记录主键。
+ * FastJson 通知信息记录主键。
  *
  * @author DwArFeng
  * @since 1.3.0
  */
-public class FastJsonRecordKey implements Key {
+public class FastJsonNotifyInfoRecordKey implements Key {
 
-    private static final long serialVersionUID = 3862848727644188243L;
+    private static final long serialVersionUID = -63624242996645773L;
 
-    public static FastJsonRecordKey of(RecordKey recordKey) {
-        if (Objects.isNull(recordKey)) {
+    public static FastJsonNotifyInfoRecordKey of(NotifyInfoRecordKey notifyInfoRecordKey) {
+        if (Objects.isNull(notifyInfoRecordKey)) {
             return null;
         } else {
-            return new FastJsonRecordKey(
-                    recordKey.getNotifyHistoryId(), recordKey.getType(), recordKey.getRecordId()
+            return new FastJsonNotifyInfoRecordKey(
+                    notifyInfoRecordKey.getNotifyHistoryId(), notifyInfoRecordKey.getType(),
+                    notifyInfoRecordKey.getRecordId()
             );
         }
     }
@@ -35,10 +36,10 @@ public class FastJsonRecordKey implements Key {
     @JSONField(name = "record_id", ordinal = 3)
     private String recordId;
 
-    public FastJsonRecordKey() {
+    public FastJsonNotifyInfoRecordKey() {
     }
 
-    public FastJsonRecordKey(Long notifyHistoryId, Integer type, String recordId) {
+    public FastJsonNotifyInfoRecordKey(Long notifyHistoryId, Integer type, String recordId) {
         this.notifyHistoryId = notifyHistoryId;
         this.type = type;
         this.recordId = recordId;
@@ -73,7 +74,7 @@ public class FastJsonRecordKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        FastJsonRecordKey that = (FastJsonRecordKey) o;
+        FastJsonNotifyInfoRecordKey that = (FastJsonNotifyInfoRecordKey) o;
 
         if (!Objects.equals(notifyHistoryId, that.notifyHistoryId))
             return false;
@@ -91,7 +92,7 @@ public class FastJsonRecordKey implements Key {
 
     @Override
     public String toString() {
-        return "FastJsonRecordKey{" +
+        return "FastJsonNotifyInfoRecordKey{" +
                 "notifyHistoryId=" + notifyHistoryId +
                 ", type=" + type +
                 ", recordId='" + recordId + '\'' +

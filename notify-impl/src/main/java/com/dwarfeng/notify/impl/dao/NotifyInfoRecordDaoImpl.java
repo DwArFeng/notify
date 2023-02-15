@@ -1,9 +1,9 @@
 package com.dwarfeng.notify.impl.dao;
 
 import com.dwarfeng.notify.impl.bean.entity.HibernateNotifyInfoRecord;
-import com.dwarfeng.notify.impl.bean.key.HibernateRecordKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateNotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.dao.NotifyInfoRecordDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
@@ -20,13 +20,13 @@ import java.util.List;
 @Repository
 public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
 
-    private final HibernateBatchBaseDao<RecordKey, HibernateRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
+    private final HibernateBatchBaseDao<NotifyInfoRecordKey, HibernateNotifyInfoRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
             batchBaseDao;
     private final HibernateEntireLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> entireLookupDao;
     private final HibernatePresetLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> presetLookupDao;
 
     public NotifyInfoRecordDaoImpl(
-            HibernateBatchBaseDao<RecordKey, HibernateRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
+            HibernateBatchBaseDao<NotifyInfoRecordKey, HibernateNotifyInfoRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
                     batchBaseDao,
             HibernateEntireLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> entireLookupDao,
             HibernatePresetLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> presetLookupDao
@@ -39,7 +39,7 @@ public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public RecordKey insert(NotifyInfoRecord element) throws DaoException {
+    public NotifyInfoRecordKey insert(NotifyInfoRecord element) throws DaoException {
         return batchBaseDao.insert(element);
     }
 
@@ -53,21 +53,21 @@ public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(RecordKey key) throws DaoException {
+    public void delete(NotifyInfoRecordKey key) throws DaoException {
         batchBaseDao.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(RecordKey key) throws DaoException {
+    public boolean exists(NotifyInfoRecordKey key) throws DaoException {
         return batchBaseDao.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public NotifyInfoRecord get(RecordKey key) throws DaoException {
+    public NotifyInfoRecord get(NotifyInfoRecordKey key) throws DaoException {
         return batchBaseDao.get(key);
     }
 
@@ -75,7 +75,7 @@ public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<RecordKey> batchInsert(@SkipRecord List<NotifyInfoRecord> elements) throws DaoException {
+    public List<NotifyInfoRecordKey> batchInsert(@SkipRecord List<NotifyInfoRecord> elements) throws DaoException {
         return batchBaseDao.batchInsert(elements);
     }
 
@@ -89,21 +89,21 @@ public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<RecordKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<NotifyInfoRecordKey> keys) throws DaoException {
         batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<RecordKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws DaoException {
         return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<RecordKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws DaoException {
         return batchBaseDao.nonExists(keys);
     }
 
@@ -111,7 +111,7 @@ public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifyInfoRecord> batchGet(@SkipRecord List<RecordKey> keys) throws DaoException {
+    public List<NotifyInfoRecord> batchGet(@SkipRecord List<NotifyInfoRecordKey> keys) throws DaoException {
         return batchBaseDao.batchGet(keys);
     }
 

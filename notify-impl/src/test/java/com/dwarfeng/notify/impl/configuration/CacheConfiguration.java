@@ -3,12 +3,12 @@ package com.dwarfeng.notify.impl.configuration;
 import com.dwarfeng.notify.sdk.bean.entity.*;
 import com.dwarfeng.notify.sdk.bean.key.formatter.MetaIndicatorStringKeyFormatter;
 import com.dwarfeng.notify.sdk.bean.key.formatter.MetaStringKeyFormatter;
-import com.dwarfeng.notify.sdk.bean.key.formatter.RecordStringKeyFormatter;
+import com.dwarfeng.notify.sdk.bean.key.formatter.NotifyInfoRecordStringKeyFormatter;
 import com.dwarfeng.notify.sdk.bean.key.formatter.SenderInfoStringKeyFormatter;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
@@ -198,11 +198,11 @@ public class CacheConfiguration {
 
     @Bean
     @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<RecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord>
+    public RedisBatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord>
     notifyInfoRecordRedisBatchBaseCache() {
         return new RedisBatchBaseCache<>(
                 (RedisTemplate<String, FastJsonNotifyInfoRecord>) template,
-                new RecordStringKeyFormatter(notifyInfoRecordPrefix),
+                new NotifyInfoRecordStringKeyFormatter(notifyInfoRecordPrefix),
                 new MapStructBeanTransformer<>(
                         NotifyInfoRecord.class, FastJsonNotifyInfoRecord.class, FastJsonMapper.class
                 )

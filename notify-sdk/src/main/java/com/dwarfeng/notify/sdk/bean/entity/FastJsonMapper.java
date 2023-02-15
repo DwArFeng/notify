@@ -2,12 +2,12 @@ package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.dwarfeng.notify.sdk.bean.key.FastJsonMetaIndicatorKey;
 import com.dwarfeng.notify.sdk.bean.key.FastJsonMetaKey;
-import com.dwarfeng.notify.sdk.bean.key.FastJsonRecordKey;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonNotifyInfoRecordKey;
 import com.dwarfeng.notify.sdk.bean.key.FastJsonSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
@@ -35,10 +35,10 @@ public interface FastJsonMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromFastJson(FastJsonStringIdKey fastJsonStringIdKey);
 
-    FastJsonRecordKey recordKeyToFastJson(RecordKey recordKey);
+    FastJsonNotifyInfoRecordKey recordKeyToFastJson(NotifyInfoRecordKey notifyInfoRecordKey);
 
     @InheritInverseConfiguration
-    RecordKey recordKeyFromFastJson(FastJsonRecordKey fastJsonRecordKey);
+    NotifyInfoRecordKey recordKeyFromFastJson(FastJsonNotifyInfoRecordKey fastJsonNotifyInfoRecordKey);
 
     FastJsonMetaIndicatorKey metaIndicatorKeyToFastJson(MetaIndicatorKey metaIndicatorKey);
 

@@ -2,12 +2,12 @@ package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
-import com.dwarfeng.notify.impl.bean.key.HibernateRecordKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateNotifyInfoRecordKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
@@ -36,10 +36,10 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
 
-    HibernateRecordKey recordKeyToHibernate(RecordKey recordKey);
+    HibernateNotifyInfoRecordKey recordKeyToHibernate(NotifyInfoRecordKey notifyInfoRecordKey);
 
     @InheritInverseConfiguration
-    RecordKey recordKeyFromHibernate(HibernateRecordKey hibernateRecordKey);
+    NotifyInfoRecordKey recordKeyFromHibernate(HibernateNotifyInfoRecordKey hibernateNotifyInfoRecordKey);
 
     HibernateMetaIndicatorKey metaIndicatorKeyToHibernate(MetaIndicatorKey metaIndicatorKey);
 

@@ -7,7 +7,7 @@ import com.dwarfeng.notify.impl.service.operation.UserCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
@@ -524,7 +524,7 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<RecordKey, NotifyInfoRecord> notifyInfoRecordGeneralBatchCrudService() {
+    public GeneralBatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> notifyInfoRecordGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
                 notifyInfoRecordDao,
                 notifyInfoRecordCache,

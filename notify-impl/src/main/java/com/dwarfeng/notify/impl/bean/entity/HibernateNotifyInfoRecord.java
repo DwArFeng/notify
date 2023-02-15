@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.notify.impl.bean.key.HibernateRecordKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateNotifyInfoRecordKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -8,11 +8,11 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@IdClass(HibernateRecordKey.class)
+@IdClass(HibernateNotifyInfoRecordKey.class)
 @Table(name = "tbl_notify_info_record")
 public class HibernateNotifyInfoRecord implements Bean {
 
-    private static final long serialVersionUID = -4600580048930729430L;
+    private static final long serialVersionUID = 5281515276251667342L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -42,11 +42,11 @@ public class HibernateNotifyInfoRecord implements Bean {
     }
 
     // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
-    public HibernateRecordKey getKey() {
-        return new HibernateRecordKey(notifyHistoryId, type, recordId);
+    public HibernateNotifyInfoRecordKey getKey() {
+        return new HibernateNotifyInfoRecordKey(notifyHistoryId, type, recordId);
     }
 
-    public void setKey(HibernateRecordKey key) {
+    public void setKey(HibernateNotifyInfoRecordKey key) {
         if (Objects.isNull(key)) {
             this.notifyHistoryId = null;
             this.type = null;

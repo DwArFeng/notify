@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.key.FastJsonRecordKey;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonNotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -22,14 +22,14 @@ public class FastJsonNotifyInfoRecord implements Bean {
             return null;
         } else {
             return new FastJsonNotifyInfoRecord(
-                    FastJsonRecordKey.of(notifyInfoRecord.getKey()),
+                    FastJsonNotifyInfoRecordKey.of(notifyInfoRecord.getKey()),
                     notifyInfoRecord.getValue()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonRecordKey key;
+    private FastJsonNotifyInfoRecordKey key;
 
     @JSONField(name = "value", ordinal = 2)
     private String value;
@@ -37,16 +37,16 @@ public class FastJsonNotifyInfoRecord implements Bean {
     public FastJsonNotifyInfoRecord() {
     }
 
-    public FastJsonNotifyInfoRecord(FastJsonRecordKey key, String value) {
+    public FastJsonNotifyInfoRecord(FastJsonNotifyInfoRecordKey key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public FastJsonRecordKey getKey() {
+    public FastJsonNotifyInfoRecordKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonRecordKey key) {
+    public void setKey(FastJsonNotifyInfoRecordKey key) {
         this.key = key;
     }
 

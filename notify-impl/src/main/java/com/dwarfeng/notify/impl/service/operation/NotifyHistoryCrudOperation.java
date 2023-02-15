@@ -3,7 +3,7 @@ package com.dwarfeng.notify.impl.service.operation;
 import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.cache.NotifyHistoryCache;
 import com.dwarfeng.notify.stack.cache.NotifyInfoRecordCache;
 import com.dwarfeng.notify.stack.cache.NotifySendRecordCache;
@@ -84,11 +84,11 @@ public class NotifyHistoryCrudOperation implements BatchCrudOperation<LongIdKey,
     @Override
     public void delete(LongIdKey key) throws Exception {
         // 删除与账户相关的通知信息记录。
-        List<RecordKey> notifyInfoRecordKeys = notifyInfoRecordDao.lookup(
+        List<NotifyInfoRecordKey> notifyInfoNotifyInfoRecordKeys = notifyInfoRecordDao.lookup(
                 NotifyInfoRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY, new Object[]{key}
         ).stream().map(NotifyInfoRecord::getKey).collect(Collectors.toList());
-        notifyInfoRecordCache.batchDelete(notifyInfoRecordKeys);
-        notifyInfoRecordDao.batchDelete(notifyInfoRecordKeys);
+        notifyInfoRecordCache.batchDelete(notifyInfoNotifyInfoRecordKeys);
+        notifyInfoRecordDao.batchDelete(notifyInfoNotifyInfoRecordKeys);
 
         // 删除与账户相关的通知发送信息记录。
         List<LongIdKey> notifySendRecordKeys = notifySendRecordDao.lookup(

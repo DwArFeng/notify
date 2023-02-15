@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
@@ -19,12 +19,12 @@ import java.util.List;
 @Service
 public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMaintainService {
 
-    private final GeneralBatchCrudService<RecordKey, NotifyInfoRecord> crudService;
+    private final GeneralBatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> crudService;
     private final DaoOnlyEntireLookupService<NotifyInfoRecord> entireLookupService;
     private final DaoOnlyPresetLookupService<NotifyInfoRecord> presetLookupService;
 
     public NotifyInfoRecordMaintainServiceImpl(
-            GeneralBatchCrudService<RecordKey, NotifyInfoRecord> crudService,
+            GeneralBatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> crudService,
             DaoOnlyEntireLookupService<NotifyInfoRecord> entireLookupService,
             DaoOnlyPresetLookupService<NotifyInfoRecord> presetLookupService
     ) {
@@ -36,21 +36,21 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(RecordKey key) throws ServiceException {
+    public boolean exists(NotifyInfoRecordKey key) throws ServiceException {
         return crudService.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public NotifyInfoRecord get(RecordKey key) throws ServiceException {
+    public NotifyInfoRecord get(NotifyInfoRecordKey key) throws ServiceException {
         return crudService.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public RecordKey insert(NotifyInfoRecord element) throws ServiceException {
+    public NotifyInfoRecordKey insert(NotifyInfoRecord element) throws ServiceException {
         return crudService.insert(element);
     }
 
@@ -64,21 +64,21 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(RecordKey key) throws ServiceException {
+    public void delete(NotifyInfoRecordKey key) throws ServiceException {
         crudService.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public NotifyInfoRecord getIfExists(RecordKey key) throws ServiceException {
+    public NotifyInfoRecord getIfExists(NotifyInfoRecordKey key) throws ServiceException {
         return crudService.getIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public RecordKey insertIfNotExists(NotifyInfoRecord element) throws ServiceException {
+    public NotifyInfoRecordKey insertIfNotExists(NotifyInfoRecord element) throws ServiceException {
         return crudService.insertIfNotExists(element);
     }
 
@@ -92,28 +92,28 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void deleteIfExists(RecordKey key) throws ServiceException {
+    public void deleteIfExists(NotifyInfoRecordKey key) throws ServiceException {
         crudService.deleteIfExists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public RecordKey insertOrUpdate(NotifyInfoRecord element) throws ServiceException {
+    public NotifyInfoRecordKey insertOrUpdate(NotifyInfoRecord element) throws ServiceException {
         return crudService.insertOrUpdate(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<RecordKey> keys) throws ServiceException {
+    public boolean allExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws ServiceException {
         return crudService.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<RecordKey> keys) throws ServiceException {
+    public boolean nonExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws ServiceException {
         return crudService.nonExists(keys);
     }
 
@@ -121,7 +121,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifyInfoRecord> batchGet(@SkipRecord List<RecordKey> keys) throws ServiceException {
+    public List<NotifyInfoRecord> batchGet(@SkipRecord List<NotifyInfoRecordKey> keys) throws ServiceException {
         return crudService.batchGet(keys);
     }
 
@@ -129,7 +129,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<RecordKey> batchInsert(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+    public List<NotifyInfoRecordKey> batchInsert(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
         return crudService.batchInsert(elements);
     }
 
@@ -143,7 +143,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<RecordKey> keys) throws ServiceException {
+    public void batchDelete(@SkipRecord List<NotifyInfoRecordKey> keys) throws ServiceException {
         crudService.batchDelete(keys);
     }
 
@@ -151,7 +151,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifyInfoRecord> batchGetIfExists(@SkipRecord List<RecordKey> keys) throws ServiceException {
+    public List<NotifyInfoRecord> batchGetIfExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws ServiceException {
         return crudService.batchGetIfExists(keys);
     }
 
@@ -159,7 +159,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<RecordKey> batchInsertIfExists(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+    public List<NotifyInfoRecordKey> batchInsertIfExists(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
@@ -173,7 +173,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDeleteIfExists(@SkipRecord List<RecordKey> keys) throws ServiceException {
+    public void batchDeleteIfExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws ServiceException {
         crudService.batchDeleteIfExists(keys);
     }
 
@@ -181,7 +181,7 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<RecordKey> batchInsertOrUpdate(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+    public List<NotifyInfoRecordKey> batchInsertOrUpdate(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 

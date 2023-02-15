@@ -1,27 +1,27 @@
-package com.dwarfeng.notify.impl.bean.key;
+package com.dwarfeng.notify.stack.bean.key;
 
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import java.util.Objects;
 
 /**
- * Hibernate 记录主键。
+ * 通知信息记录主键。
  *
  * @author DwArFeng
  * @since 1.3.0
  */
-public class HibernateRecordKey implements Key {
+public class NotifyInfoRecordKey implements Key {
 
-    private static final long serialVersionUID = -8647276324968478389L;
+    private static final long serialVersionUID = 1639983541813922891L;
 
     private Long notifyHistoryId;
     private Integer type;
     private String recordId;
 
-    public HibernateRecordKey() {
+    public NotifyInfoRecordKey() {
     }
 
-    public HibernateRecordKey(Long notifyHistoryId, Integer type, String recordId) {
+    public NotifyInfoRecordKey(Long notifyHistoryId, Integer type, String recordId) {
         this.notifyHistoryId = notifyHistoryId;
         this.type = type;
         this.recordId = recordId;
@@ -56,12 +56,12 @@ public class HibernateRecordKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        HibernateRecordKey that = (HibernateRecordKey) o;
+        NotifyInfoRecordKey notifyInfoRecordKey = (NotifyInfoRecordKey) o;
 
-        if (!Objects.equals(notifyHistoryId, that.notifyHistoryId))
+        if (!Objects.equals(notifyHistoryId, notifyInfoRecordKey.notifyHistoryId))
             return false;
-        if (!Objects.equals(type, that.type)) return false;
-        return Objects.equals(recordId, that.recordId);
+        if (!Objects.equals(type, notifyInfoRecordKey.type)) return false;
+        return Objects.equals(recordId, notifyInfoRecordKey.recordId);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class HibernateRecordKey implements Key {
 
     @Override
     public String toString() {
-        return "HibernateRecordKey{" +
+        return "NotifyInfoRecordKey{" +
                 "notifyHistoryId=" + notifyHistoryId +
                 ", type=" + type +
                 ", recordId='" + recordId + '\'' +

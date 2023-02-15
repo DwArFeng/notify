@@ -2,7 +2,7 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -43,7 +43,7 @@ public class NotifyInfoRecordMaintainServiceImplTest {
         notifyHistory = new NotifyHistory(new LongIdKey(NOTIFY_HISTORY_ID), null, new Date(), "remark");
         for (int i = 0; i < 5; i++) {
             NotifyInfoRecord notifyInfoRecord = new NotifyInfoRecord(
-                    new RecordKey(NOTIFY_HISTORY_ID, 12450, RECORD_ID_PREFIX + i), "value"
+                    new NotifyInfoRecordKey(NOTIFY_HISTORY_ID, 12450, RECORD_ID_PREFIX + i), "value"
             );
             notifyInfoRecords.add(notifyInfoRecord);
         }

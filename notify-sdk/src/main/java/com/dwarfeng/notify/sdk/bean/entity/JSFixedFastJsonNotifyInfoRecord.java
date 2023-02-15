@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
-import com.dwarfeng.notify.sdk.bean.key.JSFixedFastJsonRecordKey;
+import com.dwarfeng.notify.sdk.bean.key.JSFixedFastJsonNotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
@@ -22,14 +22,14 @@ public class JSFixedFastJsonNotifyInfoRecord implements Bean {
             return null;
         } else {
             return new JSFixedFastJsonNotifyInfoRecord(
-                    JSFixedFastJsonRecordKey.of(notifyInfoRecord.getKey()),
+                    JSFixedFastJsonNotifyInfoRecordKey.of(notifyInfoRecord.getKey()),
                     notifyInfoRecord.getValue()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private JSFixedFastJsonRecordKey key;
+    private JSFixedFastJsonNotifyInfoRecordKey key;
 
     @JSONField(name = "value", ordinal = 2)
     private String value;
@@ -37,16 +37,16 @@ public class JSFixedFastJsonNotifyInfoRecord implements Bean {
     public JSFixedFastJsonNotifyInfoRecord() {
     }
 
-    public JSFixedFastJsonNotifyInfoRecord(JSFixedFastJsonRecordKey key, String value) {
+    public JSFixedFastJsonNotifyInfoRecord(JSFixedFastJsonNotifyInfoRecordKey key, String value) {
         this.key = key;
         this.value = value;
     }
 
-    public JSFixedFastJsonRecordKey getKey() {
+    public JSFixedFastJsonNotifyInfoRecordKey getKey() {
         return key;
     }
 
-    public void setKey(JSFixedFastJsonRecordKey key) {
+    public void setKey(JSFixedFastJsonNotifyInfoRecordKey key) {
         this.key = key;
     }
 

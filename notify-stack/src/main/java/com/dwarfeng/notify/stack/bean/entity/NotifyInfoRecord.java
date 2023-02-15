@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
 
 /**
@@ -9,28 +9,28 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  * @author DwArFeng
  * @since 1.3.0
  */
-public class NotifyInfoRecord implements Entity<RecordKey> {
+public class NotifyInfoRecord implements Entity<NotifyInfoRecordKey> {
 
     private static final long serialVersionUID = 7745773740215488481L;
 
-    private RecordKey key;
+    private NotifyInfoRecordKey key;
     private String value;
 
     public NotifyInfoRecord() {
     }
 
-    public NotifyInfoRecord(RecordKey key, String value) {
+    public NotifyInfoRecord(NotifyInfoRecordKey key, String value) {
         this.key = key;
         this.value = value;
     }
 
     @Override
-    public RecordKey getKey() {
+    public NotifyInfoRecordKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(RecordKey key) {
+    public void setKey(NotifyInfoRecordKey key) {
         this.key = key;
     }
 

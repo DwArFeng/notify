@@ -2,7 +2,7 @@ package com.dwarfeng.notify.impl.cache;
 
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonNotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.cache.NotifyInfoRecordCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
@@ -16,10 +16,10 @@ import java.util.List;
 @Repository
 public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
 
-    private final RedisBatchBaseCache<RecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord> batchBaseCache;
+    private final RedisBatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord> batchBaseCache;
 
     public NotifyInfoRecordCacheImpl(
-            RedisBatchBaseCache<RecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord> batchBaseCache
+            RedisBatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord> batchBaseCache
     ) {
         this.batchBaseCache = batchBaseCache;
     }
@@ -27,14 +27,14 @@ public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(RecordKey key) throws CacheException {
+    public boolean exists(NotifyInfoRecordKey key) throws CacheException {
         return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public NotifyInfoRecord get(RecordKey key) throws CacheException {
+    public NotifyInfoRecord get(NotifyInfoRecordKey key) throws CacheException {
         return batchBaseCache.get(key);
     }
 
@@ -48,7 +48,7 @@ public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(RecordKey key) throws CacheException {
+    public void delete(NotifyInfoRecordKey key) throws CacheException {
         batchBaseCache.delete(key);
     }
 
@@ -62,14 +62,14 @@ public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(@SkipRecord List<RecordKey> keys) throws CacheException {
+    public boolean allExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws CacheException {
         return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(@SkipRecord List<RecordKey> keys) throws CacheException {
+    public boolean nonExists(@SkipRecord List<NotifyInfoRecordKey> keys) throws CacheException {
         return batchBaseCache.nonExists(keys);
     }
 
@@ -77,7 +77,7 @@ public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifyInfoRecord> batchGet(@SkipRecord List<RecordKey> keys) throws CacheException {
+    public List<NotifyInfoRecord> batchGet(@SkipRecord List<NotifyInfoRecordKey> keys) throws CacheException {
         return batchBaseCache.batchGet(keys);
     }
 
@@ -91,7 +91,7 @@ public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(@SkipRecord List<RecordKey> keys) throws CacheException {
+    public void batchDelete(@SkipRecord List<NotifyInfoRecordKey> keys) throws CacheException {
         batchBaseCache.batchDelete(keys);
     }
 }

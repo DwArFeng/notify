@@ -3,13 +3,13 @@ package com.dwarfeng.notify.impl.configuration;
 import com.dwarfeng.notify.impl.bean.entity.*;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
-import com.dwarfeng.notify.impl.bean.key.HibernateRecordKey;
+import com.dwarfeng.notify.impl.bean.key.HibernateNotifyInfoRecordKey;
 import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.impl.dao.preset.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.RecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
 import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
@@ -546,11 +546,11 @@ public class DaoConfiguration {
     }
 
     @Bean
-    public HibernateBatchBaseDao<RecordKey, HibernateRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
+    public HibernateBatchBaseDao<NotifyInfoRecordKey, HibernateNotifyInfoRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
     notifyInfoRecordHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
                 hibernateTemplate,
-                new MapStructBeanTransformer<>(RecordKey.class, HibernateRecordKey.class, HibernateMapper.class),
+                new MapStructBeanTransformer<>(NotifyInfoRecordKey.class, HibernateNotifyInfoRecordKey.class, HibernateMapper.class),
                 new MapStructBeanTransformer<>(NotifyInfoRecord.class, HibernateNotifyInfoRecord.class, HibernateMapper.class),
                 HibernateNotifyInfoRecord.class,
                 new DefaultDeletionMod<>(),

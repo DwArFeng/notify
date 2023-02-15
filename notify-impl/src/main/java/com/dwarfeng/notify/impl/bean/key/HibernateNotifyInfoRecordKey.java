@@ -1,27 +1,27 @@
-package com.dwarfeng.notify.stack.bean.key;
+package com.dwarfeng.notify.impl.bean.key;
 
 import com.dwarfeng.subgrade.stack.bean.key.Key;
 
 import java.util.Objects;
 
 /**
- * 记录主键。
+ * Hibernate 通知信息记录主键。
  *
  * @author DwArFeng
  * @since 1.3.0
  */
-public class RecordKey implements Key {
+public class HibernateNotifyInfoRecordKey implements Key {
 
-    private static final long serialVersionUID = -6301508811092936068L;
+    private static final long serialVersionUID = -6990329988128672940L;
 
     private Long notifyHistoryId;
     private Integer type;
     private String recordId;
 
-    public RecordKey() {
+    public HibernateNotifyInfoRecordKey() {
     }
 
-    public RecordKey(Long notifyHistoryId, Integer type, String recordId) {
+    public HibernateNotifyInfoRecordKey(Long notifyHistoryId, Integer type, String recordId) {
         this.notifyHistoryId = notifyHistoryId;
         this.type = type;
         this.recordId = recordId;
@@ -56,12 +56,12 @@ public class RecordKey implements Key {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        RecordKey recordKey = (RecordKey) o;
+        HibernateNotifyInfoRecordKey that = (HibernateNotifyInfoRecordKey) o;
 
-        if (!Objects.equals(notifyHistoryId, recordKey.notifyHistoryId))
+        if (!Objects.equals(notifyHistoryId, that.notifyHistoryId))
             return false;
-        if (!Objects.equals(type, recordKey.type)) return false;
-        return Objects.equals(recordId, recordKey.recordId);
+        if (!Objects.equals(type, that.type)) return false;
+        return Objects.equals(recordId, that.recordId);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class RecordKey implements Key {
 
     @Override
     public String toString() {
-        return "RecordKey{" +
+        return "HibernateNotifyInfoRecordKey{" +
                 "notifyHistoryId=" + notifyHistoryId +
                 ", type=" + type +
                 ", recordId='" + recordId + '\'' +
