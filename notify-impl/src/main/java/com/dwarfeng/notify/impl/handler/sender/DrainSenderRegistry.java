@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -65,9 +64,8 @@ public class DrainSenderRegistry extends AbstractSenderRegistry {
         public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) {
             List<Response> responses = new ArrayList<>();
 
-            Date currentDate = new Date();
             for (StringIdKey userKey : userKeys) {
-                responses.add(new Response(userKey, currentDate, true, "发送成功"));
+                responses.add(new Response(userKey, true, "发送成功"));
             }
 
             return responses;

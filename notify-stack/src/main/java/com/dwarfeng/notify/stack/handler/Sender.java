@@ -4,7 +4,6 @@ import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -37,7 +36,8 @@ public interface Sender {
      * @return 发送响应组成的列表。
      * @throws SenderException 发送器异常。
      */
-    List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) throws SenderException;
+    List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context)
+            throws SenderException;
 
     /**
      * 响应结构体。
@@ -48,23 +48,17 @@ public interface Sender {
     class Response {
 
         private final StringIdKey userKey;
-        private final Date happenedDate;
         private final boolean succeedFlag;
         private final String message;
 
-        public Response(StringIdKey userKey, Date happenedDate, boolean succeedFlag, String message) {
+        public Response(StringIdKey userKey, boolean succeedFlag, String message) {
             this.userKey = userKey;
-            this.happenedDate = happenedDate;
             this.succeedFlag = succeedFlag;
             this.message = message;
         }
 
         public StringIdKey getUserKey() {
             return userKey;
-        }
-
-        public Date getHappenedDate() {
-            return happenedDate;
         }
 
         public boolean isSucceedFlag() {
@@ -79,7 +73,6 @@ public interface Sender {
         public String toString() {
             return "Response{" +
                     "userKey=" + userKey +
-                    ", happenedDate=" + happenedDate +
                     ", succeedFlag=" + succeedFlag +
                     ", message='" + message + '\'' +
                     '}';

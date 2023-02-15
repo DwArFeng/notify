@@ -101,7 +101,9 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) throws SenderException {
+        public List<Response> send(
+                Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context)
+                throws SenderException {
             return processor.send(sendInfoMap, userKeys, context);
         }
 
@@ -131,6 +133,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
          * @throws SenderException 发送器异常。
          * @see Sender#send(Map, List, Sender.Context)
          */
-        List<Sender.Response> send(Map<String, String> sendInfo, List<StringIdKey> userKeys, Sender.Context context) throws SenderException;
+        List<Sender.Response> send(Map<String, String> sendInfo, List<StringIdKey> userKeys, Sender.Context context)
+                throws SenderException;
     }
 }

@@ -205,14 +205,13 @@ public class NotifyHandlerImpl implements NotifyHandler {
             for (Sender.Response response : responses) {
                 // 获取发送历史的字段。
                 StringIdKey userKey = response.getUserKey();
-                Date happenedDate = response.getHappenedDate();
                 boolean succeedFlag = response.isSucceedFlag();
                 String senderMessage = response.getMessage();
 
                 // 构建发送历史并添加到列表中。
                 // TODO 将历史记录用新实体代替。
                 SendHistory sendHistory = new SendHistory(
-                        keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, happenedDate,
+                        keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, new Date(),
                         "routeInfo", "dispatchInfo", "sendInfo", succeedFlag, senderMessage,
                         "通过 NotifyHandlerImpl 生成"
                 );
