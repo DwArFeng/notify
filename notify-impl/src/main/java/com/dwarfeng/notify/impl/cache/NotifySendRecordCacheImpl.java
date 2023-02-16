@@ -2,10 +2,10 @@ package com.dwarfeng.notify.impl.cache;
 
 import com.dwarfeng.notify.sdk.bean.entity.FastJsonNotifySendRecord;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.cache.NotifySendRecordCache;
 import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,23 +15,25 @@ import java.util.List;
 @Repository
 public class NotifySendRecordCacheImpl implements NotifySendRecordCache {
 
-    private final RedisBatchBaseCache<LongIdKey, NotifySendRecord, FastJsonNotifySendRecord> delegate;
+    private final RedisBatchBaseCache<NotifySendRecordKey, NotifySendRecord, FastJsonNotifySendRecord> delegate;
 
-    public NotifySendRecordCacheImpl(RedisBatchBaseCache<LongIdKey, NotifySendRecord, FastJsonNotifySendRecord> delegate) {
+    public NotifySendRecordCacheImpl(
+            RedisBatchBaseCache<NotifySendRecordKey, NotifySendRecord, FastJsonNotifySendRecord> delegate
+    ) {
         this.delegate = delegate;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean exists(LongIdKey key) throws CacheException {
+    public boolean exists(NotifySendRecordKey key) throws CacheException {
         return delegate.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public NotifySendRecord get(LongIdKey key) throws CacheException {
+    public NotifySendRecord get(NotifySendRecordKey key) throws CacheException {
         return delegate.get(key);
     }
 
@@ -45,7 +47,7 @@ public class NotifySendRecordCacheImpl implements NotifySendRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void delete(LongIdKey key) throws CacheException {
+    public void delete(NotifySendRecordKey key) throws CacheException {
         delegate.delete(key);
     }
 
@@ -59,21 +61,21 @@ public class NotifySendRecordCacheImpl implements NotifySendRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<LongIdKey> keys) throws CacheException {
+    public boolean allExists(List<NotifySendRecordKey> keys) throws CacheException {
         return delegate.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<LongIdKey> keys) throws CacheException {
+    public boolean nonExists(List<NotifySendRecordKey> keys) throws CacheException {
         return delegate.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifySendRecord> batchGet(List<LongIdKey> keys) throws CacheException {
+    public List<NotifySendRecord> batchGet(List<NotifySendRecordKey> keys) throws CacheException {
         return delegate.batchGet(keys);
     }
 
@@ -87,7 +89,7 @@ public class NotifySendRecordCacheImpl implements NotifySendRecordCache {
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<LongIdKey> keys) throws CacheException {
+    public void batchDelete(List<NotifySendRecordKey> keys) throws CacheException {
         delegate.batchDelete(keys);
     }
 }

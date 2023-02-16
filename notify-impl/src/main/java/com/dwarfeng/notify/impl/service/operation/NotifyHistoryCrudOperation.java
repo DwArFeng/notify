@@ -4,6 +4,7 @@ import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.cache.NotifyHistoryCache;
 import com.dwarfeng.notify.stack.cache.NotifyInfoRecordCache;
 import com.dwarfeng.notify.stack.cache.NotifySendRecordCache;
@@ -91,7 +92,7 @@ public class NotifyHistoryCrudOperation implements BatchCrudOperation<LongIdKey,
         notifyInfoRecordDao.batchDelete(notifyInfoNotifyInfoRecordKeys);
 
         // 删除与账户相关的通知发送信息记录。
-        List<LongIdKey> notifySendRecordKeys = notifySendRecordDao.lookup(
+        List<NotifySendRecordKey> notifySendRecordKeys = notifySendRecordDao.lookup(
                 NotifySendRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY, new Object[]{key}
         ).stream().map(NotifySendRecord::getKey).collect(Collectors.toList());
         notifySendRecordCache.batchDelete(notifySendRecordKeys);

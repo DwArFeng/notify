@@ -4,6 +4,7 @@ import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
 import com.dwarfeng.notify.stack.bean.entity.User;
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
@@ -19,12 +20,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath:spring/application-context*.xml")
@@ -46,20 +45,16 @@ public class NotifySendRecordMaintainServiceImplTest {
     private NotifyHistory notifyHistory;
     private Topic topic;
     private User user;
-    private final List<NotifySendRecord> notifySendRecords = new ArrayList<>();
+    private NotifySendRecord notifySendRecord;
 
     @Before
     public void setUp() {
         notifyHistory = new NotifyHistory(new LongIdKey(NOTIFY_HISTORY_ID), null, new Date(), "remark");
         topic = new Topic(new StringIdKey(TOPIC_ID), "label", "remark", true, 12450);
         user = new User(new StringIdKey(USER_ID), "remark", true);
-        for (int i = 0; i < 5; i++) {
-            NotifySendRecord notifySendRecord = new NotifySendRecord(
-                    null, new LongIdKey(NOTIFY_HISTORY_ID), new StringIdKey(TOPIC_ID), new StringIdKey(USER_ID),
-                    true, "senderMessage"
-            );
-            notifySendRecords.add(notifySendRecord);
-        }
+        notifySendRecord = new NotifySendRecord(
+                new NotifySendRecordKey(NOTIFY_HISTORY_ID, TOPIC_ID, USER_ID), true, "senderMessage"
+        );
     }
 
     @After
@@ -67,7 +62,7 @@ public class NotifySendRecordMaintainServiceImplTest {
         notifyHistory = null;
         topic = null;
         user = null;
-        notifySendRecords.clear();
+        notifySendRecord = null;
     }
 
     @Test
@@ -77,16 +72,12 @@ public class NotifySendRecordMaintainServiceImplTest {
             topicMaintainService.insertOrUpdate(topic);
             userMaintainService.insertOrUpdate(user);
 
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
-                notifySendRecordMaintainService.update(notifySendRecord);
-                NotifySendRecord testNotifySendRecord = notifySendRecordMaintainService.get(notifySendRecord.getKey());
-                assertEquals(BeanUtils.describe(notifySendRecord), BeanUtils.describe(testNotifySendRecord));
-            }
+            notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
+            notifySendRecordMaintainService.update(notifySendRecord);
+            NotifySendRecord testNotifySendRecord = notifySendRecordMaintainService.get(notifySendRecord.getKey());
+            assertEquals(BeanUtils.describe(notifySendRecord), BeanUtils.describe(testNotifySendRecord));
         } finally {
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            }
+            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
             userMaintainService.deleteIfExists(user.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
@@ -99,11 +90,9 @@ public class NotifySendRecordMaintainServiceImplTest {
             notifyHistoryMaintainService.insertOrUpdate(notifyHistory);
             topicMaintainService.insertOrUpdate(topic);
             userMaintainService.insertOrUpdate(user);
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
-            }
+            notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
 
-            assertEquals(notifySendRecords.size(), notifySendRecordMaintainService.lookup(
+            assertEquals(1, notifySendRecordMaintainService.lookup(
                     NotifySendRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY,
                     new Object[]{notifyHistory.getKey()}).getCount()
             );
@@ -114,13 +103,9 @@ public class NotifySendRecordMaintainServiceImplTest {
                     NotifySendRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY,
                     new Object[]{notifyHistory.getKey()}).getCount()
             );
-            assertTrue(notifySendRecordMaintainService.nonExists(
-                    notifySendRecords.stream().map(NotifySendRecord::getKey).collect(Collectors.toList())
-            ));
+            assertFalse(notifySendRecordMaintainService.exists(notifySendRecord.getKey()));
         } finally {
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            }
+            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
             userMaintainService.deleteIfExists(user.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
@@ -133,11 +118,9 @@ public class NotifySendRecordMaintainServiceImplTest {
             notifyHistoryMaintainService.insertOrUpdate(notifyHistory);
             topicMaintainService.insertOrUpdate(topic);
             userMaintainService.insertOrUpdate(user);
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
-            }
+            notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
 
-            assertEquals(notifySendRecords.size(), notifySendRecordMaintainService.lookup(
+            assertEquals(1, notifySendRecordMaintainService.lookup(
                     NotifySendRecordMaintainService.CHILD_FOR_TOPIC,
                     new Object[]{topic.getKey()}).getCount()
             );
@@ -148,17 +131,9 @@ public class NotifySendRecordMaintainServiceImplTest {
                     NotifySendRecordMaintainService.CHILD_FOR_TOPIC,
                     new Object[]{topic.getKey()}).getCount()
             );
-            assertTrue(notifySendRecordMaintainService.allExists(
-                    notifySendRecords.stream().map(NotifySendRecord::getKey).collect(Collectors.toList())
-            ));
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                NotifySendRecord testNotifySendRecord = notifySendRecordMaintainService.get(notifySendRecord.getKey());
-                assertNull(testNotifySendRecord.getTopicKey());
-            }
+            assertFalse(notifySendRecordMaintainService.exists(notifySendRecord.getKey()));
         } finally {
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            }
+            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
             userMaintainService.deleteIfExists(user.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
@@ -171,11 +146,9 @@ public class NotifySendRecordMaintainServiceImplTest {
             notifyHistoryMaintainService.insertOrUpdate(notifyHistory);
             topicMaintainService.insertOrUpdate(topic);
             userMaintainService.insertOrUpdate(user);
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
-            }
+            notifySendRecord.setKey(notifySendRecordMaintainService.insertOrUpdate(notifySendRecord));
 
-            assertEquals(notifySendRecords.size(), notifySendRecordMaintainService.lookup(
+            assertEquals(1, notifySendRecordMaintainService.lookup(
                     NotifySendRecordMaintainService.CHILD_FOR_USER,
                     new Object[]{user.getKey()}).getCount()
             );
@@ -186,17 +159,9 @@ public class NotifySendRecordMaintainServiceImplTest {
                     NotifySendRecordMaintainService.CHILD_FOR_USER,
                     new Object[]{user.getKey()}).getCount()
             );
-            assertTrue(notifySendRecordMaintainService.allExists(
-                    notifySendRecords.stream().map(NotifySendRecord::getKey).collect(Collectors.toList())
-            ));
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                NotifySendRecord testNotifySendRecord = notifySendRecordMaintainService.get(notifySendRecord.getKey());
-                assertNull(testNotifySendRecord.getUserKey());
-            }
+            assertFalse(notifySendRecordMaintainService.exists(notifySendRecord.getKey()));
         } finally {
-            for (NotifySendRecord notifySendRecord : notifySendRecords) {
-                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            }
+            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
             userMaintainService.deleteIfExists(user.getKey());
             topicMaintainService.deleteIfExists(topic.getKey());
             notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());

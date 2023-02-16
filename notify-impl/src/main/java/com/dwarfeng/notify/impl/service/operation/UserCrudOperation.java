@@ -5,6 +5,7 @@ import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
 import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.cache.MetaCache;
 import com.dwarfeng.notify.stack.cache.NotifySendRecordCache;
 import com.dwarfeng.notify.stack.cache.SendHistoryCache;
@@ -109,14 +110,11 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
         sendHistoryDao.batchUpdate(sendHistories);
 
         // 删除与用户相关的通知发送信息记录。
-        List<NotifySendRecord> notifySendRecords = notifySendRecordDao.lookup(
+        List<NotifySendRecordKey> notifySendRecordKeys = notifySendRecordDao.lookup(
                 NotifySendRecordMaintainService.CHILD_FOR_USER, new Object[]{key}
-        );
-        notifySendRecords.forEach(record -> record.setUserKey(null));
-        notifySendRecordCache.batchDelete(
-                notifySendRecords.stream().map(NotifySendRecord::getKey).collect(Collectors.toList())
-        );
-        notifySendRecordDao.batchUpdate(notifySendRecords);
+        ).stream().map(NotifySendRecord::getKey).collect(Collectors.toList());
+        notifySendRecordCache.batchDelete(notifySendRecordKeys);
+        notifySendRecordDao.batchDelete(notifySendRecordKeys);
 
         // 删除通知设置实体本身。
         userDao.delete(key);

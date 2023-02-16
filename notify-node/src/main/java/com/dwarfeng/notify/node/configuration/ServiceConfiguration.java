@@ -5,10 +5,7 @@ import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.TopicCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.UserCrudOperation;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
-import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.*;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
 import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
@@ -554,11 +551,11 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public GeneralBatchCrudService<LongIdKey, NotifySendRecord> notifySendRecordGeneralBatchCrudService() {
+    public GeneralBatchCrudService<NotifySendRecordKey, NotifySendRecord> notifySendRecordGeneralBatchCrudService() {
         return new GeneralBatchCrudService<>(
                 notifySendRecordDao,
                 notifySendRecordCache,
-                longIdKeyKeyFetcher(),
+                new ExceptionKeyFetcher<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 notifySendRecordTimeout

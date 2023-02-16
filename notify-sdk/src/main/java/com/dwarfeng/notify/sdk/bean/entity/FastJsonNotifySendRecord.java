@@ -1,9 +1,8 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.key.FastJsonNotifySendRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -16,86 +15,43 @@ import java.util.Objects;
  */
 public class FastJsonNotifySendRecord implements Bean {
 
-    private static final long serialVersionUID = 732250091193215232L;
+    private static final long serialVersionUID = -328243401069539303L;
 
     public static FastJsonNotifySendRecord of(NotifySendRecord notifySendRecord) {
         if (Objects.isNull(notifySendRecord)) {
             return null;
         } else {
             return new FastJsonNotifySendRecord(
-                    FastJsonLongIdKey.of(notifySendRecord.getKey()),
-                    FastJsonLongIdKey.of(notifySendRecord.getNotifyHistoryKey()),
-                    FastJsonStringIdKey.of(notifySendRecord.getTopicKey()),
-                    FastJsonStringIdKey.of(notifySendRecord.getUserKey()),
+                    FastJsonNotifySendRecordKey.of(notifySendRecord.getKey()),
                     notifySendRecord.getSucceedFlag(), notifySendRecord.getSenderMessage()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private FastJsonLongIdKey key;
+    private FastJsonNotifySendRecordKey key;
 
-    @JSONField(name = "notify_history_key", ordinal = 2)
-    private FastJsonLongIdKey notifyHistoryKey;
-
-    @JSONField(name = "topic_key", ordinal = 3)
-    private FastJsonStringIdKey topicKey;
-
-    @JSONField(name = "user_key", ordinal = 4)
-    private FastJsonStringIdKey userKey;
-
-    @JSONField(name = "succeed_flag", ordinal = 6)
+    @JSONField(name = "succeed_flag", ordinal = 2)
     private Boolean succeedFlag;
 
-    @JSONField(name = "sender_message", ordinal = 7)
+    @JSONField(name = "sender_message", ordinal = 3)
     private String senderMessage;
 
     public FastJsonNotifySendRecord() {
     }
 
-    public FastJsonNotifySendRecord(
-            FastJsonLongIdKey key, FastJsonLongIdKey notifyHistoryKey,
-            FastJsonStringIdKey topicKey, FastJsonStringIdKey userKey,
-            Boolean succeedFlag, String senderMessage
-    ) {
+    public FastJsonNotifySendRecord(FastJsonNotifySendRecordKey key, Boolean succeedFlag, String senderMessage) {
         this.key = key;
-        this.notifyHistoryKey = notifyHistoryKey;
-        this.topicKey = topicKey;
-        this.userKey = userKey;
         this.succeedFlag = succeedFlag;
         this.senderMessage = senderMessage;
     }
 
-    public FastJsonLongIdKey getKey() {
+    public FastJsonNotifySendRecordKey getKey() {
         return key;
     }
 
-    public void setKey(FastJsonLongIdKey key) {
+    public void setKey(FastJsonNotifySendRecordKey key) {
         this.key = key;
-    }
-
-    public FastJsonLongIdKey getNotifyHistoryKey() {
-        return notifyHistoryKey;
-    }
-
-    public void setNotifyHistoryKey(FastJsonLongIdKey notifyHistoryKey) {
-        this.notifyHistoryKey = notifyHistoryKey;
-    }
-
-    public FastJsonStringIdKey getTopicKey() {
-        return topicKey;
-    }
-
-    public void setTopicKey(FastJsonStringIdKey topicKey) {
-        this.topicKey = topicKey;
-    }
-
-    public FastJsonStringIdKey getUserKey() {
-        return userKey;
-    }
-
-    public void setUserKey(FastJsonStringIdKey userKey) {
-        this.userKey = userKey;
     }
 
     public Boolean getSucceedFlag() {
@@ -112,17 +68,5 @@ public class FastJsonNotifySendRecord implements Bean {
 
     public void setSenderMessage(String senderMessage) {
         this.senderMessage = senderMessage;
-    }
-
-    @Override
-    public String toString() {
-        return "FastJsonNotifySendRecord{" +
-                "key=" + key +
-                ", notifyHistoryKey=" + notifyHistoryKey +
-                ", topicKey=" + topicKey +
-                ", userKey=" + userKey +
-                ", succeedFlag=" + succeedFlag +
-                ", senderMessage='" + senderMessage + '\'' +
-                '}';
     }
 }

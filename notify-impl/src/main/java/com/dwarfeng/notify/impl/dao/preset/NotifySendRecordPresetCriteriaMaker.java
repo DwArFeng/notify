@@ -35,10 +35,10 @@ public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker 
     private void childForNotifyHistory(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("notifyHistoryLongId"));
+                detachedCriteria.add(Restrictions.isNull("notifyHistoryId"));
             } else {
                 LongIdKey longIdKey = (LongIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("notifyHistoryLongId", longIdKey.getLongId()));
+                detachedCriteria.add(Restrictions.eqOrIsNull("notifyHistoryId", longIdKey.getLongId()));
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
@@ -49,10 +49,10 @@ public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker 
     private void childForTopic(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("topicStringId"));
+                detachedCriteria.add(Restrictions.isNull("topicId"));
             } else {
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("topicStringId", stringIdKey.getStringId()));
+                detachedCriteria.add(Restrictions.eqOrIsNull("topicId", stringIdKey.getStringId()));
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
@@ -63,10 +63,10 @@ public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker 
     private void childForUser(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("userStringId"));
+                detachedCriteria.add(Restrictions.isNull("userId"));
             } else {
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("userStringId", stringIdKey.getStringId()));
+                detachedCriteria.add(Restrictions.eqOrIsNull("userId", stringIdKey.getStringId()));
             }
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));

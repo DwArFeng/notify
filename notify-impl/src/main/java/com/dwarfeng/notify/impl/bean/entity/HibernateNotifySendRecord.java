@@ -1,34 +1,31 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
+import com.dwarfeng.notify.impl.bean.key.HibernateNotifySendRecordKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import javax.persistence.*;
-import java.util.Optional;
+import java.util.Objects;
 
 @Entity
-@IdClass(HibernateLongIdKey.class)
+@IdClass(HibernateNotifySendRecordKey.class)
 @Table(name = "tbl_notify_send_record")
 public class HibernateNotifySendRecord implements Bean {
 
-    private static final long serialVersionUID = 1361956877693541068L;
-    
+    private static final long serialVersionUID = 6401476278480844891L;
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
-    @Column(name = "id", nullable = false, unique = true)
-    private Long longId;
+    @Column(name = "notify_history_id", nullable = false)
+    private Long notifyHistoryId;
 
-    // -----------------------------------------------------------外键-----------------------------------------------------------
-    @Column(name = "notify_history_id")
-    private Long notifyHistoryLongId;
+    @Id
+    @Column(name = "topic_Id", length = Constraints.LENGTH_ID, nullable = false)
+    private String topicId;
 
-    @Column(name = "topic_Id", length = Constraints.LENGTH_ID)
-    private String topicStringId;
-
-    @Column(name = "user_Id", length = Constraints.LENGTH_ID)
-    private String userStringId;
+    @Id
+    @Column(name = "user_Id", length = Constraints.LENGTH_ID, nullable = false)
+    private String userId;
 
     // -----------------------------------------------------------主属性字段-----------------------------------------------------------
     @Column(name = "succeed_flag")
@@ -44,73 +41,61 @@ public class HibernateNotifySendRecord implements Bean {
     })
     private HibernateNotifyHistory notifyHistory;
 
+    @ManyToOne(targetEntity = HibernateTopic.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "topic_Id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateTopic topic;
+
+    @ManyToOne(targetEntity = HibernateUser.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "user_Id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateUser user;
+
     public HibernateNotifySendRecord() {
     }
 
     // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
-    public HibernateLongIdKey getKey() {
-        return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
+    public HibernateNotifySendRecordKey getKey() {
+        return new HibernateNotifySendRecordKey(notifyHistoryId, topicId, userId);
     }
 
-    public void setKey(HibernateLongIdKey key) {
-        this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
-    }
-
-    public HibernateLongIdKey getNotifyHistoryKey() {
-        return Optional.ofNullable(notifyHistoryLongId).map(HibernateLongIdKey::new).orElse(null);
-    }
-
-    public void setNotifyHistoryKey(HibernateLongIdKey key) {
-        this.notifyHistoryLongId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
-    }
-
-    public HibernateStringIdKey getTopicKey() {
-        return Optional.ofNullable(topicStringId).map(HibernateStringIdKey::new).orElse(null);
-    }
-
-    public void setTopicKey(HibernateStringIdKey key) {
-        this.topicStringId = Optional.ofNullable(key).map(HibernateStringIdKey::getStringId).orElse(null);
-    }
-
-    public HibernateStringIdKey getUserKey() {
-        return Optional.ofNullable(userStringId).map(HibernateStringIdKey::new).orElse(null);
-    }
-
-    public void setUserKey(HibernateStringIdKey key) {
-        this.userStringId = Optional.ofNullable(key).map(HibernateStringIdKey::getStringId).orElse(null);
+    public void setKey(HibernateNotifySendRecordKey key) {
+        if (Objects.isNull(key)) {
+            this.notifyHistoryId = null;
+            this.topicId = null;
+            this.userId = null;
+        } else {
+            this.notifyHistoryId = key.getNotifyHistoryId();
+            this.topicId = key.getTopicId();
+            this.userId = key.getUserId();
+        }
     }
 
     // -----------------------------------------------------------常规属性区-----------------------------------------------------------
-    public Long getLongId() {
-        return longId;
+    public Long getNotifyHistoryId() {
+        return notifyHistoryId;
     }
 
-    public void setLongId(Long longId) {
-        this.longId = longId;
+    public void setNotifyHistoryId(Long notifyHistoryId) {
+        this.notifyHistoryId = notifyHistoryId;
     }
 
-    public Long getNotifyHistoryLongId() {
-        return notifyHistoryLongId;
+    public String getTopicId() {
+        return topicId;
     }
 
-    public void setNotifyHistoryLongId(Long notifyHistoryLongId) {
-        this.notifyHistoryLongId = notifyHistoryLongId;
+    public void setTopicId(String topicId) {
+        this.topicId = topicId;
     }
 
-    public String getTopicStringId() {
-        return topicStringId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setTopicStringId(String topicStringId) {
-        this.topicStringId = topicStringId;
-    }
-
-    public String getUserStringId() {
-        return userStringId;
-    }
-
-    public void setUserStringId(String userStringId) {
-        this.userStringId = userStringId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public Boolean getSucceedFlag() {
@@ -137,15 +122,32 @@ public class HibernateNotifySendRecord implements Bean {
         this.notifyHistory = notifyHistory;
     }
 
+    public HibernateTopic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(HibernateTopic topic) {
+        this.topic = topic;
+    }
+
+    public HibernateUser getUser() {
+        return user;
+    }
+
+    public void setUser(HibernateUser user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
-                "longId = " + longId + ", " +
-                "notifyHistoryLongId = " + notifyHistoryLongId + ", " +
-                "topicStringId = " + topicStringId + ", " +
-                "userStringId = " + userStringId + ", " +
+                "notifyHistoryId = " + notifyHistoryId + ", " +
+                "topicId = " + topicId + ", " +
+                "userId = " + userId + ", " +
                 "succeedFlag = " + succeedFlag + ", " +
                 "senderMessage = " + senderMessage + ", " +
-                "notifyHistory = " + notifyHistory + ")";
+                "notifyHistory = " + notifyHistory + ", " +
+                "topic = " + topic + ", " +
+                "user = " + user + ")";
     }
 }

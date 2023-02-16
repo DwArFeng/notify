@@ -1,8 +1,7 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 
 /**
  * 通知发送记录。
@@ -10,64 +9,31 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  * @author DwArFeng
  * @since 1.3.0
  */
-public class NotifySendRecord implements Entity<LongIdKey> {
+public class NotifySendRecord implements Entity<NotifySendRecordKey> {
 
-    private static final long serialVersionUID = -6462476543587770245L;
-
-    private LongIdKey key;
-    private LongIdKey notifyHistoryKey;
-    private StringIdKey topicKey;
-    private StringIdKey userKey;
+    private static final long serialVersionUID = -4519591340700222670L;
+    
+    private NotifySendRecordKey key;
     private Boolean succeedFlag;
     private String senderMessage;
 
     public NotifySendRecord() {
     }
 
-    public NotifySendRecord(
-            LongIdKey key, LongIdKey notifyHistoryKey, StringIdKey topicKey, StringIdKey userKey,
-            Boolean succeedFlag, String senderMessage
-    ) {
+    public NotifySendRecord(NotifySendRecordKey key, Boolean succeedFlag, String senderMessage) {
         this.key = key;
-        this.notifyHistoryKey = notifyHistoryKey;
-        this.topicKey = topicKey;
-        this.userKey = userKey;
         this.succeedFlag = succeedFlag;
         this.senderMessage = senderMessage;
     }
 
     @Override
-    public LongIdKey getKey() {
+    public NotifySendRecordKey getKey() {
         return key;
     }
 
     @Override
-    public void setKey(LongIdKey key) {
+    public void setKey(NotifySendRecordKey key) {
         this.key = key;
-    }
-
-    public LongIdKey getNotifyHistoryKey() {
-        return notifyHistoryKey;
-    }
-
-    public void setNotifyHistoryKey(LongIdKey notifyHistoryKey) {
-        this.notifyHistoryKey = notifyHistoryKey;
-    }
-
-    public StringIdKey getTopicKey() {
-        return topicKey;
-    }
-
-    public void setTopicKey(StringIdKey topicKey) {
-        this.topicKey = topicKey;
-    }
-
-    public StringIdKey getUserKey() {
-        return userKey;
-    }
-
-    public void setUserKey(StringIdKey userKey) {
-        this.userKey = userKey;
     }
 
     public Boolean getSucceedFlag() {
@@ -90,9 +56,6 @@ public class NotifySendRecord implements Entity<LongIdKey> {
     public String toString() {
         return "NotifySendRecord{" +
                 "key=" + key +
-                ", notifyHistoryKey=" + notifyHistoryKey +
-                ", topicKey=" + topicKey +
-                ", userKey=" + userKey +
                 ", succeedFlag=" + succeedFlag +
                 ", senderMessage='" + senderMessage + '\'' +
                 '}';

@@ -3,6 +3,7 @@ package com.dwarfeng.notify.impl.service.operation;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
@@ -139,14 +140,11 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
         sendHistoryDao.batchUpdate(sendHistories);
 
         // 删除与主题相关的通知发送信息记录的关联。
-        List<NotifySendRecord> notifySendRecords = new ArrayList<>(notifySendRecordDao.lookup(
+        List<NotifySendRecordKey> notifySendRecordKeys = new ArrayList<>(notifySendRecordDao.lookup(
                 NotifySendRecordMaintainService.CHILD_FOR_TOPIC, new Object[]{key}
-        ));
-        notifySendRecords.forEach(record -> record.setTopicKey(null));
-        notifySendRecordCache.batchDelete(
-                notifySendRecords.stream().map(NotifySendRecord::getKey).collect(Collectors.toList())
-        );
-        notifySendRecordDao.batchUpdate(notifySendRecords);
+        )).stream().map(NotifySendRecord::getKey).collect(Collectors.toList());
+        notifySendRecordCache.batchDelete(notifySendRecordKeys);
+        notifySendRecordDao.batchDelete(notifySendRecordKeys);
 
         // 删除通知设置实体本身。
         topicDao.delete(key);

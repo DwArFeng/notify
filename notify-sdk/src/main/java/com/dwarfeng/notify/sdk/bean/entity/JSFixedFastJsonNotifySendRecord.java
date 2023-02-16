@@ -1,9 +1,8 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
 import com.alibaba.fastjson.annotation.JSONField;
+import com.dwarfeng.notify.sdk.bean.key.JSFixedFastJsonNotifySendRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.JSFixedFastJsonLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
 
 import java.util.Objects;
@@ -16,33 +15,21 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonNotifySendRecord implements Bean {
 
-    private static final long serialVersionUID = -6325271870447798132L;
+    private static final long serialVersionUID = 9154307502968973288L;
 
     public static JSFixedFastJsonNotifySendRecord of(NotifySendRecord notifySendRecord) {
         if (Objects.isNull(notifySendRecord)) {
             return null;
         } else {
             return new JSFixedFastJsonNotifySendRecord(
-                    JSFixedFastJsonLongIdKey.of(notifySendRecord.getKey()),
-                    JSFixedFastJsonLongIdKey.of(notifySendRecord.getNotifyHistoryKey()),
-                    FastJsonStringIdKey.of(notifySendRecord.getTopicKey()),
-                    FastJsonStringIdKey.of(notifySendRecord.getUserKey()),
+                    JSFixedFastJsonNotifySendRecordKey.of(notifySendRecord.getKey()),
                     notifySendRecord.getSucceedFlag(), notifySendRecord.getSenderMessage()
             );
         }
     }
 
     @JSONField(name = "key", ordinal = 1)
-    private JSFixedFastJsonLongIdKey key;
-
-    @JSONField(name = "notify_history_key", ordinal = 2)
-    private JSFixedFastJsonLongIdKey notifyHistoryKey;
-
-    @JSONField(name = "topic_key", ordinal = 3)
-    private FastJsonStringIdKey topicKey;
-
-    @JSONField(name = "user_key", ordinal = 4)
-    private FastJsonStringIdKey userKey;
+    private JSFixedFastJsonNotifySendRecordKey key;
 
     @JSONField(name = "succeed_flag", ordinal = 6)
     private Boolean succeedFlag;
@@ -54,48 +41,19 @@ public class JSFixedFastJsonNotifySendRecord implements Bean {
     }
 
     public JSFixedFastJsonNotifySendRecord(
-            JSFixedFastJsonLongIdKey key, JSFixedFastJsonLongIdKey notifyHistoryKey,
-            FastJsonStringIdKey topicKey, FastJsonStringIdKey userKey,
-            Boolean succeedFlag, String senderMessage
+            JSFixedFastJsonNotifySendRecordKey key, Boolean succeedFlag, String senderMessage
     ) {
         this.key = key;
-        this.notifyHistoryKey = notifyHistoryKey;
-        this.topicKey = topicKey;
-        this.userKey = userKey;
         this.succeedFlag = succeedFlag;
         this.senderMessage = senderMessage;
     }
 
-    public JSFixedFastJsonLongIdKey getKey() {
+    public JSFixedFastJsonNotifySendRecordKey getKey() {
         return key;
     }
 
-    public void setKey(JSFixedFastJsonLongIdKey key) {
+    public void setKey(JSFixedFastJsonNotifySendRecordKey key) {
         this.key = key;
-    }
-
-    public JSFixedFastJsonLongIdKey getNotifyHistoryKey() {
-        return notifyHistoryKey;
-    }
-
-    public void setNotifyHistoryKey(JSFixedFastJsonLongIdKey notifyHistoryKey) {
-        this.notifyHistoryKey = notifyHistoryKey;
-    }
-
-    public FastJsonStringIdKey getTopicKey() {
-        return topicKey;
-    }
-
-    public void setTopicKey(FastJsonStringIdKey topicKey) {
-        this.topicKey = topicKey;
-    }
-
-    public FastJsonStringIdKey getUserKey() {
-        return userKey;
-    }
-
-    public void setUserKey(FastJsonStringIdKey userKey) {
-        this.userKey = userKey;
     }
 
     public Boolean getSucceedFlag() {
@@ -118,9 +76,6 @@ public class JSFixedFastJsonNotifySendRecord implements Bean {
     public String toString() {
         return "JSFixedFastJsonNotifySendRecord{" +
                 "key=" + key +
-                ", notifyHistoryKey=" + notifyHistoryKey +
-                ", topicKey=" + topicKey +
-                ", userKey=" + userKey +
                 ", succeedFlag=" + succeedFlag +
                 ", senderMessage='" + senderMessage + '\'' +
                 '}';
