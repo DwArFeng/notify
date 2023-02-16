@@ -24,7 +24,8 @@
 
 #### 功能移除
 
-- (无)
+- 删除实体。
+  - com.dwarfeng.notify.stack.bean.entity.SendHistory。
 
 ---
 

@@ -23,7 +23,6 @@ public class FastJsonConfiguration {
         ParserConfig.getGlobalInstance().addAccept(FastJsonDispatcherInfo.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonDispatcherSupport.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonMeta.class.getCanonicalName());
-        ParserConfig.getGlobalInstance().addAccept(FastJsonSendHistory.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonMetaIndicator.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonNotifyHistory.class.getCanonicalName());
         ParserConfig.getGlobalInstance().addAccept(FastJsonNotifyInfoRecord.class.getCanonicalName());

@@ -47,8 +47,6 @@ public class ServiceConfiguration {
     private final DispatcherSupportCache dispatcherSupportCache;
     private final MetaDao metaDao;
     private final MetaCache metaCache;
-    private final SendHistoryDao sendHistoryDao;
-    private final SendHistoryCache sendHistoryCache;
     private final MetaIndicatorDao metaIndicatorDao;
     private final MetaIndicatorCache metaIndicatorCache;
     private final NotifyHistoryCrudOperation notifyHistoryCrudOperation;
@@ -72,8 +70,6 @@ public class ServiceConfiguration {
     private long dispatcherSupportTimeout;
     @Value("${cache.timeout.entity.meta}")
     private long metaTimeout;
-    @Value("${cache.timeout.entity.send_history}")
-    private long sendHistoryTimeout;
     @Value("${cache.timeout.entity.meta_indicator}")
     private long metaIndicatorTimeout;
     @Value("${cache.timeout.entity.notify_info_record}")
@@ -93,7 +89,6 @@ public class ServiceConfiguration {
             DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
             DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
             MetaDao metaDao, MetaCache metaCache,
-            SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache,
             MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
             NotifyHistoryCrudOperation notifyHistoryCrudOperation, NotifyHistoryDao notifyHistoryDao,
             NotifyInfoRecordDao notifyInfoRecordDao, NotifyInfoRecordCache notifyInfoRecordCache,
@@ -120,8 +115,6 @@ public class ServiceConfiguration {
         this.dispatcherSupportCache = dispatcherSupportCache;
         this.metaDao = metaDao;
         this.metaCache = metaCache;
-        this.sendHistoryDao = sendHistoryDao;
-        this.sendHistoryCache = sendHistoryCache;
         this.metaIndicatorDao = metaIndicatorDao;
         this.metaIndicatorCache = metaIndicatorCache;
         this.notifyHistoryCrudOperation = notifyHistoryCrudOperation;
@@ -426,36 +419,6 @@ public class ServiceConfiguration {
     public DaoOnlyPresetLookupService<Meta> metaDaoOnlyPresetLookupService() {
         return new DaoOnlyPresetLookupService<>(
                 metaDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public GeneralBatchCrudService<LongIdKey, SendHistory> sendHistoryGeneralBatchCrudService() {
-        return new GeneralBatchCrudService<>(
-                sendHistoryDao,
-                sendHistoryCache,
-                longIdKeyKeyFetcher(),
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN,
-                sendHistoryTimeout
-        );
-    }
-
-    @Bean
-    public DaoOnlyEntireLookupService<SendHistory> sendHistoryDaoOnlyEntireLookupService() {
-        return new DaoOnlyEntireLookupService<>(
-                sendHistoryDao,
-                serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
-                LogLevel.WARN
-        );
-    }
-
-    @Bean
-    public DaoOnlyPresetLookupService<SendHistory> sendHistoryDaoOnlyPresetLookupService() {
-        return new DaoOnlyPresetLookupService<>(
-                sendHistoryDao,
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );

@@ -89,7 +89,6 @@ public interface HibernateMapper {
     MetaIndicator metaIndicatorFromHibernate(HibernateMetaIndicator hibernateMetaIndicator);
 
     @Mapping(target = "senderInfos", ignore = true)
-    @Mapping(target = "sendHistories", ignore = true)
     @Mapping(target = "routerInfo", ignore = true)
     @Mapping(target = "notifyHistories", ignore = true)
     @Mapping(target = "metas", ignore = true)
@@ -127,21 +126,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     SenderSupport senderSupportFromHibernate(HibernateSenderSupport hibernateSenderSupport);
 
-    @Mapping(target = "userStringId", ignore = true)
-    @Mapping(target = "user", ignore = true)
-    @Mapping(target = "topicStringId", ignore = true)
-    @Mapping(target = "topic", ignore = true)
-    @Mapping(target = "notifySettingLongId", ignore = true)
-    @Mapping(target = "notifySetting", ignore = true)
-    @Mapping(target = "longId", ignore = true)
-    HibernateSendHistory sendHistoryToHibernate(SendHistory sendHistory);
-
-    @InheritInverseConfiguration
-    SendHistory sendHistoryFromHibernate(HibernateSendHistory hibernateSendHistory);
-
     @Mapping(target = "stringId", ignore = true)
     @Mapping(target = "senderInfos", ignore = true)
-    @Mapping(target = "sendHistories", ignore = true)
     @Mapping(target = "notifySendRecords", ignore = true)
     @Mapping(target = "metas", ignore = true)
     @Mapping(target = "metaIndicators", ignore = true)
@@ -153,7 +139,6 @@ public interface HibernateMapper {
 
     @Mapping(target = "stringId", ignore = true)
     @Mapping(target = "sendRecords", ignore = true)
-    @Mapping(target = "sendHistories", ignore = true)
     @Mapping(target = "metas", ignore = true)
     HibernateUser userToHibernate(User user);
 

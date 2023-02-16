@@ -77,11 +77,6 @@
             group="${dubbo.provider.group}"
     />
     <dubbo:service
-            interface="com.dwarfeng.notify.stack.service.SendHistoryMaintainService"
-            ref="sendHistoryMaintainServiceImpl"
-            group="${dubbo.provider.group}"
-    />
-    <dubbo:service
             interface="com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService"
             ref="metaIndicatorMaintainServiceImpl"
             group="${dubbo.provider.group}"

@@ -2,21 +2,17 @@ package com.dwarfeng.notify.impl.service.operation;
 
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
-import com.dwarfeng.notify.stack.bean.entity.SendHistory;
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.cache.MetaCache;
 import com.dwarfeng.notify.stack.cache.NotifySendRecordCache;
-import com.dwarfeng.notify.stack.cache.SendHistoryCache;
 import com.dwarfeng.notify.stack.cache.UserCache;
 import com.dwarfeng.notify.stack.dao.MetaDao;
 import com.dwarfeng.notify.stack.dao.NotifySendRecordDao;
-import com.dwarfeng.notify.stack.dao.SendHistoryDao;
 import com.dwarfeng.notify.stack.dao.UserDao;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
-import com.dwarfeng.notify.stack.service.SendHistoryMaintainService;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
 import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -36,9 +32,6 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
     private final MetaDao metaDao;
     private final MetaCache metaCache;
 
-    private final SendHistoryDao sendHistoryDao;
-    private final SendHistoryCache sendHistoryCache;
-
     private final NotifySendRecordDao notifySendRecordDao;
     private final NotifySendRecordCache notifySendRecordCache;
 
@@ -48,15 +41,12 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
     public UserCrudOperation(
             UserDao userDao, UserCache userCache,
             MetaDao metaDao, MetaCache metaCache,
-            SendHistoryDao sendHistoryDao, SendHistoryCache sendHistoryCache,
             NotifySendRecordDao notifySendRecordDao, NotifySendRecordCache notifySendRecordCache
     ) {
         this.userDao = userDao;
         this.userCache = userCache;
         this.metaDao = metaDao;
         this.metaCache = metaCache;
-        this.sendHistoryDao = sendHistoryDao;
-        this.sendHistoryCache = sendHistoryCache;
         this.notifySendRecordDao = notifySendRecordDao;
         this.notifySendRecordCache = notifySendRecordCache;
     }
@@ -100,14 +90,6 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
         ).stream().map(Meta::getKey).collect(Collectors.toList());
         metaDao.batchDelete(metaKeys);
         metaCache.batchDelete(metaKeys);
-
-        // 删除与通知设置相关的发送历史的关联。
-        List<SendHistory> sendHistories = sendHistoryDao.lookup(
-                SendHistoryMaintainService.CHILD_FOR_USER, new Object[]{key}
-        );
-        sendHistories.forEach(history -> history.setUserKey(null));
-        sendHistoryCache.batchDelete(sendHistories.stream().map(SendHistory::getKey).collect(Collectors.toList()));
-        sendHistoryDao.batchUpdate(sendHistories);
 
         // 删除与用户相关的通知发送信息记录。
         List<NotifySendRecordKey> notifySendRecordKeys = notifySendRecordDao.lookup(

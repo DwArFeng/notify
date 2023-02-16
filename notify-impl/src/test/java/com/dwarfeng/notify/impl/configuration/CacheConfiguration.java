@@ -40,8 +40,6 @@ public class CacheConfiguration {
     private String dispatcherSupportPrefix;
     @Value("${cache.prefix.entity.meta}")
     private String metaPrefix;
-    @Value("${cache.prefix.entity.send_history}")
-    private String sendHistoryPrefix;
     @Value("${cache.prefix.entity.meta_indicator}")
     private String metaIndicatorPrefix;
     @Value("${cache.prefix.entity.notify_history}")
@@ -156,16 +154,6 @@ public class CacheConfiguration {
                 (RedisTemplate<String, FastJsonMeta>) template,
                 new MetaStringKeyFormatter(metaPrefix),
                 new MapStructBeanTransformer<>(Meta.class, FastJsonMeta.class, FastJsonMapper.class)
-        );
-    }
-
-    @Bean
-    @SuppressWarnings("unchecked")
-    public RedisBatchBaseCache<LongIdKey, SendHistory, FastJsonSendHistory> sendHistoryRedisBatchBaseCache() {
-        return new RedisBatchBaseCache<>(
-                (RedisTemplate<String, FastJsonSendHistory>) template,
-                new LongIdStringKeyFormatter(sendHistoryPrefix),
-                new MapStructBeanTransformer<>(SendHistory.class, FastJsonSendHistory.class, FastJsonMapper.class)
         );
     }
 

@@ -99,11 +99,6 @@ public interface FastJsonMapper {
     @InheritInverseConfiguration
     SenderSupport senderSupportFromFastJson(FastJsonSenderSupport fastJsonSenderSupport);
 
-    FastJsonSendHistory sendHistoryToFastJson(SendHistory sendHistory);
-
-    @InheritInverseConfiguration
-    SendHistory sendHistoryFromFastJson(FastJsonSendHistory fastJsonSendHistory);
-
     FastJsonTopic topicToFastJson(Topic topic);
 
     @InheritInverseConfiguration

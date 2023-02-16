@@ -34,7 +34,6 @@ public class DaoConfiguration {
     private final DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker;
     private final DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker;
     private final MetaPresetCriteriaMaker metaPresetCriteriaMaker;
-    private final SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker;
     private final MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker;
     private final NotifyHistoryPresetCriteriaMaker notifyHistoryPresetCriteriaMaker;
     private final NotifyInfoRecordPresetCriteriaMaker notifyInfoRecordPresetCriteriaMaker;
@@ -55,7 +54,6 @@ public class DaoConfiguration {
             DispatcherInfoPresetCriteriaMaker dispatcherInfoPresetCriteriaMaker,
             DispatcherSupportPresetCriteriaMaker dispatcherSupportPresetCriteriaMaker,
             MetaPresetCriteriaMaker metaPresetCriteriaMaker,
-            SendHistoryPresetCriteriaMaker sendHistoryPresetCriteriaMaker,
             MetaIndicatorPresetCriteriaMaker metaIndicatorPresetCriteriaMaker,
             NotifyHistoryPresetCriteriaMaker notifyHistoryPresetCriteriaMaker,
             NotifyInfoRecordPresetCriteriaMaker notifyInfoRecordPresetCriteriaMaker,
@@ -72,7 +70,6 @@ public class DaoConfiguration {
         this.dispatcherInfoPresetCriteriaMaker = dispatcherInfoPresetCriteriaMaker;
         this.dispatcherSupportPresetCriteriaMaker = dispatcherSupportPresetCriteriaMaker;
         this.metaPresetCriteriaMaker = metaPresetCriteriaMaker;
-        this.sendHistoryPresetCriteriaMaker = sendHistoryPresetCriteriaMaker;
         this.metaIndicatorPresetCriteriaMaker = metaIndicatorPresetCriteriaMaker;
         this.notifyHistoryPresetCriteriaMaker = notifyHistoryPresetCriteriaMaker;
         this.notifyInfoRecordPresetCriteriaMaker = notifyInfoRecordPresetCriteriaMaker;
@@ -430,38 +427,6 @@ public class DaoConfiguration {
                 new MapStructBeanTransformer<>(Meta.class, HibernateMeta.class, HibernateMapper.class),
                 HibernateMeta.class,
                 metaPresetCriteriaMaker
-        );
-    }
-
-    @Bean
-    public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, SendHistory, HibernateSendHistory>
-    sendHistoryHibernateBatchBaseDao() {
-        return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
-                new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, HibernateMapper.class),
-                new MapStructBeanTransformer<>(SendHistory.class, HibernateSendHistory.class, HibernateMapper.class),
-                HibernateSendHistory.class,
-                new DefaultDeletionMod<>(),
-                batchSize
-        );
-    }
-
-    @Bean
-    public HibernateEntireLookupDao<SendHistory, HibernateSendHistory> sendHistoryHibernateEntireLookupDao() {
-        return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
-                new MapStructBeanTransformer<>(SendHistory.class, HibernateSendHistory.class, HibernateMapper.class),
-                HibernateSendHistory.class
-        );
-    }
-
-    @Bean
-    public HibernatePresetLookupDao<SendHistory, HibernateSendHistory> sendHistoryHibernatePresetLookupDao() {
-        return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
-                new MapStructBeanTransformer<>(SendHistory.class, HibernateSendHistory.class, HibernateMapper.class),
-                HibernateSendHistory.class,
-                sendHistoryPresetCriteriaMaker
         );
     }
 
