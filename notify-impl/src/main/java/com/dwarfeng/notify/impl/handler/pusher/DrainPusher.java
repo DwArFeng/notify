@@ -1,9 +1,7 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
-import com.dwarfeng.notify.stack.bean.entity.SendHistory;
+import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * 简单的丢弃掉所有信息的推送器。
@@ -21,11 +19,7 @@ public class DrainPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifySent(SendHistory sendHistory) {
-    }
-
-    @Override
-    public void notifySent(List<SendHistory> sendHistories) {
+    public void notifyHistoryRecorded(NotifyHistoryRecordInfo info) {
     }
 
     @Override

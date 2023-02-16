@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
-import com.dwarfeng.notify.stack.bean.entity.SendHistory;
+import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -38,17 +37,10 @@ public class LogPusher extends AbstractPusher {
     }
 
     @Override
-    public void notifySent(SendHistory sendHistory) throws HandlerException {
-        String title = "通知被发送事件:";
-        String message = Objects.toString(sendHistory);
+    public void notifyHistoryRecorded(NotifyHistoryRecordInfo info) throws HandlerException {
+        String title = "通知历史被记录事件:";
+        String message = Objects.toString(info);
         logData(title, message);
-    }
-
-    @Override
-    public void notifySent(List<SendHistory> sendHistories) throws HandlerException {
-        for (SendHistory sendHistory : sendHistories) {
-            notifySent(sendHistory);
-        }
     }
 
     @Override

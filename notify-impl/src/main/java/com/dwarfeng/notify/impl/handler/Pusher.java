@@ -1,9 +1,7 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.entity.SendHistory;
+import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
-
-import java.util.List;
 
 /**
  * 事件推送器。
@@ -22,20 +20,12 @@ public interface Pusher {
     boolean supportType(String type);
 
     /**
-     * 通知被发送时执行的调度。
+     * 通知历史被记录时执行的调度。
      *
-     * @param sendHistory 被发送的通知历史。
+     * @param info 通知历史记录信息。
      * @throws HandlerException 处理器异常。
      */
-    void notifySent(SendHistory sendHistory) throws HandlerException;
-
-    /**
-     * 通知被发送时执行的调度。
-     *
-     * @param sendHistories 被发送的通知历史组成的列表。
-     * @throws HandlerException 处理器异常。
-     */
-    void notifySent(List<SendHistory> sendHistories) throws HandlerException;
+    void notifyHistoryRecorded(NotifyHistoryRecordInfo info) throws HandlerException;
 
     /**
      * 路由被重置时执行的调度。

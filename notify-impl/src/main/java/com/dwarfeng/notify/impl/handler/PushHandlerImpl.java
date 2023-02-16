@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.notify.stack.bean.entity.SendHistory;
+import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.handler.PushHandler;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,13 +29,8 @@ public class PushHandlerImpl implements PushHandler {
     }
 
     @Override
-    public void notifySent(SendHistory sendHistory) throws HandlerException {
-        pusher.notifySent(sendHistory);
-    }
-
-    @Override
-    public void notifySent(List<SendHistory> sendHistories) throws HandlerException {
-        pusher.notifySent(sendHistories);
+    public void notifyHistoryRecorded(NotifyHistoryRecordInfo info) throws HandlerException {
+        pusher.notifyHistoryRecorded(info);
     }
 
     @Override

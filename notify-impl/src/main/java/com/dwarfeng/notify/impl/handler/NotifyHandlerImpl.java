@@ -1,10 +1,10 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.sdk.util.Constants;
+import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
-import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
+import com.dwarfeng.notify.stack.bean.key.*;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;
@@ -35,7 +35,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private final UserMaintainService userMaintainService;
     private final MetaMaintainService metaMaintainService;
     private final MetaIndicatorMaintainService metaIndicatorMaintainService;
-    private final SendHistoryMaintainService sendHistoryMaintainService;
+    private final NotifyHistoryMaintainService notifyHistoryMaintainService;
+    private final NotifyInfoRecordMaintainService notifyInfoRecordMaintainService;
+    private final NotifySendRecordMaintainService notifySendRecordMaintainService;
 
     private final RouteLocalCacheHandler routeLocalCacheHandler;
     private final DispatchLocalCacheHandler dispatchLocalCacheHandler;
@@ -53,7 +55,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
             UserMaintainService userMaintainService,
             MetaMaintainService metaMaintainService,
             MetaIndicatorMaintainService metaIndicatorMaintainService,
-            SendHistoryMaintainService sendHistoryMaintainService,
+            NotifyHistoryMaintainService notifyHistoryMaintainService,
+            NotifyInfoRecordMaintainService notifyInfoRecordMaintainService,
+            NotifySendRecordMaintainService notifySendRecordMaintainService,
             RouteLocalCacheHandler routeLocalCacheHandler,
             DispatchLocalCacheHandler dispatchLocalCacheHandler,
             SendLocalCacheHandler sendLocalCacheHandler,
@@ -66,7 +70,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.userMaintainService = userMaintainService;
         this.metaMaintainService = metaMaintainService;
         this.metaIndicatorMaintainService = metaIndicatorMaintainService;
-        this.sendHistoryMaintainService = sendHistoryMaintainService;
+        this.notifyHistoryMaintainService = notifyHistoryMaintainService;
+        this.notifyInfoRecordMaintainService = notifyInfoRecordMaintainService;
+        this.notifySendRecordMaintainService = notifySendRecordMaintainService;
         this.routeLocalCacheHandler = routeLocalCacheHandler;
         this.dispatchLocalCacheHandler = dispatchLocalCacheHandler;
         this.sendLocalCacheHandler = sendLocalCacheHandler;
@@ -80,24 +86,24 @@ public class NotifyHandlerImpl implements NotifyHandler {
         try {
             // 获取并处理 notifyInfo 中的字段。
             LongIdKey notifySettingKey = notifyInfo.getNotifySettingKey();
-            Map<String, String> routeInfo = notifyInfo.getRouteInfoMap();
-            Map<String, String> dispatchInfo = notifyInfo.getDispatchInfoMap();
-            Map<String, String> sendInfo = notifyInfo.getSendInfoMap();
+            Map<String, String> routeInfoMap = notifyInfo.getRouteInfoMap();
+            Map<String, String> dispatchInfoMap = notifyInfo.getDispatchInfoMap();
+            Map<String, String> sendInfoMap = notifyInfo.getSendInfoMap();
 
             // 确认通知设置有效。
             handlerValidator.makeSureNotifySettingValid(notifySettingKey);
 
             // 进行路由操作。
-            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfo);
+            List<StringIdKey> routedUserKeys = routing(notifySettingKey, routeInfoMap);
 
             // 进行调度操作。
-            List<DispatchedItem> dispatchedItems = dispatching(notifySettingKey, dispatchInfo, routedUserKeys);
+            List<DispatchedItem> dispatchedItems = dispatching(notifySettingKey, dispatchInfoMap, routedUserKeys);
 
             // 进行发送操作。
-            List<SentItem> sentItems = sending(notifySettingKey, sendInfo, dispatchedItems);
+            List<SentItem> sentItems = sending(notifySettingKey, sendInfoMap, dispatchedItems);
 
             // 进行后处理操作。
-            postprocessing(notifySettingKey, sentItems, routeInfo, dispatchInfo, sendInfo);
+            postprocessing(notifySettingKey, sentItems, routeInfoMap, dispatchInfoMap, sendInfoMap);
         } catch (HandlerException e) {
             throw e;
         } catch (Exception e) {
@@ -105,7 +111,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
     }
 
-    private List<StringIdKey> routing(LongIdKey notifySettingKey, Map<String, String> routeInfo) throws Exception {
+    private List<StringIdKey> routing(
+            LongIdKey notifySettingKey, Map<String, String> routeInfoMap
+    ) throws Exception {
         // 通过本地缓存获取路由器及其类型。
         Router router = routeLocalCacheHandler.get(notifySettingKey);
 
@@ -114,11 +122,11 @@ public class NotifyHandlerImpl implements NotifyHandler {
         routerContext.setNotifySettingKey(notifySettingKey);
 
         // 返回结果列表。
-        return router.route(routeInfo, routerContext);
+        return router.route(routeInfoMap, routerContext);
     }
 
     private List<DispatchedItem> dispatching(
-            LongIdKey notifySettingKey, Map<String, String> dispatchInfo, List<StringIdKey> routedUserKeys
+            LongIdKey notifySettingKey, Map<String, String> dispatchInfoMap, List<StringIdKey> routedUserKeys
     ) throws Exception {
         // 查询所有使能的主题。
         List<StringIdKey> topicKeys = topicMaintainService.lookupAsList(
@@ -140,7 +148,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
                 // 调用调度器，获取需要通过此主题发送通知的用户列表。
                 List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
-                        dispatchInfo, routedUserKeys, dispatcherContext
+                        dispatchInfoMap, routedUserKeys, dispatcherContext
                 );
 
                 // 生成 Item 结构体，并添加到结果列表。
@@ -154,8 +162,9 @@ public class NotifyHandlerImpl implements NotifyHandler {
         return dispatchedItems;
     }
 
-    private List<SentItem> sending(LongIdKey notifySettingKey, Map<String, String> sendInfo, List<DispatchedItem> dispatchedItems)
-            throws Exception {
+    private List<SentItem> sending(
+            LongIdKey notifySettingKey, Map<String, String> sendInfoMap, List<DispatchedItem> dispatchedItems
+    ) throws Exception {
         // 定义 Item 结构体列表。
         List<SentItem> sentItems = new ArrayList<>();
 
@@ -177,7 +186,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 );
 
                 // 执行发生动作。
-                List<Sender.Response> senderResponse = sender.send(sendInfo, userKeys, senderContext);
+                List<Sender.Response> senderResponse = sender.send(sendInfoMap, userKeys, senderContext);
 
                 // 构建发送结构体，添加到结构体列表中。
                 sentItems.add(new SentItem(topicKey, senderResponse));
@@ -191,88 +200,86 @@ public class NotifyHandlerImpl implements NotifyHandler {
     }
 
     private void postprocessing(
-            LongIdKey notifySettingKey, List<SentItem> sentItems, Map<String, String> routeInfo,
-            Map<String, String> dispatchInfo, Map<String, String> sendInfo
+            LongIdKey notifySettingKey, List<SentItem> sentItems, Map<String, String> routeInfoMap,
+            Map<String, String> dispatchInfoMap, Map<String, String> sendInfoMap
     ) throws Exception {
-        // 构造发送历史实体。
-        List<SendHistory> sendHistories = new ArrayList<>();
+        // 实体定义。
+        NotifyHistory persistNotifyHistory;
+        List<NotifyInfoRecord> persistNotifyInfoRecords = new ArrayList<>();
+        List<NotifySendRecord> persistNotifySendRecords = new ArrayList<>();
+        List<NotifyHistoryRecordInfo.InfoRecord> pushInfoRecords = new ArrayList<>();
+        List<NotifyHistoryRecordInfo.SendRecord> pushSendRecords = new ArrayList<>();
+        NotifyHistoryRecordInfo pushNotifyHistoryRecordInfo;
+
+        // 构造相关实体。
+        Date currentDate = new Date();
+        LongIdKey notifyHistoryKey = keyFetcher.fetchKey();
+        long notifyHistoryId = notifyHistoryKey.getLongId();
+        persistNotifyHistory = new NotifyHistory(
+                notifyHistoryKey, notifySettingKey, currentDate, "通过 NotifyHandlerImpl 生成"
+        );
+        for (Map.Entry<String, String> entry : routeInfoMap.entrySet()) {
+            persistNotifyInfoRecords.add(new NotifyInfoRecord(
+                    new NotifyInfoRecordKey(
+                            notifyHistoryId, Constants.NOTIFY_INFO_RECORD_TYPE_ROUTE_INFO, entry.getKey()
+                    ),
+                    entry.getValue()
+            ));
+            pushInfoRecords.add(new NotifyHistoryRecordInfo.InfoRecord(
+                    Constants.NOTIFY_INFO_RECORD_TYPE_ROUTE_INFO, entry.getKey(), entry.getValue()
+            ));
+        }
+        for (Map.Entry<String, String> entry : dispatchInfoMap.entrySet()) {
+            persistNotifyInfoRecords.add(new NotifyInfoRecord(
+                    new NotifyInfoRecordKey(
+                            notifyHistoryId, Constants.NOTIFY_INFO_RECORD_TYPE_DISPATCH_INFO, entry.getKey()
+                    ),
+                    entry.getValue()
+            ));
+            pushInfoRecords.add(new NotifyHistoryRecordInfo.InfoRecord(
+                    Constants.NOTIFY_INFO_RECORD_TYPE_DISPATCH_INFO, entry.getKey(), entry.getValue()
+            ));
+        }
+        for (Map.Entry<String, String> entry : sendInfoMap.entrySet()) {
+            persistNotifyInfoRecords.add(new NotifyInfoRecord(
+                    new NotifyInfoRecordKey(
+                            notifyHistoryId, Constants.NOTIFY_INFO_RECORD_TYPE_SEND_INFO, entry.getKey()
+                    ),
+                    entry.getValue()
+            ));
+            pushInfoRecords.add(new NotifyHistoryRecordInfo.InfoRecord(
+                    Constants.NOTIFY_INFO_RECORD_TYPE_SEND_INFO, entry.getKey(), entry.getValue()
+            ));
+        }
         for (SentItem item : sentItems) {
-            // 获取 Item 结构体中的参数。
-            StringIdKey topicKey = item.getTopicKey();
-            List<Sender.Response> responses = item.getResponses();
-
-            // 遍历发送响应，为每个响应建立对应的发送历史。
-            for (Sender.Response response : responses) {
-                // 获取发送历史的字段。
-                StringIdKey userKey = response.getUserKey();
-                boolean succeedFlag = response.isSucceedFlag();
-                String senderMessage = response.getMessage();
-
-                // 构建发送历史并添加到列表中。
-                // TODO 将历史记录用新实体代替。
-                SendHistory sendHistory = new SendHistory(
-                        keyFetcher.fetchKey(), notifySettingKey, topicKey, userKey, new Date(),
-                        "routeInfo", "dispatchInfo", "sendInfo", succeedFlag, senderMessage,
-                        "通过 NotifyHandlerImpl 生成"
-                );
-                sendHistories.add(sendHistory);
+            for (Sender.Response response : item.getResponses()) {
+                persistNotifySendRecords.add(new NotifySendRecord(
+                        new NotifySendRecordKey(
+                                notifyHistoryId, item.getTopicKey().getStringId(), response.getUserKey().getStringId()
+                        ),
+                        response.isSucceedFlag(),
+                        response.getMessage()
+                ));
+                pushSendRecords.add(new NotifyHistoryRecordInfo.SendRecord(
+                        item.getTopicKey(), response.getUserKey(), response.isSucceedFlag(), response.getMessage()
+                ));
             }
         }
+        pushNotifyHistoryRecordInfo = new NotifyHistoryRecordInfo(
+                notifyHistoryKey, notifySettingKey, currentDate, "通过 NotifyHandlerImpl 生成",
+                pushInfoRecords, pushSendRecords
+        );
 
-        // 记录数据。
-        insertSendHistories(sendHistories);
+        // 插入历史记录信息。
+        notifyHistoryMaintainService.insert(persistNotifyHistory);
+        notifyInfoRecordMaintainService.batchInsert(persistNotifyInfoRecords);
+        notifySendRecordMaintainService.batchInsert(persistNotifySendRecords);
 
-        // 推送数据。
-        pushSendHistories(sendHistories);
-    }
-
-    private void insertSendHistories(List<SendHistory> sendHistories) {
+        // 推送历史记录信息插入事件。
         try {
-            sendHistoryMaintainService.batchInsert(sendHistories);
-            return;
+            pushHandler.notifyHistoryRecorded(pushNotifyHistoryRecordInfo);
         } catch (Exception e) {
-            LOGGER.warn("数据插入失败, 试图使用不同的策略进行插入: 逐条插入", e);
-        }
-
-        List<SendHistory> failedList = new ArrayList<>();
-
-        for (SendHistory sendHistory : sendHistories) {
-            try {
-                sendHistoryMaintainService.insert(sendHistory);
-            } catch (Exception e) {
-                LOGGER.warn("数据插入失败, 放弃对数据的插入: " + sendHistory, e);
-                failedList.add(sendHistory);
-            }
-        }
-
-        if (!failedList.isEmpty()) {
-            LOGGER.warn("记录数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
-            failedList.forEach(sendHistory -> LOGGER.debug(sendHistory + ""));
-        }
-    }
-
-    private void pushSendHistories(List<SendHistory> sendHistories) {
-        try {
-            pushHandler.notifySent(sendHistories);
-            return;
-        } catch (Exception e) {
-            LOGGER.warn("数据推送失败, 试图使用不同的策略进行推送: 逐条推送", e);
-        }
-
-        List<SendHistory> failedList = new ArrayList<>();
-
-        for (SendHistory sendHistory : sendHistories) {
-            try {
-                pushHandler.notifySent(sendHistory);
-            } catch (Exception e) {
-                LOGGER.warn("数据推送失败, 放弃对数据的推送: " + sendHistory, e);
-                failedList.add(sendHistory);
-            }
-        }
-
-        if (!failedList.isEmpty()) {
-            LOGGER.warn("推送数据时发生异常, 最多 " + failedList.size() + " 个数据信息丢失");
-            failedList.forEach(sendHistory -> LOGGER.debug(sendHistory + ""));
+            LOGGER.warn("历史记录信息插入事件推送失败, 放弃对数据的推送: " + pushNotifyHistoryRecordInfo, e);
         }
     }
 
