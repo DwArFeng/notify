@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.configuration;
 
+import com.dwarfeng.notify.sdk.bean.FastJsonMapper;
 import com.dwarfeng.notify.sdk.bean.entity.*;
 import com.dwarfeng.notify.sdk.bean.key.formatter.*;
 import com.dwarfeng.notify.stack.bean.entity.*;

@@ -1,5 +1,6 @@
-package com.dwarfeng.notify.sdk.bean.entity;
+package com.dwarfeng.notify.sdk.bean;
 
+import com.dwarfeng.notify.sdk.bean.entity.*;
 import com.dwarfeng.notify.sdk.bean.key.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.*;

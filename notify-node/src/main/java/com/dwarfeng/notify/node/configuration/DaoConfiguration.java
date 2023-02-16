@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.node.configuration;
 
+import com.dwarfeng.notify.impl.bean.HibernateMapper;
 import com.dwarfeng.notify.impl.bean.entity.*;
 import com.dwarfeng.notify.impl.bean.key.*;
 import com.dwarfeng.notify.impl.dao.preset.*;
