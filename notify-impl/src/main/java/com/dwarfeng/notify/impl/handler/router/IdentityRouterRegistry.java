@@ -32,45 +32,45 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
     public static final String ROUTER_TYPE = "identity_router";
 
     /**
-     * 将指定的路由参数转换为参数。
+     * 将指定的路由器参数转换为字符串。
      *
-     * @param config 指定的路由参数。
-     * @return 指定的参数转换成的参数。
+     * @param config 指定的路由器参数。
+     * @return 指定的参数转换成的字符串。
      */
-    public static String toParam(Config config) {
+    public static String stringifyParam(Config config) {
         return JSON.toJSONString(config, false);
     }
 
     /**
-     * 解析参数并获取路由参数。
+     * 从指定的字符串中解析路由器参数。
      *
-     * @param param 指定的参数。
-     * @return 解析参数获取到的路由参数。
+     * @param string 指定的字符串。
+     * @return 解析指定的字符串获取到的路由器参数。
      */
-    public static Config parseParam(String param) {
-        return JSON.parseObject(param, Config.class);
+    public static Config parseParam(String string) {
+        return JSON.parseObject(string, Config.class);
     }
 
     /**
-     * 将指定的路由参数转换为路由信息文本。
+     * 将指定的本体用户列表转换为字符串。
      *
-     * @param userKeys 指定的路由参数。
-     * @return 指定的参数转换成的路由信息文本。
+     * @param identityUserList 指定的本体用户列表。
+     * @return 指定的本体用户列表转换成的字符串。
      */
-    public static String toRouteInfo(List<StringIdKey> userKeys) {
-        List<FastJsonStringIdKey> fastJsonUserKeys = userKeys.stream().map(FastJsonStringIdKey::of)
+    public static String stringifyIdentityUserList(List<StringIdKey> identityUserList) {
+        List<FastJsonStringIdKey> fastJsonUserKeys = identityUserList.stream().map(FastJsonStringIdKey::of)
                 .collect(Collectors.toList());
         return JSON.toJSONString(fastJsonUserKeys, false);
     }
 
     /**
-     * 解析路由信息文本并获取路由参数。
+     * 从指定的字符串中解析本体用户列表。
      *
-     * @param routeInfo 指定的路由信息文本。
-     * @return 解析路由信息文本获取到的路由参数。
+     * @param string 指定的字符串。
+     * @return 解析指定的字符串获取到的本体用户列表。
      */
-    public static List<StringIdKey> parseRouteInfo(String routeInfo) {
-        List<FastJsonStringIdKey> fastJsonUserKeys = JSON.parseArray(routeInfo, FastJsonStringIdKey.class);
+    public static List<StringIdKey> parseIdentityUserList(String string) {
+        List<FastJsonStringIdKey> fastJsonUserKeys = JSON.parseArray(string, FastJsonStringIdKey.class);
         return fastJsonUserKeys.stream().map(FastJsonStringIdKey::toStackBean).collect(Collectors.toList());
     }
 
@@ -93,7 +93,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
     @Override
     public String provideExampleParam() {
-        Config config = new Config("router-info-key-here");
+        Config config = new Config("your-identity-user-list-key-here");
         return JSON.toJSONString(config, false);
     }
 
@@ -129,12 +129,15 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
         @Override
         public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
-            String routeInfo = Optional.ofNullable(routeInfoMap).map(map -> map.get(config.getRouteInfoKey()))
-                    .orElse(StringUtils.EMPTY);
-            if (StringUtils.isEmpty(routeInfo)) {
+            // 获取本体用户列表的字符串形式。
+            String identityUserListString = Optional.ofNullable(routeInfoMap)
+                    .map(map -> map.get(config.getIdentityUserListKey())).orElse(StringUtils.EMPTY);
+
+            // 解析本体用户列表字符串并返回结果。
+            if (StringUtils.isEmpty(identityUserListString)) {
                 return Collections.emptyList();
             }
-            List<StringIdKey> userKeys = parseRouteInfo(routeInfo);
+            List<StringIdKey> userKeys = parseIdentityUserList(identityUserListString);
             return context.filterUser(userKeys);
         }
 
@@ -146,30 +149,30 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = 5336710859728095278L;
-        
-        @JSONField(name = "route_info_key", ordinal = 1)
-        private String routeInfoKey;
+        private static final long serialVersionUID = -409012282137963853L;
+
+        @JSONField(name = "identity_user_list_key", ordinal = 1)
+        private String identityUserListKey;
 
         public Config() {
         }
 
-        public Config(String routeInfoKey) {
-            this.routeInfoKey = routeInfoKey;
+        public Config(String identityUserListKey) {
+            this.identityUserListKey = identityUserListKey;
         }
 
-        public String getRouteInfoKey() {
-            return routeInfoKey;
+        public String getIdentityUserListKey() {
+            return identityUserListKey;
         }
 
-        public void setRouteInfoKey(String routeInfoKey) {
-            this.routeInfoKey = routeInfoKey;
+        public void setIdentityUserListKey(String identityUserListKey) {
+            this.identityUserListKey = identityUserListKey;
         }
 
         @Override
         public String toString() {
             return "Config{" +
-                    "routeInfoKey='" + routeInfoKey + '\'' +
+                    "identityUserListKey='" + identityUserListKey + '\'' +
                     '}';
         }
     }
