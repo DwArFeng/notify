@@ -68,7 +68,9 @@ public class EmptyDispatcherRegistry extends AbstractDispatcherRegistry {
     public static class EmptyDispatcher implements Dispatcher {
 
         @Override
-        public List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context) {
+        public List<StringIdKey> dispatch(
+                Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context
+        ) {
             return Collections.emptyList();
         }
 

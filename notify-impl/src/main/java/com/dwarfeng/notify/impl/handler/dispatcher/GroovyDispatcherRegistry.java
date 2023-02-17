@@ -101,8 +101,9 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
         }
 
         @Override
-        public List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context)
-                throws DispatcherException {
+        public List<StringIdKey> dispatch(
+                Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context
+        ) throws DispatcherException {
             return processor.dispatch(dispatchInfoMap, userKeys, context);
         }
 
@@ -132,7 +133,8 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
          * @throws DispatcherException 调度器异常。
          * @see Dispatcher#dispatch(Map, List, Dispatcher.Context)
          */
-        List<StringIdKey> dispatch(Map<String, String> dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context)
-                throws DispatcherException;
+        List<StringIdKey> dispatch(
+                Map<String, String> dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context
+        ) throws DispatcherException;
     }
 }

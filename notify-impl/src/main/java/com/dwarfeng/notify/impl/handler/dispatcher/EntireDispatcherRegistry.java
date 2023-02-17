@@ -67,7 +67,9 @@ public class EntireDispatcherRegistry extends AbstractDispatcherRegistry {
     public static class EntireDispatcher implements Dispatcher {
 
         @Override
-        public List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context) {
+        public List<StringIdKey> dispatch(
+                Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context
+        ) {
             return userKeys;
         }
 
