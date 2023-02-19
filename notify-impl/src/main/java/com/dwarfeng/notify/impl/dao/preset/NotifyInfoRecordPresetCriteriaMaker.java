@@ -20,8 +20,8 @@ public class NotifyInfoRecordPresetCriteriaMaker implements PresetCriteriaMaker 
             case NotifyInfoRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY:
                 childForNotifyHistory(detachedCriteria, objects);
                 break;
-            case NotifyInfoRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY_RECORD_ID_ASC:
-                childForNotifyHistoryRecordIdAsc(detachedCriteria, objects);
+            case NotifyInfoRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY_ORDERED:
+                childForNotifyHistoryOrdered(detachedCriteria, objects);
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + s);
@@ -43,7 +43,7 @@ public class NotifyInfoRecordPresetCriteriaMaker implements PresetCriteriaMaker 
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void childForNotifyHistoryRecordIdAsc(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForNotifyHistoryOrdered(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {
                 detachedCriteria.add(Restrictions.isNull("notifyHistoryId"));
@@ -51,6 +51,7 @@ public class NotifyInfoRecordPresetCriteriaMaker implements PresetCriteriaMaker 
                 LongIdKey longIdKey = (LongIdKey) objects[0];
                 detachedCriteria.add(Restrictions.eqOrIsNull("notifyHistoryId", longIdKey.getLongId()));
             }
+            detachedCriteria.addOrder(Order.asc("type"));
             detachedCriteria.addOrder(Order.asc("recordId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));

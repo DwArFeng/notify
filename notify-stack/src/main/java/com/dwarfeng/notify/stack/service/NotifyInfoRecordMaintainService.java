@@ -16,5 +16,5 @@ public interface NotifyInfoRecordMaintainService extends BatchCrudService<Notify
         EntireLookupService<NotifyInfoRecord>, PresetLookupService<NotifyInfoRecord> {
 
     String CHILD_FOR_NOTIFY_HISTORY = "child_for_notify_history";
-    String CHILD_FOR_NOTIFY_HISTORY_RECORD_ID_ASC = "child_for_notify_history_record_id_asc";
+    String CHILD_FOR_NOTIFY_HISTORY_ORDERED = "child_for_notify_history_ordered";
 }
