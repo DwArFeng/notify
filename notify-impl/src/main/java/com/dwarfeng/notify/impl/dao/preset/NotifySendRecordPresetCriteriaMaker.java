@@ -5,6 +5,7 @@ import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,9 @@ public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker 
                 break;
             case NotifySendRecordMaintainService.CHILD_FOR_USER:
                 childForUser(criteria, objs);
+                break;
+            case NotifySendRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY_ORDERED:
+                childForNotifyHistoryOrdered(criteria, objs);
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + preset);
@@ -68,6 +72,22 @@ public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker 
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
                 detachedCriteria.add(Restrictions.eqOrIsNull("userId", stringIdKey.getStringId()));
             }
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    @SuppressWarnings("DuplicatedCode")
+    private void childForNotifyHistoryOrdered(DetachedCriteria detachedCriteria, Object[] objects) {
+        try {
+            if (Objects.isNull(objects[0])) {
+                detachedCriteria.add(Restrictions.isNull("notifyHistoryId"));
+            } else {
+                LongIdKey longIdKey = (LongIdKey) objects[0];
+                detachedCriteria.add(Restrictions.eqOrIsNull("notifyHistoryId", longIdKey.getLongId()));
+            }
+            detachedCriteria.addOrder(Order.asc("topicId"));
+            detachedCriteria.addOrder(Order.asc("userId"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
         }

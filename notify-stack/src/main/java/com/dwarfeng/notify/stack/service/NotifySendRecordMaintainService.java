@@ -18,4 +18,5 @@ public interface NotifySendRecordMaintainService extends BatchCrudService<Notify
     String CHILD_FOR_NOTIFY_HISTORY = "child_for_notify_history";
     String CHILD_FOR_TOPIC = "child_for_notify_topic";
     String CHILD_FOR_USER = "child_for_notify_user";
+    String CHILD_FOR_NOTIFY_HISTORY_ORDERED = "child_for_notify_history_ordered";
 }
