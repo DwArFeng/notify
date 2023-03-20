@@ -4,6 +4,8 @@
 
 #### 功能构建
 
+- 优化 Linux 系统的启停脚本。
+
 - 优化接口格式。
   - com.dwarfeng.notify.stack.handler.Router。
   - com.dwarfeng.notify.stack.handler.Sender。
