@@ -92,7 +92,7 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class GroovyDispatcher implements Dispatcher {
+    public static class GroovyDispatcher extends AbstractDispatcher {
 
         private final Processor processor;
 
@@ -102,9 +102,9 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
 
         @Override
         public List<StringIdKey> dispatch(
-                Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context
+                ContextInfo contextInfo, Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys
         ) throws DispatcherException {
-            return processor.dispatch(dispatchInfoMap, userKeys, context);
+            return processor.dispatch(contextInfo, dispatchInfoMap, userKeys);
         }
 
         @Override
@@ -126,15 +126,15 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
         /**
          * 调度操作。
          *
+         * @param contextInfo  上下文信息。
          * @param dispatchInfo 调度信息。
          * @param userKeys     用户空间。
-         * @param context      上下文。
          * @return 调度返回的用户主键组成的列表。
          * @throws DispatcherException 调度器异常。
-         * @see Dispatcher#dispatch(Map, List, Dispatcher.Context)
+         * @see #dispatch(Dispatcher.ContextInfo, Map, List)
          */
         List<StringIdKey> dispatch(
-                Map<String, String> dispatchInfo, List<StringIdKey> userKeys, Dispatcher.Context context
+                Dispatcher.ContextInfo contextInfo, Map<String, String> dispatchInfo, List<StringIdKey> userKeys
         ) throws DispatcherException;
     }
 }

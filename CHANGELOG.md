@@ -4,7 +4,10 @@
 
 #### 功能构建
 
-- (无)
+- 优化接口格式。
+  - com.dwarfeng.notify.stack.handler.Router。
+  - com.dwarfeng.notify.stack.handler.Sender。
+  - com.dwarfeng.notify.stack.handler.Dispatcher。
 
 #### Bug修复
 

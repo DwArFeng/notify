@@ -86,7 +86,7 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class LogSender implements Sender {
+    public static class LogSender extends AbstractSender {
 
         private static final Logger LOGGER = LoggerFactory.getLogger(LogSender.class);
 
@@ -97,7 +97,7 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) {
+        public List<Response> send(ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys) {
             List<Response> responses = new ArrayList<>();
             for (StringIdKey userKey : userKeys) {
                 logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfoMap);

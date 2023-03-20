@@ -3,25 +3,32 @@ package com.dwarfeng.notify.impl.handler;
 import com.dwarfeng.notify.sdk.util.Constants;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.notify.stack.bean.entity.*;
-import com.dwarfeng.notify.stack.bean.key.*;
+import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
+import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
+import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
+import com.dwarfeng.notify.stack.bean.entity.Topic;
+import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
+import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
+import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
-import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.handler.*;
-import com.dwarfeng.notify.stack.service.*;
+import com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService;
+import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
+import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
+import com.dwarfeng.notify.stack.service.TopicMaintainService;
 import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Component
@@ -29,12 +36,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(NotifyHandlerImpl.class);
 
-    private final ApplicationContext ctx;
-
     private final TopicMaintainService topicMaintainService;
-    private final UserMaintainService userMaintainService;
-    private final MetaMaintainService metaMaintainService;
-    private final MetaIndicatorMaintainService metaIndicatorMaintainService;
     private final NotifyHistoryMaintainService notifyHistoryMaintainService;
     private final NotifyInfoRecordMaintainService notifyInfoRecordMaintainService;
     private final NotifySendRecordMaintainService notifySendRecordMaintainService;
@@ -50,11 +52,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
     private final KeyFetcher<LongIdKey> keyFetcher;
 
     public NotifyHandlerImpl(
-            ApplicationContext ctx,
             TopicMaintainService topicMaintainService,
-            UserMaintainService userMaintainService,
-            MetaMaintainService metaMaintainService,
-            MetaIndicatorMaintainService metaIndicatorMaintainService,
             NotifyHistoryMaintainService notifyHistoryMaintainService,
             NotifyInfoRecordMaintainService notifyInfoRecordMaintainService,
             NotifySendRecordMaintainService notifySendRecordMaintainService,
@@ -65,11 +63,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
             HandlerValidator handlerValidator,
             KeyFetcher<LongIdKey> keyFetcher
     ) {
-        this.ctx = ctx;
         this.topicMaintainService = topicMaintainService;
-        this.userMaintainService = userMaintainService;
-        this.metaMaintainService = metaMaintainService;
-        this.metaIndicatorMaintainService = metaIndicatorMaintainService;
         this.notifyHistoryMaintainService = notifyHistoryMaintainService;
         this.notifyInfoRecordMaintainService = notifyInfoRecordMaintainService;
         this.notifySendRecordMaintainService = notifySendRecordMaintainService;
@@ -118,11 +112,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         Router router = routeLocalCacheHandler.get(notifySettingKey);
 
         // 调用路由方法，获取与通知相关的用户主键。
-        InternalRouterContext routerContext = ctx.getBean(InternalRouterContext.class, this);
-        routerContext.setNotifySettingKey(notifySettingKey);
-
-        // 返回结果列表。
-        return router.route(routeInfoMap, routerContext);
+        Router.ContextInfo routerContextInfo = new Router.ContextInfo(notifySettingKey);
+        return router.route(routerContextInfo, routeInfoMap);
     }
 
     private List<DispatchedItem> dispatching(
@@ -135,20 +126,15 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
         // 对所有调度器执行启动调度方法，获取每个主题的目标用户，并转换为 Item 结构体。
         List<DispatchedItem> dispatchedItems = new ArrayList<>();
-        InternalDispatcherContext dispatcherContext = ctx.getBean(InternalDispatcherContext.class, this);
-        dispatcherContext.setNotifySettingKey(notifySettingKey);
-        dispatcherContext.setRoutedUserKeys(new HashSet<>(routedUserKeys));
         for (StringIdKey topicKey : topicKeys) {
             try {
-                // 对上下文设置当前主题。
-                dispatcherContext.setTopicKey(topicKey);
-
                 // 获取主题的调度器及其类型。
                 Dispatcher dispatcher = dispatchLocalCacheHandler.get(topicKey);
 
                 // 调用调度器，获取需要通过此主题发送通知的用户列表。
+                Dispatcher.ContextInfo dispatcherContextInfo = new Dispatcher.ContextInfo(notifySettingKey, topicKey);
                 List<StringIdKey> dispatchedUserKeys = dispatcher.dispatch(
-                        dispatchInfoMap, routedUserKeys, dispatcherContext
+                        dispatcherContextInfo, dispatchInfoMap, routedUserKeys
                 );
 
                 // 生成 Item 结构体，并添加到结果列表。
@@ -169,24 +155,20 @@ public class NotifyHandlerImpl implements NotifyHandler {
         List<SentItem> sentItems = new ArrayList<>();
 
         // 遍历 Item 结构体，对每个主题发送通知，生成发送响应并添加到发送列表中。
-        InternalSenderContext senderContext = ctx.getBean(InternalSenderContext.class, this);
-        senderContext.setNotifySettingKey(notifySettingKey);
         for (DispatchedItem item : dispatchedItems) {
             // 获取结构体的参数。
             StringIdKey topicKey = item.getTopicKey();
             List<StringIdKey> userKeys = item.getUserKeys();
 
             try {
-                // 对上下文设置当前主题。
-                senderContext.setTopicKey(topicKey);
-
                 // 获取当前通知设置与当前主题下的发送器及其类型。
                 Sender sender = sendLocalCacheHandler.get(
                         new SenderInfoKey(notifySettingKey.getLongId(), topicKey.getStringId())
                 );
 
                 // 执行发生动作。
-                List<Sender.Response> senderResponse = sender.send(sendInfoMap, userKeys, senderContext);
+                Sender.ContextInfo senderContextInfo = new Sender.ContextInfo(notifySettingKey, topicKey);
+                List<Sender.Response> senderResponse = sender.send(senderContextInfo, sendInfoMap, userKeys);
 
                 // 构建发送结构体，添加到结构体列表中。
                 sentItems.add(new SentItem(topicKey, senderResponse));
@@ -364,333 +346,6 @@ public class NotifyHandlerImpl implements NotifyHandler {
                     "topicKey=" + topicKey +
                     ", responses=" + responses +
                     '}';
-        }
-    }
-
-    @Component
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    class InternalRouterContext implements Router.Context {
-
-        private LongIdKey notifySettingKey;
-
-        @Override
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
-
-        public void setNotifySettingKey(LongIdKey notifySettingKey) {
-            this.notifySettingKey = notifySettingKey;
-        }
-
-        @Override
-        public List<StringIdKey> availableTopicKeys() throws RouterException {
-            try {
-                return topicMaintainService.lookupAsList(
-                        TopicMaintainService.ENABLED_SORTED, new Object[0]
-                ).stream().map(Topic::getKey).collect(Collectors.toList());
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public boolean existsMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
-                throws RouterException {
-            try {
-                return metaMaintainService.exists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public String getMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
-                throws RouterException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureTopicExists(topicKey);
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = metaMaintainService.getIfExists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-                if (Objects.isNull(meta)) {
-                    return null;
-                }
-                return meta.getValue();
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultMeta(StringIdKey topicKey, String metaId) throws RouterException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureTopicExists(topicKey);
-
-                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
-                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
-                );
-                if (Objects.isNull(metaIndicator)) {
-                    return null;
-                }
-                return metaIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public void putMeta(StringIdKey topicKey, StringIdKey userKey, String metaId, String value)
-                throws RouterException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureTopicExists(topicKey);
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = new Meta(
-                        new MetaKey(
-                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                metaId
-                        ),
-                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
-                );
-                metaMaintainService.insertOrUpdate(meta);
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-
-        @Override
-        public List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws RouterException {
-            try {
-                // 遍历用户主键，将合法的用户添加到结果列表。
-                List<StringIdKey> filteredUserKeys = new ArrayList<>();
-                for (StringIdKey userKey : userKeys) {
-                    if (!userMaintainService.exists(userKey)) {
-                        continue;
-                    }
-                    User user = userMaintainService.get(userKey);
-                    if (!user.isEnabled()) {
-                        continue;
-                    }
-                    filteredUserKeys.add(userKey);
-                }
-
-                // 返回结果列表。
-                return filteredUserKeys;
-            } catch (Exception e) {
-                throw new RouterException(e);
-            }
-        }
-    }
-
-    @Component
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    class InternalDispatcherContext implements Dispatcher.Context {
-
-        private LongIdKey notifySettingKey;
-        private StringIdKey topicKey;
-        private Set<StringIdKey> routedUserKeys;
-
-        @Override
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
-
-        public void setNotifySettingKey(LongIdKey notifySettingKey) {
-            this.notifySettingKey = notifySettingKey;
-        }
-
-        @Override
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
-
-        public void setTopicKey(StringIdKey topicKey) {
-            this.topicKey = topicKey;
-        }
-
-        public Set<StringIdKey> getRoutedUserKeys() {
-            return routedUserKeys;
-        }
-
-        public void setRoutedUserKeys(Set<StringIdKey> routedUserKeys) {
-            this.routedUserKeys = routedUserKeys;
-        }
-
-        @Override
-        public boolean existsMeta(StringIdKey userKey, String metaId) throws DispatcherException {
-            try {
-                return metaMaintainService.exists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public String getMeta(StringIdKey userKey, String metaId) throws DispatcherException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = metaMaintainService.getIfExists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-                if (Objects.isNull(meta)) {
-                    return null;
-                }
-                return meta.getValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultMeta(String metaId) throws DispatcherException {
-            try {
-                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
-                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
-                );
-                if (Objects.isNull(metaIndicator)) {
-                    return null;
-                }
-                return metaIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public void putMeta(StringIdKey userKey, String metaId, String value) throws DispatcherException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = new Meta(
-                        new MetaKey(
-                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                metaId
-                        ),
-                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
-                );
-                metaMaintainService.insertOrUpdate(meta);
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-
-        @Override
-        public List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws DispatcherException {
-            try {
-                // 遍历用户主键，将合法的用户添加到结果列表。
-                List<StringIdKey> filteredUserKeys = new ArrayList<>();
-                for (StringIdKey userKey : userKeys) {
-                    if (!routedUserKeys.contains(userKey)) {
-                        continue;
-                    }
-                    filteredUserKeys.add(userKey);
-                }
-
-                // 返回结果列表。
-                return filteredUserKeys;
-            } catch (Exception e) {
-                throw new DispatcherException(e);
-            }
-        }
-    }
-
-    @Component
-    @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    class InternalSenderContext implements Sender.Context {
-
-        private LongIdKey notifySettingKey;
-        private StringIdKey topicKey;
-
-        @Override
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
-
-        public void setNotifySettingKey(LongIdKey notifySettingKey) {
-            this.notifySettingKey = notifySettingKey;
-        }
-
-        @Override
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
-
-        public void setTopicKey(StringIdKey topicKey) {
-            this.topicKey = topicKey;
-        }
-
-        @Override
-        public boolean existsMeta(StringIdKey userKey, String metaId) throws SenderException {
-            try {
-                return metaMaintainService.exists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
-        }
-
-        @Override
-        public String getMeta(StringIdKey userKey, String metaId) throws SenderException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = metaMaintainService.getIfExists(new MetaKey(
-                        notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(), metaId
-                ));
-                if (Objects.isNull(meta)) {
-                    return null;
-                }
-                return meta.getValue();
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
-        }
-
-        @Override
-        public String getDefaultMeta(String metaId) throws SenderException {
-            try {
-                MetaIndicator metaIndicator = metaIndicatorMaintainService.getIfExists(
-                        new MetaIndicatorKey(topicKey.getStringId(), metaId)
-                );
-                if (Objects.isNull(metaIndicator)) {
-                    return null;
-                }
-                return metaIndicator.getDefaultValue();
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
-        }
-
-        @Override
-        public void putMeta(StringIdKey userKey, String metaId, String value) throws SenderException {
-            try {
-                // 参数有效性验证。
-                handlerValidator.makeSureUserExists(userKey);
-
-                Meta meta = new Meta(
-                        new MetaKey(
-                                notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
-                                metaId
-                        ),
-                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
-                );
-                metaMaintainService.insertOrUpdate(meta);
-            } catch (Exception e) {
-                throw new SenderException(e);
-            }
         }
     }
 }

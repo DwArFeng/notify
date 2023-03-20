@@ -71,7 +71,7 @@ public class EntireRouterRegistry extends AbstractRouterRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class EntireRouter implements Router {
+    public static class EntireRouter extends AbstractRouter {
 
         private final UserMaintainService userMaintainService;
 
@@ -80,7 +80,7 @@ public class EntireRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap) throws RouterException {
             try {
                 return userMaintainService.lookupAsList(UserMaintainService.ENABLED, new Object[0])
                         .stream().map(User::getKey).collect(Collectors.toList());

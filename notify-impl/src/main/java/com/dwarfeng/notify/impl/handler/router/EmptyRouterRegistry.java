@@ -64,10 +64,10 @@ public class EmptyRouterRegistry extends AbstractRouterRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class EmptyRouter implements Router {
+    public static class EmptyRouter extends AbstractRouter {
 
         @Override
-        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) {
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap) {
             return Collections.emptyList();
         }
 

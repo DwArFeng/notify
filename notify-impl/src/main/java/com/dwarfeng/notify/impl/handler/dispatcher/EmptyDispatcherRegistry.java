@@ -65,11 +65,11 @@ public class EmptyDispatcherRegistry extends AbstractDispatcherRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class EmptyDispatcher implements Dispatcher {
+    public static class EmptyDispatcher extends AbstractDispatcher {
 
         @Override
         public List<StringIdKey> dispatch(
-                Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context
+                ContextInfo contextInfo, Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys
         ) {
             return Collections.emptyList();
         }

@@ -58,10 +58,10 @@ public class DrainSenderRegistry extends AbstractSenderRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class DrainSender implements Sender {
+    public static class DrainSender extends AbstractSender {
 
         @Override
-        public List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context) {
+        public List<Response> send(ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys) {
             List<Response> responses = new ArrayList<>();
 
             for (StringIdKey userKey : userKeys) {

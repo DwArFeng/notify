@@ -64,11 +64,11 @@ public class EntireDispatcherRegistry extends AbstractDispatcherRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class EntireDispatcher implements Dispatcher {
+    public static class EntireDispatcher extends AbstractDispatcher {
 
         @Override
         public List<StringIdKey> dispatch(
-                Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context
+                ContextInfo contextInfo, Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys
         ) {
             return userKeys;
         }

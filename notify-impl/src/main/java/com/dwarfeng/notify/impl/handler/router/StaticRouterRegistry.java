@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.handler.router;
 
 import com.alibaba.fastjson.JSON;
 import com.dwarfeng.notify.stack.exception.RouterException;
+import com.dwarfeng.notify.stack.exception.RouterExecutionException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
@@ -95,7 +96,7 @@ public class StaticRouterRegistry extends AbstractRouterRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class StaticRouter implements Router {
+    public static class StaticRouter extends AbstractRouter {
 
         private final List<StringIdKey> userKeys;
 
@@ -104,8 +105,15 @@ public class StaticRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
-            return context.filterUser(userKeys);
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap)
+                throws RouterException {
+            try {
+                return context.filterUser(userKeys);
+            } catch (RouterException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RouterExecutionException(e);
+            }
         }
 
         @Override

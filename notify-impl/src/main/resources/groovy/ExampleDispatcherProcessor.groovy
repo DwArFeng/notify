@@ -30,7 +30,7 @@ class ExampleDispatcherProcessor implements GroovyDispatcherRegistry.Processor {
 
     @Override
     List<StringIdKey> dispatch(
-            Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Dispatcher.Context context
+            Dispatcher.ContextInfo contextInfo, Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys
     ) throws DispatcherException {
         String dispatchInfo = Optional.ofNullable(dispatchInfoMap).map(map -> map.get(DISPATCH_INFO_KEY))
                 .orElse(StringUtils.EMPTY)

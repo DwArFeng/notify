@@ -3,6 +3,7 @@ package com.dwarfeng.notify.impl.handler.router;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.annotation.JSONField;
 import com.dwarfeng.notify.stack.exception.RouterException;
+import com.dwarfeng.notify.stack.exception.RouterExecutionException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
 import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
@@ -119,7 +120,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class IdentityRouter implements Router {
+    public static class IdentityRouter extends AbstractRouter {
 
         private final Config config;
 
@@ -128,17 +129,24 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
-            // 获取本体用户列表的字符串形式。
-            String identityUserListString = Optional.ofNullable(routeInfoMap)
-                    .map(map -> map.get(config.getIdentityUserListKey())).orElse(StringUtils.EMPTY);
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap)
+                throws RouterException {
+            try {
+                // 获取本体用户列表的字符串形式。
+                String identityUserListString = Optional.ofNullable(routeInfoMap)
+                        .map(map -> map.get(config.getIdentityUserListKey())).orElse(StringUtils.EMPTY);
 
-            // 解析本体用户列表字符串并返回结果。
-            if (StringUtils.isEmpty(identityUserListString)) {
-                return Collections.emptyList();
+                // 解析本体用户列表字符串并返回结果。
+                if (StringUtils.isEmpty(identityUserListString)) {
+                    return Collections.emptyList();
+                }
+                List<StringIdKey> userKeys = parseIdentityUserList(identityUserListString);
+                return context.filterUser(userKeys);
+            } catch (RouterException e) {
+                throw e;
+            } catch (Exception e) {
+                throw new RouterExecutionException(e);
             }
-            List<StringIdKey> userKeys = parseIdentityUserList(identityUserListString);
-            return context.filterUser(userKeys);
         }
 
         @Override

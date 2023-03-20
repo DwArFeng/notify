@@ -16,6 +16,17 @@ import java.util.Map;
 public interface Sender {
 
     /**
+     * 初始化发送器。
+     *
+     * <p>
+     * 该方法会在发送器初始化后调用，请将 context 存放在发送器的字段中。<br>
+     * 当发送器被触发后，执行上下文中的相应方法即可。
+     *
+     * @param context 发送器的上下文。
+     */
+    void init(Context context);
+
+    /**
      * 发送操作。
      *
      * <p>
@@ -30,13 +41,13 @@ public interface Sender {
      * </li>
      * </ol>
      *
+     * @param contextInfo 上下文信息。
      * @param sendInfoMap 发送信息映射。
      * @param userKeys    用户列表。
-     * @param context     上下文。
      * @return 发送响应组成的列表。
      * @throws SenderException 发送器异常。
      */
-    List<Response> send(Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context)
+    List<Response> send(ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys)
             throws SenderException;
 
     /**
@@ -45,7 +56,7 @@ public interface Sender {
      * @author DwArFeng
      * @since 1.1.0
      */
-    class Response {
+    final class Response {
 
         private final StringIdKey userKey;
         private final boolean succeedFlag;
@@ -88,30 +99,17 @@ public interface Sender {
     interface Context {
 
         /**
-         * 获取本次通知操作相关的通知设置。
-         *
-         * @return 通知设置的主键。
-         * @throws SenderException 发送器异常。
-         */
-        LongIdKey getNotifySettingKey() throws SenderException;
-
-        /**
-         * 获取本次通知操作相关的主题。
-         *
-         * @return 主题的主键。
-         * @throws SenderException 发送器异常。
-         */
-        StringIdKey getTopicKey() throws SenderException;
-
-        /**
          * 查询指定的元数据是否存在。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据是否存在。
-         * @throws SenderException 发送器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        boolean existsMeta(StringIdKey userKey, String metaId) throws SenderException;
+        boolean existsMeta(LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId)
+                throws Exception;
 
         /**
          * 获取指定的元数据的值。
@@ -119,12 +117,15 @@ public interface Sender {
          * <p>
          * 如果指定的元数据值不存在，则返回 null。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的值。
-         * @throws SenderException 发送器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        String getMeta(StringIdKey userKey, String metaId) throws SenderException;
+        String getMeta(LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId)
+                throws Exception;
 
         /**
          * 获取指定的元数据的默认值。
@@ -132,11 +133,13 @@ public interface Sender {
          * <p>
          * 如果指定的元数据的默认值不存在，则返回 null。
          *
-         * @param metaId 元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的默认值。
-         * @throws SenderException 发送器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        String getDefaultMeta(String metaId) throws SenderException;
+        String getDefaultMeta(LongIdKey notifySettingKey, StringIdKey topicKey, String metaId) throws Exception;
 
         /**
          * 获取指定的元数据的值或默认值。
@@ -144,27 +147,68 @@ public interface Sender {
          * <p>
          * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的值或默认值。
-         * @throws SenderException 发送器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        default String getMetaOrDefault(StringIdKey userKey, String metaId) throws SenderException {
-            if (existsMeta(userKey, metaId)) {
-                return getMeta(userKey, metaId);
+        default String getMetaOrDefault(
+                LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId
+        ) throws Exception {
+            if (existsMeta(notifySettingKey, topicKey, userKey, metaId)) {
+                return getMeta(notifySettingKey, topicKey, userKey, metaId);
             } else {
-                return getDefaultMeta(metaId);
+                return getDefaultMeta(notifySettingKey, topicKey, metaId);
             }
         }
 
         /**
          * 设置指定的元数据的值。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
-         * @param value   元数据的新值。
-         * @throws SenderException 发送器异常。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
+         * @param value            元数据的新值。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        void putMeta(StringIdKey userKey, String metaId, String value) throws SenderException;
+        void putMeta(
+                LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId, String value
+        ) throws Exception;
+    }
+
+    /**
+     * 上下文信息。
+     *
+     * @author DwArFeng
+     * @since 1.4.0
+     */
+    final class ContextInfo {
+
+        private final LongIdKey notifySettingKey;
+        private final StringIdKey topicKey;
+
+        public ContextInfo(LongIdKey notifySettingKey, StringIdKey topicKey) {
+            this.notifySettingKey = notifySettingKey;
+            this.topicKey = topicKey;
+        }
+
+        public LongIdKey getNotifySettingKey() {
+            return notifySettingKey;
+        }
+
+        public StringIdKey getTopicKey() {
+            return topicKey;
+        }
+
+        @Override
+        public String toString() {
+            return "ContextInfo{" +
+                    "notifySettingKey=" + notifySettingKey +
+                    ", topicKey=" + topicKey +
+                    '}';
+        }
     }
 }

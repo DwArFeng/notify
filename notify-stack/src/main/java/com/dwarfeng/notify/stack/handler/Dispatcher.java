@@ -16,6 +16,17 @@ import java.util.Map;
 public interface Dispatcher {
 
     /**
+     * 初始化调度器。
+     *
+     * <p>
+     * 该方法会在调度器初始化后调用，请将 context 存放在调度器的字段中。<br>
+     * 当调度器被触发后，执行上下文中的相应方法即可。
+     *
+     * @param context 调度器的上下文。
+     */
+    void init(Context context);
+
+    /**
      * 调度操作。
      *
      * <p>
@@ -34,19 +45,15 @@ public interface Dispatcher {
      * </li>
      * </ol>
      *
-     * <p>
-     * 如果无法确定用户的规范性，可以调用 {@link Context#filterUser(List)} 方法筛选出一组用户中符合要求的用户。<br>
-     * 这个操作会有额外的性能开销，如果有其它的途径保证返回结果的规范性
-     * （尤其是服务集成在一个工程中，与其它服务组合使用时），则不需要调用此方法。
-     *
+     * @param contextInfo     上下文信息。
      * @param dispatchInfoMap 调度信息映射。
      * @param userKeys        用户空间。
-     * @param context         上下文。
      * @return 调度返回的用户主键组成的列表。
      * @throws DispatcherException 调度器异常。
      */
-    List<StringIdKey> dispatch(Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys, Context context)
-            throws DispatcherException;
+    List<StringIdKey> dispatch(
+            ContextInfo contextInfo, Map<String, String> dispatchInfoMap, List<StringIdKey> userKeys
+    ) throws DispatcherException;
 
     /**
      * 上下文。
@@ -57,31 +64,17 @@ public interface Dispatcher {
     interface Context {
 
         /**
-         * 获取本次通知操作相关的通知设置。
-         *
-         * @return 通知设置的主键。
-         * @throws DispatcherException 调度器异常。
-         */
-        LongIdKey getNotifySettingKey() throws DispatcherException;
-
-        /**
-         * 获取本次通知操作相关的主题。
-         *
-         * @return 主题的主键。
-         * @throws DispatcherException 调度器异常。
-         */
-        StringIdKey getTopicKey() throws DispatcherException;
-
-        /**
          * 查询指定的元数据是否存在。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据是否存在。
-         * @throws DispatcherException 调度器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        boolean existsMeta(StringIdKey userKey, String metaId)
-                throws DispatcherException;
+        boolean existsMeta(LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId)
+                throws Exception;
 
         /**
          * 获取指定的元数据的值。
@@ -89,12 +82,15 @@ public interface Dispatcher {
          * <p>
          * 如果指定的元数据值不存在，则返回 null。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的值。
-         * @throws DispatcherException 调度器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        String getMeta(StringIdKey userKey, String metaId) throws DispatcherException;
+        String getMeta(LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId)
+                throws Exception;
 
         /**
          * 获取指定的元数据的默认值。
@@ -102,11 +98,13 @@ public interface Dispatcher {
          * <p>
          * 如果指定的元数据的默认值不存在，则返回 null。
          *
-         * @param metaId 元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的默认值。
-         * @throws DispatcherException 调度器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        String getDefaultMeta(String metaId) throws DispatcherException;
+        String getDefaultMeta(LongIdKey notifySettingKey, StringIdKey topicKey, String metaId) throws Exception;
 
         /**
          * 获取指定的元数据的值或默认值。
@@ -114,39 +112,68 @@ public interface Dispatcher {
          * <p>
          * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的值或默认值。
-         * @throws DispatcherException 调度器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        default String getMetaOrDefault(StringIdKey userKey, String metaId) throws DispatcherException {
-            if (existsMeta(userKey, metaId)) {
-                return getMeta(userKey, metaId);
+        default String getMetaOrDefault(
+                LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId
+        ) throws Exception {
+            if (existsMeta(notifySettingKey, topicKey, userKey, metaId)) {
+                return getMeta(notifySettingKey, topicKey, userKey, metaId);
             } else {
-                return getDefaultMeta(metaId);
+                return getDefaultMeta(notifySettingKey, topicKey, metaId);
             }
         }
 
         /**
          * 设置指定的元数据的值。
          *
-         * @param userKey 元数据用户的主键。
-         * @param metaId  元数据的 ID。
-         * @param value   元数据的新值。
-         * @throws DispatcherException 调度器异常。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
+         * @param value            元数据的新值。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        void putMeta(StringIdKey userKey, String metaId, String value) throws DispatcherException;
+        void putMeta(
+                LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId, String value
+        ) throws Exception;
+    }
 
-        /**
-         * 过滤用户。
-         *
-         * <p>
-         * 该方法接收一个任意的用户列表，遍历并获取其中所有符合规范的用户，将其组合成列表并返回。
-         *
-         * @param userKeys 任意的用户列表。
-         * @return 任意列表中符合规范的用户组成的子列表。
-         * @throws DispatcherException 调度器异常。
-         */
-        List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws DispatcherException;
+    /**
+     * 上下文信息。
+     *
+     * @author DwArFeng
+     * @since 1.4.0
+     */
+    final class ContextInfo {
+
+        private final LongIdKey notifySettingKey;
+        private final StringIdKey topicKey;
+
+        public ContextInfo(LongIdKey notifySettingKey, StringIdKey topicKey) {
+            this.notifySettingKey = notifySettingKey;
+            this.topicKey = topicKey;
+        }
+
+        public LongIdKey getNotifySettingKey() {
+            return notifySettingKey;
+        }
+
+        public StringIdKey getTopicKey() {
+            return topicKey;
+        }
+
+        @Override
+        public String toString() {
+            return "ContextInfo{" +
+                    "notifySettingKey=" + notifySettingKey +
+                    ", topicKey=" + topicKey +
+                    '}';
+        }
     }
 }

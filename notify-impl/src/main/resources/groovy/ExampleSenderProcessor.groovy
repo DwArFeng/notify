@@ -21,11 +21,11 @@ class ExampleSenderProcessor implements GroovySenderRegistry.Processor {
     private static final Logger LOGGER = LoggerFactory.getLogger(ExampleSenderProcessor.class)
 
     @Override
-    List<Sender.Response> send(Map<String, String> sendInfo, List<StringIdKey> userKeys, Sender.Context context)
+    List<Sender.Response> send(Sender.ContextInfo contextInfo, Map<String, String> sendInfo, List<StringIdKey> userKeys)
             throws SenderException {
         List<Sender.Response> results = new ArrayList<>()
         for (StringIdKey userKey : userKeys) {
-            LOGGER.info("向用户 {} 发生信息, 内容为 {}", userKey, context)
+            LOGGER.info("向用户 {} 发生信息, 内容为 {}", userKey, sendInfo)
             results.add(new Sender.Response(userKey, true, "发送成功"))
         }
         return results

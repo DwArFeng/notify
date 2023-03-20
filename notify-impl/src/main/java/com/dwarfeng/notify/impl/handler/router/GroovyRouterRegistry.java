@@ -92,7 +92,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class GroovyRouter implements Router {
+    public static class GroovyRouter extends AbstractRouter {
 
         private final Processor processor;
 
@@ -101,8 +101,8 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException {
-            return processor.route(routeInfoMap, context);
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap) throws RouterException {
+            return processor.route(contextInfo, routeInfoMap);
         }
 
         @Override
@@ -124,12 +124,12 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         /**
          * 路由操作。
          *
-         * @param routeInfo 路由信息。
-         * @param context   上下文。
+         * @param contextInfo 上下文信息。
+         * @param routeInfo   路由信息。
          * @return 路由返回的用户主键组成的列表。
          * @throws RouterException 路由器异常。
-         * @see Router#route(Map, Router.Context)
+         * @see #route(Router.ContextInfo, Map)
          */
-        List<StringIdKey> route(Map<String, String> routeInfo, Router.Context context) throws RouterException;
+        List<StringIdKey> route(Router.ContextInfo contextInfo, Map<String, String> routeInfo) throws RouterException;
     }
 }

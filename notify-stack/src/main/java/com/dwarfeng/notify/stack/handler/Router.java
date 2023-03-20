@@ -17,6 +17,17 @@ import java.util.Map;
 public interface Router {
 
     /**
+     * 初始化路由器。
+     *
+     * <p>
+     * 该方法会在路由器初始化后调用，请将 context 存放在路由器的字段中。<br>
+     * 当路由器被触发后，执行上下文中的相应方法即可。
+     *
+     * @param context 路由器的上下文。
+     */
+    void init(Context context);
+
+    /**
      * 路由操作。
      *
      * <p>
@@ -36,15 +47,15 @@ public interface Router {
      * 这个操作会有额外的性能开销，如果有其它的途径保证返回结果的规范性
      * （尤其是服务集成在一个工程中，与其它服务组合使用时），则不需要调用此方法。
      *
+     * @param contextInfo  上下文信息。
      * @param routeInfoMap 路由信息映射。
-     * @param context      上下文。
      * @return 路由返回的用户主键组成的列表。
      * @throws RouterException 路由器异常。
      */
-    List<StringIdKey> route(Map<String, String> routeInfoMap, Context context) throws RouterException;
+    List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap) throws RouterException;
 
     /**
-     * 上下文。
+     * 路由器上下文。
      *
      * @author DwArFeng
      * @since 1.1.0
@@ -52,32 +63,25 @@ public interface Router {
     interface Context {
 
         /**
-         * 获取本次通知操作相关的通知设置。
-         *
-         * @return 通知设置的主键。
-         * @throws RouterException 路由器异常。
-         */
-        LongIdKey getNotifySettingKey() throws RouterException;
-
-        /**
          * 获取本次通知相关的所有可用的主题。
          *
          * @return 所有主题的主键组成的列表。
-         * @throws RouterException 路由器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        List<StringIdKey> availableTopicKeys() throws RouterException;
+        List<StringIdKey> availableTopicKeys() throws Exception;
 
         /**
          * 查询指定的元数据是否存在。
          *
-         * @param topicKey 元数据主题的主键。
-         * @param userKey  元数据用户的主键。
-         * @param metaId   元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据是否存在。
-         * @throws RouterException 路由器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        boolean existsMeta(StringIdKey topicKey, StringIdKey userKey, String metaId)
-                throws RouterException;
+        boolean existsMeta(LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId)
+                throws Exception;
 
         /**
          * 获取指定的元数据的值。
@@ -85,13 +89,15 @@ public interface Router {
          * <p>
          * 如果指定的元数据值不存在，则返回 null。
          *
-         * @param topicKey 元数据主题的主键。
-         * @param userKey  元数据用户的主键。
-         * @param metaId   元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的值。
-         * @throws RouterException 路由器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        String getMeta(StringIdKey topicKey, StringIdKey userKey, String metaId) throws RouterException;
+        String getMeta(LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId)
+                throws Exception;
 
         /**
          * 获取指定的元数据的默认值。
@@ -99,12 +105,13 @@ public interface Router {
          * <p>
          * 如果指定的元数据的默认值不存在，则返回 null。
          *
-         * @param topicKey 元数据主题的主键。
-         * @param metaId   元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的默认值。
-         * @throws RouterException 路由器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        String getDefaultMeta(StringIdKey topicKey, String metaId) throws RouterException;
+        String getDefaultMeta(LongIdKey notifySettingKey, StringIdKey topicKey, String metaId) throws Exception;
 
         /**
          * 获取指定的元数据的值或默认值。
@@ -112,32 +119,36 @@ public interface Router {
          * <p>
          * 如果指定的元数据的值存在，则放回元数据值；否则，返回指定的元数据的默认值；如果默认值也不存在则返回 null。
          *
-         * @param topicKey 元数据主题的主键。
-         * @param userKey  元数据用户的主键。
-         * @param metaId   元数据的 ID。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
          * @return 指定的元数据的值或默认值。
-         * @throws RouterException 路由器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        default String getMetaOrDefault(StringIdKey topicKey, StringIdKey userKey, String metaId)
-                throws RouterException {
-            if (existsMeta(topicKey, userKey, metaId)) {
-                return getMeta(topicKey, userKey, metaId);
+        default String getMetaOrDefault(
+                LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId
+        ) throws Exception {
+            if (existsMeta(notifySettingKey, topicKey, userKey, metaId)) {
+                return getMeta(notifySettingKey, topicKey, userKey, metaId);
             } else {
-                return getDefaultMeta(topicKey, metaId);
+                return getDefaultMeta(notifySettingKey, topicKey, metaId);
             }
         }
 
         /**
          * 设置指定的元数据的值。
          *
-         * @param topicKey 元数据主题的主键。
-         * @param userKey  元数据用户的主键。
-         * @param metaId   元数据的 ID。
-         * @param value    元数据的新值。
-         * @throws RouterException 路由器异常。
+         * @param notifySettingKey 通知设置的主键。
+         * @param topicKey         元数据主题的主键。
+         * @param userKey          元数据用户的主键。
+         * @param metaId           元数据的 ID。
+         * @param value            元数据的新值。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        void putMeta(StringIdKey topicKey, StringIdKey userKey, String metaId, String value)
-                throws RouterException;
+        void putMeta(
+                LongIdKey notifySettingKey, StringIdKey topicKey, StringIdKey userKey, String metaId, String value
+        ) throws Exception;
 
         /**
          * 过滤用户。
@@ -147,8 +158,34 @@ public interface Router {
          *
          * @param userKeys 任意的用户列表。
          * @return 任意列表中符合规范的用户组成的子列表。
-         * @throws RouterException 路由器异常。
+         * @throws Exception 调用过程中发生的任何异常。
          */
-        List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws RouterException;
+        List<StringIdKey> filterUser(List<StringIdKey> userKeys) throws Exception;
+    }
+
+    /**
+     * 上下文信息。
+     *
+     * @author DwArFeng
+     * @since 1.4.0
+     */
+    final class ContextInfo {
+
+        private final LongIdKey notifySettingKey;
+
+        public ContextInfo(LongIdKey notifySettingKey) {
+            this.notifySettingKey = notifySettingKey;
+        }
+
+        public LongIdKey getNotifySettingKey() {
+            return notifySettingKey;
+        }
+
+        @Override
+        public String toString() {
+            return "ContextInfo{" +
+                    "notifySettingKey=" + notifySettingKey +
+                    '}';
+        }
     }
 }

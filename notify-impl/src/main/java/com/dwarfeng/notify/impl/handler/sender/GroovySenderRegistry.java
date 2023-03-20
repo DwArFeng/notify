@@ -92,7 +92,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
 
     @Component
     @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
-    public static class GroovySender implements Sender {
+    public static class GroovySender extends AbstractSender {
 
         private final Processor processor;
 
@@ -102,9 +102,9 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
 
         @Override
         public List<Response> send(
-                Map<String, String> sendInfoMap, List<StringIdKey> userKeys, Context context)
+                ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys)
                 throws SenderException {
-            return processor.send(sendInfoMap, userKeys, context);
+            return processor.send(contextInfo, sendInfoMap, userKeys);
         }
 
         @Override
@@ -126,14 +126,15 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
         /**
          * 发送操作。
          *
-         * @param sendInfo 发送信息。
-         * @param userKeys 用户列表。
-         * @param context  上下文。
+         * @param contextInfo 上下文信息。
+         * @param sendInfo    发送信息。
+         * @param userKeys    用户列表。
          * @return 发送响应组成的列表。
          * @throws SenderException 发送器异常。
-         * @see Sender#send(Map, List, Sender.Context)
+         * @see #send(Sender.ContextInfo, Map, List)
          */
-        List<Sender.Response> send(Map<String, String> sendInfo, List<StringIdKey> userKeys, Sender.Context context)
-                throws SenderException;
+        List<Sender.Response> send(
+                Sender.ContextInfo contextInfo, Map<String, String> sendInfo, List<StringIdKey> userKeys
+        ) throws SenderException;
     }
 }

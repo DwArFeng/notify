@@ -30,7 +30,7 @@ class ExampleRouterProcessor implements GroovyRouterRegistry.Processor {
     private static final String DELIMITER = ","
 
     @Override
-    List<StringIdKey> route(Map<String, String> routeInfoMap, Router.Context context) throws RouterException {
+    List<StringIdKey> route(Router.ContextInfo contextInfo, Map<String, String> routeInfoMap) throws RouterException {
         String routeInfo = Optional.ofNullable(routeInfoMap).map(map -> map.get(ROUTE_INFO_KEY))
                 .orElse(StringUtils.EMPTY)
         if (StringUtils.isEmpty(routeInfo)) {
