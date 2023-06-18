@@ -11,6 +11,7 @@ import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -32,6 +33,9 @@ public class DubboResetter extends AbstractResetter {
 
     private final RegistryConfig registry;
     private final ProtocolConfig protocol;
+
+    @Value("${dubbo.provider.group}")
+    private String group;
 
     private final Lock lock = new ReentrantLock();
 
@@ -62,6 +66,7 @@ public class DubboResetter extends AbstractResetter {
             ServiceConfig<DubboResetService> dubboService = new ServiceConfig<>();
             dubboService.setRegistry(registry);
             dubboService.setProtocol(protocol);
+            dubboService.setGroup(group);
             dubboService.setInterface(DubboResetService.class);
             dubboService.setRef(dubboResetService);
 
@@ -101,6 +106,16 @@ public class DubboResetter extends AbstractResetter {
         } finally {
             lock.unlock();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "DubboResetter{" +
+                "ctx=" + ctx +
+                ", registry=" + registry +
+                ", protocol=" + protocol +
+                ", group='" + group + '\'' +
+                '}';
     }
 
     public interface DubboResetService extends Service {
@@ -179,6 +194,13 @@ public class DubboResetter extends AbstractResetter {
             } catch (Exception e) {
                 throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
             }
+        }
+
+        @Override
+        public String toString() {
+            return "DubboResetServiceImpl{" +
+                    "sem=" + sem +
+                    '}';
         }
     }
 }
