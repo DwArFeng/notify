@@ -33,12 +33,12 @@ public class FixedDelayResetter extends AbstractResetter {
     }
 
     @Override
-    public void start() {
+    protected void doStart() {
         resetTaskFuture = scheduler.scheduleWithFixedDelay(resetTask, delay);
     }
 
     @Override
-    public void stop() {
+    protected void doStop() {
         resetTaskFuture.cancel(true);
     }
 

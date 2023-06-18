@@ -33,12 +33,12 @@ public class FixedRateResetter extends AbstractResetter {
     }
 
     @Override
-    public void start() {
+    protected void doStart() {
         resetTaskFuture = scheduler.scheduleAtFixedRate(resetTask, rate);
     }
 
     @Override
-    public void stop() {
+    protected void doStop() {
         resetTaskFuture.cancel(true);
     }
 

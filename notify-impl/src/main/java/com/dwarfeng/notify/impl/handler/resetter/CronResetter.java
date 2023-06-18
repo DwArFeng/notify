@@ -34,12 +34,12 @@ public class CronResetter extends AbstractResetter {
     }
 
     @Override
-    public void start() {
+    protected void doStart() {
         resetTaskFuture = scheduler.schedule(resetTask, new CronTrigger(cron));
     }
 
     @Override
-    public void stop() {
+    protected void doStop() {
         resetTaskFuture.cancel(true);
     }
 

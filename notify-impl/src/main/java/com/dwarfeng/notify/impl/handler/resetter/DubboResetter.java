@@ -49,7 +49,7 @@ public class DubboResetter extends AbstractResetter {
     }
 
     @Override
-    public void start() throws HandlerException {
+    protected void doStart() throws Exception {
         lock.lock();
         try {
             LOGGER.info("Dubbo resetter 开启...");
@@ -86,7 +86,7 @@ public class DubboResetter extends AbstractResetter {
     }
 
     @Override
-    public void stop() throws HandlerException {
+    protected void doStop() throws Exception {
         lock.lock();
         try {
             LOGGER.info("Dubbo resetter 停止...");

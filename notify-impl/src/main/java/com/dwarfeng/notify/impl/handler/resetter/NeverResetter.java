@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 public class NeverResetter extends AbstractResetter {
 
     @Override
-    public void start() {
+    protected void doStart() {
     }
 
     @Override
-    public void stop() {
+    protected void doStop() {
     }
 
     @Override

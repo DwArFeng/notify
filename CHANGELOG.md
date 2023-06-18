@@ -4,6 +4,14 @@
 
 #### 功能构建
 
+- 优化了 AbstractResetter 的代码结构，同时对其实现进行了修改。
+  - com.dwarfeng.notify.impl.handler.resetter.CronResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.DubboResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.FixedDelayResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.FixedRateResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.KafkaResetter。
+  - com.dwarfeng.notify.impl.handler.resetter.NeverResetter。
+
 - 依赖升级。
   - 升级 `spring` 依赖版本为 `5.3.27` 以规避漏洞。
   - 升级 `snakeyaml` 依赖版本为 `2.0.0` 以规避漏洞。
