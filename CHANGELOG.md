@@ -48,6 +48,8 @@
 
 #### Bug修复
 
+- 修复 telqos 工具类中部分注解不正确的 bug。
+
 - 修复部分 CrudOperation 中部分存在性判断方法行为异常的 bug。
   - com.dwarfeng.notify.impl.service.operation.NotifyHistoryCrudOperation。
   - com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation。

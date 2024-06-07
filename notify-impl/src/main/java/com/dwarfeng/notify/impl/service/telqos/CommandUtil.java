@@ -3,7 +3,7 @@ package com.dwarfeng.notify.impl.service.telqos;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.lang3.tuple.Pair;
 
-import javax.validation.constraints.NotNull;
+import javax.annotation.Nonnull;
 import java.util.StringJoiner;
 
 /**
@@ -24,7 +24,7 @@ final class CommandUtil {
      * @param commandOption 指定的选项。
      * @return 拼接前缀之后的选项。
      */
-    public static String concatOptionPrefix(@NotNull String commandOption) {
+    public static String concatOptionPrefix(@Nonnull String commandOption) {
         if (commandOption.contains("-")) {
             return "--" + commandOption;
         }
