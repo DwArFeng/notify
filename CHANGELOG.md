@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化文件格式。
+  - 优化 `telqos/connection.properties` 文件的格式。
+
 - 依赖升级。
   - 升级 `snowflake` 依赖版本为 `1.5.1.a` 以应用其新功能。
   - 升级 `subgrade` 依赖版本为 `1.5.3.a` 以应用其新功能。
