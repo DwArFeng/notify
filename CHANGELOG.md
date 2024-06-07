@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- 优化 `spring-telqos` 结构。
+  - 优化指令注解。
+  - 使用 `pack-scan` 扫描 `telqos` 包内所有指令。
+
 - 优化文件格式。
   - 优化 `telqos/connection.properties` 文件的格式。
 

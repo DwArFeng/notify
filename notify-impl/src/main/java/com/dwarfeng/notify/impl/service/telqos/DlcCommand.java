@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.service.telqos;
 
 import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
+import com.dwarfeng.springtelqos.node.config.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.stack.command.Context;
 import com.dwarfeng.springtelqos.stack.exception.TelqosException;
@@ -9,13 +10,12 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
-import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Component
+@TelqosCommand
 public class DlcCommand extends CliCommand {
 
     private static final String COMMAND_OPTION_LOOKUP = "l";
