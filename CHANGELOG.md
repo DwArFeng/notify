@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 部分 dubbo 消费者服务注册配置添加 `check="false"` 属性。
+  - generateService。
+
 - 增加预设的运维指令。
   - com.dwarfeng.springtelqos.api.integration.log4j2.Log4j2Command。
 

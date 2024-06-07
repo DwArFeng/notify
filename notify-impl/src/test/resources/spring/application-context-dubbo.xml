@@ -17,8 +17,10 @@
     <dubbo:registry address="${dubbo.registry.zookeeper.address}" timeout="${dubbo.registry.zookeeper.timeout}"/>
 
     <!-- dubbo协议 -->
-    <dubbo:protocol name="dubbo" port="${dubbo.protocol.dubbo.port}" host="${dubbo.protocol.dubbo.host}"
-                    dispatcher="message" threadpool="fixed" threads="100"/>
+    <dubbo:protocol
+            name="dubbo" port="${dubbo.protocol.dubbo.port}" host="${dubbo.protocol.dubbo.host}"
+            dispatcher="message" threadpool="fixed" threads="100"
+    />
 
     <!-- 默认使用dubbo协议 -->
     <dubbo:provider protocol="dubbo"/>
@@ -27,6 +29,7 @@
     <dubbo:reference
             id="snowflakeGenerateService"
             interface="com.dwarfeng.sfds.stack.service.GenerateService"
+            check="false"
             group="${dubbo.consumer.snowflake.group}"
     />
 </beans>
