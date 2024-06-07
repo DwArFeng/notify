@@ -110,7 +110,7 @@ public class NotifyHistoryCrudOperation implements BatchCrudOperation<LongIdKey,
 
     @Override
     public boolean nonExists(List<LongIdKey> keys) throws Exception {
-        return notifyHistoryCache.nonExists(keys) && notifyHistoryCache.nonExists(keys);
+        return notifyHistoryCache.nonExists(keys) && notifyHistoryDao.nonExists(keys);
     }
 
     @Override

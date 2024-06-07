@@ -110,7 +110,7 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
 
     @Override
     public boolean nonExists(List<StringIdKey> keys) throws Exception {
-        return userCache.nonExists(keys) && userCache.nonExists(keys);
+        return userCache.nonExists(keys) && userDao.nonExists(keys);
     }
 
     @Override

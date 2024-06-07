@@ -147,7 +147,7 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
 
     @Override
     public boolean nonExists(List<StringIdKey> keys) throws Exception {
-        return topicCache.nonExists(keys) && topicCache.nonExists(keys);
+        return topicCache.nonExists(keys) && topicDao.nonExists(keys);
     }
 
     @Override

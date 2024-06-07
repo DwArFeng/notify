@@ -19,7 +19,11 @@
 
 #### Bug修复
 
-- (无)
+- 修复部分 CrudOperation 中部分存在性判断方法行为异常的 bug。
+  - com.dwarfeng.notify.impl.service.operation.NotifyHistoryCrudOperation。
+  - com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation。
+  - com.dwarfeng.notify.impl.service.operation.TopicCrudOperation。
+  - com.dwarfeng.notify.impl.service.operation.UserCrudOperation。
 
 #### 功能移除
 
