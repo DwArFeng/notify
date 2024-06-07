@@ -9,6 +9,7 @@ import com.dwarfeng.springterminator.sdk.util.ApplicationUtil;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
 import java.util.Date;
@@ -29,66 +30,100 @@ public class Launcher {
                 "file:opt/opt*.xml",
                 "file:optext/opt*.xml"
         }, ctx -> {
-            LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
-            // 判断是否重置路由器支持。
-            if (launcherSettingHandler.isResetRouterSupport()) {
-                LOGGER.info("重置路由器支持...");
-                RouterSupportMaintainService maintainService = ctx.getBean(RouterSupportMaintainService.class);
-                try {
-                    maintainService.reset();
-                } catch (ServiceException e) {
-                    LOGGER.warn("路由器支持重置失败，异常信息如下", e);
-                }
-            }
-            // 判断是否重置发送器支持。
-            if (launcherSettingHandler.isResetSenderSupport()) {
-                LOGGER.info("重置发送器支持...");
-                SenderSupportMaintainService maintainService = ctx.getBean(SenderSupportMaintainService.class);
-                try {
-                    maintainService.reset();
-                } catch (ServiceException e) {
-                    LOGGER.warn("发送器支持重置失败，异常信息如下", e);
-                }
-            }
-            // 判断是否重置调度器支持。
-            if (launcherSettingHandler.isResetDispatcherSupport()) {
-                LOGGER.info("重置发送器支持...");
-                DispatcherSupportMaintainService maintainService = ctx.getBean(DispatcherSupportMaintainService.class);
-                try {
-                    maintainService.reset();
-                } catch (ServiceException e) {
-                    LOGGER.warn("发送器支持重置失败，异常信息如下", e);
-                }
-            }
+            // 根据启动器设置处理器的设置，选择性重置路由器。
+            mayResetRouter(ctx);
 
-            // 拿出程序中的 ThreadPoolTaskScheduler，用于处理计划任务。
-            ThreadPoolTaskScheduler scheduler = ctx.getBean(ThreadPoolTaskScheduler.class);
+            // 根据启动器设置处理器的设置，选择性重置发送器。
+            mayResetSender(ctx);
 
-            // 处理重置处理器的启动选项。
-            ResetQosService resetQosService = ctx.getBean(ResetQosService.class);
-            // 重置处理器是否启动重置服务。
-            long startResetDelay = launcherSettingHandler.getStartResetDelay();
-            if (startResetDelay == 0) {
-                LOGGER.info("立即启动重置服务...");
-                try {
-                    resetQosService.start();
-                } catch (ServiceException e) {
-                    LOGGER.error("无法启动重置服务，异常原因如下", e);
-                }
-            } else if (startResetDelay > 0) {
-                LOGGER.info(startResetDelay + " 毫秒后启动重置服务...");
-                scheduler.schedule(
-                        () -> {
-                            LOGGER.info("启动重置服务...");
-                            try {
-                                resetQosService.start();
-                            } catch (ServiceException e) {
-                                LOGGER.error("无法启动重置服务，异常原因如下", e);
-                            }
-                        },
-                        new Date(System.currentTimeMillis() + startResetDelay)
-                );
-            }
+            // 根据启动器设置处理器的设置，选择性重置调度器。
+            mayResetDispatcher(ctx);
+
+            // 根据启动器设置处理器的设置，选择性启动重置服务。
+            mayStartReset(ctx);
         });
+    }
+
+    private static void mayResetRouter(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 判断是否重置路由器支持，并按条件执行重置操作。
+        if (launcherSettingHandler.isResetRouterSupport()) {
+            LOGGER.info("重置路由器支持...");
+            RouterSupportMaintainService maintainService = ctx.getBean(RouterSupportMaintainService.class);
+            try {
+                maintainService.reset();
+            } catch (ServiceException e) {
+                LOGGER.warn("路由器支持重置失败，异常信息如下", e);
+            }
+        }
+    }
+
+    private static void mayResetSender(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 判断是否重置发送器支持，并按条件执行重置操作。
+        if (launcherSettingHandler.isResetSenderSupport()) {
+            LOGGER.info("重置发送器支持...");
+            SenderSupportMaintainService maintainService = ctx.getBean(SenderSupportMaintainService.class);
+            try {
+                maintainService.reset();
+            } catch (ServiceException e) {
+                LOGGER.warn("发送器支持重置失败，异常信息如下", e);
+            }
+        }
+    }
+
+    private static void mayResetDispatcher(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 判断是否重置调度器支持，并按条件执行重置操作。
+        if (launcherSettingHandler.isResetDispatcherSupport()) {
+            LOGGER.info("重置调度器支持...");
+            DispatcherSupportMaintainService maintainService = ctx.getBean(DispatcherSupportMaintainService.class);
+            try {
+                maintainService.reset();
+            } catch (ServiceException e) {
+                LOGGER.warn("调度器支持重置失败，异常信息如下", e);
+            }
+        }
+    }
+
+    private static void mayStartReset(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 获取程序中的 ThreadPoolTaskScheduler，用于处理计划任务。
+        ThreadPoolTaskScheduler scheduler = ctx.getBean(ThreadPoolTaskScheduler.class);
+
+        // 获取重置 QOS 服务。
+        ResetQosService resetQosService = ctx.getBean(ResetQosService.class);
+
+        // 判断重置处理器是否启动重置服务，并按条件执行不同的操作。
+        long startResetDelay = launcherSettingHandler.getStartResetDelay();
+        if (startResetDelay == 0) {
+            LOGGER.info("立即启动重置服务...");
+            try {
+                resetQosService.start();
+            } catch (ServiceException e) {
+                LOGGER.error("无法启动重置服务，异常原因如下", e);
+            }
+        } else if (startResetDelay > 0) {
+            LOGGER.info("{} 毫秒后启动重置服务...", startResetDelay);
+            scheduler.schedule(
+                    () -> {
+                        LOGGER.info("启动重置服务...");
+                        try {
+                            resetQosService.start();
+                        } catch (ServiceException e) {
+                            LOGGER.error("无法启动重置服务，异常原因如下", e);
+                        }
+                    },
+                    new Date(System.currentTimeMillis() + startResetDelay)
+            );
+        }
     }
 }
