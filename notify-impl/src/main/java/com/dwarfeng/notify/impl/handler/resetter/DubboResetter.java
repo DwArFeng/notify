@@ -170,7 +170,7 @@ public class DubboResetter extends AbstractResetter {
                 context.resetRoute();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
+                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
             }
         }
 
@@ -181,7 +181,7 @@ public class DubboResetter extends AbstractResetter {
                 context.resetDispatch();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
+                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
             }
         }
 
@@ -192,7 +192,7 @@ public class DubboResetter extends AbstractResetter {
                 context.resetSend();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logAndThrow("发生异常", LogLevel.WARN, sem, e);
+                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
             }
         }
 

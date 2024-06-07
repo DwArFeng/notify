@@ -17,10 +17,11 @@ import com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.stack.generation.KeyGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
     private final HandlerValidator handlerValidator;
 
-    private final KeyFetcher<LongIdKey> keyFetcher;
+    private final KeyGenerator<LongIdKey> keyGenerator;
 
     public NotifyHandlerImpl(
             TopicMaintainService topicMaintainService,
@@ -61,7 +62,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
             SendLocalCacheHandler sendLocalCacheHandler,
             PushHandler pushHandler,
             HandlerValidator handlerValidator,
-            KeyFetcher<LongIdKey> keyFetcher
+            KeyGenerator<LongIdKey> keyGenerator
     ) {
         this.topicMaintainService = topicMaintainService;
         this.notifyHistoryMaintainService = notifyHistoryMaintainService;
@@ -72,7 +73,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         this.sendLocalCacheHandler = sendLocalCacheHandler;
         this.pushHandler = pushHandler;
         this.handlerValidator = handlerValidator;
-        this.keyFetcher = keyFetcher;
+        this.keyGenerator = keyGenerator;
     }
 
     @Override
@@ -98,10 +99,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
             // 进行后处理操作。
             postprocessing(notifySettingKey, sentItems, routeInfoMap, dispatchInfoMap, sendInfoMap);
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         }
     }
 
@@ -195,7 +194,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
 
         // 构造相关实体。
         Date currentDate = new Date();
-        LongIdKey notifyHistoryKey = keyFetcher.fetchKey();
+        LongIdKey notifyHistoryKey = keyGenerator.generate();
         long notifyHistoryId = notifyHistoryKey.getLongId();
         persistNotifyHistory = new NotifyHistory(
                 notifyHistoryKey, notifySettingKey, currentDate, "通过 NotifyHandlerImpl 生成"

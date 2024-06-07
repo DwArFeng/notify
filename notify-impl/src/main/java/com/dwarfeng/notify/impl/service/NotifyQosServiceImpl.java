@@ -32,7 +32,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.notify(notifyInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取当前的确认模式时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取当前的确认模式时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -41,7 +41,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             return notifyHandler.getRouter(routerInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的路由器时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取指定主键对应的路由器时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -50,7 +50,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.clearRouterLocalCache();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("清理路由器本地缓存时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("清理路由器本地缓存时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -59,7 +59,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             return notifyHandler.getDispatcher(dispatcherInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的调度器时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取指定主键对应的调度器时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -68,7 +68,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.clearDispatcherLocalCache();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("清理调度器本地缓存时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("清理调度器本地缓存时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -77,7 +77,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             return notifyHandler.getSender(senderInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取指定主键对应的发送器时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取指定主键对应的发送器时发生异常", LogLevel.WARN, e, sem);
         }
     }
 
@@ -86,7 +86,7 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.clearSenderLocalCache();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("清理发送器本地缓存时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("清理发送器本地缓存时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }

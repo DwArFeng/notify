@@ -8,13 +8,11 @@ import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.*;
 import com.dwarfeng.notify.stack.cache.*;
 import com.dwarfeng.notify.stack.dao.*;
-import com.dwarfeng.sfds.api.integration.subgrade.SnowFlakeLongIdKeyFetcher;
-import com.dwarfeng.subgrade.impl.bean.key.ExceptionKeyFetcher;
+import com.dwarfeng.subgrade.impl.generation.ExceptionKeyGenerator;
 import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.stack.bean.key.KeyFetcher;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.log.LogLevel;
@@ -26,6 +24,7 @@ import org.springframework.context.annotation.Configuration;
 public class ServiceConfiguration {
 
     private final ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration;
+    private final GenerateConfiguration generateConfiguration;
 
     private final UserCrudOperation userCrudOperation;
     private final UserDao userDao;
@@ -79,22 +78,38 @@ public class ServiceConfiguration {
 
     public ServiceConfiguration(
             ServiceExceptionMapperConfiguration serviceExceptionMapperConfiguration,
-            UserCrudOperation userCrudOperation, UserDao userDao,
-            RouterInfoDao routerInfoDao, RouterInfoCache routerInfoCache,
-            RouterSupportDao routerSupportDao, RouterSupportCache routerSupportCache,
-            NotifySettingCrudOperation notifySettingCrudOperation, NotifySettingDao notifySettingDao,
-            SenderInfoDao senderInfoDao, SenderInfoCache senderInfoCache,
-            SenderSupportDao senderSupportDao, SenderSupportCache senderSupportCache,
-            TopicCrudOperation topicCrudOperation, TopicDao topicDao,
-            DispatcherInfoDao dispatcherInfoDao, DispatcherInfoCache dispatcherInfoCache,
-            DispatcherSupportDao dispatcherSupportDao, DispatcherSupportCache dispatcherSupportCache,
-            MetaDao metaDao, MetaCache metaCache,
-            MetaIndicatorDao metaIndicatorDao, MetaIndicatorCache metaIndicatorCache,
-            NotifyHistoryCrudOperation notifyHistoryCrudOperation, NotifyHistoryDao notifyHistoryDao,
-            NotifyInfoRecordDao notifyInfoRecordDao, NotifyInfoRecordCache notifyInfoRecordCache,
-            NotifySendRecordDao notifySendRecordDao, NotifySendRecordCache notifySendRecordCache
+            GenerateConfiguration generateConfiguration,
+            UserCrudOperation userCrudOperation,
+            UserDao userDao,
+            RouterInfoDao routerInfoDao,
+            RouterInfoCache routerInfoCache,
+            RouterSupportDao routerSupportDao,
+            RouterSupportCache routerSupportCache,
+            NotifySettingCrudOperation notifySettingCrudOperation,
+            NotifySettingDao notifySettingDao,
+            SenderInfoDao senderInfoDao,
+            SenderInfoCache senderInfoCache,
+            SenderSupportDao senderSupportDao,
+            SenderSupportCache senderSupportCache,
+            TopicCrudOperation topicCrudOperation,
+            TopicDao topicDao,
+            DispatcherInfoDao dispatcherInfoDao,
+            DispatcherInfoCache dispatcherInfoCache,
+            DispatcherSupportDao dispatcherSupportDao,
+            DispatcherSupportCache dispatcherSupportCache,
+            MetaDao metaDao,
+            MetaCache metaCache,
+            MetaIndicatorDao metaIndicatorDao,
+            MetaIndicatorCache metaIndicatorCache,
+            NotifyHistoryCrudOperation notifyHistoryCrudOperation,
+            NotifyHistoryDao notifyHistoryDao,
+            NotifyInfoRecordDao notifyInfoRecordDao,
+            NotifyInfoRecordCache notifyInfoRecordCache,
+            NotifySendRecordDao notifySendRecordDao,
+            NotifySendRecordCache notifySendRecordCache
     ) {
         this.serviceExceptionMapperConfiguration = serviceExceptionMapperConfiguration;
+        this.generateConfiguration = generateConfiguration;
         this.userCrudOperation = userCrudOperation;
         this.userDao = userDao;
         this.routerInfoDao = routerInfoDao;
@@ -126,15 +141,10 @@ public class ServiceConfiguration {
     }
 
     @Bean
-    public KeyFetcher<LongIdKey> longIdKeyKeyFetcher() {
-        return new SnowFlakeLongIdKeyFetcher();
-    }
-
-    @Bean
     public CustomBatchCrudService<StringIdKey, User> userCustomBatchCrudService() {
         return new CustomBatchCrudService<>(
                 userCrudOperation,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -163,7 +173,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 routerInfoDao,
                 routerInfoCache,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 routerInfoTimeout
@@ -193,7 +203,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 routerSupportDao,
                 routerSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 routerSupportTimeout
@@ -222,7 +232,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, NotifySetting> notifySettingCustomBatchCrudService() {
         return new CustomBatchCrudService<>(
                 notifySettingCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -251,7 +261,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 senderInfoDao,
                 senderInfoCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 senderInfoTimeout
@@ -281,7 +291,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 senderSupportDao,
                 senderSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 senderSupportTimeout
@@ -310,7 +320,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<StringIdKey, Topic> topicCustomBatchCrudService() {
         return new CustomBatchCrudService<>(
                 topicCrudOperation,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -339,7 +349,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 dispatcherInfoDao,
                 dispatcherInfoCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 dispatcherInfoTimeout
@@ -369,7 +379,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 dispatcherSupportDao,
                 dispatcherSupportCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 dispatcherSupportTimeout
@@ -399,7 +409,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 metaDao,
                 metaCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 metaTimeout
@@ -430,7 +440,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 metaIndicatorDao,
                 metaIndicatorCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 metaIndicatorTimeout
@@ -459,7 +469,7 @@ public class ServiceConfiguration {
     public CustomBatchCrudService<LongIdKey, NotifyHistory> notifyHistoryCustomBatchCrudService() {
         return new CustomBatchCrudService<>(
                 notifyHistoryCrudOperation,
-                longIdKeyKeyFetcher(),
+                generateConfiguration.snowflakeLongIdKeyGenerator(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN
         );
@@ -488,7 +498,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 notifyInfoRecordDao,
                 notifyInfoRecordCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 notifyInfoRecordTimeout
@@ -518,7 +528,7 @@ public class ServiceConfiguration {
         return new GeneralBatchCrudService<>(
                 notifySendRecordDao,
                 notifySendRecordCache,
-                new ExceptionKeyFetcher<>(),
+                new ExceptionKeyGenerator<>(),
                 serviceExceptionMapperConfiguration.mapServiceExceptionMapper(),
                 LogLevel.WARN,
                 notifySendRecordTimeout

@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.handler.resetter;
 
+import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -72,10 +73,8 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             if (listenerContainer.isPauseRequested()) {
                 listenerContainer.resume();
             }
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }
@@ -98,10 +97,8 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             if (listenerContainer.isRunning()) {
                 listenerContainer.stop();
             }
-        } catch (HandlerException e) {
-            throw e;
         } catch (Exception e) {
-            throw new HandlerException(e);
+            throw HandlerExceptionHelper.parse(e);
         } finally {
             lock.unlock();
         }

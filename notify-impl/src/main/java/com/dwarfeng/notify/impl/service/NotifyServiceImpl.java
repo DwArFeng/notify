@@ -26,7 +26,7 @@ public class NotifyServiceImpl implements NotifyService {
         try {
             notifyHandler.notify(notifyInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logAndThrow("获取当前的确认模式时发生异常", LogLevel.WARN, sem, e);
+            throw ServiceExceptionHelper.logParse("获取当前的确认模式时发生异常", LogLevel.WARN, e, sem);
         }
     }
 }
