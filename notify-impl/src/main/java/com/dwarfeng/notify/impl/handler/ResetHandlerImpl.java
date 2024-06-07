@@ -113,7 +113,7 @@ public class ResetHandlerImpl implements ResetHandler {
                 try {
                     resetter.start();
                 } catch (Exception e) {
-                    LOGGER.warn("重置器 " + resetter + " 启动时发生异常, 将不会启动, 异常信息如下: ", e);
+                    LOGGER.warn("重置器 {} 启动时发生异常, 将不会启动, 异常信息如下: ", resetter, e);
                 }
             }
         }
@@ -126,7 +126,7 @@ public class ResetHandlerImpl implements ResetHandler {
                 try {
                     resetter.stop();
                 } catch (Exception e) {
-                    LOGGER.warn("重置器 " + resetter + " 停止时发生异常, 将不会停止, 异常信息如下: ", e);
+                    LOGGER.warn("重置器 {} 停止时发生异常, 将不会停止, 异常信息如下: ", resetter, e);
                 }
             }
         }

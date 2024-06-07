@@ -31,7 +31,6 @@ public class NotifyHistoryPresetCriteriaMaker implements PresetCriteriaMaker {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void childForNotifySetting(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {
@@ -45,7 +44,6 @@ public class NotifyHistoryPresetCriteriaMaker implements PresetCriteriaMaker {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void happenedDateDesc(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             detachedCriteria.addOrder(Order.desc("happenedDate"));
@@ -54,7 +52,6 @@ public class NotifyHistoryPresetCriteriaMaker implements PresetCriteriaMaker {
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void childForNotifySettingHappenedDateDesc(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {

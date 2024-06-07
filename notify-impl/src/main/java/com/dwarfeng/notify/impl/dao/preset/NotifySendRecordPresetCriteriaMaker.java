@@ -77,7 +77,6 @@ public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker 
         }
     }
 
-    @SuppressWarnings("DuplicatedCode")
     private void childForNotifyHistoryOrdered(DetachedCriteria detachedCriteria, Object[] objects) {
         try {
             if (Objects.isNull(objects[0])) {

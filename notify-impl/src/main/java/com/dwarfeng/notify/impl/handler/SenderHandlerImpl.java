@@ -55,7 +55,7 @@ public class SenderHandlerImpl implements SenderHandler {
             LOGGER.debug("发送器构建成功!");
             sender.init(senderContext);
             LOGGER.debug("发送器初始化成功!");
-            LOGGER.debug("发送器: " + sender);
+            LOGGER.debug("发送器: {}", sender);
             return sender;
         } catch (SenderException e) {
             throw e;

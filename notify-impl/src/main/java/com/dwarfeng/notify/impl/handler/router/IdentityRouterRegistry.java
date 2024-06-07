@@ -58,6 +58,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
      * @param identityUserList 指定的本体用户列表。
      * @return 指定的本体用户列表转换成的字符串。
      */
+    @SuppressWarnings("JavaExistingMethodCanBeUsed")
     public static String stringifyIdentityUserList(List<StringIdKey> identityUserList) {
         List<FastJsonStringIdKey> fastJsonUserKeys = identityUserList.stream().map(FastJsonStringIdKey::of)
                 .collect(Collectors.toList());
@@ -70,6 +71,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
      * @param string 指定的字符串。
      * @return 解析指定的字符串获取到的本体用户列表。
      */
+    @SuppressWarnings("JavaExistingMethodCanBeUsed")
     public static List<StringIdKey> parseIdentityUserList(String string) {
         List<FastJsonStringIdKey> fastJsonUserKeys = JSON.parseArray(string, FastJsonStringIdKey.class);
         return fastJsonUserKeys.stream().map(FastJsonStringIdKey::toStackBean).collect(Collectors.toList());

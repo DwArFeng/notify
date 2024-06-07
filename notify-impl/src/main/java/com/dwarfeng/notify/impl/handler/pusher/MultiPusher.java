@@ -5,14 +5,12 @@ import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * 同时将消息推送给所有代理的多重推送器。
@@ -27,16 +25,16 @@ public class MultiPusher extends AbstractPusher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MultiPusher.class);
 
-    @Autowired
-    private List<Pusher> pushers;
+    private final List<Pusher> pushers;
 
     @Value("${pusher.multi.delegate_types}")
     private String delegateTypes;
 
     private final List<Pusher> delegates = new ArrayList<>();
 
-    public MultiPusher() {
+    public MultiPusher(@Lazy List<Pusher> pushers) {
         super(SUPPORT_TYPE);
+        this.pushers = Optional.ofNullable(pushers).orElse(Collections.emptyList());
     }
 
     @PostConstruct

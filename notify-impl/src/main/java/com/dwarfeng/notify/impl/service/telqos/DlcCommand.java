@@ -56,7 +56,6 @@ public class DlcCommand extends CliCommand {
         return list;
     }
 
-    @SuppressWarnings("DuplicatedCode")
     @Override
     protected void executeWithCmd(Context context, CommandLine cmd) throws TelqosException {
         try {

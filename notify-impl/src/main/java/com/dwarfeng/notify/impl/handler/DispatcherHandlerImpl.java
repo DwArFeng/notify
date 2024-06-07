@@ -55,7 +55,7 @@ public class DispatcherHandlerImpl implements DispatcherHandler {
             LOGGER.debug("调度器构建成功!");
             dispatcher.init(dispatcherContext);
             LOGGER.debug("调度器初始化成功!");
-            LOGGER.debug("调度器: " + dispatcher);
+            LOGGER.debug("调度器: {}", dispatcher);
             return dispatcher;
         } catch (DispatcherException e) {
             throw e;

@@ -139,7 +139,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 生成 Item 结构体，并添加到结果列表。
                 dispatchedItems.add(new DispatchedItem(topicKey, dispatchedUserKeys));
             } catch (DispatcherException e) {
-                LOGGER.warn("主题 " + topicKey + " 调度失败, 将不参与发送, 异常信息如下: ", e);
+                LOGGER.warn("主题 {} 调度失败, 将不参与发送, 异常信息如下: ", topicKey, e);
             }
         }
 
@@ -172,7 +172,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 构建发送结构体，添加到结构体列表中。
                 sentItems.add(new SentItem(topicKey, senderResponse));
             } catch (SenderException e) {
-                LOGGER.warn("主题 " + topicKey + " 发送失败, 异常信息如下: ", e);
+                LOGGER.warn("主题 {} 发送失败, 异常信息如下: ", topicKey, e);
             }
         }
 
@@ -260,7 +260,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         try {
             pushHandler.notifyHistoryRecorded(pushNotifyHistoryRecordInfo);
         } catch (Exception e) {
-            LOGGER.warn("历史记录信息插入事件推送失败, 放弃对数据的推送: " + pushNotifyHistoryRecordInfo, e);
+            LOGGER.warn("历史记录信息插入事件推送失败, 放弃对数据的推送: {}", pushNotifyHistoryRecordInfo, e);
         }
     }
 

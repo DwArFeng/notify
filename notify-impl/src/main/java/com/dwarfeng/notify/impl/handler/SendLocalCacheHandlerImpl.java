@@ -42,7 +42,7 @@ public class SendLocalCacheHandlerImpl implements SendLocalCacheHandler {
 
     @BehaviorAnalyse
     @Override
-    public void clear() throws HandlerException {
+    public void clear() {
         handler.clear();
     }
 

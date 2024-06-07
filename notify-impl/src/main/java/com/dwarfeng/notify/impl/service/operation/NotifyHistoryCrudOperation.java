@@ -128,15 +128,15 @@ public class NotifyHistoryCrudOperation implements BatchCrudOperation<LongIdKey,
     }
 
     @Override
-    public List<LongIdKey> batchInsert(List<NotifyHistory> notifyHistorys) throws Exception {
-        notifyHistoryCache.batchPush(notifyHistorys, notifyHistoryTimeout);
-        return notifyHistoryDao.batchInsert(notifyHistorys);
+    public List<LongIdKey> batchInsert(List<NotifyHistory> notifyHistories) throws Exception {
+        notifyHistoryCache.batchPush(notifyHistories, notifyHistoryTimeout);
+        return notifyHistoryDao.batchInsert(notifyHistories);
     }
 
     @Override
-    public void batchUpdate(List<NotifyHistory> notifyHistorys) throws Exception {
-        notifyHistoryCache.batchPush(notifyHistorys, notifyHistoryTimeout);
-        notifyHistoryDao.batchUpdate(notifyHistorys);
+    public void batchUpdate(List<NotifyHistory> notifyHistories) throws Exception {
+        notifyHistoryCache.batchPush(notifyHistories, notifyHistoryTimeout);
+        notifyHistoryDao.batchUpdate(notifyHistories);
     }
 
     @Override

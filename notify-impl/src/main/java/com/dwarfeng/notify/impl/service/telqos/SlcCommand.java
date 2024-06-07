@@ -26,6 +26,7 @@ public class SlcCommand extends CliCommand {
             COMMAND_OPTION_CLEAR
     };
 
+    @SuppressWarnings("SpellCheckingInspection")
     private static final String COMMAND_OPTION_LOOKUP_NSID = "nsid";
     private static final String COMMAND_OPTION_LOOKUP_TID = "tid";
 

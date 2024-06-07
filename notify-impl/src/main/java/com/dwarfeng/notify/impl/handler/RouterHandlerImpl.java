@@ -66,7 +66,7 @@ public class RouterHandlerImpl implements RouterHandler {
             LOGGER.debug("路由器构建成功!");
             router.init(routerContext);
             LOGGER.debug("路由器初始化成功!");
-            LOGGER.debug("路由器: " + router);
+            LOGGER.debug("路由器: {}", router);
             return router;
         } catch (RouterException e) {
             throw e;
