@@ -4,6 +4,12 @@
 
 #### 功能构建
 
+- 优化部分类中部分方法的行为分析行为。
+  - com.dwarfeng.notify.impl.cache.NotifyHistoryCacheImpl。
+  - com.dwarfeng.notify.impl.cache.NotifySendRecordCacheImpl。
+  - com.dwarfeng.notify.impl.dao.NotifyHistoryDaoImpl。
+  - com.dwarfeng.notify.impl.dao.NotifySendRecordDaoImpl。
+
 - 优化项目的启停脚本，以规避潜在的路径问题。
   - binres/notify-start.sh。
   - binres/notify-stop.sh。

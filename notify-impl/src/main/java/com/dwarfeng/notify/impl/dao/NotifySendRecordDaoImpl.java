@@ -9,6 +9,7 @@ import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
 import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
 import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
+import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.exception.DaoException;
 import org.springframework.stereotype.Repository;
@@ -72,48 +73,51 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<NotifySendRecordKey> batchInsert(List<NotifySendRecord> elements) throws DaoException {
+    public List<NotifySendRecordKey> batchInsert(@SkipRecord List<NotifySendRecord> elements) throws DaoException {
         return batchDelegate.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchUpdate(List<NotifySendRecord> elements) throws DaoException {
+    public void batchUpdate(@SkipRecord List<NotifySendRecord> elements) throws DaoException {
         batchDelegate.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public void batchDelete(List<NotifySendRecordKey> keys) throws DaoException {
+    public void batchDelete(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
         batchDelegate.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean allExists(List<NotifySendRecordKey> keys) throws DaoException {
+    public boolean allExists(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
         return batchDelegate.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public boolean nonExists(List<NotifySendRecordKey> keys) throws DaoException {
+    public boolean nonExists(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
         return batchDelegate.nonExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifySendRecord> batchGet(List<NotifySendRecordKey> keys) throws DaoException {
+    public List<NotifySendRecord> batchGet(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
         return batchDelegate.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup() throws DaoException {
         return entireLookupDelegate.lookup();
@@ -121,6 +125,7 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup(PagingInfo pagingInfo) throws DaoException {
         return entireLookupDelegate.lookup(pagingInfo);
@@ -135,6 +140,7 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup(String preset, Object[] objs) throws DaoException {
         return presetLookupDelegate.lookup(preset, objs);
@@ -142,6 +148,7 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
 
     @Override
     @BehaviorAnalyse
+    @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
         return presetLookupDelegate.lookup(preset, objs, pagingInfo);
