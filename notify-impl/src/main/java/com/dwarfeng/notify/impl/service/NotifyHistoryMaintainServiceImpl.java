@@ -155,12 +155,21 @@ public class NotifyHistoryMaintainServiceImpl implements NotifyHistoryMaintainSe
         return batchCrudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<LongIdKey> batchInsertIfExists(@SkipRecord List<NotifyHistory> elements) throws ServiceException {
         return batchCrudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<LongIdKey> batchInsertIfNotExists(@SkipRecord List<NotifyHistory> elements) throws ServiceException {
+        return batchCrudService.batchInsertIfNotExists(elements);
     }
 
     @Override
@@ -229,7 +238,8 @@ public class NotifyHistoryMaintainServiceImpl implements NotifyHistoryMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<NotifyHistory> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<NotifyHistory> lookup(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 
@@ -245,7 +255,8 @@ public class NotifyHistoryMaintainServiceImpl implements NotifyHistoryMaintainSe
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifyHistory> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public List<NotifyHistory> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
     }
 }

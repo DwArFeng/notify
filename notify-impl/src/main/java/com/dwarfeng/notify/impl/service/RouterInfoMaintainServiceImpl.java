@@ -155,12 +155,21 @@ public class RouterInfoMaintainServiceImpl implements RouterInfoMaintainService 
         return crudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<LongIdKey> batchInsertIfExists(@SkipRecord List<RouterInfo> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<LongIdKey> batchInsertIfNotExists(@SkipRecord List<RouterInfo> elements) throws ServiceException {
+        return crudService.batchInsertIfNotExists(elements);
     }
 
     @Override

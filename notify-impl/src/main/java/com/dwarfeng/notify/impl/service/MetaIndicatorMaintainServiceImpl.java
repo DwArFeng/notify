@@ -157,6 +157,7 @@ public class MetaIndicatorMaintainServiceImpl implements MetaIndicatorMaintainSe
         return crudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
@@ -164,6 +165,15 @@ public class MetaIndicatorMaintainServiceImpl implements MetaIndicatorMaintainSe
     public List<MetaIndicatorKey> batchInsertIfExists(@SkipRecord List<MetaIndicator> elements)
             throws ServiceException {
         return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<MetaIndicatorKey> batchInsertIfNotExists(@SkipRecord List<MetaIndicator> elements)
+            throws ServiceException {
+        return crudService.batchInsertIfNotExists(elements);
     }
 
     @Override

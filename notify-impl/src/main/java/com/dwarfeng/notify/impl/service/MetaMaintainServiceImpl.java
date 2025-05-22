@@ -155,12 +155,21 @@ public class MetaMaintainServiceImpl implements MetaMaintainService {
         return crudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<MetaKey> batchInsertIfExists(@SkipRecord List<Meta> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<MetaKey> batchInsertIfNotExists(@SkipRecord List<Meta> elements) throws ServiceException {
+        return crudService.batchInsertIfNotExists(elements);
     }
 
     @Override

@@ -155,12 +155,21 @@ public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService 
         return crudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<SenderInfoKey> batchInsertIfExists(@SkipRecord List<SenderInfo> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<SenderInfoKey> batchInsertIfNotExists(@SkipRecord List<SenderInfo> elements) throws ServiceException {
+        return crudService.batchInsertIfNotExists(elements);
     }
 
     @Override

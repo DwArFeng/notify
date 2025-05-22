@@ -155,12 +155,23 @@ public class NotifySendRecordMaintainServiceImpl implements NotifySendRecordMain
         return batchCrudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<NotifySendRecordKey> batchInsertIfExists(@SkipRecord List<NotifySendRecord> elements) throws ServiceException {
+    public List<NotifySendRecordKey> batchInsertIfExists(@SkipRecord List<NotifySendRecord> elements)
+            throws ServiceException {
         return batchCrudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<NotifySendRecordKey> batchInsertIfNotExists(@SkipRecord List<NotifySendRecord> elements)
+            throws ServiceException {
+        return batchCrudService.batchInsertIfNotExists(elements);
     }
 
     @Override
@@ -181,7 +192,8 @@ public class NotifySendRecordMaintainServiceImpl implements NotifySendRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<NotifySendRecordKey> batchInsertOrUpdate(@SkipRecord List<NotifySendRecord> elements) throws ServiceException {
+    public List<NotifySendRecordKey> batchInsertOrUpdate(@SkipRecord List<NotifySendRecord> elements)
+            throws ServiceException {
         return batchCrudService.batchInsertOrUpdate(elements);
     }
 
@@ -229,7 +241,8 @@ public class NotifySendRecordMaintainServiceImpl implements NotifySendRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public PagedData<NotifySendRecord> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public PagedData<NotifySendRecord> lookup(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookup(preset, objs, pagingInfo);
     }
 
@@ -245,7 +258,8 @@ public class NotifySendRecordMaintainServiceImpl implements NotifySendRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
-    public List<NotifySendRecord> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo) throws ServiceException {
+    public List<NotifySendRecord> lookupAsList(String preset, Object[] objs, PagingInfo pagingInfo)
+            throws ServiceException {
         return presetLookupService.lookupAsList(preset, objs, pagingInfo);
     }
 }

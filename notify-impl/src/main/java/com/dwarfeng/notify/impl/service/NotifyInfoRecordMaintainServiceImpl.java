@@ -155,12 +155,21 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
         return crudService.batchGetIfExists(keys);
     }
 
+    @Deprecated
     @Override
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<NotifyInfoRecordKey> batchInsertIfExists(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
         return crudService.batchInsertIfExists(elements);
+    }
+
+    @Override
+    @BehaviorAnalyse
+    @SkipRecord
+    @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
+    public List<NotifyInfoRecordKey> batchInsertIfNotExists(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+        return crudService.batchInsertIfNotExists(elements);
     }
 
     @Override
