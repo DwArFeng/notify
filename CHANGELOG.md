@@ -4,6 +4,22 @@
 
 #### 功能构建
 
+- 优化部分维护服务实现中的部分方法的性能。
+  - com.dwarfeng.notify.impl.service.DispatcherInfoMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.DispatcherSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.MetaIndicatorMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.MetaMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifyHistoryMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifyInfoRecordMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifySendRecordMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifySettingMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.RouterInfoMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.RouterSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.SenderInfoMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.SenderSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.TopicMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.UserMaintainServiceImpl。
+
 - 优化部分类中部分方法的行为分析行为。
   - com.dwarfeng.notify.impl.cache.NotifyHistoryCacheImpl。
   - com.dwarfeng.notify.impl.cache.NotifySendRecordCacheImpl。
