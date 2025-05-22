@@ -18,6 +18,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.assertEquals;
@@ -68,9 +69,14 @@ public class NotifyInfoRecordMaintainServiceImplTest {
             }
         } finally {
             for (NotifyInfoRecord notifyInfoRecord : notifyInfoRecords) {
+                if (Objects.isNull(notifyInfoRecord.getKey())) {
+                    continue;
+                }
                 notifyInfoRecordMaintainService.deleteIfExists(notifyInfoRecord.getKey());
             }
-            notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            if (Objects.nonNull(notifyHistory.getKey())) {
+                notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            }
         }
     }
 
@@ -98,9 +104,14 @@ public class NotifyInfoRecordMaintainServiceImplTest {
             ));
         } finally {
             for (NotifyInfoRecord notifyInfoRecord : notifyInfoRecords) {
+                if (Objects.isNull(notifyInfoRecord.getKey())) {
+                    continue;
+                }
                 notifyInfoRecordMaintainService.deleteIfExists(notifyInfoRecord.getKey());
             }
-            notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            if (Objects.nonNull(notifyHistory.getKey())) {
+                notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            }
         }
     }
 }

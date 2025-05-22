@@ -20,6 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -76,10 +78,18 @@ public class MetaMaintainServiceImplTest {
             Meta testMeta = metaMaintainService.get(meta.getKey());
             assertEquals(BeanUtils.describe(meta), BeanUtils.describe(testMeta));
         } finally {
-            metaMaintainService.deleteIfExists(meta.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(meta.getKey())) {
+                metaMaintainService.deleteIfExists(meta.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 
@@ -94,10 +104,18 @@ public class MetaMaintainServiceImplTest {
             notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
             assertFalse(metaMaintainService.exists(meta.getKey()));
         } finally {
-            metaMaintainService.deleteIfExists(meta.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(meta.getKey())) {
+                metaMaintainService.deleteIfExists(meta.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 
@@ -112,10 +130,18 @@ public class MetaMaintainServiceImplTest {
             topicMaintainService.deleteIfExists(topic.getKey());
             assertFalse(metaMaintainService.exists(meta.getKey()));
         } finally {
-            metaMaintainService.deleteIfExists(meta.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(meta.getKey())) {
+                metaMaintainService.deleteIfExists(meta.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 
@@ -130,10 +156,18 @@ public class MetaMaintainServiceImplTest {
             userMaintainService.deleteIfExists(user.getKey());
             assertFalse(metaMaintainService.exists(meta.getKey()));
         } finally {
-            metaMaintainService.deleteIfExists(meta.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(meta.getKey())) {
+                metaMaintainService.deleteIfExists(meta.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 }

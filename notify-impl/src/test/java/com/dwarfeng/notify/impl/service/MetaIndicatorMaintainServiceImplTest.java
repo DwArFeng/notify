@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Objects;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 
@@ -59,8 +61,12 @@ public class MetaIndicatorMaintainServiceImplTest {
             );
             assertEquals(BeanUtils.describe(metaIndicator), BeanUtils.describe(testMetaIndicator));
         } finally {
-            metaIndicatorMaintainService.deleteIfExists(metaIndicator.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(metaIndicator.getKey())) {
+                metaIndicatorMaintainService.deleteIfExists(metaIndicator.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 
@@ -73,8 +79,12 @@ public class MetaIndicatorMaintainServiceImplTest {
             topicMaintainService.deleteIfExists(topic.getKey());
             assertFalse(metaIndicatorMaintainService.exists(metaIndicator.getKey()));
         } finally {
-            metaIndicatorMaintainService.deleteIfExists(metaIndicator.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(metaIndicator.getKey())) {
+                metaIndicatorMaintainService.deleteIfExists(metaIndicator.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 }

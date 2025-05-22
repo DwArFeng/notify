@@ -21,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.Date;
+import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -77,10 +78,18 @@ public class NotifySendRecordMaintainServiceImplTest {
             NotifySendRecord testNotifySendRecord = notifySendRecordMaintainService.get(notifySendRecord.getKey());
             assertEquals(BeanUtils.describe(notifySendRecord), BeanUtils.describe(testNotifySendRecord));
         } finally {
-            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            if (Objects.nonNull(notifySendRecord.getKey())) {
+                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifyHistory.getKey())) {
+                notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            }
         }
     }
 
@@ -105,10 +114,18 @@ public class NotifySendRecordMaintainServiceImplTest {
             );
             assertFalse(notifySendRecordMaintainService.exists(notifySendRecord.getKey()));
         } finally {
-            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            if (Objects.nonNull(notifySendRecord.getKey())) {
+                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifyHistory.getKey())) {
+                notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            }
         }
     }
 
@@ -133,10 +150,18 @@ public class NotifySendRecordMaintainServiceImplTest {
             );
             assertFalse(notifySendRecordMaintainService.exists(notifySendRecord.getKey()));
         } finally {
-            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            if (Objects.nonNull(notifySendRecord.getKey())) {
+                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifyHistory.getKey())) {
+                notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            }
         }
     }
 
@@ -161,10 +186,18 @@ public class NotifySendRecordMaintainServiceImplTest {
             );
             assertFalse(notifySendRecordMaintainService.exists(notifySendRecord.getKey()));
         } finally {
-            notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
-            userMaintainService.deleteIfExists(user.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
-            notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            if (Objects.nonNull(notifySendRecord.getKey())) {
+                notifySendRecordMaintainService.deleteIfExists(notifySendRecord.getKey());
+            }
+            if (Objects.nonNull(user.getKey())) {
+                userMaintainService.deleteIfExists(user.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
+            if (Objects.nonNull(notifyHistory.getKey())) {
+                notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
+            }
         }
     }
 }

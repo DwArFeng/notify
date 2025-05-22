@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,8 +51,12 @@ public class RouterInfoMaintainServiceImplTest {
             RouterInfo testRouterInfo = routerInfoMaintainService.get(routerInfo.getKey());
             assertEquals(BeanUtils.describe(routerInfo), BeanUtils.describe(testRouterInfo));
         } finally {
-            routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(routerInfo.getKey())) {
+                routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 
@@ -67,8 +73,12 @@ public class RouterInfoMaintainServiceImplTest {
 
             assertFalse(routerInfoMaintainService.exists(routerInfo.getKey()));
         } finally {
-            routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(routerInfo.getKey())) {
+                routerInfoMaintainService.deleteIfExists(routerInfo.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 }

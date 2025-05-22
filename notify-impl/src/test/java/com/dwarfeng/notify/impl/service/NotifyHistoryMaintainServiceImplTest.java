@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -65,9 +66,14 @@ public class NotifyHistoryMaintainServiceImplTest {
             }
         } finally {
             for (NotifyHistory notifyHistory : notifyHistories) {
+                if (Objects.isNull(notifyHistory.getKey())) {
+                    continue;
+                }
                 notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
             }
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 
@@ -99,9 +105,14 @@ public class NotifyHistoryMaintainServiceImplTest {
             }
         } finally {
             for (NotifyHistory notifyHistory : notifyHistories) {
+                if (Objects.isNull(notifyHistory.getKey())) {
+                    continue;
+                }
                 notifyHistoryMaintainService.deleteIfExists(notifyHistory.getKey());
             }
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
         }
     }
 }

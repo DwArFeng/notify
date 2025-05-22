@@ -14,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,8 +52,12 @@ public class DispatcherInfoMaintainServiceImplTest {
             DispatcherInfo testDispatcherInfo = dispatcherInfoMaintainService.get(dispatcherInfo.getKey());
             assertEquals(BeanUtils.describe(dispatcherInfo), BeanUtils.describe(testDispatcherInfo));
         } finally {
-            dispatcherInfoMaintainService.deleteIfExists(dispatcherInfo.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(dispatcherInfo.getKey())) {
+                dispatcherInfoMaintainService.deleteIfExists(dispatcherInfo.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 
@@ -68,8 +74,12 @@ public class DispatcherInfoMaintainServiceImplTest {
 
             assertFalse(dispatcherInfoMaintainService.exists(dispatcherInfo.getKey()));
         } finally {
-            dispatcherInfoMaintainService.deleteIfExists(dispatcherInfo.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(dispatcherInfo.getKey())) {
+                dispatcherInfoMaintainService.deleteIfExists(dispatcherInfo.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 }

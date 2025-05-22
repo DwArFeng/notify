@@ -4,6 +4,22 @@
 
 #### 功能构建
 
+- 优化部分单元测试代码，以规避潜在的 bug。
+  - com.dwarfeng.notify.impl.service.DispatcherInfoMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.DispatcherSupportMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.MetaIndicatorMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.MetaMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.NotifyHistoryMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.NotifyInfoRecordMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.NotifySendRecordMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.NotifySettingMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.RouterInfoMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.RouterSupportMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.SenderInfoMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.SenderSupportMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.TopicMaintainServiceImplTest。
+  - com.dwarfeng.notify.impl.service.UserMaintainServiceImplTest。
+
 - SPI 目录结构优化。
   - 将驱动机制的 SPI 接口与抽象类提相关代码文件提升至 `sdk` 模块中。
   - 将执行机制的 SPI 接口与抽象类提相关代码文件提升至 `sdk` 模块中。

@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.Objects;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -59,9 +61,15 @@ public class SenderInfoMaintainServiceImplTest {
             SenderInfo testSenderInfo = senderInfoMaintainService.get(senderInfo.getKey());
             assertEquals(BeanUtils.describe(senderInfo), BeanUtils.describe(testSenderInfo));
         } finally {
-            senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(senderInfo.getKey())) {
+                senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 
@@ -79,9 +87,15 @@ public class SenderInfoMaintainServiceImplTest {
 
             assertFalse(senderInfoMaintainService.exists(senderInfo.getKey()));
         } finally {
-            senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(senderInfo.getKey())) {
+                senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 
@@ -99,9 +113,15 @@ public class SenderInfoMaintainServiceImplTest {
 
             assertFalse(senderInfoMaintainService.exists(senderInfo.getKey()));
         } finally {
-            senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
-            notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
-            topicMaintainService.deleteIfExists(topic.getKey());
+            if (Objects.nonNull(senderInfo.getKey())) {
+                senderInfoMaintainService.deleteIfExists(senderInfo.getKey());
+            }
+            if (Objects.nonNull(notifySetting.getKey())) {
+                notifySettingMaintainService.deleteIfExists(notifySetting.getKey());
+            }
+            if (Objects.nonNull(topic.getKey())) {
+                topicMaintainService.deleteIfExists(topic.getKey());
+            }
         }
     }
 }
