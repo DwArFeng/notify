@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
+import com.dwarfeng.datamark.bean.jpa.DatamarkField;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -12,7 +13,7 @@ import java.util.Optional;
 @Table(name = "tbl_router_info")
 public class HibernateRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 1479550085023216502L;
+    private static final long serialVersionUID = -3214122460625249718L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -31,6 +32,22 @@ public class HibernateRouterInfo implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    // -----------------------------------------------------------审计-----------------------------------------------------------
+    @DatamarkField(handlerName = "notifySettingDatamarkHandler")
+    @Column(
+            name = "created_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            updatable = false
+    )
+    private String createdDatamark;
+
+    @DatamarkField(handlerName = "notifySettingDatamarkHandler")
+    @Column(
+            name = "modified_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+    )
+    private String modifiedDatamark;
 
     // -----------------------------------------------------------一对一-----------------------------------------------------------
     @OneToOne(targetEntity = HibernateNotifySetting.class)
@@ -92,6 +109,22 @@ public class HibernateRouterInfo implements Bean {
         this.remark = remark;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     public HibernateNotifySetting getNotifySetting() {
         return notifySetting;
     }
@@ -108,6 +141,8 @@ public class HibernateRouterInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
+                "createdDatamark = " + createdDatamark + ", " +
+                "modifiedDatamark = " + modifiedDatamark + ", " +
                 "notifySetting = " + notifySetting + ")";
     }
 }

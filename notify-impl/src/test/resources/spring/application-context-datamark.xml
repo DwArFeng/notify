@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:datamark="http://dwarfeng.com/schema/dwarfeng-datamark"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://dwarfeng.com/schema/dwarfeng-datamark
+        http://dwarfeng.com/schema/dwarfeng-datamark/dwarfeng-datamark.xsd"
+>
+
+    <!-- NotifySetting 数据标识 -->
+    <datamark:handler
+            handler-name="notifySettingDatamarkHandler"
+            resource-url="${datamark.notify_setting.resource_url}"
+            resource-charset="${datamark.notify_setting.resource_charset}"
+            update-allowed="${datamark.notify_setting.update_allowed}"
+    />
+
+    <!-- Sender 数据标识 -->
+    <datamark:handler
+            handler-name="senderDatamarkHandler"
+            resource-url="${datamark.sender.resource_url}"
+            resource-charset="${datamark.sender.resource_charset}"
+            update-allowed="${datamark.sender.update_allowed}"
+    />
+
+    <!-- Topic 数据标识 -->
+    <datamark:handler
+            handler-name="topicDatamarkHandler"
+            resource-url="${datamark.topic.resource_url}"
+            resource-charset="${datamark.topic.resource_charset}"
+            update-allowed="${datamark.topic.update_allowed}"
+    />
+
+    <!-- User 数据标识 -->
+    <datamark:handler
+            handler-name="userDatamarkHandler"
+            resource-url="${datamark.user.resource_url}"
+            resource-charset="${datamark.user.resource_charset}"
+            update-allowed="${datamark.user.update_allowed}"
+    />
+</beans>

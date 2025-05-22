@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
+import com.dwarfeng.datamark.bean.jpa.DatamarkEntityListener;
+import com.dwarfeng.datamark.bean.jpa.DatamarkField;
 import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -10,9 +12,10 @@ import java.util.Objects;
 @Entity
 @IdClass(HibernateSenderInfoKey.class)
 @Table(name = "tbl_sender_info")
+@EntityListeners(DatamarkEntityListener.class)
 public class HibernateSenderInfo implements Bean {
 
-    private static final long serialVersionUID = 4227314445301257722L;
+    private static final long serialVersionUID = 6717479113778427998L;
 
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
@@ -35,6 +38,22 @@ public class HibernateSenderInfo implements Bean {
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
+
+    // -----------------------------------------------------------审计-----------------------------------------------------------
+    @DatamarkField(handlerName = "senderDatamarkHandler")
+    @Column(
+            name = "created_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            updatable = false
+    )
+    private String createdDatamark;
+
+    @DatamarkField(handlerName = "senderDatamarkHandler")
+    @Column(
+            name = "modified_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+    )
+    private String modifiedDatamark;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateNotifySetting.class)
@@ -116,6 +135,22 @@ public class HibernateSenderInfo implements Bean {
         this.remark = remark;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     public HibernateNotifySetting getNotifySetting() {
         return notifySetting;
     }
@@ -141,6 +176,8 @@ public class HibernateSenderInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
+                "createdDatamark = " + createdDatamark + ", " +
+                "modifiedDatamark = " + modifiedDatamark + ", " +
                 "notifySetting = " + notifySetting + ", " +
                 "topic = " + topic + ")";
     }

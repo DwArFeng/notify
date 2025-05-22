@@ -56,6 +56,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     SenderInfoKey senderInfoKeyFromHibernate(HibernateSenderInfoKey hibernateSenderInfoKey);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "topic", ignore = true)
     @Mapping(target = "stringId", ignore = true)
     HibernateDispatcherInfo dispatcherInfoToHibernate(DispatcherInfo dispatcherInfo);
@@ -81,6 +83,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     Meta metaFromHibernate(HibernateMeta hibernateMeta);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "topicId", ignore = true)
     @Mapping(target = "topic", ignore = true)
     @Mapping(target = "metaId", ignore = true)
@@ -89,6 +93,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     MetaIndicator metaIndicatorFromHibernate(HibernateMetaIndicator hibernateMetaIndicator);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "senderInfos", ignore = true)
     @Mapping(target = "routerInfo", ignore = true)
     @Mapping(target = "notifyHistories", ignore = true)
@@ -99,6 +105,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     NotifySetting notifySettingFromHibernate(HibernateNotifySetting hibernateNotifySetting);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "notifySetting", ignore = true)
     @Mapping(target = "longId", ignore = true)
     HibernateRouterInfo routerInfoToHibernate(RouterInfo routerInfo);
@@ -112,6 +120,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     RouterSupport routerSupportFromHibernate(HibernateRouterSupport hibernateRouterSupport);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "topicId", ignore = true)
     @Mapping(target = "topic", ignore = true)
     @Mapping(target = "notifySettingId", ignore = true)
@@ -127,6 +137,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     SenderSupport senderSupportFromHibernate(HibernateSenderSupport hibernateSenderSupport);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "stringId", ignore = true)
     @Mapping(target = "senderInfos", ignore = true)
     @Mapping(target = "notifySendRecords", ignore = true)
@@ -138,6 +150,8 @@ public interface HibernateMapper {
     @InheritInverseConfiguration
     Topic topicFromHibernate(HibernateTopic hibernateTopic);
 
+    @Mapping(target = "modifiedDatamark", ignore = true)
+    @Mapping(target = "createdDatamark", ignore = true)
     @Mapping(target = "stringId", ignore = true)
     @Mapping(target = "sendRecords", ignore = true)
     @Mapping(target = "metas", ignore = true)

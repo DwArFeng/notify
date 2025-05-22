@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
+import com.dwarfeng.datamark.bean.jpa.DatamarkEntityListener;
+import com.dwarfeng.datamark.bean.jpa.DatamarkField;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -10,10 +12,11 @@ import java.util.Objects;
 @Entity
 @IdClass(HibernateMetaIndicatorKey.class)
 @Table(name = "tbl_meta_indicator")
+@EntityListeners(DatamarkEntityListener.class)
 public class HibernateMetaIndicator implements Bean {
 
-    private static final long serialVersionUID = -5594489097447095272L;
-    
+    private static final long serialVersionUID = -8353845454888170519L;
+
     // -----------------------------------------------------------主键-----------------------------------------------------------
     @Id
     @Column(name = "topic_id", length = Constraints.LENGTH_ID, nullable = false)
@@ -32,6 +35,22 @@ public class HibernateMetaIndicator implements Bean {
 
     @Column(name = "default_value", columnDefinition = "TEXT")
     private String defaultValue;
+
+    // -----------------------------------------------------------审计-----------------------------------------------------------
+    @DatamarkField(handlerName = "topicDatamarkHandler")
+    @Column(
+            name = "created_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            updatable = false
+    )
+    private String createdDatamark;
+
+    @DatamarkField(handlerName = "topicDatamarkHandler")
+    @Column(
+            name = "modified_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+    )
+    private String modifiedDatamark;
 
     // -----------------------------------------------------------多对一-----------------------------------------------------------
     @ManyToOne(targetEntity = HibernateTopic.class)
@@ -99,6 +118,22 @@ public class HibernateMetaIndicator implements Bean {
         this.defaultValue = defaultValue;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     public HibernateTopic getTopic() {
         return topic;
     }
@@ -115,6 +150,8 @@ public class HibernateMetaIndicator implements Bean {
                 "label = " + label + ", " +
                 "remark = " + remark + ", " +
                 "defaultValue = " + defaultValue + ", " +
+                "createdDatamark = " + createdDatamark + ", " +
+                "modifiedDatamark = " + modifiedDatamark + ", " +
                 "topic = " + topic + ")";
     }
 }

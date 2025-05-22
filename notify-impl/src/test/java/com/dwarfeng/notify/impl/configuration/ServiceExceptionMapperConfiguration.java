@@ -16,6 +16,7 @@ public class ServiceExceptionMapperConfiguration {
     @Bean
     public MapServiceExceptionMapper mapServiceExceptionMapper() {
         Map<Class<? extends Exception>, ServiceException.Code> destination = ServiceExceptionHelper.putDefaultDestination(null);
+        destination = com.dwarfeng.datamark.util.ServiceExceptionHelper.putDefaultDestination(destination);
         destination.put(RouterException.class, ServiceExceptionCodes.ROUTER_FAILED);
         destination.put(RouterExecutionException.class, ServiceExceptionCodes.ROUTER_EXECUTION_FAILED);
         destination.put(RouterMakeException.class, ServiceExceptionCodes.ROUTER_MAKE_FAILED);
