@@ -10,6 +10,7 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -30,10 +31,12 @@ public class JSFixedFastJsonNotifyHistoryRecordInfo implements Dto {
                     JSFixedFastJsonLongIdKey.of(notifyHistoryRecordInfo.getKey()),
                     JSFixedFastJsonLongIdKey.of(notifyHistoryRecordInfo.getNotifySettingKey()),
                     notifyHistoryRecordInfo.getHappenedDate(), notifyHistoryRecordInfo.getRemark(),
-                    notifyHistoryRecordInfo.getInfoRecords().stream().map(JSFixedFastJsonInfoRecord::of)
-                            .collect(Collectors.toList()),
-                    notifyHistoryRecordInfo.getSendRecords().stream().map(JSFixedFastJsonSendRecord::of)
-                            .collect(Collectors.toList())
+                    Optional.ofNullable(notifyHistoryRecordInfo.getInfoRecords()).map(
+                            f -> f.stream().map(JSFixedFastJsonInfoRecord::of).collect(Collectors.toList())
+                    ).orElse(null),
+                    Optional.ofNullable(notifyHistoryRecordInfo.getSendRecords()).map(
+                            f -> f.stream().map(JSFixedFastJsonSendRecord::of).collect(Collectors.toList())
+                    ).orElse(null)
             );
         }
     }
