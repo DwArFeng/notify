@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.impl.handler.SenderSupporter;
+import com.dwarfeng.notify.sdk.handler.SenderSupporter;
 import com.dwarfeng.notify.stack.bean.entity.SenderSupport;
 import com.dwarfeng.notify.stack.service.SenderSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;

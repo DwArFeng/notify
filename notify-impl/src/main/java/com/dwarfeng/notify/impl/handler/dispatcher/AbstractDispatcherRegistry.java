@@ -1,49 +1,21 @@
 package com.dwarfeng.notify.impl.handler.dispatcher;
 
-import com.dwarfeng.notify.impl.handler.DispatcherMaker;
-import com.dwarfeng.notify.impl.handler.DispatcherSupporter;
-
-import java.util.Objects;
-
 /**
  * 抽象调度器注册。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.notify.sdk.handler.dispatcher.AbstractDispatcherRegistry
  * @since 1.1.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractDispatcherRegistry implements DispatcherMaker, DispatcherSupporter {
-
-    protected String dispatcherType;
+@Deprecated
+public abstract class AbstractDispatcherRegistry extends
+        com.dwarfeng.notify.sdk.handler.dispatcher.AbstractDispatcherRegistry {
 
     public AbstractDispatcherRegistry() {
     }
 
     public AbstractDispatcherRegistry(String dispatcherType) {
-        this.dispatcherType = dispatcherType;
-    }
-
-    @Override
-    public boolean supportType(String type) {
-        return Objects.equals(dispatcherType, type);
-    }
-
-    @Override
-    public String provideType() {
-        return dispatcherType;
-    }
-
-    public String getDispatcherType() {
-        return dispatcherType;
-    }
-
-    public void setDispatcherType(String dispatcherType) {
-        this.dispatcherType = dispatcherType;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractDispatcherRegistry{" +
-                "dispatcherType='" + dispatcherType + '\'' +
-                '}';
+        super(dispatcherType);
     }
 }

@@ -1,26 +1,16 @@
 package com.dwarfeng.notify.impl.handler.router;
 
-import com.dwarfeng.notify.stack.handler.Router;
-
 /**
  * 路由器的抽象实现。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.notify.sdk.handler.router.AbstractRouter
  * @since 1.4.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractRouter implements Router {
+@Deprecated
+public abstract class AbstractRouter extends com.dwarfeng.notify.sdk.handler.router.AbstractRouter {
 
-    protected Context context;
-
-    @Override
-    public void init(Context context) {
-        this.context = context;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractRouter{" +
-                "context=" + context +
-                '}';
+    public AbstractRouter() {
     }
 }

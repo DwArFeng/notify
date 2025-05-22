@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
+import com.dwarfeng.notify.sdk.handler.pusher.AbstractPusher;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import org.springframework.stereotype.Component;
 

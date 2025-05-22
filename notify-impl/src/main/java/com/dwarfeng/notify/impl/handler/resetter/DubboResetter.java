@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.handler.resetter;
 
+import com.dwarfeng.notify.sdk.handler.resetter.AbstractResetter;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;

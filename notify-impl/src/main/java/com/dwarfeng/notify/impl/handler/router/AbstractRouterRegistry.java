@@ -1,49 +1,20 @@
 package com.dwarfeng.notify.impl.handler.router;
 
-import com.dwarfeng.notify.impl.handler.RouterMaker;
-import com.dwarfeng.notify.impl.handler.RouterSupporter;
-
-import java.util.Objects;
-
 /**
  * 抽象路由器注册。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.notify.sdk.handler.router.AbstractRouterRegistry
  * @since 1.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractRouterRegistry implements RouterMaker, RouterSupporter {
-
-    protected String routerType;
+@Deprecated
+public abstract class AbstractRouterRegistry extends com.dwarfeng.notify.sdk.handler.router.AbstractRouterRegistry {
 
     public AbstractRouterRegistry() {
     }
 
     public AbstractRouterRegistry(String routerType) {
-        this.routerType = routerType;
-    }
-
-    @Override
-    public boolean supportType(String type) {
-        return Objects.equals(routerType, type);
-    }
-
-    @Override
-    public String provideType() {
-        return routerType;
-    }
-
-    public String getRouterType() {
-        return routerType;
-    }
-
-    public void setRouterType(String routerType) {
-        this.routerType = routerType;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractRouterRegistry{" +
-                "routerType='" + routerType + '\'' +
-                '}';
+        super(routerType);
     }
 }

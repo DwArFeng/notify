@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.impl.handler.sender;
 
+import com.dwarfeng.notify.sdk.handler.sender.AbstractSender;
+import com.dwarfeng.notify.sdk.handler.sender.AbstractSenderRegistry;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.exception.SenderMakeException;
 import com.dwarfeng.notify.stack.handler.Sender;

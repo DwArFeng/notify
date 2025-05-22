@@ -1,5 +1,6 @@
 package com.dwarfeng.notify.impl.handler.resetter;
 
+import com.dwarfeng.notify.sdk.handler.resetter.AbstractResetter;
 import org.springframework.stereotype.Component;
 
 /**

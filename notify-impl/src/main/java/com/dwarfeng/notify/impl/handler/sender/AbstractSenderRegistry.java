@@ -1,49 +1,20 @@
 package com.dwarfeng.notify.impl.handler.sender;
 
-import com.dwarfeng.notify.impl.handler.SenderMaker;
-import com.dwarfeng.notify.impl.handler.SenderSupporter;
-
-import java.util.Objects;
-
 /**
  * 抽象发送器注册。
  *
  * @author DwArFeng
+ * @see com.dwarfeng.notify.sdk.handler.sender.AbstractSenderRegistry
  * @since 1.0.0
+ * @deprecated 该对象已经被废弃，请使用 sdk 模块下的对应对象代替。
  */
-public abstract class AbstractSenderRegistry implements SenderMaker, SenderSupporter {
-
-    protected String senderType;
+@Deprecated
+public abstract class AbstractSenderRegistry extends com.dwarfeng.notify.sdk.handler.sender.AbstractSenderRegistry {
 
     public AbstractSenderRegistry() {
     }
 
     public AbstractSenderRegistry(String senderType) {
-        this.senderType = senderType;
-    }
-
-    @Override
-    public boolean supportType(String type) {
-        return Objects.equals(senderType, type);
-    }
-
-    @Override
-    public String provideType() {
-        return senderType;
-    }
-
-    public String getSenderType() {
-        return senderType;
-    }
-
-    public void setSenderType(String senderType) {
-        this.senderType = senderType;
-    }
-
-    @Override
-    public String toString() {
-        return "AbstractSenderRegistry{" +
-                "senderType='" + senderType + '\'' +
-                '}';
+        super(senderType);
     }
 }

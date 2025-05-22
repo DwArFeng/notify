@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.impl.handler.dispatcher;
 
+import com.dwarfeng.notify.sdk.handler.dispatcher.AbstractDispatcher;
+import com.dwarfeng.notify.sdk.handler.dispatcher.AbstractDispatcherRegistry;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.DispatcherMakeException;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
