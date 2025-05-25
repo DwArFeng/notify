@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 为部分重置器的依赖注入对象增加限定符，以避免潜在的冲突。
+  - com.dwarfeng.notify.impl.handler.resetter.DubboResetter。
+
 - 为部分工具类中方法的入口参数增加 `@Nonnull` 注解。
   - com.dwarfeng.notify.impl.service.telqos.CommandUtil。
 
