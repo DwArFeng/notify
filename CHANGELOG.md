@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 优化配置文件。
+  - 优化 `application-context-database.xml`，使得更多属性可以在配置文件中配置。
+
 - 为部分重置器的依赖注入对象增加限定符，以避免潜在的冲突。
   - com.dwarfeng.notify.impl.handler.resetter.DubboResetter。
 
