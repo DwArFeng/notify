@@ -54,7 +54,6 @@
         <dutil.version>beta-0.3.2.a</dutil.version>
         <snowflake.version>1.6.3.a</snowflake.version>
         <subgrade.version>1.5.9.a</subgrade.version>
-        <dwarfeng-ftp.version>1.1.5.a</dwarfeng-ftp.version>
         <spring-terminator.version>1.0.14.a</spring-terminator.version>
         <spring-telqos.version>1.1.13.a</spring-telqos.version>
         <jackson.version>2.18.3</jackson.version>

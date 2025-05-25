@@ -96,7 +96,8 @@
 
 #### 功能移除
 
-- (无)
+- 移除 pom.xml 中未使用的版本属性。
+  - `dwarfeng-ftp.version`。
 
 ---
 
