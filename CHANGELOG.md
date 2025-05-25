@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh_CN/VersionBlacklist.md。
+
 - 优化 Hibernate 实体审计字段位置。
   - com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherInfo。
   - com.dwarfeng.notify.impl.bean.entity.HibernateMetaIndicator。
