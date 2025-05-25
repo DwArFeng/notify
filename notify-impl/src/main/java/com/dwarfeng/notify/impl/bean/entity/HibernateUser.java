@@ -31,6 +31,13 @@ public class HibernateUser implements Bean {
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "user")
+    private Set<HibernateMeta> metas = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifySendRecord.class, mappedBy = "user")
+    private Set<HibernateNotifySendRecord> sendRecords = new HashSet<>();
+
     // -----------------------------------------------------------审计-----------------------------------------------------------
     @DatamarkField(handlerName = "userDatamarkHandler")
     @Column(
@@ -47,17 +54,10 @@ public class HibernateUser implements Bean {
     )
     private String modifiedDatamark;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "user")
-    private Set<HibernateMeta> metas = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifySendRecord.class, mappedBy = "user")
-    private Set<HibernateNotifySendRecord> sendRecords = new HashSet<>();
-
     public HibernateUser() {
     }
 
-    // -----------------------------------------------------------映射用 getter&setter-----------------------------------------------------------
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateStringIdKey getKey() {
         return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
@@ -91,22 +91,6 @@ public class HibernateUser implements Bean {
         this.enabled = enabled;
     }
 
-    public String getCreatedDatamark() {
-        return createdDatamark;
-    }
-
-    public void setCreatedDatamark(String createdDatamark) {
-        this.createdDatamark = createdDatamark;
-    }
-
-    public String getModifiedDatamark() {
-        return modifiedDatamark;
-    }
-
-    public void setModifiedDatamark(String modifiedDatamark) {
-        this.modifiedDatamark = modifiedDatamark;
-    }
-
     public Set<HibernateMeta> getMetas() {
         return metas;
     }
@@ -121,6 +105,22 @@ public class HibernateUser implements Bean {
 
     public void setSendRecords(Set<HibernateNotifySendRecord> sendRecords) {
         this.sendRecords = sendRecords;
+    }
+
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
     }
 
     @Override

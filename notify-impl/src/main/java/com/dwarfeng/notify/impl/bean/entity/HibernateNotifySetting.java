@@ -34,6 +34,20 @@ public class HibernateNotifySetting implements Bean {
     @Column(name = "enabled")
     private boolean enabled;
 
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateRouterInfo.class, mappedBy = "notifySetting")
+    private HibernateRouterInfo routerInfo;
+
+    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "notifySetting")
+    private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "notifySetting")
+    private Set<HibernateMeta> metas = new HashSet<>();
+
+    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifyHistory.class, mappedBy = "notifySetting")
+    private Set<HibernateNotifyHistory> notifyHistories = new HashSet<>();
+
     // -----------------------------------------------------------审计-----------------------------------------------------------
     @DatamarkField(handlerName = "notifySettingDatamarkHandler")
     @Column(
@@ -49,20 +63,6 @@ public class HibernateNotifySetting implements Bean {
             length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
     )
     private String modifiedDatamark;
-
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
-    @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateRouterInfo.class, mappedBy = "notifySetting")
-    private HibernateRouterInfo routerInfo;
-
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "notifySetting")
-    private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "notifySetting")
-    private Set<HibernateMeta> metas = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifyHistory.class, mappedBy = "notifySetting")
-    private Set<HibernateNotifyHistory> notifyHistories = new HashSet<>();
 
     public HibernateNotifySetting() {
     }
@@ -109,22 +109,6 @@ public class HibernateNotifySetting implements Bean {
         this.enabled = enabled;
     }
 
-    public String getCreatedDatamark() {
-        return createdDatamark;
-    }
-
-    public void setCreatedDatamark(String createdDatamark) {
-        this.createdDatamark = createdDatamark;
-    }
-
-    public String getModifiedDatamark() {
-        return modifiedDatamark;
-    }
-
-    public void setModifiedDatamark(String modifiedDatamark) {
-        this.modifiedDatamark = modifiedDatamark;
-    }
-
     public HibernateRouterInfo getRouterInfo() {
         return routerInfo;
     }
@@ -157,6 +141,22 @@ public class HibernateNotifySetting implements Bean {
         this.notifyHistories = notifyHistories;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -164,8 +164,8 @@ public class HibernateNotifySetting implements Bean {
                 "label = " + label + ", " +
                 "remark = " + remark + ", " +
                 "enabled = " + enabled + ", " +
+                "routerInfo = " + routerInfo + ", " +
                 "createdDatamark = " + createdDatamark + ", " +
-                "modifiedDatamark = " + modifiedDatamark + ", " +
-                "routerInfo = " + routerInfo + ")";
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

@@ -36,6 +36,13 @@ public class HibernateMetaIndicator implements Bean {
     @Column(name = "default_value", columnDefinition = "TEXT")
     private String defaultValue;
 
+    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    @ManyToOne(targetEntity = HibernateTopic.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "topic_id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateTopic topic;
+
     // -----------------------------------------------------------审计-----------------------------------------------------------
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
@@ -51,13 +58,6 @@ public class HibernateMetaIndicator implements Bean {
             length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
     )
     private String modifiedDatamark;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernateTopic.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "topic_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateTopic topic;
 
     public HibernateMetaIndicator() {
     }
@@ -118,6 +118,14 @@ public class HibernateMetaIndicator implements Bean {
         this.defaultValue = defaultValue;
     }
 
+    public HibernateTopic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(HibernateTopic topic) {
+        this.topic = topic;
+    }
+
     public String getCreatedDatamark() {
         return createdDatamark;
     }
@@ -134,14 +142,6 @@ public class HibernateMetaIndicator implements Bean {
         this.modifiedDatamark = modifiedDatamark;
     }
 
-    public HibernateTopic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(HibernateTopic topic) {
-        this.topic = topic;
-    }
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -150,8 +150,8 @@ public class HibernateMetaIndicator implements Bean {
                 "label = " + label + ", " +
                 "remark = " + remark + ", " +
                 "defaultValue = " + defaultValue + ", " +
+                "topic = " + topic + ", " +
                 "createdDatamark = " + createdDatamark + ", " +
-                "modifiedDatamark = " + modifiedDatamark + ", " +
-                "topic = " + topic + ")";
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

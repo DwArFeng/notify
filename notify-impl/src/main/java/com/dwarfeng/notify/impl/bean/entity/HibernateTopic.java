@@ -37,22 +37,6 @@ public class HibernateTopic implements Bean {
     @Column(name = "priority")
     private int priority;
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
-    @DatamarkField(handlerName = "topicDatamarkHandler")
-    @Column(
-            name = "created_datamark",
-            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
-            updatable = false
-    )
-    private String createdDatamark;
-
-    @DatamarkField(handlerName = "topicDatamarkHandler")
-    @Column(
-            name = "modified_datamark",
-            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
-    )
-    private String modifiedDatamark;
-
     // -----------------------------------------------------------一对一-----------------------------------------------------------
     @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateDispatcherInfo.class, mappedBy = "topic")
     private HibernateDispatcherInfo dispatcherInfo;
@@ -70,10 +54,26 @@ public class HibernateTopic implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifySendRecord.class, mappedBy = "topic")
     private Set<HibernateNotifySendRecord> notifySendRecords = new HashSet<>();
 
+    // -----------------------------------------------------------审计-----------------------------------------------------------
+    @DatamarkField(handlerName = "topicDatamarkHandler")
+    @Column(
+            name = "created_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            updatable = false
+    )
+    private String createdDatamark;
+
+    @DatamarkField(handlerName = "topicDatamarkHandler")
+    @Column(
+            name = "modified_datamark",
+            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+    )
+    private String modifiedDatamark;
+
     public HibernateTopic() {
     }
 
-    // -----------------------------------------------------------映射用 getter&setter-----------------------------------------------------------
+    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
     public HibernateStringIdKey getKey() {
         return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
@@ -123,22 +123,6 @@ public class HibernateTopic implements Bean {
         this.priority = priority;
     }
 
-    public String getCreatedDatamark() {
-        return createdDatamark;
-    }
-
-    public void setCreatedDatamark(String createdDatamark) {
-        this.createdDatamark = createdDatamark;
-    }
-
-    public String getModifiedDatamark() {
-        return modifiedDatamark;
-    }
-
-    public void setModifiedDatamark(String modifiedDatamark) {
-        this.modifiedDatamark = modifiedDatamark;
-    }
-
     public HibernateDispatcherInfo getDispatcherInfo() {
         return dispatcherInfo;
     }
@@ -179,6 +163,22 @@ public class HibernateTopic implements Bean {
         this.notifySendRecords = notifySendRecords;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -187,8 +187,8 @@ public class HibernateTopic implements Bean {
                 "remark = " + remark + ", " +
                 "enabled = " + enabled + ", " +
                 "priority = " + priority + ", " +
+                "dispatcherInfo = " + dispatcherInfo + ", " +
                 "createdDatamark = " + createdDatamark + ", " +
-                "modifiedDatamark = " + modifiedDatamark + ", " +
-                "dispatcherInfo = " + dispatcherInfo + ")";
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

@@ -33,6 +33,13 @@ public class HibernateRouterInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(targetEntity = HibernateNotifySetting.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateNotifySetting notifySetting;
+
     // -----------------------------------------------------------审计-----------------------------------------------------------
     @DatamarkField(handlerName = "notifySettingDatamarkHandler")
     @Column(
@@ -48,13 +55,6 @@ public class HibernateRouterInfo implements Bean {
             length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
     )
     private String modifiedDatamark;
-
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
-    @OneToOne(targetEntity = HibernateNotifySetting.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateNotifySetting notifySetting;
 
     public HibernateRouterInfo() {
     }
@@ -109,6 +109,14 @@ public class HibernateRouterInfo implements Bean {
         this.remark = remark;
     }
 
+    public HibernateNotifySetting getNotifySetting() {
+        return notifySetting;
+    }
+
+    public void setNotifySetting(HibernateNotifySetting notifySetting) {
+        this.notifySetting = notifySetting;
+    }
+
     public String getCreatedDatamark() {
         return createdDatamark;
     }
@@ -125,14 +133,6 @@ public class HibernateRouterInfo implements Bean {
         this.modifiedDatamark = modifiedDatamark;
     }
 
-    public HibernateNotifySetting getNotifySetting() {
-        return notifySetting;
-    }
-
-    public void setNotifySetting(HibernateNotifySetting notifySetting) {
-        this.notifySetting = notifySetting;
-    }
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -141,8 +141,8 @@ public class HibernateRouterInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
+                "notifySetting = " + notifySetting + ", " +
                 "createdDatamark = " + createdDatamark + ", " +
-                "modifiedDatamark = " + modifiedDatamark + ", " +
-                "notifySetting = " + notifySetting + ")";
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

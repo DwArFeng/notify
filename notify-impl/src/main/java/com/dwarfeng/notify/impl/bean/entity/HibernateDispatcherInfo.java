@@ -35,6 +35,13 @@ public class HibernateDispatcherInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
+    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    @OneToOne(targetEntity = HibernateTopic.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateTopic topic;
+
     // -----------------------------------------------------------审计-----------------------------------------------------------
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
@@ -50,13 +57,6 @@ public class HibernateDispatcherInfo implements Bean {
             length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
     )
     private String modifiedDatamark;
-
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
-    @OneToOne(targetEntity = HibernateTopic.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateTopic topic;
 
     public HibernateDispatcherInfo() {
     }
@@ -111,6 +111,14 @@ public class HibernateDispatcherInfo implements Bean {
         this.remark = remark;
     }
 
+    public HibernateTopic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(HibernateTopic topic) {
+        this.topic = topic;
+    }
+
     public String getCreatedDatamark() {
         return createdDatamark;
     }
@@ -127,14 +135,6 @@ public class HibernateDispatcherInfo implements Bean {
         this.modifiedDatamark = modifiedDatamark;
     }
 
-    public HibernateTopic getTopic() {
-        return topic;
-    }
-
-    public void setTopic(HibernateTopic topic) {
-        this.topic = topic;
-    }
-
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -143,8 +143,8 @@ public class HibernateDispatcherInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
+                "topic = " + topic + ", " +
                 "createdDatamark = " + createdDatamark + ", " +
-                "modifiedDatamark = " + modifiedDatamark + ", " +
-                "topic = " + topic + ")";
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }

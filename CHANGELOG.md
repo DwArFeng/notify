@@ -4,7 +4,14 @@
 
 #### 功能构建
 
-- (无)
+- 优化 Hibernate 实体审计字段位置。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherInfo。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateMetaIndicator。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateNotifySetting。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateRouterInfo。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateSenderInfo。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateTopic。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateUser。
 
 #### Bug修复
 

@@ -39,6 +39,19 @@ public class HibernateSenderInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
+    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    @ManyToOne(targetEntity = HibernateNotifySetting.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "notify_setting_id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateNotifySetting notifySetting;
+
+    @ManyToOne(targetEntity = HibernateTopic.class)
+    @JoinColumns({ //
+            @JoinColumn(name = "topic_id", referencedColumnName = "id", insertable = false, updatable = false), //
+    })
+    private HibernateTopic topic;
+
     // -----------------------------------------------------------审计-----------------------------------------------------------
     @DatamarkField(handlerName = "senderDatamarkHandler")
     @Column(
@@ -54,19 +67,6 @@ public class HibernateSenderInfo implements Bean {
             length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
     )
     private String modifiedDatamark;
-
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
-    @ManyToOne(targetEntity = HibernateNotifySetting.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "notify_setting_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateNotifySetting notifySetting;
-
-    @ManyToOne(targetEntity = HibernateTopic.class)
-    @JoinColumns({ //
-            @JoinColumn(name = "topic_id", referencedColumnName = "id", insertable = false, updatable = false), //
-    })
-    private HibernateTopic topic;
 
     public HibernateSenderInfo() {
     }
@@ -135,22 +135,6 @@ public class HibernateSenderInfo implements Bean {
         this.remark = remark;
     }
 
-    public String getCreatedDatamark() {
-        return createdDatamark;
-    }
-
-    public void setCreatedDatamark(String createdDatamark) {
-        this.createdDatamark = createdDatamark;
-    }
-
-    public String getModifiedDatamark() {
-        return modifiedDatamark;
-    }
-
-    public void setModifiedDatamark(String modifiedDatamark) {
-        this.modifiedDatamark = modifiedDatamark;
-    }
-
     public HibernateNotifySetting getNotifySetting() {
         return notifySetting;
     }
@@ -167,6 +151,22 @@ public class HibernateSenderInfo implements Bean {
         this.topic = topic;
     }
 
+    public String getCreatedDatamark() {
+        return createdDatamark;
+    }
+
+    public void setCreatedDatamark(String createdDatamark) {
+        this.createdDatamark = createdDatamark;
+    }
+
+    public String getModifiedDatamark() {
+        return modifiedDatamark;
+    }
+
+    public void setModifiedDatamark(String modifiedDatamark) {
+        this.modifiedDatamark = modifiedDatamark;
+    }
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + "(" +
@@ -176,9 +176,9 @@ public class HibernateSenderInfo implements Bean {
                 "type = " + type + ", " +
                 "param = " + param + ", " +
                 "remark = " + remark + ", " +
-                "createdDatamark = " + createdDatamark + ", " +
-                "modifiedDatamark = " + modifiedDatamark + ", " +
                 "notifySetting = " + notifySetting + ", " +
-                "topic = " + topic + ")";
+                "topic = " + topic + ", " +
+                "createdDatamark = " + createdDatamark + ", " +
+                "modifiedDatamark = " + modifiedDatamark + ")";
     }
 }
