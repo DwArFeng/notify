@@ -4,6 +4,9 @@
 
 #### 功能构建
 
+- 为部分工具类中方法的入口参数增加 `@Nonnull` 注解。
+  - com.dwarfeng.notify.impl.service.telqos.CommandUtil。
+
 - 优化实体映射器机制。
 
 - 导入运维指令。
