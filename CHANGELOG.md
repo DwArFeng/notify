@@ -4,6 +4,10 @@
 
 #### 功能构建
 
+- Wiki 编写。
+  - docs/wiki/zh_CN/ShellScripts.md。
+  - docs/wiki/zh_CN/BatchScripts.md。
+
 - 依赖升级。
   - 升级 `snowflake` 依赖版本为 `1.6.4.a` 以规避漏洞。
   - 升级 `subgrade` 依赖版本为 `1.5.10.a` 以规避漏洞。
