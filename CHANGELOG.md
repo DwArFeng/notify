@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 实现运维指令。
+  - com.dwarfeng.notify.impl.service.telqos.SupportCommand。
+
 - 优化支持实体机制。
   - 新建支持 QoS 服务 com.dwarfeng.notify.stack.service.SupportQosService。
   - 将支持实体维护服务的重置功能迁移至 QoS 服务。
