@@ -1,27 +1,20 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.sdk.handler.DispatcherSupporter;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherSupport;
 import com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class DispatcherSupportMaintainServiceImpl implements DispatcherSupportMaintainService {
@@ -30,26 +23,14 @@ public class DispatcherSupportMaintainServiceImpl implements DispatcherSupportMa
     private final DaoOnlyEntireLookupService<DispatcherSupport> entireLookupService;
     private final DaoOnlyPresetLookupService<DispatcherSupport> presetLookupService;
 
-    private final List<DispatcherSupporter> dispatcherSupporters;
-
-    private final ServiceExceptionMapper sem;
-
     public DispatcherSupportMaintainServiceImpl(
             GeneralBatchCrudService<StringIdKey, DispatcherSupport> crudService,
             DaoOnlyEntireLookupService<DispatcherSupport> entireLookupService,
-            DaoOnlyPresetLookupService<DispatcherSupport> presetLookupService,
-            List<DispatcherSupporter> dispatcherSupporters,
-            ServiceExceptionMapper sem
+            DaoOnlyPresetLookupService<DispatcherSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(dispatcherSupporters)) {
-            this.dispatcherSupporters = new ArrayList<>();
-        } else {
-            this.dispatcherSupporters = dispatcherSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -305,24 +286,5 @@ public class DispatcherSupportMaintainServiceImpl implements DispatcherSupportMa
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int lookupCount(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookupCount(preset, objs);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    public void reset() throws ServiceException {
-        try {
-            List<StringIdKey> dispatcherKeys = entireLookupService.lookup().getData().stream()
-                    .map(DispatcherSupport::getKey).collect(Collectors.toList());
-            crudService.batchDelete(dispatcherKeys);
-            List<DispatcherSupport> dispatcherSupports = dispatcherSupporters.stream().map(supporter -> new DispatcherSupport(
-                    new StringIdKey(supporter.provideType()),
-                    supporter.provideLabel(),
-                    supporter.provideDescription(),
-                    supporter.provideExampleParam()
-            )).collect(Collectors.toList());
-            crudService.batchInsert(dispatcherSupports);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置调度器支持时发生异常", LogLevel.WARN, e, sem);
-        }
     }
 }

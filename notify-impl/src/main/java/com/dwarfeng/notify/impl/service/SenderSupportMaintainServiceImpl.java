@@ -1,27 +1,20 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.sdk.handler.SenderSupporter;
 import com.dwarfeng.notify.stack.bean.entity.SenderSupport;
 import com.dwarfeng.notify.stack.service.SenderSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainService {
@@ -30,26 +23,14 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     private final DaoOnlyEntireLookupService<SenderSupport> entireLookupService;
     private final DaoOnlyPresetLookupService<SenderSupport> presetLookupService;
 
-    private final List<SenderSupporter> senderSupporters;
-
-    private final ServiceExceptionMapper sem;
-
     public SenderSupportMaintainServiceImpl(
             GeneralBatchCrudService<StringIdKey, SenderSupport> crudService,
             DaoOnlyEntireLookupService<SenderSupport> entireLookupService,
-            DaoOnlyPresetLookupService<SenderSupport> presetLookupService,
-            List<SenderSupporter> senderSupporters,
-            ServiceExceptionMapper sem
+            DaoOnlyPresetLookupService<SenderSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(senderSupporters)) {
-            this.senderSupporters = new ArrayList<>();
-        } else {
-            this.senderSupporters = senderSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -305,24 +286,5 @@ public class SenderSupportMaintainServiceImpl implements SenderSupportMaintainSe
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int lookupCount(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookupCount(preset, objs);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    public void reset() throws ServiceException {
-        try {
-            List<StringIdKey> senderKeys = entireLookupService.lookup().getData().stream()
-                    .map(SenderSupport::getKey).collect(Collectors.toList());
-            crudService.batchDelete(senderKeys);
-            List<SenderSupport> senderSupports = senderSupporters.stream().map(supporter -> new SenderSupport(
-                    new StringIdKey(supporter.provideType()),
-                    supporter.provideLabel(),
-                    supporter.provideDescription(),
-                    supporter.provideExampleParam()
-            )).collect(Collectors.toList());
-            crudService.batchInsert(senderSupports);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置发送器支持时发生异常", LogLevel.WARN, e, sem);
-        }
     }
 }

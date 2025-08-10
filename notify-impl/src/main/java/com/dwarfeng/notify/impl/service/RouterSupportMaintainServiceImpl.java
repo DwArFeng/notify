@@ -1,27 +1,20 @@
 package com.dwarfeng.notify.impl.service;
 
-import com.dwarfeng.notify.sdk.handler.RouterSupporter;
 import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
 import com.dwarfeng.notify.stack.service.RouterSupportMaintainService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
 import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
 import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainService {
@@ -30,26 +23,14 @@ public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainSe
     private final DaoOnlyEntireLookupService<RouterSupport> entireLookupService;
     private final DaoOnlyPresetLookupService<RouterSupport> presetLookupService;
 
-    private final List<RouterSupporter> routerSupporters;
-
-    private final ServiceExceptionMapper sem;
-
     public RouterSupportMaintainServiceImpl(
             GeneralBatchCrudService<StringIdKey, RouterSupport> crudService,
             DaoOnlyEntireLookupService<RouterSupport> entireLookupService,
-            DaoOnlyPresetLookupService<RouterSupport> presetLookupService,
-            List<RouterSupporter> routerSupporters,
-            ServiceExceptionMapper sem
+            DaoOnlyPresetLookupService<RouterSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
         this.presetLookupService = presetLookupService;
-        if (Objects.isNull(routerSupporters)) {
-            this.routerSupporters = new ArrayList<>();
-        } else {
-            this.routerSupporters = routerSupporters;
-        }
-        this.sem = sem;
     }
 
     @Override
@@ -305,24 +286,5 @@ public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainSe
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int lookupCount(String preset, Object[] objs) throws ServiceException {
         return presetLookupService.lookupCount(preset, objs);
-    }
-
-    @Override
-    @BehaviorAnalyse
-    public void reset() throws ServiceException {
-        try {
-            List<StringIdKey> routerKeys = entireLookupService.lookup().getData().stream()
-                    .map(RouterSupport::getKey).collect(Collectors.toList());
-            crudService.batchDelete(routerKeys);
-            List<RouterSupport> routerSupports = routerSupporters.stream().map(supporter -> new RouterSupport(
-                    new StringIdKey(supporter.provideType()),
-                    supporter.provideLabel(),
-                    supporter.provideDescription(),
-                    supporter.provideExampleParam()
-            )).collect(Collectors.toList());
-            crudService.batchInsert(routerSupports);
-        } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置路由器支持时发生异常", LogLevel.WARN, e, sem);
-        }
     }
 }

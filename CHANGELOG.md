@@ -14,7 +14,10 @@
 
 ### 功能移除
 
-- (无)
+- 去除支持实体维护服务的重置功能。
+  - com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService。
+  - com.dwarfeng.notify.stack.service.RouterSupportMaintainService。
+  - com.dwarfeng.notify.stack.service.SenderSupportMaintainService。
 
 ---
 
