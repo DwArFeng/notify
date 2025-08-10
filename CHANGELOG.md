@@ -1,24 +1,24 @@
 # ChangeLog
 
-### Release_1.6.0_20250810_build_A
+## Release_1.6.0_20250810_build_A
 
-#### 功能构建
-
-- (无)
-
-#### Bug修复
+### 功能构建
 
 - (无)
 
-#### 功能移除
+### Bug 修复
+
+- (无)
+
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.5.2_20250609_build_A
+## Release_1.5.2_20250609_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/ShellScripts.md。
@@ -29,19 +29,19 @@
   - 升级 `subgrade` 依赖版本为 `1.5.10.a` 以规避漏洞。
   - 升级 `dwarfeng-datamark` 依赖版本为 `1.0.2.a` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.5.1_20250525_build_A
+## Release_1.5.1_20250525_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - docs/wiki/zh_CN/VersionBlacklist.md。
@@ -55,19 +55,19 @@
   - com.dwarfeng.notify.impl.bean.entity.HibernateTopic。
   - com.dwarfeng.notify.impl.bean.entity.HibernateUser。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.5.0_20250525_build_A
+## Release_1.5.0_20250525_build_A
 
-#### 功能构建
+### 功能构建
 
 - Wiki 编写。
   - 构建 wiki 目录结构。
@@ -163,7 +163,7 @@
   - 升级 `jackson` 依赖版本为 `2.18.3` 以规避漏洞。
   - 升级 `groovy` 依赖版本为 `4.0.26` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - 修正 `impl` 模块中错误的 dubbo 应用名称。
 
@@ -171,16 +171,16 @@
   - com.dwarfeng.notify.sdk.bean.dto.FastJsonNotifyHistoryRecordInfo。
   - com.dwarfeng.notify.sdk.bean.dto.JSFixedFastJsonNotifyHistoryRecordInfo。
 
-#### 功能移除
+### 功能移除
 
 - 移除 pom.xml 中未使用的版本属性。
   - `dwarfeng-ftp.version`。
 
 ---
 
-### Release_1.4.2_20240607_build_A
+## Release_1.4.2_20240607_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化启停脚本的注释。
 
@@ -231,7 +231,7 @@
 
 - 优化启停脚本的目录结构。
 
-#### Bug修复
+### Bug 修复
 
 - 修复 telqos 工具类中部分注解不正确的 bug。
 
@@ -241,16 +241,16 @@
   - com.dwarfeng.notify.impl.service.operation.TopicCrudOperation。
   - com.dwarfeng.notify.impl.service.operation.UserCrudOperation。
 
-#### 功能移除
+### 功能移除
 
 - 移除 pom.xml 中未使用的版本属性。
   - `dwarfeng-ftp.version`。
 
 ---
 
-### Release_1.4.1_20230618_build_A
+## Release_1.4.1_20230618_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化了 AbstractResetter 的代码结构，同时对其实现进行了修改。
   - com.dwarfeng.notify.impl.handler.resetter.CronResetter。
@@ -271,20 +271,20 @@
   - 升级 `spring-terminator` 依赖版本为 `1.0.11.a` 以规避漏洞。
   - 升级 `spring-telqos` 依赖版本为 `1.1.6.a` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - 修复 `DubboResetter` 注册微服务时没有指定 `group` 的问题。
 
-#### 功能移除
+### 功能移除
 
 - 删除不需要的依赖。
   - 删除 `aopalliance` 依赖。
 
 ---
 
-### Release_1.4.0_20230320_build_A
+## Release_1.4.0_20230320_build_A
 
-#### 功能构建
+### 功能构建
 
 - 依赖升级。
   - 升级 `netty` 依赖版本为 `4.1.86.Final` 以规避漏洞。
@@ -299,19 +299,19 @@
   - com.dwarfeng.notify.stack.handler.Sender。
   - com.dwarfeng.notify.stack.handler.Dispatcher。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.3.0_20230219_build_A
+## Release_1.3.0_20230219_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化 `MapStruct` 实体映射 `Mapper` 接口的路径。
 
@@ -329,54 +329,54 @@
 
 - 实体主键包名优化。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - 删除实体。
   - com.dwarfeng.notify.stack.bean.entity.SendHistory。
 
 ---
 
-### Release_1.2.4_20230113_build_A
+## Release_1.2.4_20230113_build_A
 
-#### 功能构建
+### 功能构建
 
 - 实现预设发送器。
   - com.dwarfeng.notify.impl.handler.sender.DrainSenderRegistry。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.2.3_20221231_build_A
+## Release_1.2.3_20221231_build_A
 
-#### 功能构建
+### 功能构建
 
 - 实现重置器。
   - com.dwarfeng.notify.impl.handler.resetter.DubboResetter。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.2.2_20221222_build_A
+## Release_1.2.2_20221222_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化可选加载项的文件结构。
   - opt/opt-dispatcher.xml。
@@ -402,37 +402,37 @@
   - com.dwarfeng.notify.impl.handler.RouteLocalCacheHandlerImpl。
   - com.dwarfeng.notify.impl.handler.SendLocalCacheHandlerImpl。
 
-#### Bug修复
+### Bug 修复
 
 - 修复 `opt/opt-dispatcher.xml` 配置文件缺失的问题。
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.2.1_20221205_build_A
+## Release_1.2.1_20221205_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化 `node` 模块的依赖导出，去除导出到 `lib` 目录的多余的 `pom` 文件。
 
 - 优化 `pom.xml` 格式。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.2.0_20221130_build_A
+## Release_1.2.0_20221130_build_A
 
-#### 功能构建
+### 功能构建
 
 - Dubbo 微服务增加分组配置。
 
@@ -463,11 +463,11 @@
   - 升级 `dcti` 依赖版本为 `1.1.5.a` 以规避漏洞。
   - 升级 `groovy` 依赖版本为 `4.0.6` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - 删除不需要的依赖。
   - 删除 `el` 依赖。
@@ -479,9 +479,9 @@
 
 ---
 
-### Release_1.1.0_20221025_build_A
+## Release_1.1.0_20221025_build_A
 
-#### 功能构建
+### 功能构建
 
 - 实现运维指令。
   - com.dwarfeng.notify.impl.service.telqos.DlcCommand。
@@ -520,11 +520,11 @@
 - 依赖升级。
   - 升级 `subgrade` 依赖版本为 `1.2.13.b` 以应用其新功能/规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - 删除实体。
   - com.dwarfeng.notify.stack.bean.entity.SendRelation。
@@ -535,26 +535,26 @@
 
 ---
 
-### Release_1.0.6_20221011_build_A
+## Release_1.0.6_20221011_build_A
 
-#### 功能构建
+### 功能构建
 
 - 依赖升级。
   - 升级 `subgrade` 依赖版本为 `1.2.12.a` 以应用其最新功能。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.0.5_20221008_build_A
+## Release_1.0.5_20221008_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化通知的发送逻辑。
   - 新增主题筛选，通知不会发送到未使能的主题中。
@@ -568,45 +568,45 @@
   - com.dwarfeng.notify.stack.bean.entity.RouterInfo.enabled。
   - com.dwarfeng.notify.stack.bean.entity.NotifySetting.enabled。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.0.4_20220927_build_A
+## Release_1.0.4_20220927_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化项目结构。
   - 增加 `libext` 文件夹，用于加载外部依赖。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.0.3_20220927_build_A
+## Release_1.0.3_20220927_build_A
 
-#### 功能构建
+### 功能构建
 
 - 优化项目结构。
   - 增加 `confext` 文件夹，用于加载外部的配置文件。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - 删除不需要的依赖。
   - 删除 `commons-lang3` 依赖。
@@ -614,9 +614,9 @@
 
 ---
 
-### Release_1.0.2_20220913_build_A
+## Release_1.0.2_20220913_build_A
 
-#### 功能构建
+### 功能构建
 
 - 插件升级。
   - 升级 `maven-deploy-plugin` 插件版本为 `2.8.2`。
@@ -629,19 +629,19 @@
   - 升级 `snowflake` 依赖版本为 `1.4.9.a` 以规避漏洞。
   - 升级 `hibernate` 依赖版本为 `5.4.24.Final` 以规避漏洞。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
 
 ---
 
-### Release_1.0.1_20220702_build_A
+## Release_1.0.1_20220702_build_A
 
-#### 功能构建
+### 功能构建
 
 - 依赖升级。
   - 升级 `junit` 依赖版本为 `4.13.2` 以规避漏洞。
@@ -657,11 +657,11 @@
 - 新增内置的发送器实现。
   - com.dwarfeng.notify.impl.handler.sender.LogSenderRegistry。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - 删除不需要的依赖。
   - 删除 `joda-time` 依赖。
@@ -672,9 +672,9 @@
 
 ---
 
-### Release_1.0.0_20220604_build_A
+## Release_1.0.0_20220604_build_A
 
-#### 功能构建
+### 功能构建
 
 - 项目建立，清除测试通过。
 
@@ -706,10 +706,10 @@
 
 - 程序开发完成，运行测试通过，打包测试通过。
 
-#### Bug修复
+### Bug 修复
 
 - (无)
 
-#### 功能移除
+### 功能移除
 
 - (无)
