@@ -1,10 +1,8 @@
 package com.dwarfeng.notify.node.launcher;
 
 import com.dwarfeng.notify.node.handler.LauncherSettingHandler;
-import com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService;
 import com.dwarfeng.notify.stack.service.ResetQosService;
-import com.dwarfeng.notify.stack.service.RouterSupportMaintainService;
-import com.dwarfeng.notify.stack.service.SenderSupportMaintainService;
+import com.dwarfeng.notify.stack.service.SupportQosService;
 import com.dwarfeng.springterminator.sdk.util.ApplicationUtil;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
 import org.slf4j.Logger;
@@ -48,15 +46,18 @@ public class Launcher {
         // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
 
-        // 判断是否重置路由器支持，并按条件执行重置操作。
-        if (launcherSettingHandler.isResetRouterSupport()) {
-            LOGGER.info("重置路由器支持...");
-            RouterSupportMaintainService maintainService = ctx.getBean(RouterSupportMaintainService.class);
-            try {
-                maintainService.reset();
-            } catch (ServiceException e) {
-                LOGGER.warn("路由器支持重置失败，异常信息如下", e);
-            }
+        // 如果不重置路由器，则返回。
+        if (!launcherSettingHandler.isResetRouterSupport()) {
+            return;
+        }
+
+        // 重置路由器支持。
+        LOGGER.info("重置路由器支持...");
+        SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
+        try {
+            supportQosService.resetRouter();
+        } catch (ServiceException e) {
+            LOGGER.warn("路由器支持重置失败，异常信息如下", e);
         }
     }
 
@@ -64,15 +65,18 @@ public class Launcher {
         // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
 
-        // 判断是否重置发送器支持，并按条件执行重置操作。
-        if (launcherSettingHandler.isResetSenderSupport()) {
-            LOGGER.info("重置发送器支持...");
-            SenderSupportMaintainService maintainService = ctx.getBean(SenderSupportMaintainService.class);
-            try {
-                maintainService.reset();
-            } catch (ServiceException e) {
-                LOGGER.warn("发送器支持重置失败，异常信息如下", e);
-            }
+        // 如果不重置发送器，则返回。
+        if (!launcherSettingHandler.isResetSenderSupport()) {
+            return;
+        }
+
+        // 重置发送器支持。
+        LOGGER.info("重置发送器支持...");
+        SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
+        try {
+            supportQosService.resetSender();
+        } catch (ServiceException e) {
+            LOGGER.warn("发送器支持重置失败，异常信息如下", e);
         }
     }
 
@@ -80,15 +84,18 @@ public class Launcher {
         // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
         LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
 
-        // 判断是否重置调度器支持，并按条件执行重置操作。
-        if (launcherSettingHandler.isResetDispatcherSupport()) {
-            LOGGER.info("重置调度器支持...");
-            DispatcherSupportMaintainService maintainService = ctx.getBean(DispatcherSupportMaintainService.class);
-            try {
-                maintainService.reset();
-            } catch (ServiceException e) {
-                LOGGER.warn("调度器支持重置失败，异常信息如下", e);
-            }
+        // 如果不重置调度器，则返回。
+        if (!launcherSettingHandler.isResetDispatcherSupport()) {
+            return;
+        }
+
+        // 重置调度器支持。
+        LOGGER.info("重置调度器支持...");
+        SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
+        try {
+            supportQosService.resetDispatcher();
+        } catch (ServiceException e) {
+            LOGGER.warn("调度器支持重置失败，异常信息如下", e);
         }
     }
 
