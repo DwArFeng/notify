@@ -9,6 +9,7 @@ import org.hibernate.criterion.Restrictions;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Objects;
 
 @Component
@@ -25,6 +26,9 @@ public class NotifyHistoryPresetCriteriaMaker implements PresetCriteriaMaker {
                 break;
             case NotifyHistoryMaintainService.CHILD_FOR_NOTIFY_SETTING_HAPPENED_DATE_DESC:
                 childForNotifySettingHappenedDateDesc(criteria, objs);
+                break;
+            case NotifyHistoryMaintainService.TO_PURGED:
+                toPurged(criteria, objs);
                 break;
             default:
                 throw new IllegalArgumentException("无法识别的预设: " + preset);
@@ -63,6 +67,16 @@ public class NotifyHistoryPresetCriteriaMaker implements PresetCriteriaMaker {
             detachedCriteria.addOrder(Order.desc("happenedDate"));
         } catch (Exception e) {
             throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+        }
+    }
+
+    private void toPurged(DetachedCriteria criteria, Object[] objs) {
+        try {
+            Date date = (Date) objs[0];
+            criteria.add(Restrictions.lt("happenedDate", date));
+            criteria.addOrder(Order.asc("happenedDate"));
+        } catch (Exception e) {
+            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objs));
         }
     }
 }

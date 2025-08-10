@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 增加预设查询。
+  - NotifyHistoryMaintainService.TO_PURGED。
+
 - 优化 `node` 模块中的 `pom.xml` 文件的注释。
 
 - 优化 impl 模块下的 `logging` 目录结构。
