@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.handler.pusher;
 
 import com.dwarfeng.notify.sdk.handler.pusher.AbstractPusher;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
+import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import org.springframework.stereotype.Component;
 
 /**
@@ -33,5 +34,13 @@ public class DrainPusher extends AbstractPusher {
 
     @Override
     public void sendReset() {
+    }
+
+    @Override
+    public void purgeFinished(PurgeFinishedResult result) {
+    }
+
+    @Override
+    public void purgeFailed() {
     }
 }

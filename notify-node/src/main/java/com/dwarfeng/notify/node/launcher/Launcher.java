@@ -1,6 +1,7 @@
 package com.dwarfeng.notify.node.launcher;
 
 import com.dwarfeng.notify.node.handler.LauncherSettingHandler;
+import com.dwarfeng.notify.stack.service.PurgeQosService;
 import com.dwarfeng.notify.stack.service.ResetQosService;
 import com.dwarfeng.notify.stack.service.SupportQosService;
 import com.dwarfeng.springterminator.sdk.util.ApplicationUtil;
@@ -39,6 +40,11 @@ public class Launcher {
 
             // 根据启动器设置处理器的设置，选择性启动重置服务。
             mayStartReset(ctx);
+
+            // 根据启动器设置处理器的设置，选择性上线清除服务。
+            mayOnlinePurge(ctx);
+            // 根据启动器设置处理器的设置，选择性启动清除服务。
+            mayEnablePurge(ctx);
         });
     }
 
@@ -130,6 +136,76 @@ public class Launcher {
                         }
                     },
                     new Date(System.currentTimeMillis() + startResetDelay)
+            );
+        }
+    }
+
+    private static void mayOnlinePurge(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 获取程序中的 ThreadPoolTaskScheduler，用于处理计划任务。
+        ThreadPoolTaskScheduler scheduler = ctx.getBean(ThreadPoolTaskScheduler.class);
+
+        // 处理清除处理器的启动选项。
+        PurgeQosService purgeQosService = ctx.getBean(PurgeQosService.class);
+
+        // 清除处理器是否上线清除服务。
+        long onlinePurgeDelay = launcherSettingHandler.getOnlinePurgeDelay();
+        if (onlinePurgeDelay == 0) {
+            LOGGER.info("立即上线清除服务...");
+            try {
+                purgeQosService.online();
+            } catch (ServiceException e) {
+                LOGGER.error("无法上线清除服务，异常原因如下", e);
+            }
+        } else if (onlinePurgeDelay > 0) {
+            LOGGER.info("{} 毫秒后上线清除服务...", onlinePurgeDelay);
+            scheduler.schedule(
+                    () -> {
+                        LOGGER.info("上线清除服务...");
+                        try {
+                            purgeQosService.online();
+                        } catch (ServiceException e) {
+                            LOGGER.error("无法上线清除服务，异常原因如下", e);
+                        }
+                    },
+                    new Date(System.currentTimeMillis() + onlinePurgeDelay)
+            );
+        }
+    }
+
+    private static void mayEnablePurge(ApplicationContext ctx) {
+        // 获取启动器设置处理器，用于获取启动器设置，并按照设置选择性执行功能。
+        LauncherSettingHandler launcherSettingHandler = ctx.getBean(LauncherSettingHandler.class);
+
+        // 获取程序中的 ThreadPoolTaskScheduler，用于处理计划任务。
+        ThreadPoolTaskScheduler scheduler = ctx.getBean(ThreadPoolTaskScheduler.class);
+
+        // 处理清除处理器的启动选项。
+        PurgeQosService purgeQosService = ctx.getBean(PurgeQosService.class);
+
+        // 清除处理器是否启动清除服务。
+        long enablePurgeDelay = launcherSettingHandler.getEnablePurgeDelay();
+        if (enablePurgeDelay == 0) {
+            LOGGER.info("立即启动清除服务...");
+            try {
+                purgeQosService.start();
+            } catch (ServiceException e) {
+                LOGGER.error("无法启动清除服务，异常原因如下", e);
+            }
+        } else if (enablePurgeDelay > 0) {
+            LOGGER.info("{} 毫秒后启动清除服务...", enablePurgeDelay);
+            scheduler.schedule(
+                    () -> {
+                        LOGGER.info("启动清除服务...");
+                        try {
+                            purgeQosService.start();
+                        } catch (ServiceException e) {
+                            LOGGER.error("无法启动清除服务，异常原因如下", e);
+                        }
+                    },
+                    new Date(System.currentTimeMillis() + enablePurgeDelay)
             );
         }
     }

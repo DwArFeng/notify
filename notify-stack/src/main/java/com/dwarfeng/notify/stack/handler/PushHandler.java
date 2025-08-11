@@ -1,6 +1,7 @@
 package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
+import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import com.dwarfeng.subgrade.stack.handler.Handler;
 
@@ -40,4 +41,21 @@ public interface PushHandler extends Handler {
      * @throws HandlerException 处理器异常。
      */
     void sendReset() throws HandlerException;
+
+    /**
+     * 清除完成时执行的调度。
+     *
+     * @param result 清除结束结果。
+     * @throws HandlerException 处理器异常。
+     * @since 1.6.0
+     */
+    void purgeFinished(PurgeFinishedResult result) throws HandlerException;
+
+    /**
+     * 清除失败时执行的调度。
+     *
+     * @throws HandlerException 处理器异常。
+     * @since 1.6.0
+     */
+    void purgeFailed() throws HandlerException;
 }

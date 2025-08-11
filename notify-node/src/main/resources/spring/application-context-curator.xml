@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans
+        xmlns="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd"
+>
+    <!-- 指数倒扣重试策略：重试间隔随着重试次数的增加而增加，到达最大重试次数后停止。 -->
+    <bean id="curatorRetryPolicy" class="org.apache.curator.retry.ExponentialBackoffRetry">
+        <constructor-arg index="0" value="${curator.retry_policy.base_sleep_time}"/>
+        <constructor-arg index="1" value="${curator.retry_policy.max_retries}"/>
+        <constructor-arg index="2" value="${curator.retry_policy.max_sleep}"/>
+    </bean>
+
+    <!-- 构造 Curator 框架。 -->
+    <bean
+            id="curatorFramework"
+            class="org.apache.curator.framework.CuratorFrameworkFactory"
+            factory-method="newClient"
+            init-method="start"
+            destroy-method="close"
+    >
+        <constructor-arg index="0" value="${curator.connect.connect_string}"/>
+        <constructor-arg index="1" value="${curator.connect.session_timeout}"/>
+        <constructor-arg index="2" value="${curator.connect.connection_timeout}"/>
+        <constructor-arg index="3" ref="curatorRetryPolicy"/>
+    </bean>
+</beans>

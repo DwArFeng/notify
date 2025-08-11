@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.handler;
 
 import com.dwarfeng.notify.sdk.handler.Pusher;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
+import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.notify.stack.handler.PushHandler;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,5 +51,15 @@ public class PushHandlerImpl implements PushHandler {
     @Override
     public void sendReset() throws HandlerException {
         pusher.sendReset();
+    }
+
+    @Override
+    public void purgeFinished(PurgeFinishedResult result) throws HandlerException {
+        pusher.purgeFinished(result);
+    }
+
+    @Override
+    public void purgeFailed() throws HandlerException {
+        pusher.purgeFailed();
     }
 }

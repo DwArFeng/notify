@@ -1,6 +1,7 @@
 package com.dwarfeng.notify.sdk.handler.pusher;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
+import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 
 /**
@@ -47,6 +48,16 @@ public abstract class PusherAdapter extends AbstractPusher {
     @SuppressWarnings("RedundantThrows")
     @Override
     public void sendReset() throws HandlerException {
+    }
+
+    @SuppressWarnings("RedundantThrows")
+    @Override
+    public void purgeFinished(PurgeFinishedResult result) throws HandlerException {
+    }
+
+    @SuppressWarnings("RedundantThrows")
+    @Override
+    public void purgeFailed() throws HandlerException {
     }
 
     @Override

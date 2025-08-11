@@ -2,6 +2,7 @@ package com.dwarfeng.notify.impl.handler.pusher;
 
 import com.dwarfeng.notify.sdk.handler.pusher.AbstractPusher;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
+import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.subgrade.stack.exception.HandlerException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -61,6 +62,20 @@ public class LogPusher extends AbstractPusher {
     @Override
     public void sendReset() throws HandlerException {
         String title = "发送重置事件:";
+        String message = StringUtils.EMPTY;
+        logData(title, message);
+    }
+
+    @Override
+    public void purgeFinished(PurgeFinishedResult result) throws HandlerException {
+        String title = "清除完成事件:";
+        String message = Objects.toString(result);
+        logData(title, message);
+    }
+
+    @Override
+    public void purgeFailed() throws HandlerException {
+        String title = "清除失败事件:";
         String message = StringUtils.EMPTY;
         logData(title, message);
     }
