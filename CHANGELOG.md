@@ -31,6 +31,7 @@
   - 更新 `README.md` 中的链接指向。
 
 - 实现运维指令。
+  - com.dwarfeng.notify.impl.service.telqos.PurgeCommand。
   - com.dwarfeng.notify.impl.service.telqos.SupportCommand。
 
 - 优化支持实体机制。
