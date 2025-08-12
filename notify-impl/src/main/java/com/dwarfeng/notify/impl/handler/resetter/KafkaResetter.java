@@ -53,6 +53,7 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
 
     private final Lock lock = new ReentrantLock();
 
+    @SuppressWarnings({"SpringJavaInjectionPointsAutowiringInspection", "RedundantSuppression"})
     public KafkaResetter(KafkaListenerEndpointRegistry registry) {
         this.registry = registry;
     }
