@@ -136,6 +136,7 @@ public class DubboResetter extends AbstractResetter {
          * @return 恒为 true。
          * @throws ServiceException 服务异常。
          */
+        @SuppressWarnings("SameReturnValue")
         boolean resetRoute() throws ServiceException;
 
         /**
@@ -147,6 +148,7 @@ public class DubboResetter extends AbstractResetter {
          * @return 恒为 true。
          * @throws ServiceException 服务异常。
          */
+        @SuppressWarnings("SameReturnValue")
         boolean resetDispatch() throws ServiceException;
 
         /**
@@ -158,6 +160,7 @@ public class DubboResetter extends AbstractResetter {
          * @return 恒为 true。
          * @throws ServiceException 服务异常。
          */
+        @SuppressWarnings("SameReturnValue")
         boolean resetSend() throws ServiceException;
     }
 
