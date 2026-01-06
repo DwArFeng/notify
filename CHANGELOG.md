@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 去除部分 `application-context-*.xml` 中多余的配置内容。
+  - spring/application-context-dubbo.xml。
+
 - 优化部分说明文件中的格式。
   - libext/README.md。
   - optext/README.md。
