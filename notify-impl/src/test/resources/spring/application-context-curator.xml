@@ -13,6 +13,7 @@
     </bean>
 
     <!-- 构造 Curator 框架。 -->
+    <!--suppress SpringXmlModelInspection -->
     <bean
             id="curatorFramework"
             class="org.apache.curator.framework.CuratorFrameworkFactory"

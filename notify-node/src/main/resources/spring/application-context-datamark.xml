@@ -9,7 +9,7 @@
         http://dwarfeng.com/schema/dwarfeng-datamark/dwarfeng-datamark.xsd"
 >
 
-    <!-- NotifySetting 数据标识 -->
+    <!-- NotifySetting 数据标识。 -->
     <datamark:handler
             handler-name="notifySettingDatamarkHandler"
             resource-url="${datamark.notify_setting.resource_url}"
@@ -17,7 +17,7 @@
             update-allowed="${datamark.notify_setting.update_allowed}"
     />
 
-    <!-- Sender 数据标识 -->
+    <!-- Sender 数据标识。 -->
     <datamark:handler
             handler-name="senderDatamarkHandler"
             resource-url="${datamark.sender.resource_url}"
@@ -25,7 +25,7 @@
             update-allowed="${datamark.sender.update_allowed}"
     />
 
-    <!-- Topic 数据标识 -->
+    <!-- Topic 数据标识。 -->
     <datamark:handler
             handler-name="topicDatamarkHandler"
             resource-url="${datamark.topic.resource_url}"
@@ -33,7 +33,7 @@
             update-allowed="${datamark.topic.update_allowed}"
     />
 
-    <!-- User 数据标识 -->
+    <!-- User 数据标识。 -->
     <datamark:handler
             handler-name="userDatamarkHandler"
             resource-url="${datamark.user.resource_url}"
@@ -41,6 +41,6 @@
             update-allowed="${datamark.user.update_allowed}"
     />
 
-    <!-- QoS 服务 -->
+    <!-- QoS 服务。 -->
     <datamark:qos/>
 </beans>
