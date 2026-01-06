@@ -1,12 +1,14 @@
 package com.dwarfeng.notify.sdk.bean;
 
 import com.dwarfeng.notify.sdk.bean.dto.FastJsonNotifyHistoryRecordInfo;
+import com.dwarfeng.notify.sdk.bean.dto.FastJsonPurgeFinishedResult;
 import com.dwarfeng.notify.sdk.bean.dto.JSFixedFastJsonNotifyHistoryRecordInfo;
 import com.dwarfeng.notify.sdk.bean.dto.WebInputNotifyInfo;
 import com.dwarfeng.notify.sdk.bean.entity.*;
 import com.dwarfeng.notify.sdk.bean.key.*;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
+import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.*;
 import com.dwarfeng.subgrade.sdk.bean.key.*;
@@ -275,6 +277,11 @@ public interface BeanMapper {
     NotifyHistoryRecordInfo notifyHistoryRecordInfoFromFastJson(
             FastJsonNotifyHistoryRecordInfo fastJsonNotifyHistoryRecordInfo
     );
+
+    FastJsonPurgeFinishedResult purgeFinishedResultToFastJson(PurgeFinishedResult purgeFinishedResult);
+
+    @InheritInverseConfiguration
+    PurgeFinishedResult purgeFinishedResultFromFastJson(FastJsonPurgeFinishedResult fastJsonPurgeFinishedResult);
 
     JSFixedFastJsonNotifyHistoryRecordInfo notifyHistoryRecordInfoToJSFixedFastJson(
             NotifyHistoryRecordInfo notifyHistoryRecordInfo

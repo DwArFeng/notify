@@ -38,7 +38,9 @@
 
 ### Bug 修复
 
-- (无)
+- 补全 `notify-sdk` 模块 BeanMapper 中缺失的接口方法。
+  - com.dwarfeng.notify.sdk.bean.BeanMapper.purgeFinishedResultToFastJson。
+  - com.dwarfeng.notify.sdk.bean.BeanMapper.purgeFinishedResultFromFastJson。
 
 ### 功能移除
 
