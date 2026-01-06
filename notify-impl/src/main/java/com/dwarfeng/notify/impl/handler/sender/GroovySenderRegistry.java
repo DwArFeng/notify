@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Groovy发送器注册。
+ * Groovy 发送器注册。
  *
  * @author DwArFeng
  * @since 1.0.0
@@ -44,12 +44,12 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
 
     @Override
     public String provideLabel() {
-        return "Groovy发送器";
+        return "Groovy 发送器";
     }
 
     @Override
     public String provideDescription() {
-        return "通过自定义的Groovy脚本发送信息。";
+        return "通过自定义的 Groovy 脚本发送信息。";
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
     @Override
     public Sender makeSender(String type, String param) throws SenderException {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-            // 通过Groovy脚本生成处理器。
+            // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
             Processor processor = (Processor) aClass.newInstance();
             ctx.getAutowireCapableBeanFactory().autowireBean(processor);
@@ -118,7 +118,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
     }
 
     /**
-     * Groovy处理器。
+     * Groovy 处理器。
      *
      * @author DwArFeng
      * @since 1.0.0

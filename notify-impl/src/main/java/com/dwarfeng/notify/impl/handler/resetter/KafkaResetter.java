@@ -184,10 +184,10 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
 
         @Bean("kafkaResetter.consumerProperties")
         public Map<String, Object> consumerProperties() {
-            LOGGER.info("配置Kafka消费者属性...");
+            LOGGER.info("配置 Kafka 消费者属性...");
             Map<String, Object> props = new HashMap<>();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBootstrapServers);
-            // 本实例使用ack手动提交，因此禁止自动提交的功能。
+            // 本实例使用 ack 手动提交，因此禁止自动提交的功能。
             props.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, false);
             props.put(ConsumerConfig.SESSION_TIMEOUT_MS_CONFIG, sessionTimeoutMs);
             // 不需要设置 GROUP_ID，因为侦听器 ID 会覆盖 GROUP_ID，因此不需要如下代码：
@@ -195,25 +195,25 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
             props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
             props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollIntervalMs);
-            LOGGER.debug("Kafka消费者属性配置完成...");
+            LOGGER.debug("Kafka 消费者属性配置完成...");
             return props;
         }
 
         @Bean("kafkaResetter.consumerFactory")
         public ConsumerFactory<String, String> consumerFactory() {
-            LOGGER.info("配置Kafka消费者工厂...");
+            LOGGER.info("配置 Kafka 消费者工厂...");
             Map<String, Object> properties = consumerProperties();
             DefaultKafkaConsumerFactory<String, String> factory = new DefaultKafkaConsumerFactory<>(properties);
             factory.setKeyDeserializer(new StringDeserializer());
             factory.setValueDeserializer(new StringDeserializer());
-            LOGGER.debug("Kafka消费者工厂配置完成");
+            LOGGER.debug("Kafka 消费者工厂配置完成");
             return factory;
         }
 
         @Bean("kafkaResetter.kafkaListenerContainerFactory")
         public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>>
         kafkaListenerContainerFactory() {
-            LOGGER.info("配置Kafka侦听容器工厂...");
+            LOGGER.info("配置 Kafka 侦听容器工厂...");
             ConsumerFactory<String, String> consumerFactory = consumerFactory();
             ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
             factory.setConsumerFactory(consumerFactory);
@@ -225,7 +225,7 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             factory.setBatchListener(true);
             // 配置 ACK 模式为手动立即提交。
             factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-            LOGGER.info("配置Kafka侦听容器工厂...");
+            LOGGER.info("配置 Kafka 侦听容器工厂...");
             return factory;
         }
     }

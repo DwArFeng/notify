@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Groovy调度器注册。
+ * Groovy 调度器注册。
  *
  * @author DwArFeng
  * @since 1.1.0
@@ -44,7 +44,7 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
 
     @Override
     public String provideLabel() {
-        return "Groovy调度器";
+        return "Groovy 调度器";
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
     @Override
     public Dispatcher makeDispatcher(String type, String param) throws DispatcherException {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-            // 通过Groovy脚本生成处理器。
+            // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
             Processor processor = (Processor) aClass.newInstance();
             ctx.getAutowireCapableBeanFactory().autowireBean(processor);
@@ -118,7 +118,7 @@ public class GroovyDispatcherRegistry extends AbstractDispatcherRegistry {
     }
 
     /**
-     * Groovy处理器。
+     * Groovy 处理器。
      *
      * @author DwArFeng
      * @since 1.1.0

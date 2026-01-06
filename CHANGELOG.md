@@ -4,6 +4,12 @@
 
 ### 功能构建
 
+- `notify-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.notify.impl.handler.dispatcher.GroovyDispatcherRegistry。
+  - com.dwarfeng.notify.impl.handler.resetter.KafkaResetter。
+  - com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.sender.GroovySenderRegistry。
+
 - 依赖升级。
   - 升级 `kafka` 依赖版本为 `3.9.1` 以规避漏洞。
   - 升级 `spring-kafka` 依赖版本为 `2.9.13` 以规避漏洞。

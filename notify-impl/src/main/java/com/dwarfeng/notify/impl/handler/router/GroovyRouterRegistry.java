@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Groovy路由器注册。
+ * Groovy 路由器注册。
  *
  * @author DwArFeng
  * @since 1.0.0
@@ -44,12 +44,12 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
 
     @Override
     public String provideLabel() {
-        return "Groovy路由器";
+        return "Groovy 路由器";
     }
 
     @Override
     public String provideDescription() {
-        return "通过自定义的Groovy脚本解析路径。";
+        return "通过自定义的 Groovy 脚本解析路径。";
     }
 
     @Override
@@ -73,7 +73,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
     @Override
     public Router makeRouter(String type, String param) throws RouterException {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
-            // 通过Groovy脚本生成处理器。
+            // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
             Processor processor = (Processor) aClass.newInstance();
             ctx.getAutowireCapableBeanFactory().autowireBean(processor);
@@ -116,7 +116,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
     }
 
     /**
-     * Groovy处理器。
+     * Groovy 处理器。
      *
      * @author DwArFeng
      * @since 1.0.0
