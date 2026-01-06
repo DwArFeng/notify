@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- 优化部分说明文件中的格式。
+  - libext/README.md。
+  - optext/README.md。
+
 - 将部分类的构造器方法访问权限提升为 `public`。
   - com.dwarfeng.notify.impl.handler.ResetProcessor。
 
