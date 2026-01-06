@@ -26,7 +26,7 @@ public class ResetProcessor {
 
     private final PushHandler pushHandler;
 
-    ResetProcessor(
+    public ResetProcessor(
             RouteLocalCacheHandler routeLocalCacheHandler,
             DispatchLocalCacheHandler dispatchLocalCacheHandler,
             SendLocalCacheHandler sendLocalCacheHandler,

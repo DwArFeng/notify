@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- 将部分类的构造器方法访问权限提升为 `public`。
+  - com.dwarfeng.notify.impl.handler.ResetProcessor。
+
 - `notify-impl` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.notify.impl.handler.dispatcher.GroovyDispatcherRegistry。
   - com.dwarfeng.notify.impl.handler.resetter.KafkaResetter。
