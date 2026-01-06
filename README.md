@@ -31,4 +31,3 @@ Telnet 运维平台 banner：
 Telnet 运维平台指令合集：
 
 ![Telnet 运维平台指令合集](./docs/wiki/zh-CN/images/TelqosCommands.png "Telnet 运维平台指令合集")
-
