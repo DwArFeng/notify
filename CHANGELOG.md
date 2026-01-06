@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/en-US/README.md。
+  - docs/wiki/zh-CN/README.md。
+
 - 去除部分 `application-context-*.xml` 中多余的配置内容。
   - spring/application-context-dubbo.xml。
 
