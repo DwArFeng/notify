@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/Introduction.md。
+
 - 依赖升级。
   - 升级 `dwarfeng-datamark` 依赖版本为 `1.0.5.a` 以规避漏洞。
 
