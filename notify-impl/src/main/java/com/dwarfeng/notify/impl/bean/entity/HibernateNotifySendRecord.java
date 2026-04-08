@@ -14,7 +14,8 @@ public class HibernateNotifySendRecord implements Bean {
 
     private static final long serialVersionUID = 6401476278480844891L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "notify_history_id", nullable = false)
     private Long notifyHistoryId;
@@ -27,14 +28,20 @@ public class HibernateNotifySendRecord implements Bean {
     @Column(name = "user_Id", length = Constraints.LENGTH_ID, nullable = false)
     private String userId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "succeed_flag")
     private Boolean succeedFlag;
 
     @Column(name = "sender_message", length = Constraints.LENGTH_MESSAGE)
     private String senderMessage;
 
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    // endregion
+
+    // region 多对一
+
     @ManyToOne(targetEntity = HibernateNotifyHistory.class)
     @JoinColumns({ //
             @JoinColumn(name = "notify_history_id", referencedColumnName = "id", insertable = false, updatable = false), //
@@ -53,10 +60,13 @@ public class HibernateNotifySendRecord implements Bean {
     })
     private HibernateUser user;
 
+    // endregion
+
     public HibernateNotifySendRecord() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateNotifySendRecordKey getKey() {
         return new HibernateNotifySendRecordKey(notifyHistoryId, topicId, userId);
     }
@@ -73,7 +83,10 @@ public class HibernateNotifySendRecord implements Bean {
         }
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getNotifyHistoryId() {
         return notifyHistoryId;
     }
@@ -137,6 +150,8 @@ public class HibernateNotifySendRecord implements Bean {
     public void setUser(HibernateUser user) {
         this.user = user;
     }
+
+    // endregion
 
     @Override
     public String toString() {

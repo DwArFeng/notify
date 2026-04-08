@@ -14,7 +14,8 @@ public class HibernateMeta implements Bean {
 
     private static final long serialVersionUID = -2128593082064931893L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "notify_setting_id", nullable = false)
     private Long notifySettingId;
@@ -31,14 +32,20 @@ public class HibernateMeta implements Bean {
     @Column(name = "meta_id", length = Constraints.LENGTH_ID, nullable = false)
     private String metaId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    // endregion
+
+    // region 多对一
+
     @ManyToOne(targetEntity = HibernateNotifySetting.class)
     @JoinColumns({ //
             @JoinColumn(name = "notify_setting_id", referencedColumnName = "id", insertable = false, updatable = false), //
@@ -57,10 +64,13 @@ public class HibernateMeta implements Bean {
     })
     private HibernateUser user;
 
+    // endregion
+
     public HibernateMeta() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateMetaKey getKey() {
         return new HibernateMetaKey(notifySettingId, topicId, userId, metaId);
     }
@@ -79,7 +89,10 @@ public class HibernateMeta implements Bean {
         }
     }
 
-    // -----------------------------------------------------------常规 getter&setter-----------------------------------------------------------
+    // endregion
+
+    // region 常规 getter&setter
+
     public Long getNotifySettingId() {
         return notifySettingId;
     }
@@ -151,6 +164,8 @@ public class HibernateMeta implements Bean {
     public void setUser(HibernateUser user) {
         this.user = user;
     }
+
+    // endregion
 
     @Override
     public String toString() {

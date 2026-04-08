@@ -24,7 +24,8 @@ import org.mapstruct.Mapping;
 @Mapper
 public interface BeanMapper {
 
-    // -----------------------------------------------------------Subgrade Key-----------------------------------------------------------
+    // region Subgrade Key
+
     HibernateLongIdKey longIdKeyToHibernate(LongIdKey longIdKey);
 
     @InheritInverseConfiguration
@@ -35,7 +36,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromHibernate(HibernateStringIdKey hibernateStringIdKey);
 
-    // -----------------------------------------------------------Notify Key-----------------------------------------------------------
+    // endregion
+
+    // region Notify Key
+
     HibernateMetaIndicatorKey metaIndicatorKeyToHibernate(MetaIndicatorKey metaIndicatorKey);
 
     @InheritInverseConfiguration
@@ -61,7 +65,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     SenderInfoKey senderInfoKeyFromHibernate(HibernateSenderInfoKey hibernateSenderInfoKey);
 
-    // -----------------------------------------------------------Notify Entity-----------------------------------------------------------
+    // endregion
+
+    // region Notify Entity
+
     @Mapping(target = "topic", ignore = true)
     @Mapping(target = "stringId", ignore = true)
     @Mapping(target = "modifiedDatamark", ignore = true)
@@ -194,4 +201,6 @@ public interface BeanMapper {
 
     @InheritInverseConfiguration
     User userFromHibernate(HibernateUser hibernateUser);
+
+    // endregion
 }

@@ -14,7 +14,8 @@ public class HibernateNotifyInfoRecord implements Bean {
 
     private static final long serialVersionUID = 5281515276251667342L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "notify_history_id", nullable = false)
     private Long notifyHistoryId;
@@ -27,21 +28,30 @@ public class HibernateNotifyInfoRecord implements Bean {
     @Column(name = "record_id", length = Constraints.LENGTH_ID, nullable = false)
     private String recordId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "value", columnDefinition = "TEXT")
     private String value;
 
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    // endregion
+
+    // region 多对一
+
     @ManyToOne(targetEntity = HibernateNotifyHistory.class)
     @JoinColumns({ //
             @JoinColumn(name = "notify_history_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateNotifyHistory notifyHistory;
 
+    // endregion
+
     public HibernateNotifyInfoRecord() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateNotifyInfoRecordKey getKey() {
         return new HibernateNotifyInfoRecordKey(notifyHistoryId, type, recordId);
     }
@@ -58,7 +68,10 @@ public class HibernateNotifyInfoRecord implements Bean {
         }
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getNotifyHistoryId() {
         return notifyHistoryId;
     }
@@ -90,6 +103,8 @@ public class HibernateNotifyInfoRecord implements Bean {
     public void setNotifyHistory(HibernateNotifyHistory notifyHistory) {
         this.notifyHistory = notifyHistory;
     }
+
+    // endregion
 
     @Override
     public String toString() {

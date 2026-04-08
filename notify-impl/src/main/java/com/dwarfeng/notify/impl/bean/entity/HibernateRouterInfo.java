@@ -15,12 +15,16 @@ public class HibernateRouterInfo implements Bean {
 
     private static final long serialVersionUID = -3214122460625249718L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
     private String label;
 
@@ -33,14 +37,20 @@ public class HibernateRouterInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    // endregion
+
+    // region 一对一
+
     @OneToOne(targetEntity = HibernateNotifySetting.class)
     @JoinColumns({ //
             @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateNotifySetting notifySetting;
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "notifySettingDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -56,10 +66,13 @@ public class HibernateRouterInfo implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernateRouterInfo() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -68,7 +81,10 @@ public class HibernateRouterInfo implements Bean {
         this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getLongId() {
         return longId;
     }
@@ -132,6 +148,8 @@ public class HibernateRouterInfo implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {

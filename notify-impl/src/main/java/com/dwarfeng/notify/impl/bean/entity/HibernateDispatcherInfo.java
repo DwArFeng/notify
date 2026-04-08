@@ -17,12 +17,16 @@ public class HibernateDispatcherInfo implements Bean {
 
     private static final long serialVersionUID = -7377178632378084677L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", length = Constraints.LENGTH_ID, nullable = false, unique = true)
     private String stringId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
     private String label;
 
@@ -35,14 +39,20 @@ public class HibernateDispatcherInfo implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    // endregion
+
+    // region 一对一
+
     @OneToOne(targetEntity = HibernateTopic.class)
     @JoinColumns({ //
             @JoinColumn(name = "id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateTopic topic;
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -58,10 +68,13 @@ public class HibernateDispatcherInfo implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernateDispatcherInfo() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateStringIdKey getKey() {
         return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
@@ -70,7 +83,10 @@ public class HibernateDispatcherInfo implements Bean {
         this.stringId = Optional.ofNullable(key).map(HibernateStringIdKey::getStringId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public String getStringId() {
         return stringId;
     }
@@ -134,6 +150,8 @@ public class HibernateDispatcherInfo implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {

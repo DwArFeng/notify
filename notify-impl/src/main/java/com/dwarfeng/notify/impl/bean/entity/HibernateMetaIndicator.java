@@ -17,7 +17,8 @@ public class HibernateMetaIndicator implements Bean {
 
     private static final long serialVersionUID = -8353845454888170519L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "topic_id", length = Constraints.LENGTH_ID, nullable = false)
     private String topicId;
@@ -26,7 +27,10 @@ public class HibernateMetaIndicator implements Bean {
     @Column(name = "meta_id", length = Constraints.LENGTH_ID, nullable = false)
     private String metaId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
     private String label;
 
@@ -36,14 +40,20 @@ public class HibernateMetaIndicator implements Bean {
     @Column(name = "default_value", columnDefinition = "TEXT")
     private String defaultValue;
 
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    // endregion
+
+    // region 多对一
+
     @ManyToOne(targetEntity = HibernateTopic.class)
     @JoinColumns({ //
             @JoinColumn(name = "topic_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateTopic topic;
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -59,10 +69,13 @@ public class HibernateMetaIndicator implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernateMetaIndicator() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateMetaIndicatorKey getKey() {
         return new HibernateMetaIndicatorKey(topicId, metaId);
     }
@@ -77,7 +90,10 @@ public class HibernateMetaIndicator implements Bean {
         }
     }
 
-    // -----------------------------------------------------------常规 getter&setter-----------------------------------------------------------
+    // endregion
+
+    // region 常规 getter&setter
+
     public String getTopicId() {
         return topicId;
     }
@@ -141,6 +157,8 @@ public class HibernateMetaIndicator implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {

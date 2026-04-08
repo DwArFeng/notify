@@ -14,12 +14,16 @@ public class HibernateSenderSupport implements Bean {
 
     private static final long serialVersionUID = 1344771067751662713L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", length = Constraints.LENGTH_TYPE, nullable = false, unique = true)
     private String stringId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "label", length = 50, nullable = false)
     private String label;
 
@@ -29,10 +33,13 @@ public class HibernateSenderSupport implements Bean {
     @Column(name = "example_param", columnDefinition = "TEXT")
     private String exampleParam;
 
+    // endregion
+
     public HibernateSenderSupport() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateStringIdKey getKey() {
         return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
@@ -41,7 +48,10 @@ public class HibernateSenderSupport implements Bean {
         this.stringId = Optional.ofNullable(idKey).map(HibernateStringIdKey::getStringId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public String getStringId() {
         return stringId;
     }
@@ -73,6 +83,8 @@ public class HibernateSenderSupport implements Bean {
     public void setExampleParam(String exampleParam) {
         this.exampleParam = exampleParam;
     }
+
+    // endregion
 
     @Override
     public String toString() {

@@ -19,12 +19,16 @@ public class HibernateNotifySetting implements Bean {
 
     private static final long serialVersionUID = -7599137720811010367L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
     private String label;
 
@@ -34,11 +38,17 @@ public class HibernateNotifySetting implements Bean {
     @Column(name = "enabled")
     private boolean enabled;
 
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    // endregion
+
+    // region 一对一
+
     @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateRouterInfo.class, mappedBy = "notifySetting")
     private HibernateRouterInfo routerInfo;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    // endregion
+
+    // region 一对多
+
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "notifySetting")
     private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
 
@@ -48,7 +58,10 @@ public class HibernateNotifySetting implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifyHistory.class, mappedBy = "notifySetting")
     private Set<HibernateNotifyHistory> notifyHistories = new HashSet<>();
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "notifySettingDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -64,10 +77,13 @@ public class HibernateNotifySetting implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernateNotifySetting() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -76,7 +92,10 @@ public class HibernateNotifySetting implements Bean {
         this.longId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规属性区-----------------------------------------------------------
+    // endregion
+
+    // region 常规属性区
+
     public Long getLongId() {
         return longId;
     }
@@ -156,6 +175,8 @@ public class HibernateNotifySetting implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {

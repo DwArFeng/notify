@@ -19,26 +19,36 @@ public class HibernateUser implements Bean {
 
     private static final long serialVersionUID = -3910051536910281413L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", length = Constraints.LENGTH_ID, nullable = false, unique = true)
     private String stringId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    // endregion
+
+    // region 一对多
+
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateMeta.class, mappedBy = "user")
     private Set<HibernateMeta> metas = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifySendRecord.class, mappedBy = "user")
     private Set<HibernateNotifySendRecord> sendRecords = new HashSet<>();
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "userDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -54,10 +64,13 @@ public class HibernateUser implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernateUser() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateStringIdKey getKey() {
         return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
@@ -66,7 +79,10 @@ public class HibernateUser implements Bean {
         this.stringId = Optional.ofNullable(key).map(HibernateStringIdKey::getStringId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规 getter&setter-----------------------------------------------------------
+    // endregion
+
+    // region 常规 getter&setter
+
     public String getStringId() {
         return stringId;
     }
@@ -122,6 +138,8 @@ public class HibernateUser implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {

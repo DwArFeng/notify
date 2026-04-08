@@ -17,16 +17,23 @@ public class HibernateNotifyHistory implements Bean {
 
     private static final long serialVersionUID = -8657379149799147790L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", nullable = false, unique = true)
     private Long longId;
 
-    // -----------------------------------------------------------外键-----------------------------------------------------------
+    // endregion
+
+    // region 外键
+
     @Column(name = "notify_setting_id")
     private Long notifySettingLongId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "happened_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date happenedDate;
@@ -34,24 +41,33 @@ public class HibernateNotifyHistory implements Bean {
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
 
-    // -----------------------------------------------------------多对一-----------------------------------------------------------
+    // endregion
+
+    // region 多对一
+
     @ManyToOne(targetEntity = HibernateNotifySetting.class)
     @JoinColumns({ //
             @JoinColumn(name = "notify_setting_id", referencedColumnName = "id", insertable = false, updatable = false), //
     })
     private HibernateNotifySetting notifySetting;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    // endregion
+
+    // region 一对多
+
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifyInfoRecord.class, mappedBy = "notifyHistory")
     private Set<HibernateNotifyInfoRecord> notifyInfoRecords = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifySendRecord.class, mappedBy = "notifyHistory")
     private Set<HibernateNotifySendRecord> notifySendRecords = new HashSet<>();
 
+    // endregion
+
     public HibernateNotifyHistory() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateLongIdKey getKey() {
         return Optional.ofNullable(longId).map(HibernateLongIdKey::new).orElse(null);
     }
@@ -68,7 +84,10 @@ public class HibernateNotifyHistory implements Bean {
         this.notifySettingLongId = Optional.ofNullable(key).map(HibernateLongIdKey::getLongId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规 getter&setter-----------------------------------------------------------
+    // endregion
+
+    // region 常规 getter&setter
+
     public Long getLongId() {
         return longId;
     }
@@ -124,6 +143,8 @@ public class HibernateNotifyHistory implements Bean {
     public void setNotifySendRecords(Set<HibernateNotifySendRecord> notifySendRecords) {
         this.notifySendRecords = notifySendRecords;
     }
+
+    // endregion
 
     @Override
     public String toString() {

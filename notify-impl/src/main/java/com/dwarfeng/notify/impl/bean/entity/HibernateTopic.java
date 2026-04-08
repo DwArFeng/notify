@@ -19,12 +19,16 @@ public class HibernateTopic implements Bean {
 
     private static final long serialVersionUID = -347030751421427751L;
 
-    // -----------------------------------------------------------主键-----------------------------------------------------------
+    // region 主键
+
     @Id
     @Column(name = "id", length = Constraints.LENGTH_ID, nullable = false, unique = true)
     private String stringId;
 
-    // -----------------------------------------------------------主属性字段-----------------------------------------------------------
+    // endregion
+
+    // region 主属性字段
+
     @Column(name = "label", length = Constraints.LENGTH_LABEL)
     private String label;
 
@@ -37,11 +41,17 @@ public class HibernateTopic implements Bean {
     @Column(name = "priority")
     private int priority;
 
-    // -----------------------------------------------------------一对一-----------------------------------------------------------
+    // endregion
+
+    // region 一对一
+
     @OneToOne(cascade = CascadeType.MERGE, targetEntity = HibernateDispatcherInfo.class, mappedBy = "topic")
     private HibernateDispatcherInfo dispatcherInfo;
 
-    // -----------------------------------------------------------一对多-----------------------------------------------------------
+    // endregion
+
+    // region 一对多
+
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateSenderInfo.class, mappedBy = "topic")
     private Set<HibernateSenderInfo> senderInfos = new HashSet<>();
 
@@ -54,7 +64,10 @@ public class HibernateTopic implements Bean {
     @OneToMany(cascade = CascadeType.MERGE, targetEntity = HibernateNotifySendRecord.class, mappedBy = "topic")
     private Set<HibernateNotifySendRecord> notifySendRecords = new HashSet<>();
 
-    // -----------------------------------------------------------审计-----------------------------------------------------------
+    // endregion
+
+    // region 审计
+
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
             name = "created_datamark",
@@ -70,10 +83,13 @@ public class HibernateTopic implements Bean {
     )
     private String modifiedDatamark;
 
+    // endregion
+
     public HibernateTopic() {
     }
 
-    // -----------------------------------------------------------映射用属性区-----------------------------------------------------------
+    // region 映射用属性区
+
     public HibernateStringIdKey getKey() {
         return Optional.ofNullable(stringId).map(HibernateStringIdKey::new).orElse(null);
     }
@@ -82,7 +98,10 @@ public class HibernateTopic implements Bean {
         this.stringId = Optional.ofNullable(key).map(HibernateStringIdKey::getStringId).orElse(null);
     }
 
-    // -----------------------------------------------------------常规 getter&setter-----------------------------------------------------------
+    // endregion
+
+    // region 常规 getter&setter
+
     public String getStringId() {
         return stringId;
     }
@@ -178,6 +197,8 @@ public class HibernateTopic implements Bean {
     public void setModifiedDatamark(String modifiedDatamark) {
         this.modifiedDatamark = modifiedDatamark;
     }
+
+    // endregion
 
     @Override
     public String toString() {

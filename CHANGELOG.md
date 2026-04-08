@@ -4,6 +4,23 @@
 
 ### 功能构建
 
+- `notify-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.notify.impl.bean.BeanMapper。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherInfo。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherSupport。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateMeta。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateMetaIndicator。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateNotifyHistory。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateNotifyInfoRecord。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateNotifySendRecord。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateNotifySetting。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateRouterInfo。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateRouterSupport。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateSenderInfo。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateSenderSupport。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateTopic。
+  - com.dwarfeng.notify.impl.bean.entity.HibernateUser。
+
 - `notify-sdk` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.notify.sdk.bean.BeanMapper。
 
