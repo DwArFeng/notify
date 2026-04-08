@@ -12,6 +12,10 @@
 
 - [Version Blacklist](./VersionBlacklist.md) - 版本黑名单，列出了本项目的版本黑名单，请注意避免使用这些版本。
 
+## 快速开始
+
+- [Quick Start](./QuickStart.md) - 快速开始，用最快的方式体验本项目。
+
 ## 安装、部署、初始化
 
 ### 安装
