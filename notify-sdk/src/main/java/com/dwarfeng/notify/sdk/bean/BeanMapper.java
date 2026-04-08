@@ -29,7 +29,8 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface BeanMapper {
 
-    // -----------------------------------------------------------Subgrade Key-----------------------------------------------------------
+    // region Subgrade Key
+
     FastJsonLongIdKey longIdKeyToFastJson(LongIdKey longIdKey);
 
     @InheritInverseConfiguration
@@ -55,7 +56,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     StringIdKey stringIdKeyFromWebInput(WebInputStringIdKey webInputStringIdKey);
 
-    // -----------------------------------------------------------Notify Key-----------------------------------------------------------
+    // endregion
+
+    // region Notify Key
+
     FastJsonMetaIndicatorKey metaIndicatorKeyToFastJson(MetaIndicatorKey metaIndicatorKey);
 
     @InheritInverseConfiguration
@@ -120,7 +124,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     SenderInfoKey senderInfoKeyFromWebInput(WebInputSenderInfoKey webInputSenderInfoKey);
 
-    // -----------------------------------------------------------Notify Entity-----------------------------------------------------------
+    // endregion
+
+    // region Notify Entity
+
     FastJsonDispatcherInfo dispatcherInfoToFastJson(DispatcherInfo dispatcherInfo);
 
     @InheritInverseConfiguration
@@ -270,7 +277,10 @@ public interface BeanMapper {
     @InheritInverseConfiguration
     User userFromWebInput(WebInputUser webInputUser);
 
-    // -----------------------------------------------------------Notify DTO-----------------------------------------------------------
+    // endregion
+
+    // region Notify DTO
+
     FastJsonNotifyHistoryRecordInfo notifyHistoryRecordInfoToFastJson(NotifyHistoryRecordInfo notifyHistoryRecordInfo);
 
     @InheritInverseConfiguration
@@ -296,4 +306,6 @@ public interface BeanMapper {
 
     @InheritInverseConfiguration
     NotifyInfo notifyInfoFromWebInput(WebInputNotifyInfo webInputNotifyInfo);
+
+    // endregion
 }

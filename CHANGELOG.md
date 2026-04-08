@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- `notify-sdk` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.notify.sdk.bean.BeanMapper。
+
 - 优化文件格式。
   - 优化 `application-context-*.xml` 文件的格式。
 
