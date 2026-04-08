@@ -4,6 +4,12 @@
 
 ### 功能构建
 
+- 依赖升级。
+  - 升级 `dutil` 依赖版本为 `0.4.1.a-beta` 以规避漏洞。
+  - 升级 `snowflake` 依赖版本为 `1.8.3.a` 以规避漏洞。
+  - 升级 `subgrade` 依赖版本为 `1.7.3.a` 以规避漏洞。
+  - 升级 `dwarfeng-datamark` 依赖版本为 `1.1.3.a` 以规避漏洞。
+
 - `notify-impl` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.notify.impl.bean.BeanMapper。
   - com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherInfo。
