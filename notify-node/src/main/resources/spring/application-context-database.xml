@@ -35,7 +35,7 @@
         <!-- 关闭 abandoned 连接时输出错误日志。 -->
         <property name="logAbandoned" value="true"/>
         <!-- 监控数据库。 -->
-        <!--<property name="filters" value="mergeStat"/> -->
+        <!-- <property name="filters" value="mergeStat"/> -->
         <property name="filters" value="stat"/>
         <property name="proxyFilters">
             <list>
