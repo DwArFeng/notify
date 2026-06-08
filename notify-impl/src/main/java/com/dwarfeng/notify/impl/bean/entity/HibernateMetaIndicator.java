@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
-import com.dwarfeng.datamark.bean.jpa.DatamarkEntityListener;
-import com.dwarfeng.datamark.bean.jpa.DatamarkField;
+import com.dwarfeng.datamark.sdk.jpa.DatamarkEntityListener;
+import com.dwarfeng.datamark.sdk.jpa.DatamarkField;
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.subgrade.stack.bean.Bean;
@@ -57,7 +57,7 @@ public class HibernateMetaIndicator implements Bean {
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
             name = "created_datamark",
-            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE,
+            length = com.dwarfeng.datamark.sdk.util.Constraints.LENGTH_DATAMARK_VALUE,
             updatable = false
     )
     private String createdDatamark;
@@ -65,7 +65,7 @@ public class HibernateMetaIndicator implements Bean {
     @DatamarkField(handlerName = "topicDatamarkHandler")
     @Column(
             name = "modified_datamark",
-            length = com.dwarfeng.datamark.util.Constraints.LENGTH_DATAMARK_VALUE
+            length = com.dwarfeng.datamark.sdk.util.Constraints.LENGTH_DATAMARK_VALUE
     )
     private String modifiedDatamark;
 
