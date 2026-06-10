@@ -6,9 +6,10 @@
 
 ### 使用其它仓库
 
-您可以在 `settings.xml` 中添加如下配置，以使用其它仓库，通常 `settings.xml` 在 `$HOME/.m2/` 文件目录下。
+您可以在 `settings.xml` 中添加如下配置，以使用其它仓库，通常 `settings.xml` 在 `$HOME/.m2/` 目录下。
 
 ```xml
+<?xml version="1.0" encoding="UTF-8"?>
 
 <settings
         xmlns="http://maven.apache.org/SETTINGS/1.0.0"
@@ -53,29 +54,22 @@
 使用的仓库需要保证有如下依赖，否则编译过程会因为找不到依赖而失败：
 
 - com.dwarfeng:dutil
-- com.dwarfeng:snowflake-distributed-service
 - com.dwarfeng:subgrade
-- com.dwarfeng:spring-terminator
 - com.dwarfeng:spring-telqos
+- com.dwarfeng:spring-terminator
 - com.dwarfeng:dwarfeng-datamark
+- com.dwarfeng:snowflake-distributed-service
 
 ### 下载依赖源码
 
 您可以在 [Dwarfeng's Github](https://github.com/DwArFeng) 或 [Dwarfeng's Gitee](https://gitee.com/dwarfeng)
-下载克隆依赖的源码， 然后使用 `mvn install` 命令将其安装到本地仓库中。
+下载或克隆依赖的源码，然后使用 `mvn install` 命令将其安装到本地仓库中。
 
 - com.dwarfeng:dutil
 
   github: [https://github.com/DwArFeng/dutil](https://github.com/DwArFeng/dutil)
 
   gitee: [https://gitee.com/dwarfeng/dutil](https://gitee.com/dwarfeng/dutil)
-
-
-- com.dwarfeng:snowflake-distributed-service
-
-  github: [https://github.com/DwArFeng/snowflake-distributed-service](https://github.com/DwArFeng/snowflake-distributed-service)
-
-  gitee: [https://gitee.com/dwarfeng/snowflake-distributed-service](https://gitee.com/dwarfeng/snowflake-distributed-service)
 
 
 - com.dwarfeng:subgrade
@@ -85,6 +79,13 @@
   gitee: [https://gitee.com/dwarfeng/subgrade](https://gitee.com/dwarfeng/subgrade)
 
 
+- com.dwarfeng:spring-telqos
+
+  github: [https://github.com/DwArFeng/spring-telqos](https://github.com/DwArFeng/spring-telqos)
+
+  gitee: [https://gitee.com/dwarfeng/spring-telqos](https://gitee.com/dwarfeng/spring-telqos)
+
+
 - com.dwarfeng:spring-terminator
 
   github: [https://github.com/DwArFeng/spring-terminator](https://github.com/DwArFeng/spring-terminator)
@@ -92,17 +93,18 @@
   gitee: [https://gitee.com/dwarfeng/spring-terminator](https://gitee.com/dwarfeng/spring-terminator)
 
 
-- com.dwarfeng:spring-telqos
-
-  github: [https://github.com/DwArFeng/spring-telqos](https://github.com/DwArFeng/spring-telqos)
-
-  gitee: [https://gitee.com/dwarfeng/spring-telqos](https://gitee.com/dwarfeng/spring-telqos)
-
 - com.dwarfeng:dwarfeng-datamark
 
   github: [https://github.com/DwArFeng/dwarfeng-datamark](https://github.com/DwArFeng/dwarfeng-datamark)
 
   gitee: [https://gitee.com/dwarfeng/dwarfeng-datamark](https://gitee.com/dwarfeng/dwarfeng-datamark)
+
+
+- com.dwarfeng:snowflake-distributed-service
+
+  github: [https://github.com/DwArFeng/snowflake-distributed-service](https://github.com/DwArFeng/snowflake-distributed-service)
+
+  gitee: [https://gitee.com/dwarfeng/snowflake-distributed-service](https://gitee.com/dwarfeng/snowflake-distributed-service)
 
 ## 下载源码
 
@@ -133,7 +135,7 @@ mvn clean package
 找到打包后的目标文件
 
 ```
-notify-node/target/notify-node-${version}.jar
+notify-distribute/target/distribute/notify-all-he/notify-all-he-${version}-release.tar.gz
 ```
 
 如能找到该文件，则说明编译成功。
