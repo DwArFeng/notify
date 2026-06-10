@@ -1,4 +1,4 @@
-package com.dwarfeng.notify.node.configuration;
+package com.dwarfeng.notify.node.all.he.configuration;
 
 import com.dwarfeng.subgrade.impl.exception.MapServiceExceptionMapper;
 import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;

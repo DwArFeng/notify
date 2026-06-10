@@ -1,0 +1,44 @@
+<assembly
+        xmlns="http://maven.apache.org/ASSEMBLY/2.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/ASSEMBLY/2.0.0
+        http://maven.apache.org/xsd/assembly-2.0.0.xsd"
+>
+    <id>release</id>
+
+    <formats>
+        <format>dir</format>
+    </formats>
+
+    <includeBaseDirectory>false</includeBaseDirectory>
+
+    <fileSets>
+        <!-- region notify-node-all-he -->
+        <fileSet>
+            <outputDirectory>./notify-all-he</outputDirectory>
+            <directory>
+                ../notify-node/notify-node-all-he/target
+            </directory>
+            <includes>
+                <include>notify-all-he-${project.version}-release/**</include>
+            </includes>
+            <filtered>false</filtered>
+            <fileMode>0644</fileMode>
+            <directoryMode>0755</directoryMode>
+        </fileSet>
+        <!-- endregion -->
+    </fileSets>
+
+    <files>
+        <!-- region notify-node-all-he -->
+        <file>
+            <outputDirectory>./notify-all-he</outputDirectory>
+            <source>
+                ../notify-node/notify-node-all-he/target/notify-all-he-${project.version}-release.tar.gz
+            </source>
+            <filtered>false</filtered>
+            <fileMode>0644</fileMode>
+        </file>
+        <!-- endregion -->
+    </files>
+</assembly>

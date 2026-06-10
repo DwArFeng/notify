@@ -1,4 +1,4 @@
-package com.dwarfeng.notify.node.configuration;
+package com.dwarfeng.notify.node.all.he.configuration;
 
 import com.dwarfeng.notify.impl.service.operation.NotifyHistoryCrudOperation;
 import com.dwarfeng.notify.impl.service.operation.NotifySettingCrudOperation;

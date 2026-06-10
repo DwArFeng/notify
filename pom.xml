@@ -508,6 +508,21 @@
                 <artifactId>notify-impl</artifactId>
                 <version>2.0.0.a-SNAPSHOT</version>
             </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>notify-node</artifactId>
+                <version>2.0.0.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>notify-node-all-he</artifactId>
+                <version>2.0.0.a-SNAPSHOT</version>
+            </dependency>
+            <dependency>
+                <groupId>com.dwarfeng</groupId>
+                <artifactId>notify-distribute</artifactId>
+                <version>2.0.0.a-SNAPSHOT</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -553,5 +568,6 @@
         <module>notify-sdk</module>
         <module>notify-impl</module>
         <module>notify-node</module>
+        <module>notify-distribute</module>
     </modules>
 </project>

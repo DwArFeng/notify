@@ -73,31 +73,31 @@ buildNumber.properties
 #################
 /notify-sdk/logs/
 /notify-impl/logs/
-/notify-node/logs/
+/notify-node/notify-node-all-he/logs/
 
 #################
 ## Configuration Files
 #################
-/notify-impl/conf/
 /notify-sdk/conf/
-/notify-node/conf/
+/notify-impl/conf/
+/notify-node/notify-node-all-he/conf/
 
 #################
 ## Libext Files
 #################
-/notify-node/libext/
+/notify-node/notify-node-all-he/libext/
 
 #################
 ## Opt Files
 #################
-/notify-node/opt/
+/notify-node/notify-node-all-he/opt/
 
 #################
 ## Optext Files
 #################
-/notify-node/optext/
+/notify-node/notify-node-all-he/optext/
 
 #################
 ## Confext Files
 #################
-/notify-node/confext/
+/notify-node/notify-node-all-he/confext/

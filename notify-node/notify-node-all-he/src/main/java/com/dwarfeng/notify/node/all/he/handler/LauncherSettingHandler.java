@@ -1,4 +1,4 @@
-package com.dwarfeng.notify.node.handler;
+package com.dwarfeng.notify.node.all.he.handler;
 
 import com.dwarfeng.subgrade.stack.handler.Handler;
 import org.springframework.beans.factory.annotation.Value;

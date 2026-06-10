@@ -1,4 +1,4 @@
-package com.dwarfeng.notify.node.configuration;
+package com.dwarfeng.notify.node.all.he.configuration;
 
 import com.dwarfeng.notify.sdk.bean.BeanMapper;
 import com.dwarfeng.notify.sdk.bean.entity.*;
