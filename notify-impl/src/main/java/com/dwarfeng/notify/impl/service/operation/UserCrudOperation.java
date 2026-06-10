@@ -35,7 +35,7 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
     private final NotifySendRecordDao notifySendRecordDao;
     private final NotifySendRecordCache notifySendRecordCache;
 
-    @Value("${cache.timeout.entity.user}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.user}")
     private long userTimeout;
 
     public UserCrudOperation(

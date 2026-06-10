@@ -39,7 +39,7 @@ public class NotifySettingCrudOperation implements BatchCrudOperation<LongIdKey,
     private final NotifyHistoryDao notifyHistoryDao;
     private final NotifyHistoryCache notifyHistoryCache;
 
-    @Value("${cache.timeout.entity.notify_setting}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.notify_setting}")
     private long notifySettingTimeout;
 
     public NotifySettingCrudOperation(

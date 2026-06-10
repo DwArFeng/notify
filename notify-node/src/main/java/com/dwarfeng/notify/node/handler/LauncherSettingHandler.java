@@ -7,21 +7,21 @@ import org.springframework.stereotype.Component;
 @Component
 public class LauncherSettingHandler implements Handler {
 
-    @Value("${launcher.reset_router_support}")
+    @Value("${com.dwarfeng.notify.launcher.reset_router_support}")
     private boolean resetRouterSupport;
 
-    @Value("${launcher.reset_sender_support}")
+    @Value("${com.dwarfeng.notify.launcher.reset_sender_support}")
     private boolean resetSenderSupport;
 
-    @Value("${launcher.reset_dispatcher_support}")
+    @Value("${com.dwarfeng.notify.launcher.reset_dispatcher_support}")
     private boolean resetDispatcherSupport;
 
-    @Value("${launcher.start_reset_delay}")
+    @Value("${com.dwarfeng.notify.launcher.start_reset_delay}")
     private long startResetDelay;
 
-    @Value("${launcher.online_purge_delay}")
+    @Value("${com.dwarfeng.notify.launcher.online_purge_delay}")
     private long onlinePurgeDelay;
-    @Value("${launcher.enable_purge_delay}")
+    @Value("${com.dwarfeng.notify.launcher.enable_purge_delay}")
     private long enablePurgeDelay;
 
     public boolean isResetRouterSupport() {

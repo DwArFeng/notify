@@ -18,7 +18,7 @@ public class PurgeHandlerImpl implements PurgeHandler {
 
     public PurgeHandlerImpl(
             CuratorFramework curatorFramework,
-            @Value("${curator.latch_path.purge.leader_latch}") String leaserLatchPath,
+            @Value("${com.dwarfeng.notify.curator.latch_path.purge.leader_latch}") String leaserLatchPath,
             PurgeWorker purgeWorker
     ) {
         handler = new CuratorDistributedLockHandler(curatorFramework, leaserLatchPath, purgeWorker);

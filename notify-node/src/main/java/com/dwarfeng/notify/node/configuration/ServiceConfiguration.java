@@ -55,25 +55,25 @@ public class ServiceConfiguration {
     private final NotifySendRecordDao notifySendRecordDao;
     private final NotifySendRecordCache notifySendRecordCache;
 
-    @Value("${cache.timeout.entity.router_info}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.router_info}")
     private long routerInfoTimeout;
-    @Value("${cache.timeout.entity.router_support}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.router_support}")
     private long routerSupportTimeout;
-    @Value("${cache.timeout.entity.sender_info}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.sender_info}")
     private long senderInfoTimeout;
-    @Value("${cache.timeout.entity.sender_support}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.sender_support}")
     private long senderSupportTimeout;
-    @Value("${cache.timeout.entity.dispatcher_info}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.dispatcher_info}")
     private long dispatcherInfoTimeout;
-    @Value("${cache.timeout.entity.dispatcher_support}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.dispatcher_support}")
     private long dispatcherSupportTimeout;
-    @Value("${cache.timeout.entity.meta}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.meta}")
     private long metaTimeout;
-    @Value("${cache.timeout.entity.meta_indicator}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.meta_indicator}")
     private long metaIndicatorTimeout;
-    @Value("${cache.timeout.entity.notify_info_record}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.notify_info_record}")
     private long notifyInfoRecordTimeout;
-    @Value("${cache.timeout.entity.notify_send_record}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.notify_send_record}")
     private long notifySendRecordTimeout;
 
     public ServiceConfiguration(

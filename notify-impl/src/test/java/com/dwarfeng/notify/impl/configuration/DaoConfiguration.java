@@ -40,7 +40,7 @@ public class DaoConfiguration {
     private final NotifyInfoRecordPresetCriteriaMaker notifyInfoRecordPresetCriteriaMaker;
     private final NotifySendRecordPresetCriteriaMaker notifySendRecordPresetCriteriaMaker;
 
-    @Value("${hibernate.jdbc.batch_size}")
+    @Value("${com.dwarfeng.notify.hibernate.jdbc.batch_size}")
     private int batchSize;
 
     public DaoConfiguration(

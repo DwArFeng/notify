@@ -48,7 +48,7 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
 
     private final KafkaListenerEndpointRegistry registry;
 
-    @Value("${resetter.kafka.listener_id}")
+    @Value("${com.dwarfeng.notify.resetter.kafka.listener_id}")
     private String listenerId;
 
     private final Lock lock = new ReentrantLock();
@@ -107,9 +107,9 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
     }
 
     @KafkaListener(
-            id = "${resetter.kafka.listener_id}",
+            id = "${com.dwarfeng.notify.resetter.kafka.listener_id}",
             containerFactory = "kafkaResetter.kafkaListenerContainerFactory",
-            topics = "${resetter.kafka.topic}"
+            topics = "${com.dwarfeng.notify.resetter.kafka.topic}"
     )
     public void handleDataInfo(
             List<ConsumerRecord<String, String>> consumerRecords, Acknowledgment ack
@@ -167,19 +167,19 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
 
         private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConfiguration.class);
 
-        @Value("${resetter.kafka.bootstrap_servers}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.bootstrap_servers}")
         private String consumerBootstrapServers;
-        @Value("${resetter.kafka.session_timeout_ms}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.session_timeout_ms}")
         private int sessionTimeoutMs;
-        @Value("${resetter.kafka.auto_offset_reset}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.auto_offset_reset}")
         private String autoOffsetReset;
-        @Value("${resetter.kafka.concurrency}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.concurrency}")
         private int concurrency;
-        @Value("${resetter.kafka.poll_timeout}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.poll_timeout}")
         private int pollTimeout;
-        @Value("${resetter.kafka.max_poll_records}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.max_poll_records}")
         private int maxPollRecords;
-        @Value("${resetter.kafka.max_poll_interval_ms}")
+        @Value("${com.dwarfeng.notify.resetter.kafka.max_poll_interval_ms}")
         private int maxPollIntervalMs;
 
         @Bean("kafkaResetter.consumerProperties")

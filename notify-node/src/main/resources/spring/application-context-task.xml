@@ -13,9 +13,12 @@
     <task:annotation-driven executor="executor"/>
     <!-- 装配 executor。 -->
     <task:executor
-            id="executor" pool-size="${executor.pool_size}" queue-capacity="${executor.queue_capacity}"
-            keep-alive="${executor.keep_alive}" rejection-policy="CALLER_RUNS"
+            id="executor"
+            pool-size="${com.dwarfeng.notify.executor.pool_size}"
+            queue-capacity="${com.dwarfeng.notify.executor.queue_capacity}"
+            keep-alive="${com.dwarfeng.notify.executor.keep_alive}"
+            rejection-policy="CALLER_RUNS"
     />
     <!-- 装配 scheduler。 -->
-    <task:scheduler id="scheduler" pool-size="${scheduler.pool_size}"/>
+    <task:scheduler id="scheduler" pool-size="${com.dwarfeng.notify.scheduler.pool_size}"/>
 </beans>

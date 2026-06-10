@@ -43,7 +43,7 @@ public class TopicCrudOperation implements BatchCrudOperation<StringIdKey, Topic
     private final NotifySendRecordDao notifySendRecordDao;
     private final NotifySendRecordCache notifySendRecordCache;
 
-    @Value("${cache.timeout.entity.topic}")
+    @Value("${com.dwarfeng.notify.cache.timeout.entity.topic}")
     private long topicTimeout;
 
     public TopicCrudOperation(

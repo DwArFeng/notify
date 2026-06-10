@@ -55,15 +55,15 @@ public class PurgeProcessor {
      */
     private long lastRetentionNotifyHistoryOffset = 0;
 
-    @Value("${purge.retention_duration}")
+    @Value("${com.dwarfeng.notify.purge.retention_duration}")
     private Long purgeRetentionDuration;
 
-    @Value("${purge.task_cron}")
+    @Value("${com.dwarfeng.notify.purge.task_cron}")
     private String purgeTaskCron;
 
-    @Value("${purge.max_page_size}")
+    @Value("${com.dwarfeng.notify.purge.max_page_size}")
     private int purgeMaxPageSize;
-    @Value("${purge.max_deletion_size}")
+    @Value("${com.dwarfeng.notify.purge.max_deletion_size}")
     private int purgeMaxDeletionSize;
 
     public PurgeProcessor(

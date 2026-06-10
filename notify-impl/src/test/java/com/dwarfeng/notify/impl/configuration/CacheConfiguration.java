@@ -21,33 +21,33 @@ public class CacheConfiguration {
 
     private final RedisTemplate<String, ?> template;
 
-    @Value("${cache.prefix.entity.user}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.user}")
     private String userPrefix;
-    @Value("${cache.prefix.entity.router_info}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.router_info}")
     private String routerInfoPrefix;
-    @Value("${cache.prefix.entity.router_support}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.router_support}")
     private String routerSupportPrefix;
-    @Value("${cache.prefix.entity.notify_setting}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.notify_setting}")
     private String notifySettingPrefix;
-    @Value("${cache.prefix.entity.sender_info}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.sender_info}")
     private String senderInfoPrefix;
-    @Value("${cache.prefix.entity.sender_support}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.sender_support}")
     private String senderSupportPrefix;
-    @Value("${cache.prefix.entity.topic}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.topic}")
     private String topicPrefix;
-    @Value("${cache.prefix.entity.dispatcher_info}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.dispatcher_info}")
     private String dispatcherInfoPrefix;
-    @Value("${cache.prefix.entity.dispatcher_support}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.dispatcher_support}")
     private String dispatcherSupportPrefix;
-    @Value("${cache.prefix.entity.meta}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.meta}")
     private String metaPrefix;
-    @Value("${cache.prefix.entity.meta_indicator}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.meta_indicator}")
     private String metaIndicatorPrefix;
-    @Value("${cache.prefix.entity.notify_history}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.notify_history}")
     private String notifyHistoryPrefix;
-    @Value("${cache.prefix.entity.notify_info_record}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.notify_info_record}")
     private String notifyInfoRecordPrefix;
-    @Value("${cache.prefix.entity.notify_send_record}")
+    @Value("${com.dwarfeng.notify.cache.prefix.entity.notify_send_record}")
     private String notifySendRecordPrefix;
 
     public CacheConfiguration(RedisTemplate<String, ?> template) {
