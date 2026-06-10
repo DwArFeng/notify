@@ -3,9 +3,9 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMaintainService {
 
-    private final GeneralBatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> crudService;
-    private final DaoOnlyEntireLookupService<NotifyInfoRecord> entireLookupService;
-    private final DaoOnlyPresetLookupService<NotifyInfoRecord> presetLookupService;
+    private final BatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> crudService;
+    private final EntireLookupService<NotifyInfoRecord> entireLookupService;
+    private final PresetLookupService<NotifyInfoRecord> presetLookupService;
 
     public NotifyInfoRecordMaintainServiceImpl(
-            GeneralBatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> crudService,
-            DaoOnlyEntireLookupService<NotifyInfoRecord> entireLookupService,
-            DaoOnlyPresetLookupService<NotifyInfoRecord> presetLookupService
+            BatchCrudService<NotifyInfoRecordKey, NotifyInfoRecord> crudService,
+            EntireLookupService<NotifyInfoRecord> entireLookupService,
+            PresetLookupService<NotifyInfoRecord> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

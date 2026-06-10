@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifySetting;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class NotifySettingMaintainServiceImpl implements NotifySettingMaintainService {
 
-    private final CustomBatchCrudService<LongIdKey, NotifySetting> crudService;
-    private final DaoOnlyEntireLookupService<NotifySetting> entireLookupService;
-    private final DaoOnlyPresetLookupService<NotifySetting> presetLookupService;
+    private final BatchCrudService<LongIdKey, NotifySetting> crudService;
+    private final EntireLookupService<NotifySetting> entireLookupService;
+    private final PresetLookupService<NotifySetting> presetLookupService;
 
     public NotifySettingMaintainServiceImpl(
-            CustomBatchCrudService<LongIdKey, NotifySetting> crudService,
-            DaoOnlyEntireLookupService<NotifySetting> entireLookupService,
-            DaoOnlyPresetLookupService<NotifySetting> presetLookupService
+            BatchCrudService<LongIdKey, NotifySetting> crudService,
+            EntireLookupService<NotifySetting> entireLookupService,
+            PresetLookupService<NotifySetting> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

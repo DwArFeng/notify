@@ -3,9 +3,9 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class SenderInfoMaintainServiceImpl implements SenderInfoMaintainService {
 
-    private final GeneralBatchCrudService<SenderInfoKey, SenderInfo> crudService;
-    private final DaoOnlyEntireLookupService<SenderInfo> entireLookupService;
-    private final DaoOnlyPresetLookupService<SenderInfo> presetLookupService;
+    private final BatchCrudService<SenderInfoKey, SenderInfo> crudService;
+    private final EntireLookupService<SenderInfo> entireLookupService;
+    private final PresetLookupService<SenderInfo> presetLookupService;
 
     public SenderInfoMaintainServiceImpl(
-            GeneralBatchCrudService<SenderInfoKey, SenderInfo> crudService,
-            DaoOnlyEntireLookupService<SenderInfo> entireLookupService,
-            DaoOnlyPresetLookupService<SenderInfo> presetLookupService
+            BatchCrudService<SenderInfoKey, SenderInfo> crudService,
+            EntireLookupService<SenderInfo> entireLookupService,
+            PresetLookupService<SenderInfo> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

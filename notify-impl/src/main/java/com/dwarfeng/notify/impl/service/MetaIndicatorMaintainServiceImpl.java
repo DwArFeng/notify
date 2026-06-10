@@ -3,9 +3,9 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class MetaIndicatorMaintainServiceImpl implements MetaIndicatorMaintainService {
 
-    private final GeneralBatchCrudService<MetaIndicatorKey, MetaIndicator> crudService;
-    private final DaoOnlyEntireLookupService<MetaIndicator> entireLookupService;
-    private final DaoOnlyPresetLookupService<MetaIndicator> presetLookupService;
+    private final BatchCrudService<MetaIndicatorKey, MetaIndicator> crudService;
+    private final EntireLookupService<MetaIndicator> entireLookupService;
+    private final PresetLookupService<MetaIndicator> presetLookupService;
 
     public MetaIndicatorMaintainServiceImpl(
-            GeneralBatchCrudService<MetaIndicatorKey, MetaIndicator> crudService,
-            DaoOnlyEntireLookupService<MetaIndicator> entireLookupService,
-            DaoOnlyPresetLookupService<MetaIndicator> presetLookupService
+            BatchCrudService<MetaIndicatorKey, MetaIndicator> crudService,
+            EntireLookupService<MetaIndicator> entireLookupService,
+            PresetLookupService<MetaIndicator> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

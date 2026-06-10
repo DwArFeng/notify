@@ -1,12 +1,10 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateUser;
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.dao.UserDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,14 +18,14 @@ import java.util.List;
 @Repository
 public class UserDaoImpl implements UserDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser> batchBaseDao;
-    private final HibernateEntireLookupDao<User, HibernateUser> entireLookupDao;
-    private final HibernatePresetLookupDao<User, HibernateUser> presetLookupDao;
+    private final BatchBaseDao<StringIdKey, User> batchBaseDao;
+    private final EntireLookupDao<User> entireLookupDao;
+    private final PresetLookupDao<User> presetLookupDao;
 
     public UserDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser> batchBaseDao,
-            HibernateEntireLookupDao<User, HibernateUser> entireLookupDao,
-            HibernatePresetLookupDao<User, HibernateUser> presetLookupDao
+            BatchBaseDao<StringIdKey, User> batchBaseDao,
+            EntireLookupDao<User> entireLookupDao,
+            PresetLookupDao<User> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

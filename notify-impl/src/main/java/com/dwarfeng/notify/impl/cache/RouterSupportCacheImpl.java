@@ -1,9 +1,8 @@
 package com.dwarfeng.notify.impl.cache;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonRouterSupport;
 import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
 import com.dwarfeng.notify.stack.cache.RouterSupportCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -16,61 +15,61 @@ import java.util.List;
 @Repository
 public class RouterSupportCacheImpl implements RouterSupportCache {
 
-    private final RedisBatchBaseCache<StringIdKey, RouterSupport, FastJsonRouterSupport> routerSupportBatchBaseDelegate;
+    private final BatchBaseCache<StringIdKey, RouterSupport> batchBaseCache;
 
     public RouterSupportCacheImpl(
-            RedisBatchBaseCache<StringIdKey, RouterSupport, FastJsonRouterSupport> routerSupportBatchBaseDelegate
+            BatchBaseCache<StringIdKey, RouterSupport> batchBaseCache
     ) {
-        this.routerSupportBatchBaseDelegate = routerSupportBatchBaseDelegate;
+        this.batchBaseCache = batchBaseCache;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(StringIdKey key) throws CacheException {
-        return routerSupportBatchBaseDelegate.exists(key);
+        return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public RouterSupport get(StringIdKey key) throws CacheException {
-        return routerSupportBatchBaseDelegate.get(key);
+        return batchBaseCache.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void push(RouterSupport value, long timeout) throws CacheException {
-        routerSupportBatchBaseDelegate.push(value, timeout);
+        batchBaseCache.push(value, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(StringIdKey key) throws CacheException {
-        routerSupportBatchBaseDelegate.delete(key);
+        batchBaseCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        routerSupportBatchBaseDelegate.clear();
+        batchBaseCache.clear();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean allExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return routerSupportBatchBaseDelegate.allExists(keys);
+        return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return routerSupportBatchBaseDelegate.nonExists(keys);
+        return batchBaseCache.nonExists(keys);
     }
 
     @Override
@@ -78,20 +77,20 @@ public class RouterSupportCacheImpl implements RouterSupportCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<RouterSupport> batchGet(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return routerSupportBatchBaseDelegate.batchGet(keys);
+        return batchBaseCache.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchPush(@SkipRecord List<RouterSupport> entities, long timeout) throws CacheException {
-        routerSupportBatchBaseDelegate.batchPush(entities, timeout);
+        batchBaseCache.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchDelete(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        routerSupportBatchBaseDelegate.batchDelete(keys);
+        batchBaseCache.batchDelete(keys);
     }
 }

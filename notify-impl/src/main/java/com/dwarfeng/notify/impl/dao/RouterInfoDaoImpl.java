@@ -1,12 +1,10 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateRouterInfo;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.dao.RouterInfoDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,15 +18,14 @@ import java.util.List;
 @Repository
 public class RouterInfoDaoImpl implements RouterInfoDao {
 
-    private final HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, RouterInfo, HibernateRouterInfo>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<RouterInfo, HibernateRouterInfo> entireLookupDao;
-    private final HibernatePresetLookupDao<RouterInfo, HibernateRouterInfo> presetLookupDao;
+    private final BatchBaseDao<LongIdKey, RouterInfo> batchBaseDao;
+    private final EntireLookupDao<RouterInfo> entireLookupDao;
+    private final PresetLookupDao<RouterInfo> presetLookupDao;
 
     public RouterInfoDaoImpl(
-            HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, RouterInfo, HibernateRouterInfo> batchBaseDao,
-            HibernateEntireLookupDao<RouterInfo, HibernateRouterInfo> entireLookupDao,
-            HibernatePresetLookupDao<RouterInfo, HibernateRouterInfo> presetLookupDao
+            BatchBaseDao<LongIdKey, RouterInfo> batchBaseDao,
+            EntireLookupDao<RouterInfo> entireLookupDao,
+            PresetLookupDao<RouterInfo> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

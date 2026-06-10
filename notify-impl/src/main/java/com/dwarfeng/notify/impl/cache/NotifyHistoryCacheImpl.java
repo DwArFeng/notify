@@ -1,9 +1,8 @@
 package com.dwarfeng.notify.impl.cache;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonNotifyHistory;
 import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
 import com.dwarfeng.notify.stack.cache.NotifyHistoryCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
@@ -16,59 +15,61 @@ import java.util.List;
 @Repository
 public class NotifyHistoryCacheImpl implements NotifyHistoryCache {
 
-    private final RedisBatchBaseCache<LongIdKey, NotifyHistory, FastJsonNotifyHistory> delegate;
+    private final BatchBaseCache<LongIdKey, NotifyHistory> batchBaseCache;
 
-    public NotifyHistoryCacheImpl(RedisBatchBaseCache<LongIdKey, NotifyHistory, FastJsonNotifyHistory> delegate) {
-        this.delegate = delegate;
+    public NotifyHistoryCacheImpl(
+            BatchBaseCache<LongIdKey, NotifyHistory> batchBaseCache
+    ) {
+        this.batchBaseCache = batchBaseCache;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(LongIdKey key) throws CacheException {
-        return delegate.exists(key);
+        return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public NotifyHistory get(LongIdKey key) throws CacheException {
-        return delegate.get(key);
+        return batchBaseCache.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void push(NotifyHistory value, long timeout) throws CacheException {
-        delegate.push(value, timeout);
+        batchBaseCache.push(value, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(LongIdKey key) throws CacheException {
-        delegate.delete(key);
+        batchBaseCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        delegate.clear();
+        batchBaseCache.clear();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean allExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
-        return delegate.allExists(keys);
+        return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean nonExists(@SkipRecord List<LongIdKey> keys) throws CacheException {
-        return delegate.nonExists(keys);
+        return batchBaseCache.nonExists(keys);
     }
 
     @Override
@@ -76,20 +77,20 @@ public class NotifyHistoryCacheImpl implements NotifyHistoryCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifyHistory> batchGet(@SkipRecord List<LongIdKey> keys) throws CacheException {
-        return delegate.batchGet(keys);
+        return batchBaseCache.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchPush(@SkipRecord List<NotifyHistory> entities, long timeout) throws CacheException {
-        delegate.batchPush(entities, timeout);
+        batchBaseCache.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchDelete(@SkipRecord List<LongIdKey> keys) throws CacheException {
-        delegate.batchDelete(keys);
+        batchBaseCache.batchDelete(keys);
     }
 }

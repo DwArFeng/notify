@@ -1,13 +1,11 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateNotifySendRecord;
-import com.dwarfeng.notify.impl.bean.key.HibernateNotifySendRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.dao.NotifySendRecordDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,55 +18,53 @@ import java.util.List;
 @Repository
 public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
 
-    private final HibernateBatchBaseDao<NotifySendRecordKey, HibernateNotifySendRecordKey, NotifySendRecord,
-            HibernateNotifySendRecord> batchDelegate;
-    private final HibernateEntireLookupDao<NotifySendRecord, HibernateNotifySendRecord> entireLookupDelegate;
-    private final HibernatePresetLookupDao<NotifySendRecord, HibernateNotifySendRecord> presetLookupDelegate;
+    private final BatchBaseDao<NotifySendRecordKey, NotifySendRecord> batchBaseDao;
+    private final EntireLookupDao<NotifySendRecord> entireLookupDao;
+    private final PresetLookupDao<NotifySendRecord> presetLookupDao;
 
     public NotifySendRecordDaoImpl(
-            HibernateBatchBaseDao<NotifySendRecordKey, HibernateNotifySendRecordKey, NotifySendRecord,
-                    HibernateNotifySendRecord> batchDelegate,
-            HibernateEntireLookupDao<NotifySendRecord, HibernateNotifySendRecord> entireLookupDelegate,
-            HibernatePresetLookupDao<NotifySendRecord, HibernateNotifySendRecord> presetLookupDelegate
+            BatchBaseDao<NotifySendRecordKey, NotifySendRecord> batchBaseDao,
+            EntireLookupDao<NotifySendRecord> entireLookupDao,
+            PresetLookupDao<NotifySendRecord> presetLookupDao
     ) {
-        this.batchDelegate = batchDelegate;
-        this.entireLookupDelegate = entireLookupDelegate;
-        this.presetLookupDelegate = presetLookupDelegate;
+        this.batchBaseDao = batchBaseDao;
+        this.entireLookupDao = entireLookupDao;
+        this.presetLookupDao = presetLookupDao;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public NotifySendRecordKey insert(NotifySendRecord element) throws DaoException {
-        return batchDelegate.insert(element);
+        return batchBaseDao.insert(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void update(NotifySendRecord element) throws DaoException {
-        batchDelegate.update(element);
+        batchBaseDao.update(element);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(NotifySendRecordKey key) throws DaoException {
-        batchDelegate.delete(key);
+        batchBaseDao.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(NotifySendRecordKey key) throws DaoException {
-        return batchDelegate.exists(key);
+        return batchBaseDao.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public NotifySendRecord get(NotifySendRecordKey key) throws DaoException {
-        return batchDelegate.get(key);
+        return batchBaseDao.get(key);
     }
 
     @Override
@@ -76,35 +72,35 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public List<NotifySendRecordKey> batchInsert(@SkipRecord List<NotifySendRecord> elements) throws DaoException {
-        return batchDelegate.batchInsert(elements);
+        return batchBaseDao.batchInsert(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchUpdate(@SkipRecord List<NotifySendRecord> elements) throws DaoException {
-        batchDelegate.batchUpdate(elements);
+        batchBaseDao.batchUpdate(elements);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchDelete(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
-        batchDelegate.batchDelete(keys);
+        batchBaseDao.batchDelete(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean allExists(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
-        return batchDelegate.allExists(keys);
+        return batchBaseDao.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean nonExists(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
-        return batchDelegate.nonExists(keys);
+        return batchBaseDao.nonExists(keys);
     }
 
     @Override
@@ -112,7 +108,7 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> batchGet(@SkipRecord List<NotifySendRecordKey> keys) throws DaoException {
-        return batchDelegate.batchGet(keys);
+        return batchBaseDao.batchGet(keys);
     }
 
     @Override
@@ -120,7 +116,7 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup() throws DaoException {
-        return entireLookupDelegate.lookup();
+        return entireLookupDao.lookup();
     }
 
     @Override
@@ -128,14 +124,14 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup(PagingInfo pagingInfo) throws DaoException {
-        return entireLookupDelegate.lookup(pagingInfo);
+        return entireLookupDao.lookup(pagingInfo);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int lookupCount() throws DaoException {
-        return entireLookupDelegate.lookupCount();
+        return entireLookupDao.lookupCount();
     }
 
     @Override
@@ -143,7 +139,7 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup(String preset, Object[] objs) throws DaoException {
-        return presetLookupDelegate.lookup(preset, objs);
+        return presetLookupDao.lookup(preset, objs);
     }
 
     @Override
@@ -151,13 +147,13 @@ public class NotifySendRecordDaoImpl implements NotifySendRecordDao {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<NotifySendRecord> lookup(String preset, Object[] objs, PagingInfo pagingInfo) throws DaoException {
-        return presetLookupDelegate.lookup(preset, objs, pagingInfo);
+        return presetLookupDao.lookup(preset, objs, pagingInfo);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public int lookupCount(String preset, Object[] objs) throws DaoException {
-        return presetLookupDelegate.lookupCount(preset, objs);
+        return presetLookupDao.lookupCount(preset, objs);
     }
 }

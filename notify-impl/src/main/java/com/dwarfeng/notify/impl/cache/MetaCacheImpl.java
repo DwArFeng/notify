@@ -1,10 +1,9 @@
 package com.dwarfeng.notify.impl.cache;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonMeta;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.cache.MetaCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
@@ -16,61 +15,61 @@ import java.util.List;
 @Repository
 public class MetaCacheImpl implements MetaCache {
 
-    private final RedisBatchBaseCache<MetaKey, Meta, FastJsonMeta> metaBatchBaseDelegate;
+    private final BatchBaseCache<MetaKey, Meta> batchBaseCache;
 
     public MetaCacheImpl(
-            RedisBatchBaseCache<MetaKey, Meta, FastJsonMeta> metaBatchBaseDelegate
+            BatchBaseCache<MetaKey, Meta> batchBaseCache
     ) {
-        this.metaBatchBaseDelegate = metaBatchBaseDelegate;
+        this.batchBaseCache = batchBaseCache;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(MetaKey key) throws CacheException {
-        return metaBatchBaseDelegate.exists(key);
+        return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public Meta get(MetaKey key) throws CacheException {
-        return metaBatchBaseDelegate.get(key);
+        return batchBaseCache.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void push(Meta value, long timeout) throws CacheException {
-        metaBatchBaseDelegate.push(value, timeout);
+        batchBaseCache.push(value, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(MetaKey key) throws CacheException {
-        metaBatchBaseDelegate.delete(key);
+        batchBaseCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        metaBatchBaseDelegate.clear();
+        batchBaseCache.clear();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean allExists(@SkipRecord List<MetaKey> keys) throws CacheException {
-        return metaBatchBaseDelegate.allExists(keys);
+        return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean nonExists(@SkipRecord List<MetaKey> keys) throws CacheException {
-        return metaBatchBaseDelegate.nonExists(keys);
+        return batchBaseCache.nonExists(keys);
     }
 
     @Override
@@ -78,20 +77,20 @@ public class MetaCacheImpl implements MetaCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<Meta> batchGet(@SkipRecord List<MetaKey> keys) throws CacheException {
-        return metaBatchBaseDelegate.batchGet(keys);
+        return batchBaseCache.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchPush(@SkipRecord List<Meta> entities, long timeout) throws CacheException {
-        metaBatchBaseDelegate.batchPush(entities, timeout);
+        batchBaseCache.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchDelete(@SkipRecord List<MetaKey> keys) throws CacheException {
-        metaBatchBaseDelegate.batchDelete(keys);
+        batchBaseCache.batchDelete(keys);
     }
 }

@@ -1,13 +1,11 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateMeta;
-import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.dao.MetaDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,15 +18,14 @@ import java.util.List;
 @Repository
 public class MetaDaoImpl implements MetaDao {
 
-    private final HibernateBatchBaseDao<MetaKey, HibernateMetaKey, Meta, HibernateMeta>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<Meta, HibernateMeta> entireLookupDao;
-    private final HibernatePresetLookupDao<Meta, HibernateMeta> presetLookupDao;
+    private final BatchBaseDao<MetaKey, Meta> batchBaseDao;
+    private final EntireLookupDao<Meta> entireLookupDao;
+    private final PresetLookupDao<Meta> presetLookupDao;
 
     public MetaDaoImpl(
-            HibernateBatchBaseDao<MetaKey, HibernateMetaKey, Meta, HibernateMeta> batchBaseDao,
-            HibernateEntireLookupDao<Meta, HibernateMeta> entireLookupDao,
-            HibernatePresetLookupDao<Meta, HibernateMeta> presetLookupDao
+            BatchBaseDao<MetaKey, Meta> batchBaseDao,
+            EntireLookupDao<Meta> entireLookupDao,
+            PresetLookupDao<Meta> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

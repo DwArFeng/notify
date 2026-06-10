@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
 import com.dwarfeng.notify.stack.service.DispatcherInfoMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class DispatcherInfoMaintainServiceImpl implements DispatcherInfoMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, DispatcherInfo> crudService;
-    private final DaoOnlyEntireLookupService<DispatcherInfo> entireLookupService;
-    private final DaoOnlyPresetLookupService<DispatcherInfo> presetLookupService;
+    private final BatchCrudService<StringIdKey, DispatcherInfo> crudService;
+    private final EntireLookupService<DispatcherInfo> entireLookupService;
+    private final PresetLookupService<DispatcherInfo> presetLookupService;
 
     public DispatcherInfoMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, DispatcherInfo> crudService,
-            DaoOnlyEntireLookupService<DispatcherInfo> entireLookupService,
-            DaoOnlyPresetLookupService<DispatcherInfo> presetLookupService
+            BatchCrudService<StringIdKey, DispatcherInfo> crudService,
+            EntireLookupService<DispatcherInfo> entireLookupService,
+            PresetLookupService<DispatcherInfo> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

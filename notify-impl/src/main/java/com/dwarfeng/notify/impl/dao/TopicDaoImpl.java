@@ -1,12 +1,10 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateTopic;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
 import com.dwarfeng.notify.stack.dao.TopicDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,15 +18,14 @@ import java.util.List;
 @Repository
 public class TopicDaoImpl implements TopicDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, Topic, HibernateTopic>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<Topic, HibernateTopic> entireLookupDao;
-    private final HibernatePresetLookupDao<Topic, HibernateTopic> presetLookupDao;
+    private final BatchBaseDao<StringIdKey, Topic> batchBaseDao;
+    private final EntireLookupDao<Topic> entireLookupDao;
+    private final PresetLookupDao<Topic> presetLookupDao;
 
     public TopicDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, Topic, HibernateTopic> batchBaseDao,
-            HibernateEntireLookupDao<Topic, HibernateTopic> entireLookupDao,
-            HibernatePresetLookupDao<Topic, HibernateTopic> presetLookupDao
+            BatchBaseDao<StringIdKey, Topic> batchBaseDao,
+            EntireLookupDao<Topic> entireLookupDao,
+            PresetLookupDao<Topic> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

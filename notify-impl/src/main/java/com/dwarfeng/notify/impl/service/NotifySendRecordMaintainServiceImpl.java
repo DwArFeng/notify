@@ -3,9 +3,9 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class NotifySendRecordMaintainServiceImpl implements NotifySendRecordMaintainService {
 
-    private final GeneralBatchCrudService<NotifySendRecordKey, NotifySendRecord> batchCrudService;
-    private final DaoOnlyEntireLookupService<NotifySendRecord> entireLookupService;
-    private final DaoOnlyPresetLookupService<NotifySendRecord> presetLookupService;
+    private final BatchCrudService<NotifySendRecordKey, NotifySendRecord> batchCrudService;
+    private final EntireLookupService<NotifySendRecord> entireLookupService;
+    private final PresetLookupService<NotifySendRecord> presetLookupService;
 
     public NotifySendRecordMaintainServiceImpl(
-            GeneralBatchCrudService<NotifySendRecordKey, NotifySendRecord> batchCrudService,
-            DaoOnlyEntireLookupService<NotifySendRecord> entireLookupService,
-            DaoOnlyPresetLookupService<NotifySendRecord> presetLookupService
+            BatchCrudService<NotifySendRecordKey, NotifySendRecord> batchCrudService,
+            EntireLookupService<NotifySendRecord> entireLookupService,
+            PresetLookupService<NotifySendRecord> presetLookupService
     ) {
         this.batchCrudService = batchCrudService;
         this.entireLookupService = entireLookupService;

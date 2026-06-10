@@ -1,12 +1,10 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateSenderSupport;
 import com.dwarfeng.notify.stack.bean.entity.SenderSupport;
 import com.dwarfeng.notify.stack.dao.SenderSupportDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,15 +18,14 @@ import java.util.List;
 @Repository
 public class SenderSupportDaoImpl implements SenderSupportDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, SenderSupport, HibernateSenderSupport>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<SenderSupport, HibernateSenderSupport> entireLookupDao;
-    private final HibernatePresetLookupDao<SenderSupport, HibernateSenderSupport> presetLookupDao;
+    private final BatchBaseDao<StringIdKey, SenderSupport> batchBaseDao;
+    private final EntireLookupDao<SenderSupport> entireLookupDao;
+    private final PresetLookupDao<SenderSupport> presetLookupDao;
 
     public SenderSupportDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, SenderSupport, HibernateSenderSupport> batchBaseDao,
-            HibernateEntireLookupDao<SenderSupport, HibernateSenderSupport> entireLookupDao,
-            HibernatePresetLookupDao<SenderSupport, HibernateSenderSupport> presetLookupDao
+            BatchBaseDao<StringIdKey, SenderSupport> batchBaseDao,
+            EntireLookupDao<SenderSupport> entireLookupDao,
+            PresetLookupDao<SenderSupport> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

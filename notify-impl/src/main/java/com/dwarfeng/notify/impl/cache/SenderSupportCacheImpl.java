@@ -1,9 +1,8 @@
 package com.dwarfeng.notify.impl.cache;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonSenderSupport;
 import com.dwarfeng.notify.stack.bean.entity.SenderSupport;
 import com.dwarfeng.notify.stack.cache.SenderSupportCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -16,61 +15,61 @@ import java.util.List;
 @Repository
 public class SenderSupportCacheImpl implements SenderSupportCache {
 
-    private final RedisBatchBaseCache<StringIdKey, SenderSupport, FastJsonSenderSupport> senderSupportBatchBaseDelegate;
+    private final BatchBaseCache<StringIdKey, SenderSupport> batchBaseCache;
 
     public SenderSupportCacheImpl(
-            RedisBatchBaseCache<StringIdKey, SenderSupport, FastJsonSenderSupport> senderSupportBatchBaseDelegate
+            BatchBaseCache<StringIdKey, SenderSupport> batchBaseCache
     ) {
-        this.senderSupportBatchBaseDelegate = senderSupportBatchBaseDelegate;
+        this.batchBaseCache = batchBaseCache;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(StringIdKey key) throws CacheException {
-        return senderSupportBatchBaseDelegate.exists(key);
+        return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public SenderSupport get(StringIdKey key) throws CacheException {
-        return senderSupportBatchBaseDelegate.get(key);
+        return batchBaseCache.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void push(SenderSupport value, long timeout) throws CacheException {
-        senderSupportBatchBaseDelegate.push(value, timeout);
+        batchBaseCache.push(value, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(StringIdKey key) throws CacheException {
-        senderSupportBatchBaseDelegate.delete(key);
+        batchBaseCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        senderSupportBatchBaseDelegate.clear();
+        batchBaseCache.clear();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean allExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return senderSupportBatchBaseDelegate.allExists(keys);
+        return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return senderSupportBatchBaseDelegate.nonExists(keys);
+        return batchBaseCache.nonExists(keys);
     }
 
     @Override
@@ -78,20 +77,20 @@ public class SenderSupportCacheImpl implements SenderSupportCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<SenderSupport> batchGet(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return senderSupportBatchBaseDelegate.batchGet(keys);
+        return batchBaseCache.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchPush(@SkipRecord List<SenderSupport> entities, long timeout) throws CacheException {
-        senderSupportBatchBaseDelegate.batchPush(entities, timeout);
+        batchBaseCache.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchDelete(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        senderSupportBatchBaseDelegate.batchDelete(keys);
+        batchBaseCache.batchDelete(keys);
     }
 }

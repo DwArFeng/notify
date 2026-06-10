@@ -1,13 +1,11 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateSenderInfo;
-import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.stack.bean.entity.SenderInfo;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.dao.SenderInfoDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,15 +18,14 @@ import java.util.List;
 @Repository
 public class SenderInfoDaoImpl implements SenderInfoDao {
 
-    private final HibernateBatchBaseDao<SenderInfoKey, HibernateSenderInfoKey, SenderInfo, HibernateSenderInfo>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<SenderInfo, HibernateSenderInfo> entireLookupDao;
-    private final HibernatePresetLookupDao<SenderInfo, HibernateSenderInfo> presetLookupDao;
+    private final BatchBaseDao<SenderInfoKey, SenderInfo> batchBaseDao;
+    private final EntireLookupDao<SenderInfo> entireLookupDao;
+    private final PresetLookupDao<SenderInfo> presetLookupDao;
 
     public SenderInfoDaoImpl(
-            HibernateBatchBaseDao<SenderInfoKey, HibernateSenderInfoKey, SenderInfo, HibernateSenderInfo> batchBaseDao,
-            HibernateEntireLookupDao<SenderInfo, HibernateSenderInfo> entireLookupDao,
-            HibernatePresetLookupDao<SenderInfo, HibernateSenderInfo> presetLookupDao
+            BatchBaseDao<SenderInfoKey, SenderInfo> batchBaseDao,
+            EntireLookupDao<SenderInfo> entireLookupDao,
+            PresetLookupDao<SenderInfo> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

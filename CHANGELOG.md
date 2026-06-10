@@ -4,6 +4,50 @@
 
 ### 功能构建
 
+- 部分代理类实现中的字段类型提升为对应的接口，与具体实现解耦。
+  - com.dwarfeng.notify.impl.cache.DispatcherInfoCacheImpl。
+  - com.dwarfeng.notify.impl.cache.DispatcherSupportCacheImpl。
+  - com.dwarfeng.notify.impl.cache.MetaCacheImpl。
+  - com.dwarfeng.notify.impl.cache.MetaIndicatorCacheImpl。
+  - com.dwarfeng.notify.impl.cache.NotifyHistoryCacheImpl。
+  - com.dwarfeng.notify.impl.cache.NotifyInfoRecordCacheImpl。
+  - com.dwarfeng.notify.impl.cache.NotifySendRecordCacheImpl。
+  - com.dwarfeng.notify.impl.cache.NotifySettingCacheImpl。
+  - com.dwarfeng.notify.impl.cache.RouterInfoCacheImpl。
+  - com.dwarfeng.notify.impl.cache.RouterSupportCacheImpl。
+  - com.dwarfeng.notify.impl.cache.SenderInfoCacheImpl。
+  - com.dwarfeng.notify.impl.cache.SenderSupportCacheImpl。
+  - com.dwarfeng.notify.impl.cache.TopicCacheImpl。
+  - com.dwarfeng.notify.impl.cache.UserCacheImpl。
+  - com.dwarfeng.notify.impl.dao.DispatcherInfoDaoImpl。
+  - com.dwarfeng.notify.impl.dao.DispatcherSupportDaoImpl。
+  - com.dwarfeng.notify.impl.dao.MetaDaoImpl。
+  - com.dwarfeng.notify.impl.dao.MetaIndicatorDaoImpl。
+  - com.dwarfeng.notify.impl.dao.NotifyHistoryDaoImpl。
+  - com.dwarfeng.notify.impl.dao.NotifyInfoRecordDaoImpl。
+  - com.dwarfeng.notify.impl.dao.NotifySendRecordDaoImpl。
+  - com.dwarfeng.notify.impl.dao.NotifySettingDaoImpl。
+  - com.dwarfeng.notify.impl.dao.RouterInfoDaoImpl。
+  - com.dwarfeng.notify.impl.dao.RouterSupportDaoImpl。
+  - com.dwarfeng.notify.impl.dao.SenderInfoDaoImpl。
+  - com.dwarfeng.notify.impl.dao.SenderSupportDaoImpl。
+  - com.dwarfeng.notify.impl.dao.TopicDaoImpl。
+  - com.dwarfeng.notify.impl.dao.UserDaoImpl。
+  - com.dwarfeng.notify.impl.service.DispatcherInfoMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.DispatcherSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.MetaIndicatorMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.MetaMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifyHistoryMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifyInfoRecordMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifySendRecordMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifySettingMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.RouterInfoMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.RouterSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.SenderInfoMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.SenderSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.TopicMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.UserMaintainServiceImpl。
+
 - 优化项目的异常处理机制。
   - `notify-sdk` 子模块新增 `ServiceExceptionHelper` 工具类，统一维护项目自身的异常映射关系。
   - `notify-impl` 子模块 `ServiceExceptionMapperConfiguration` 配置类的异常映射处理逻辑优化。

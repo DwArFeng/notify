@@ -3,9 +3,9 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class MetaMaintainServiceImpl implements MetaMaintainService {
 
-    private final GeneralBatchCrudService<MetaKey, Meta> crudService;
-    private final DaoOnlyEntireLookupService<Meta> entireLookupService;
-    private final DaoOnlyPresetLookupService<Meta> presetLookupService;
+    private final BatchCrudService<MetaKey, Meta> crudService;
+    private final EntireLookupService<Meta> entireLookupService;
+    private final PresetLookupService<Meta> presetLookupService;
 
     public MetaMaintainServiceImpl(
-            GeneralBatchCrudService<MetaKey, Meta> crudService,
-            DaoOnlyEntireLookupService<Meta> entireLookupService,
-            DaoOnlyPresetLookupService<Meta> presetLookupService
+            BatchCrudService<MetaKey, Meta> crudService,
+            EntireLookupService<Meta> entireLookupService,
+            PresetLookupService<Meta> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

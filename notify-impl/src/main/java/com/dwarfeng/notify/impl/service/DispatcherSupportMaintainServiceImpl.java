@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.DispatcherSupport;
 import com.dwarfeng.notify.stack.service.DispatcherSupportMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class DispatcherSupportMaintainServiceImpl implements DispatcherSupportMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, DispatcherSupport> crudService;
-    private final DaoOnlyEntireLookupService<DispatcherSupport> entireLookupService;
-    private final DaoOnlyPresetLookupService<DispatcherSupport> presetLookupService;
+    private final BatchCrudService<StringIdKey, DispatcherSupport> crudService;
+    private final EntireLookupService<DispatcherSupport> entireLookupService;
+    private final PresetLookupService<DispatcherSupport> presetLookupService;
 
     public DispatcherSupportMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, DispatcherSupport> crudService,
-            DaoOnlyEntireLookupService<DispatcherSupport> entireLookupService,
-            DaoOnlyPresetLookupService<DispatcherSupport> presetLookupService
+            BatchCrudService<StringIdKey, DispatcherSupport> crudService,
+            EntireLookupService<DispatcherSupport> entireLookupService,
+            PresetLookupService<DispatcherSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

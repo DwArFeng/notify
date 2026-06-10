@@ -1,10 +1,9 @@
 package com.dwarfeng.notify.impl.cache;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonNotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.cache.NotifyInfoRecordCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.exception.CacheException;
@@ -16,10 +15,10 @@ import java.util.List;
 @Repository
 public class NotifyInfoRecordCacheImpl implements NotifyInfoRecordCache {
 
-    private final RedisBatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord> batchBaseCache;
+    private final BatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord> batchBaseCache;
 
     public NotifyInfoRecordCacheImpl(
-            RedisBatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord, FastJsonNotifyInfoRecord> batchBaseCache
+            BatchBaseCache<NotifyInfoRecordKey, NotifyInfoRecord> batchBaseCache
     ) {
         this.batchBaseCache = batchBaseCache;
     }

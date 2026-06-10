@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.RouterSupport;
 import com.dwarfeng.notify.stack.service.RouterSupportMaintainService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
-import com.dwarfeng.subgrade.impl.service.GeneralBatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class RouterSupportMaintainServiceImpl implements RouterSupportMaintainService {
 
-    private final GeneralBatchCrudService<StringIdKey, RouterSupport> crudService;
-    private final DaoOnlyEntireLookupService<RouterSupport> entireLookupService;
-    private final DaoOnlyPresetLookupService<RouterSupport> presetLookupService;
+    private final BatchCrudService<StringIdKey, RouterSupport> crudService;
+    private final EntireLookupService<RouterSupport> entireLookupService;
+    private final PresetLookupService<RouterSupport> presetLookupService;
 
     public RouterSupportMaintainServiceImpl(
-            GeneralBatchCrudService<StringIdKey, RouterSupport> crudService,
-            DaoOnlyEntireLookupService<RouterSupport> entireLookupService,
-            DaoOnlyPresetLookupService<RouterSupport> presetLookupService
+            BatchCrudService<StringIdKey, RouterSupport> crudService,
+            EntireLookupService<RouterSupport> entireLookupService,
+            PresetLookupService<RouterSupport> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;

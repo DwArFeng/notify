@@ -1,9 +1,8 @@
 package com.dwarfeng.notify.impl.cache;
 
-import com.dwarfeng.notify.sdk.bean.entity.FastJsonDispatcherSupport;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherSupport;
 import com.dwarfeng.notify.stack.cache.DispatcherSupportCache;
-import com.dwarfeng.subgrade.impl.cache.RedisBatchBaseCache;
+import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
@@ -16,63 +15,61 @@ import java.util.List;
 @Repository
 public class DispatcherSupportCacheImpl implements DispatcherSupportCache {
 
-    private final RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport>
-            dispatcherSupportBatchBaseDelegate;
+    private final BatchBaseCache<StringIdKey, DispatcherSupport> batchBaseCache;
 
     public DispatcherSupportCacheImpl(
-            RedisBatchBaseCache<StringIdKey, DispatcherSupport, FastJsonDispatcherSupport>
-                    dispatcherSupportBatchBaseDelegate
+            BatchBaseCache<StringIdKey, DispatcherSupport> batchBaseCache
     ) {
-        this.dispatcherSupportBatchBaseDelegate = dispatcherSupportBatchBaseDelegate;
+        this.batchBaseCache = batchBaseCache;
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean exists(StringIdKey key) throws CacheException {
-        return dispatcherSupportBatchBaseDelegate.exists(key);
+        return batchBaseCache.exists(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public DispatcherSupport get(StringIdKey key) throws CacheException {
-        return dispatcherSupportBatchBaseDelegate.get(key);
+        return batchBaseCache.get(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void push(DispatcherSupport value, long timeout) throws CacheException {
-        dispatcherSupportBatchBaseDelegate.push(value, timeout);
+        batchBaseCache.push(value, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void delete(StringIdKey key) throws CacheException {
-        dispatcherSupportBatchBaseDelegate.delete(key);
+        batchBaseCache.delete(key);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void clear() throws CacheException {
-        dispatcherSupportBatchBaseDelegate.clear();
+        batchBaseCache.clear();
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean allExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return dispatcherSupportBatchBaseDelegate.allExists(keys);
+        return batchBaseCache.allExists(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public boolean nonExists(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return dispatcherSupportBatchBaseDelegate.nonExists(keys);
+        return batchBaseCache.nonExists(keys);
     }
 
     @Override
@@ -80,20 +77,20 @@ public class DispatcherSupportCacheImpl implements DispatcherSupportCache {
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", readOnly = true, rollbackFor = Exception.class)
     public List<DispatcherSupport> batchGet(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        return dispatcherSupportBatchBaseDelegate.batchGet(keys);
+        return batchBaseCache.batchGet(keys);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchPush(@SkipRecord List<DispatcherSupport> entities, long timeout) throws CacheException {
-        dispatcherSupportBatchBaseDelegate.batchPush(entities, timeout);
+        batchBaseCache.batchPush(entities, timeout);
     }
 
     @Override
     @BehaviorAnalyse
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
     public void batchDelete(@SkipRecord List<StringIdKey> keys) throws CacheException {
-        dispatcherSupportBatchBaseDelegate.batchDelete(keys);
+        batchBaseCache.batchDelete(keys);
     }
 }

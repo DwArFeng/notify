@@ -1,13 +1,11 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateMetaIndicator;
-import com.dwarfeng.notify.impl.bean.key.HibernateMetaIndicatorKey;
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
 import com.dwarfeng.notify.stack.dao.MetaIndicatorDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,16 +18,14 @@ import java.util.List;
 @Repository
 public class MetaIndicatorDaoImpl implements MetaIndicatorDao {
 
-    private final HibernateBatchBaseDao<MetaIndicatorKey, HibernateMetaIndicatorKey, MetaIndicator,
-            HibernateMetaIndicator> batchBaseDao;
-    private final HibernateEntireLookupDao<MetaIndicator, HibernateMetaIndicator> entireLookupDao;
-    private final HibernatePresetLookupDao<MetaIndicator, HibernateMetaIndicator> presetLookupDao;
+    private final BatchBaseDao<MetaIndicatorKey, MetaIndicator> batchBaseDao;
+    private final EntireLookupDao<MetaIndicator> entireLookupDao;
+    private final PresetLookupDao<MetaIndicator> presetLookupDao;
 
     public MetaIndicatorDaoImpl(
-            HibernateBatchBaseDao<MetaIndicatorKey, HibernateMetaIndicatorKey, MetaIndicator,
-                    HibernateMetaIndicator> batchBaseDao,
-            HibernateEntireLookupDao<MetaIndicator, HibernateMetaIndicator> entireLookupDao,
-            HibernatePresetLookupDao<MetaIndicator, HibernateMetaIndicator> presetLookupDao
+            BatchBaseDao<MetaIndicatorKey, MetaIndicator> batchBaseDao,
+            EntireLookupDao<MetaIndicator> entireLookupDao,
+            PresetLookupDao<MetaIndicator> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

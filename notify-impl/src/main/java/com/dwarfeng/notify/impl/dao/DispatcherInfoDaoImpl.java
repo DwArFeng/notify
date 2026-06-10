@@ -1,12 +1,10 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherInfo;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherInfo;
 import com.dwarfeng.notify.stack.dao.DispatcherInfoDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,16 +18,14 @@ import java.util.List;
 @Repository
 public class DispatcherInfoDaoImpl implements DispatcherInfoDao {
 
-    private final HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, DispatcherInfo, HibernateDispatcherInfo>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<DispatcherInfo, HibernateDispatcherInfo> entireLookupDao;
-    private final HibernatePresetLookupDao<DispatcherInfo, HibernateDispatcherInfo> presetLookupDao;
+    private final BatchBaseDao<StringIdKey, DispatcherInfo> batchBaseDao;
+    private final EntireLookupDao<DispatcherInfo> entireLookupDao;
+    private final PresetLookupDao<DispatcherInfo> presetLookupDao;
 
     public DispatcherInfoDaoImpl(
-            HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, DispatcherInfo, HibernateDispatcherInfo>
-                    batchBaseDao,
-            HibernateEntireLookupDao<DispatcherInfo, HibernateDispatcherInfo> entireLookupDao,
-            HibernatePresetLookupDao<DispatcherInfo, HibernateDispatcherInfo> presetLookupDao
+            BatchBaseDao<StringIdKey, DispatcherInfo> batchBaseDao,
+            EntireLookupDao<DispatcherInfo> entireLookupDao,
+            PresetLookupDao<DispatcherInfo> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

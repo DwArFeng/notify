@@ -1,13 +1,11 @@
 package com.dwarfeng.notify.impl.dao;
 
-import com.dwarfeng.notify.impl.bean.entity.HibernateNotifyInfoRecord;
-import com.dwarfeng.notify.impl.bean.key.HibernateNotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.dao.NotifyInfoRecordDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.stack.dao.BatchBaseDao;
+import com.dwarfeng.subgrade.stack.dao.EntireLookupDao;
+import com.dwarfeng.subgrade.stack.dao.PresetLookupDao;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
@@ -20,16 +18,14 @@ import java.util.List;
 @Repository
 public class NotifyInfoRecordDaoImpl implements NotifyInfoRecordDao {
 
-    private final HibernateBatchBaseDao<NotifyInfoRecordKey, HibernateNotifyInfoRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
-            batchBaseDao;
-    private final HibernateEntireLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> entireLookupDao;
-    private final HibernatePresetLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> presetLookupDao;
+    private final BatchBaseDao<NotifyInfoRecordKey, NotifyInfoRecord> batchBaseDao;
+    private final EntireLookupDao<NotifyInfoRecord> entireLookupDao;
+    private final PresetLookupDao<NotifyInfoRecord> presetLookupDao;
 
     public NotifyInfoRecordDaoImpl(
-            HibernateBatchBaseDao<NotifyInfoRecordKey, HibernateNotifyInfoRecordKey, NotifyInfoRecord, HibernateNotifyInfoRecord>
-                    batchBaseDao,
-            HibernateEntireLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> entireLookupDao,
-            HibernatePresetLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord> presetLookupDao
+            BatchBaseDao<NotifyInfoRecordKey, NotifyInfoRecord> batchBaseDao,
+            EntireLookupDao<NotifyInfoRecord> entireLookupDao,
+            PresetLookupDao<NotifyInfoRecord> presetLookupDao
     ) {
         this.batchBaseDao = batchBaseDao;
         this.entireLookupDao = entireLookupDao;

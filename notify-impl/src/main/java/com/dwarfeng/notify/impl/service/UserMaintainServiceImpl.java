@@ -2,9 +2,9 @@ package com.dwarfeng.notify.impl.service;
 
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.service.UserMaintainService;
-import com.dwarfeng.subgrade.impl.service.CustomBatchCrudService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyEntireLookupService;
-import com.dwarfeng.subgrade.impl.service.DaoOnlyPresetLookupService;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
@@ -19,14 +19,14 @@ import java.util.List;
 @Service
 public class UserMaintainServiceImpl implements UserMaintainService {
 
-    private final CustomBatchCrudService<StringIdKey, User> crudService;
-    private final DaoOnlyEntireLookupService<User> entireLookupService;
-    private final DaoOnlyPresetLookupService<User> presetLookupService;
+    private final BatchCrudService<StringIdKey, User> crudService;
+    private final EntireLookupService<User> entireLookupService;
+    private final PresetLookupService<User> presetLookupService;
 
     public UserMaintainServiceImpl(
-            CustomBatchCrudService<StringIdKey, User> crudService,
-            DaoOnlyEntireLookupService<User> entireLookupService,
-            DaoOnlyPresetLookupService<User> presetLookupService
+            BatchCrudService<StringIdKey, User> crudService,
+            EntireLookupService<User> entireLookupService,
+            PresetLookupService<User> presetLookupService
     ) {
         this.crudService = crudService;
         this.entireLookupService = entireLookupService;
