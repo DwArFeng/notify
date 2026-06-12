@@ -5,6 +5,7 @@
 ### 功能构建
 
 - Wiki 更新。
+  - docs/wiki/zh-CN/VersionBlacklist.md。
   - docs/wiki/zh-CN/CompileBySource.md。
   - docs/wiki/zh-CN/QuickStart.md。
 
