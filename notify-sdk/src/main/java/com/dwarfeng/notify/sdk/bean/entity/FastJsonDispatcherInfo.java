@@ -23,7 +23,10 @@ public class FastJsonDispatcherInfo implements Bean {
         } else {
             return new FastJsonDispatcherInfo(
                     FastJsonStringIdKey.of(dispatcherInfo.getKey()),
-                    dispatcherInfo.getLabel(), dispatcherInfo.getType(), dispatcherInfo.getParam(), dispatcherInfo.getRemark()
+                    dispatcherInfo.getLabel(),
+                    dispatcherInfo.getType(),
+                    dispatcherInfo.getParam(),
+                    dispatcherInfo.getRemark()
             );
         }
     }
