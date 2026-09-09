@@ -3,14 +3,14 @@ package com.dwarfeng.notify.impl.service;
 import com.dwarfeng.notify.stack.bean.entity.NotifyInfoRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
 import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
-import com.dwarfeng.subgrade.stack.service.EntireLookupService;
-import com.dwarfeng.subgrade.stack.service.PresetLookupService;
-import com.dwarfeng.subgrade.stack.service.BatchCrudService;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.BehaviorAnalyse;
 import com.dwarfeng.subgrade.sdk.interceptor.analyse.SkipRecord;
 import com.dwarfeng.subgrade.stack.bean.dto.PagedData;
 import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
 import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.stack.service.BatchCrudService;
+import com.dwarfeng.subgrade.stack.service.EntireLookupService;
+import com.dwarfeng.subgrade.stack.service.PresetLookupService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -160,7 +160,8 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<NotifyInfoRecordKey> batchInsertIfExists(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+    public List<NotifyInfoRecordKey> batchInsertIfExists(@SkipRecord List<NotifyInfoRecord> elements)
+            throws ServiceException {
         return crudService.batchInsertIfExists(elements);
     }
 
@@ -168,7 +169,8 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<NotifyInfoRecordKey> batchInsertIfNotExists(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+    public List<NotifyInfoRecordKey> batchInsertIfNotExists(@SkipRecord List<NotifyInfoRecord> elements)
+            throws ServiceException {
         return crudService.batchInsertIfNotExists(elements);
     }
 
@@ -190,7 +192,8 @@ public class NotifyInfoRecordMaintainServiceImpl implements NotifyInfoRecordMain
     @BehaviorAnalyse
     @SkipRecord
     @Transactional(transactionManager = "hibernateTransactionManager", rollbackFor = Exception.class)
-    public List<NotifyInfoRecordKey> batchInsertOrUpdate(@SkipRecord List<NotifyInfoRecord> elements) throws ServiceException {
+    public List<NotifyInfoRecordKey> batchInsertOrUpdate(@SkipRecord List<NotifyInfoRecord> elements)
+            throws ServiceException {
         return crudService.batchInsertOrUpdate(elements);
     }
 

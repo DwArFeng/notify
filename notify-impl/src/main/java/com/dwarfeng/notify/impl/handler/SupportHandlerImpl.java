@@ -108,12 +108,14 @@ public class SupportHandlerImpl implements SupportHandler {
         List<StringIdKey> dispatcherKeys = dispatcherSupportMaintainService.lookupAsList().stream()
                 .map(DispatcherSupport::getKey).collect(Collectors.toList());
         dispatcherSupportMaintainService.batchDelete(dispatcherKeys);
-        List<DispatcherSupport> dispatcherSupports = dispatcherSupporters.stream().map(supporter -> new DispatcherSupport(
-                new StringIdKey(supporter.provideType()),
-                supporter.provideLabel(),
-                supporter.provideDescription(),
-                supporter.provideExampleParam()
-        )).collect(Collectors.toList());
+        List<DispatcherSupport> dispatcherSupports = dispatcherSupporters.stream().map(
+                supporter -> new DispatcherSupport(
+                        new StringIdKey(supporter.provideType()),
+                        supporter.provideLabel(),
+                        supporter.provideDescription(),
+                        supporter.provideExampleParam()
+                )
+        ).collect(Collectors.toList());
         dispatcherSupportMaintainService.batchInsert(dispatcherSupports);
     }
 }

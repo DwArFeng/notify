@@ -4,6 +4,17 @@
 
 ### 功能构建
 
+- `notify-impl` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.notify.impl.handler.DispatchLocalCacheHandlerImpl。
+  - com.dwarfeng.notify.impl.handler.SupportHandlerImpl。
+  - com.dwarfeng.notify.impl.handler.resetter.KafkaResetter。
+  - com.dwarfeng.notify.impl.handler.router.EntireRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.router.GroovyRouterRegistry。
+  - com.dwarfeng.notify.impl.handler.sender.DrainSenderRegistry。
+  - com.dwarfeng.notify.impl.handler.sender.LogSenderRegistry。
+  - com.dwarfeng.notify.impl.service.DispatcherSupportMaintainServiceImpl。
+  - com.dwarfeng.notify.impl.service.NotifyInfoRecordMaintainServiceImpl。
+
 - `notify-sdk` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.notify.sdk.bean.entity.FastJsonDispatcherInfo。
 

@@ -103,7 +103,8 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap) throws RouterException {
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap)
+                throws RouterException {
             return processor.route(contextInfo, routeInfoMap);
         }
 

@@ -82,7 +82,8 @@ public class EntireRouterRegistry extends AbstractRouterRegistry {
         }
 
         @Override
-        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap) throws RouterException {
+        public List<StringIdKey> route(ContextInfo contextInfo, Map<String, String> routeInfoMap)
+                throws RouterException {
             try {
                 return userMaintainService.lookupAsList(UserMaintainService.ENABLED, new Object[0])
                         .stream().map(User::getKey).collect(Collectors.toList());

@@ -63,7 +63,9 @@ public class DrainSenderRegistry extends AbstractSenderRegistry {
     public static class DrainSender extends AbstractSender {
 
         @Override
-        public List<Response> send(ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys) {
+        public List<Response> send(
+                ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys
+        ) {
             List<Response> responses = new ArrayList<>();
 
             for (StringIdKey userKey : userKeys) {

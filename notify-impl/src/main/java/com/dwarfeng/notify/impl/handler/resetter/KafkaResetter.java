@@ -215,7 +215,8 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
         kafkaListenerContainerFactory() {
             LOGGER.info("配置 Kafka 侦听容器工厂...");
             ConsumerFactory<String, String> consumerFactory = consumerFactory();
-            ConcurrentKafkaListenerContainerFactory<String, String> factory = new ConcurrentKafkaListenerContainerFactory<>();
+            ConcurrentKafkaListenerContainerFactory<String, String> factory =
+                    new ConcurrentKafkaListenerContainerFactory<>();
             factory.setConsumerFactory(consumerFactory);
             factory.setConcurrency(concurrency);
             factory.getContainerProperties().setPollTimeout(pollTimeout);

@@ -53,7 +53,9 @@ public class DispatchLocalCacheHandlerImpl implements DispatchLocalCacheHandler 
 
         private final DispatcherHandler dispatcherHandler;
 
-        public DispatcherFetcher(DispatcherInfoMaintainService dispatcherInfoMaintainService, DispatcherHandler dispatcherHandler) {
+        public DispatcherFetcher(
+                DispatcherInfoMaintainService dispatcherInfoMaintainService, DispatcherHandler dispatcherHandler
+        ) {
             this.dispatcherInfoMaintainService = dispatcherInfoMaintainService;
             this.dispatcherHandler = dispatcherHandler;
         }

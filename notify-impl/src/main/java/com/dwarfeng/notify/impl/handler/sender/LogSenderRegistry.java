@@ -99,7 +99,9 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
         }
 
         @Override
-        public List<Response> send(ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys) {
+        public List<Response> send(
+                ContextInfo contextInfo, Map<String, String> sendInfoMap, List<StringIdKey> userKeys
+        ) {
             List<Response> responses = new ArrayList<>();
             for (StringIdKey userKey : userKeys) {
                 logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfoMap);
