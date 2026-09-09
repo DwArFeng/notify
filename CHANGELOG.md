@@ -4,6 +4,9 @@
 
 ### 功能构建
 
+- `notify-stack` 子模块类优化注释、文档注释格式、代码换行格式。
+  - com.dwarfeng.notify.stack.service.RouterInfoMaintainService。
+
 - 依赖升级。
   - 升级 `fastjson` 依赖版本为 `1.2.84` 以规避漏洞。
   - 升级 `aspectj` 依赖版本为 `1.8.14` 以规避漏洞。

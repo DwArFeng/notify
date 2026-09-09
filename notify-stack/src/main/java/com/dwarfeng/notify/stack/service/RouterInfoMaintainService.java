@@ -12,8 +12,8 @@ import com.dwarfeng.subgrade.stack.service.PresetLookupService;
  * @author DwArFeng
  * @since 1.0.0
  */
-public interface RouterInfoMaintainService extends BatchCrudService<LongIdKey, RouterInfo>, EntireLookupService<RouterInfo>,
-        PresetLookupService<RouterInfo> {
+public interface RouterInfoMaintainService extends BatchCrudService<LongIdKey, RouterInfo>,
+        EntireLookupService<RouterInfo>, PresetLookupService<RouterInfo> {
 
     String TYPE_EQUALS = "type_equals";
     String TYPE_LIKE = "type_like";
