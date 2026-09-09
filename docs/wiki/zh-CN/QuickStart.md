@@ -10,7 +10,7 @@
 - MySQL 8.0.19。
 - Redis 5.0.7。
 - Zookeeper 3.5.5。
-- snowflake-distributed-service 1.8.3.a。
+- snowflake-distributed-service 2.0.2.a。
 
 ## 获取软件包
 

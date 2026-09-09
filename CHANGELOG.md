@@ -4,6 +4,11 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/QuickStart.md。
+  - docs/wiki/zh-CN/SystemRequirements.md。
+  - docs/wiki/zh-CN/VersionBlacklist.md。
+
 - `notify-impl` 子模块类优化注释、文档注释格式、代码换行格式。
   - com.dwarfeng.notify.impl.handler.DispatchLocalCacheHandlerImpl。
   - com.dwarfeng.notify.impl.handler.SupportHandlerImpl。
