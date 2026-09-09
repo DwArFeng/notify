@@ -10,7 +10,7 @@
 
     <groupId>com.dwarfeng</groupId>
     <artifactId>notify</artifactId>
-    <version>2.0.0.a</version>
+    <version>2.0.1.a-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
@@ -496,32 +496,32 @@
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>notify-stack</artifactId>
-                <version>2.0.0.a</version>
+                <version>2.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>notify-sdk</artifactId>
-                <version>2.0.0.a</version>
+                <version>2.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>notify-impl</artifactId>
-                <version>2.0.0.a</version>
+                <version>2.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>notify-node</artifactId>
-                <version>2.0.0.a</version>
+                <version>2.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>notify-node-all-he</artifactId>
-                <version>2.0.0.a</version>
+                <version>2.0.1.a-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.dwarfeng</groupId>
                 <artifactId>notify-distribute</artifactId>
-                <version>2.0.0.a</version>
+                <version>2.0.1.a-SNAPSHOT</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
