@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
@@ -48,7 +51,7 @@ public class SlcCommand extends CliCommand {
 
     @Override
     protected DescriptionProvider provideDescriptionProvider() {
-        return context -> "发送器本地缓存运维模块";
+        return _ -> ImplMessages.message(ImplMessageKey.TELQOS_SENDER_LOCAL_CACHE_DESCRIPTION);
     }
 
     @Override
@@ -70,13 +73,22 @@ public class SlcCommand extends CliCommand {
     @Override
     protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(false).desc("查询发送器").build());
-        list.add(Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false).desc("清除发送器").build());
         list.add(
-                Option.builder(COMMAND_SUB_OPTION_NSID).hasArg(true).type(Number.class).desc("通知设置 ID").build()
+                Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SENDER_LOCAL_CACHE_OPTION_LOOKUP)).get()
         );
         list.add(
-                Option.builder(COMMAND_SUB_OPTION_TID).hasArg(true).type(String.class).desc("主题 ID").build()
+                Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SENDER_LOCAL_CACHE_OPTION_CLEAR)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_SUB_OPTION_NSID).hasArg(true).type(Number.class)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SENDER_LOCAL_CACHE_OPTION_NOTIFY_SETTING_ID))
+                        .get()
+        );
+        list.add(
+                Option.builder(COMMAND_SUB_OPTION_TID).hasArg(true).type(String.class)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SENDER_LOCAL_CACHE_OPTION_TOPIC_ID)).get()
         );
         return list;
     }
@@ -95,10 +107,10 @@ public class SlcCommand extends CliCommand {
                 break;
             case COMMAND_OPTION_CLEAR:
                 notifyQosService.clearSenderLocalCache();
-                context.sendMessage("本地缓存已清除");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_COMMON_LOCAL_CACHE_CLEARED));
                 break;
             default:
-                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
+                throw new IllegalStateException(ImplMessages.message(ImplMessageKey.ERROR_INTERNAL_UNREACHABLE));
         }
     }
 
@@ -108,7 +120,7 @@ public class SlcCommand extends CliCommand {
             return;
         }
         long notifySettingId = ((Number) cmd.getParsedOptionValue(COMMAND_SUB_OPTION_NSID)).longValue();
-        String topicId = (String) cmd.getParsedOptionValue(COMMAND_SUB_OPTION_TID);
+        String topicId = cmd.getParsedOptionValue(COMMAND_SUB_OPTION_TID);
         Sender sender = notifyQosService.getSender(new SenderInfoKey(notifySettingId, topicId));
         if (Objects.isNull(sender)) {
             context.sendMessage("not exists");

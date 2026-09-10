@@ -1,6 +1,8 @@
 package com.dwarfeng.notify.stack.exception;
 
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+
+import java.io.Serial;
 
 /**
  * 路由器异常。
@@ -10,6 +12,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class RouterException extends HandlerException {
 
+    @Serial
     private static final long serialVersionUID = 1428991659014421967L;
 
     public RouterException() {

@@ -1,94 +1,154 @@
 package com.dwarfeng.notify.impl.dao.preset;
 
+import com.dwarfeng.notify.impl.bean.entity.HibernateNotifySendRecord;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
-import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Order;
-import org.hibernate.criterion.Restrictions;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.data.sdk.hibernate.criteria.PresetCriteriaMaker;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Component
-public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker {
+public class NotifySendRecordPresetCriteriaMaker implements PresetCriteriaMaker<HibernateNotifySendRecord> {
 
     @Override
-    public void makeCriteria(DetachedCriteria criteria, String preset, Object[] objs) {
+    public void makeCriteria(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateNotifySendRecord> root,
+            String preset, Object[] objs
+    ) {
         switch (preset) {
             case NotifySendRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY:
-                childForNotifyHistory(criteria, objs);
+                childForNotifyHistory(criteriaBuilder, criteriaQuery, root, objs);
                 break;
             case NotifySendRecordMaintainService.CHILD_FOR_TOPIC:
-                childForTopic(criteria, objs);
+                childForTopic(criteriaBuilder, criteriaQuery, root, objs);
                 break;
             case NotifySendRecordMaintainService.CHILD_FOR_USER:
-                childForUser(criteria, objs);
+                childForUser(criteriaBuilder, criteriaQuery, root, objs);
                 break;
             case NotifySendRecordMaintainService.CHILD_FOR_NOTIFY_HISTORY_ORDERED:
-                childForNotifyHistoryOrdered(criteria, objs);
+                childForNotifyHistoryOrdered(criteriaBuilder, criteriaQuery, root, objs);
                 break;
             default:
-                throw new IllegalArgumentException("无法识别的预设: " + preset);
+                throw new IllegalArgumentException(
+                        ImplMessages.message(ImplMessageKey.ERROR_UNRECOGNIZED_PRESET, preset)
+                );
         }
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void childForNotifyHistory(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForNotifyHistory(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateNotifySendRecord> root,
+            Object[] objects
+    ) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("notifyHistoryId"));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder, criteriaQuery, criteriaBuilder.isNull(root.get("notifyHistoryId"))
+                );
             } else {
                 LongIdKey longIdKey = (LongIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("notifyHistoryId", longIdKey.getLongId()));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder,
+                        criteriaQuery,
+                        CriteriaQueryHelper.equalOrIsNull(
+                                criteriaBuilder, root.get("notifyHistoryId"), longIdKey.getLongId()
+                        )
+                );
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void childForTopic(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForTopic(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateNotifySendRecord> root,
+            Object[] objects
+    ) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("topicId"));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder, criteriaQuery, criteriaBuilder.isNull(root.get("topicId"))
+                );
             } else {
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("topicId", stringIdKey.getStringId()));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder,
+                        criteriaQuery,
+                        CriteriaQueryHelper.equalOrIsNull(
+                                criteriaBuilder, root.get("topicId"), stringIdKey.getStringId()
+                        )
+                );
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void childForUser(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForUser(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateNotifySendRecord> root,
+            Object[] objects
+    ) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("userId"));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder, criteriaQuery, criteriaBuilder.isNull(root.get("userId"))
+                );
             } else {
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("userId", stringIdKey.getStringId()));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder,
+                        criteriaQuery,
+                        CriteriaQueryHelper.equalOrIsNull(
+                                criteriaBuilder, root.get("userId"), stringIdKey.getStringId()
+                        )
+                );
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
-    private void childForNotifyHistoryOrdered(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForNotifyHistoryOrdered(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateNotifySendRecord> root,
+            Object[] objects
+    ) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("notifyHistoryId"));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder, criteriaQuery, criteriaBuilder.isNull(root.get("notifyHistoryId"))
+                );
             } else {
                 LongIdKey longIdKey = (LongIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("notifyHistoryId", longIdKey.getLongId()));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder,
+                        criteriaQuery,
+                        CriteriaQueryHelper.equalOrIsNull(
+                                criteriaBuilder, root.get("notifyHistoryId"), longIdKey.getLongId()
+                        )
+                );
             }
-            detachedCriteria.addOrder(Order.asc("topicId"));
-            detachedCriteria.addOrder(Order.asc("userId"));
+            CriteriaQueryHelper.addOrder(criteriaQuery, criteriaBuilder.asc(root.get("topicId")));
+            CriteriaQueryHelper.addOrder(criteriaQuery, criteriaBuilder.asc(root.get("userId")));
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 }

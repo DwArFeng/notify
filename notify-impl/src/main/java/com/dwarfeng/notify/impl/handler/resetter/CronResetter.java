@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.handler.resetter;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.resetter.AbstractResetter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,13 +59,13 @@ public class CronResetter extends AbstractResetter {
         @Override
         public void run() {
             try {
-                LOGGER.info("计划时间已到, 重置路由, 调度, 发送...");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_SCHEDULE_TRIGGERED));
                 context.resetRoute();
                 context.resetDispatch();
                 context.resetSend();
             } catch (Exception e) {
-                String message = "重置器 " + CronResetter.this +
-                        " 执行重置调度时发生异常, 路由, 调度, 发送将不会重置, 异常信息如下: ";
+                String message = ImplMessages.message(ImplMessageKey.TELQOS_RESET_RESETTER, CronResetter.this) +
+                        ImplMessages.message(ImplMessageKey.LOG_RESET_ALL_FAILED);
                 LOGGER.warn(message, e);
             }
         }

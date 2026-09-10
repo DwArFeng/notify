@@ -11,9 +11,9 @@ import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.*;
-import com.dwarfeng.subgrade.sdk.bean.key.*;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.web.sdk.bean.key.*;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 

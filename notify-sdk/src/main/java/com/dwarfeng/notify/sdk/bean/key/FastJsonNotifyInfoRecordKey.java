@@ -1,9 +1,10 @@
 package com.dwarfeng.notify.sdk.bean.key;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -14,7 +15,8 @@ import java.util.Objects;
  */
 public class FastJsonNotifyInfoRecordKey implements Key {
 
-    private static final long serialVersionUID = -63624242996645773L;
+    @Serial
+    private static final long serialVersionUID = -143783501102840518L;
 
     public static FastJsonNotifyInfoRecordKey of(NotifyInfoRecordKey notifyInfoRecordKey) {
         if (Objects.isNull(notifyInfoRecordKey)) {

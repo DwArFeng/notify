@@ -2,7 +2,7 @@ package com.dwarfeng.notify.stack.cache;
 
 import com.dwarfeng.notify.stack.bean.entity.NotifySendRecord;
 import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
-import com.dwarfeng.subgrade.stack.cache.BatchBaseCache;
+import com.dwarfeng.subgrade.data.stack.cache.BatchBaseCache;
 
 /**
  * 通知发送记录缓存。

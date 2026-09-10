@@ -1,46 +1,70 @@
 package com.dwarfeng.notify.impl.dao.preset;
 
+import com.dwarfeng.notify.impl.bean.entity.HibernateDispatcherInfo;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
 import com.dwarfeng.notify.stack.service.DispatcherInfoMaintainService;
-import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import com.dwarfeng.subgrade.data.sdk.hibernate.criteria.PresetCriteriaMaker;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 
 @Component
-public class DispatcherInfoPresetCriteriaMaker implements PresetCriteriaMaker {
+public class DispatcherInfoPresetCriteriaMaker implements PresetCriteriaMaker<HibernateDispatcherInfo> {
 
     @Override
-    public void makeCriteria(DetachedCriteria detachedCriteria, String s, Object[] objects) {
+    public void makeCriteria(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateDispatcherInfo> root,
+            String s, Object[] objects
+    ) {
         switch (s) {
             case DispatcherInfoMaintainService.TYPE_EQUALS:
-                typeEquals(detachedCriteria, objects);
+                typeEquals(criteriaBuilder, criteriaQuery, root, objects);
                 break;
             case DispatcherInfoMaintainService.TYPE_LIKE:
-                typeLike(detachedCriteria, objects);
+                typeLike(criteriaBuilder, criteriaQuery, root, objects);
                 break;
             default:
-                throw new IllegalArgumentException("无法识别的预设: " + s);
+                throw new IllegalArgumentException(ImplMessages.message(ImplMessageKey.ERROR_UNRECOGNIZED_PRESET, s));
         }
     }
 
-    private void typeEquals(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void typeEquals(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateDispatcherInfo> root,
+            Object[] objects
+    ) {
         try {
             String type = (String) objects[0];
-            detachedCriteria.add(Restrictions.eqOrIsNull("type", type));
+            CriteriaQueryHelper.addRestriction(
+                    criteriaBuilder,
+                    criteriaQuery,
+                    CriteriaQueryHelper.equalOrIsNull(criteriaBuilder, root.get("type"), type)
+            );
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
-    private void typeLike(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void typeLike(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateDispatcherInfo> root,
+            Object[] objects
+    ) {
         try {
             String pattern = (String) objects[0];
-            detachedCriteria.add(Restrictions.like("type", pattern, MatchMode.ANYWHERE));
+            CriteriaQueryHelper.addRestriction(
+                    criteriaBuilder,
+                    criteriaQuery,
+                    criteriaBuilder.like(root.get("type"), "%" + pattern + "%")
+            );
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 }

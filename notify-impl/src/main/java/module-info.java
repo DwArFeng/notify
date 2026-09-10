@@ -1,0 +1,62 @@
+module com.dwarfeng.notify.impl {
+
+    requires com.dwarfeng.notify.base;
+    requires com.dwarfeng.notify.stack;
+    requires com.dwarfeng.notify.sdk;
+    requires com.dwarfeng.datamark.core;
+    requires com.dwarfeng.dutil.basic;
+    requires com.dwarfeng.springtelqos.core;
+    requires com.dwarfeng.subgrade.aop;
+    requires com.dwarfeng.subgrade.basic;
+    requires com.dwarfeng.subgrade.cache;
+    requires com.dwarfeng.subgrade.data;
+    requires com.dwarfeng.subgrade.lifecycle;
+    requires com.dwarfeng.subgrade.lock;
+    requires com.dwarfeng.subgrade.web;
+    requires com.alibaba.fastjson2;
+    requires dubbo;
+    requires jakarta.annotation;
+    requires jakarta.persistence;
+    requires jakarta.validation;
+    requires kafka.clients;
+    requires org.apache.commons.cli;
+    requires org.apache.commons.lang3;
+    requires org.apache.groovy;
+    requires org.hibernate.orm.core;
+    requires org.mapstruct;
+    requires org.slf4j;
+    requires spring.aop;
+    requires spring.beans;
+    requires spring.context;
+    requires spring.core;
+    requires spring.data.redis;
+    requires spring.kafka;
+    requires spring.tx;
+    requires static org.jetbrains.annotations;
+
+    exports com.dwarfeng.notify.impl.bean;
+    exports com.dwarfeng.notify.impl.bean.entity;
+    exports com.dwarfeng.notify.impl.bean.key;
+    exports com.dwarfeng.notify.impl.cache;
+    exports com.dwarfeng.notify.impl.dao;
+    exports com.dwarfeng.notify.impl.dao.preset;
+    exports com.dwarfeng.notify.impl.handler;
+    exports com.dwarfeng.notify.impl.handler.pusher;
+    exports com.dwarfeng.notify.impl.handler.resetter;
+    exports com.dwarfeng.notify.impl.service;
+    exports com.dwarfeng.notify.impl.service.operation;
+    exports com.dwarfeng.notify.impl.service.telqos;
+
+    opens com.dwarfeng.notify.impl.bean.entity to org.hibernate.orm.core;
+    opens com.dwarfeng.notify.impl.bean.key to org.hibernate.orm.core;
+    opens com.dwarfeng.notify.impl.cache to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.dao to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.dao.preset to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.handler to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.handler.pusher to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.handler.resetter to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.service to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.service.operation to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.service.telqos to spring.core, spring.beans, spring.context, spring.aop;
+    opens com.dwarfeng.notify.impl.i18n to com.dwarfeng.notify.base;
+}

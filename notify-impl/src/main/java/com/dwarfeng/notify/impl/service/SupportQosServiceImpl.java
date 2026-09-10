@@ -1,12 +1,15 @@
 package com.dwarfeng.notify.impl.service;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.SupportHandler;
 import com.dwarfeng.notify.stack.service.SupportQosService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +29,10 @@ public class SupportQosServiceImpl implements SupportQosService {
         try {
             supportHandler.resetRouter();
         } catch (HandlerException e) {
-            throw ServiceExceptionHelper.logParse("重置路由器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_SUPPORT_QOS_SERVICE_ROUTER_RESET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -35,7 +41,10 @@ public class SupportQosServiceImpl implements SupportQosService {
         try {
             supportHandler.resetSender();
         } catch (HandlerException e) {
-            throw ServiceExceptionHelper.logParse("重置发送器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_SUPPORT_QOS_SERVICE_SENDER_RESET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -44,7 +53,10 @@ public class SupportQosServiceImpl implements SupportQosService {
         try {
             supportHandler.resetDispatcher();
         } catch (HandlerException e) {
-            throw ServiceExceptionHelper.logParse("重置调度器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_SUPPORT_QOS_SERVICE_DISPATCHER_RESET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 }

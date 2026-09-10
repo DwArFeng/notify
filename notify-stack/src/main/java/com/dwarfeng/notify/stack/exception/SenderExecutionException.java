@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.stack.exception;
 
+import java.io.Serial;
+
 /**
  * 发送器执行异常。
  *
@@ -8,6 +10,7 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class SenderExecutionException extends SenderException {
 
+    @Serial
     private static final long serialVersionUID = 151966740930854827L;
 
     public SenderExecutionException() {

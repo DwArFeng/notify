@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+
+import java.io.Serial;
 
 /**
  * 发送器支持。
@@ -11,7 +13,8 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class SenderSupport implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = -3091924449741460101L;
+    @Serial
+    private static final long serialVersionUID = -7413620020805077331L;
 
     private StringIdKey key;
     private String label;

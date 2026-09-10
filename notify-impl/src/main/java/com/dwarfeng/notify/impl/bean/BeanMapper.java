@@ -4,13 +4,16 @@ import com.dwarfeng.notify.impl.bean.entity.*;
 import com.dwarfeng.notify.impl.bean.key.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.*;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateLongIdKey;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateStringIdKey;
 import org.mapstruct.InheritInverseConfiguration;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Bean 映射器。
@@ -23,6 +26,18 @@ import org.mapstruct.Mapping;
  */
 @Mapper
 public interface BeanMapper {
+
+    // region Java Date
+
+    default Timestamp dateToTimestamp(Date date) {
+        return date == null ? null : new Timestamp(date.getTime());
+    }
+
+    default Date timestampToDate(Timestamp timestamp) {
+        return timestamp == null ? null : new Date(timestamp.getTime());
+    }
+
+    // endregion
 
     // region Subgrade Key
 

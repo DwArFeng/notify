@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.DispatcherMaker;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
@@ -11,8 +14,8 @@ import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.handler.DispatcherHandler;
 import com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -49,14 +52,14 @@ public class DispatcherHandlerImpl implements DispatcherHandler {
     public Dispatcher make(String type, String param) throws DispatcherException {
         try {
             // 生成调度器。
-            LOGGER.debug("通过调度器信息构建新的的调度器...");
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_DISPATCHER_BUILDING));
             DispatcherMaker dispatcherMaker = dispatcherMakers.stream().filter(maker -> maker.supportType(type))
                     .findFirst().orElseThrow(() -> new UnsupportedDispatcherTypeException(type));
             Dispatcher dispatcher = dispatcherMaker.makeDispatcher(type, param);
-            LOGGER.debug("调度器构建成功!");
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_DISPATCHER_BUILT));
             dispatcher.init(dispatcherContext);
-            LOGGER.debug("调度器初始化成功!");
-            LOGGER.debug("调度器: {}", dispatcher);
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_DISPATCHER_INITIALIZED));
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_DISPATCHER_DETAIL, dispatcher));
             return dispatcher;
         } catch (DispatcherException e) {
             throw e;
@@ -127,7 +130,11 @@ public class DispatcherHandlerImpl implements DispatcherHandler {
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
                                 metaId
                         ),
-                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
+                        value,
+                        ImplMessages.message(
+                                ImplMessageKey.META_REMARK_INTERNAL_ROUTER_CONTEXT_UPDATED,
+                                new Date().toString()
+                        )
                 );
                 metaMaintainService.insertOrUpdate(meta);
             } catch (Exception e) {

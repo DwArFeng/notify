@@ -1,16 +1,19 @@
 package com.dwarfeng.notify.impl.service;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.ResetHandler;
 import com.dwarfeng.notify.stack.handler.Resetter;
 import com.dwarfeng.notify.stack.handler.ResetterHandler;
 import com.dwarfeng.notify.stack.service.ResetQosService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
+import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PreDestroy;
 import java.util.List;
 
 @Service
@@ -41,7 +44,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             return resetterHandler.all();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("列出在用的全部重置器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_RESETTER_LIST_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -50,7 +56,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             return resetHandler.isStarted();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("判断重置服务是否启动时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_STARTED_QUERY_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -59,7 +68,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             resetHandler.start();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置服务启动时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_START_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -68,7 +80,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             resetHandler.stop();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置服务停止时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_STOP_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -77,7 +92,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             resetHandler.resetRoute();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置路由时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_ROUTE_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -86,7 +104,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             resetHandler.resetDispatch();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置调度时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_DISPATCH_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -95,7 +116,10 @@ public class ResetQosServiceImpl implements ResetQosService {
         try {
             resetHandler.resetSend();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("重置发送时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_RESET_QOS_SERVICE_SEND_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 }

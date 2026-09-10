@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.Dispatcher;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
@@ -7,7 +10,7 @@ import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
 import com.dwarfeng.springtelqos.sdk.util.CliCommandUtil;
 import com.dwarfeng.springtelqos.stack.command.CommandDescriptor;
 import com.dwarfeng.springtelqos.stack.command.CommandExecutor;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.Option;
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,7 +46,7 @@ public class DlcCommand extends CliCommand {
 
     @Override
     protected DescriptionProvider provideDescriptionProvider() {
-        return context -> "调度器本地缓存运维模块";
+        return _ -> ImplMessages.message(ImplMessageKey.TELQOS_DISPATCHER_LOCAL_CACHE_DESCRIPTION);
     }
 
     @Override
@@ -65,9 +68,12 @@ public class DlcCommand extends CliCommand {
         List<Option> list = new ArrayList<>();
         list.add(
                 Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(true).type(String.class)
-                        .desc("查询调度器").build()
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_DISPATCHER_LOCAL_CACHE_OPTION_LOOKUP)).get()
         );
-        list.add(Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false).desc("清除调度器").build());
+        list.add(
+                Option.builder(COMMAND_OPTION_CLEAR).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_DISPATCHER_LOCAL_CACHE_OPTION_CLEAR)).get()
+        );
         return list;
     }
 
@@ -85,15 +91,15 @@ public class DlcCommand extends CliCommand {
                 break;
             case COMMAND_OPTION_CLEAR:
                 notifyQosService.clearDispatcherLocalCache();
-                context.sendMessage("本地缓存已清除");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_COMMON_LOCAL_CACHE_CLEARED));
                 break;
             default:
-                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
+                throw new IllegalStateException(ImplMessages.message(ImplMessageKey.ERROR_INTERNAL_UNREACHABLE));
         }
     }
 
     private void handleLookup(CommandExecutor.Context context, CommandLine cmd) throws Exception {
-        StringIdKey dispatcherInfoKey = new StringIdKey((String) cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP));
+        StringIdKey dispatcherInfoKey = new StringIdKey(cmd.getParsedOptionValue(COMMAND_OPTION_LOOKUP));
         Dispatcher dispatcher = notifyQosService.getDispatcher(dispatcherInfoKey);
         if (Objects.isNull(dispatcher)) {
             context.sendMessage("not exists");

@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+
+import java.io.Serial;
 
 /**
  * 主题。
@@ -11,8 +13,9 @@ import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
  */
 public class Topic implements Entity<StringIdKey> {
 
-    private static final long serialVersionUID = 8089461632829965343L;
-    
+    @Serial
+    private static final long serialVersionUID = 211505675271904711L;
+
     private StringIdKey key;
     private String label;
     private String remark;

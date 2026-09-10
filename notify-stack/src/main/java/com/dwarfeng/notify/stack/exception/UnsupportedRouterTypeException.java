@@ -1,5 +1,10 @@
 package com.dwarfeng.notify.stack.exception;
 
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+
+import java.io.Serial;
+
 /**
  * 不支持的路由器类型异常。
  *
@@ -8,6 +13,7 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class UnsupportedRouterTypeException extends RouterException {
 
+    @Serial
     private static final long serialVersionUID = 1953787046753101292L;
 
     private final String type;
@@ -23,6 +29,6 @@ public class UnsupportedRouterTypeException extends RouterException {
 
     @Override
     public String getMessage() {
-        return "不支持的路由器类型: " + type;
+        return StackMessages.message(StackMessageKey.UNSUPPORTED_ROUTER_TYPE, type);
     }
 }

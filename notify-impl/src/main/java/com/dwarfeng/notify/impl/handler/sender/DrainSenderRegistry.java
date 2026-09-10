@@ -1,11 +1,14 @@
 package com.dwarfeng.notify.impl.handler.sender;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.sender.AbstractSender;
 import com.dwarfeng.notify.sdk.handler.sender.AbstractSenderRegistry;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.exception.SenderMakeException;
 import com.dwarfeng.notify.stack.handler.Sender;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
@@ -69,7 +72,7 @@ public class DrainSenderRegistry extends AbstractSenderRegistry {
             List<Response> responses = new ArrayList<>();
 
             for (StringIdKey userKey : userKeys) {
-                responses.add(new Response(userKey, true, "发送成功"));
+                responses.add(new Response(userKey, true, ImplMessages.message(ImplMessageKey.SENDER_SEND_SUCCEEDED)));
             }
 
             return responses;

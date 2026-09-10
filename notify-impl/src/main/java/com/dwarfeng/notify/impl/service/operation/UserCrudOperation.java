@@ -13,10 +13,10 @@ import com.dwarfeng.notify.stack.dao.NotifySendRecordDao;
 import com.dwarfeng.notify.stack.dao.UserDao;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionCodes;
-import com.dwarfeng.subgrade.sdk.service.custom.operation.BatchCrudOperation;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.data.sdk.exception.ServiceExceptionCodeSuppliers;
+import com.dwarfeng.subgrade.data.sdk.service.custom.operation.BatchCrudOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -62,7 +62,7 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
             return userCache.get(key);
         } else {
             if (!userDao.exists(key)) {
-                throw new ServiceException(ServiceExceptionCodes.ENTITY_NOT_EXIST);
+                throw new ServiceException(ServiceExceptionCodeSuppliers.ENTITY_NOT_EXIST.get());
             }
             User user = userDao.get(key);
             userCache.push(user, userTimeout);
@@ -119,7 +119,7 @@ public class UserCrudOperation implements BatchCrudOperation<StringIdKey, User> 
             return userCache.batchGet(keys);
         } else {
             if (!userDao.allExists(keys)) {
-                throw new ServiceException(ServiceExceptionCodes.ENTITY_NOT_EXIST);
+                throw new ServiceException(ServiceExceptionCodeSuppliers.ENTITY_NOT_EXIST.get());
             }
             List<User> users = userDao.batchGet(keys);
             userCache.batchPush(users, userTimeout);

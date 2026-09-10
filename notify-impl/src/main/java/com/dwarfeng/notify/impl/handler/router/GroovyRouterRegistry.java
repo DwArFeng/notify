@@ -1,13 +1,15 @@
 package com.dwarfeng.notify.impl.handler.router;
 
-import com.dwarfeng.dutil.basic.io.IOUtil;
-import com.dwarfeng.dutil.basic.io.StringOutputStream;
+import com.dwarfeng.dutil.basic.impl.io.StringOutputStream;
+import com.dwarfeng.dutil.basic.sdk.io.IOUtil;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
 import com.dwarfeng.notify.sdk.handler.router.AbstractRouter;
 import com.dwarfeng.notify.sdk.handler.router.AbstractRouterRegistry;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,9 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
 
     public static final String ROUTER_TYPE = "groovy_router";
 
+    private static final String EXAMPLE_PROCESSOR_RESOURCE_PATH =
+            "classpath:com/dwarfeng/notify/impl/groovy/ExampleRouterProcessor.groovy";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GroovyRouterRegistry.class);
 
     private final ApplicationContext ctx;
@@ -55,7 +60,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
     @Override
     public String provideExampleParam() {
         try {
-            Resource resource = ctx.getResource("classpath:groovy/ExampleRouterProcessor.groovy");
+            Resource resource = ctx.getResource(EXAMPLE_PROCESSOR_RESOURCE_PATH);
             String example;
             try (InputStream sin = resource.getInputStream();
                  StringOutputStream sout = new StringOutputStream(StandardCharsets.UTF_8, true)) {
@@ -65,7 +70,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
             }
             return example;
         } catch (Exception e) {
-            LOGGER.warn("读取文件 classpath:groovy/ExampleRouterProcessor.groovy 时出现异常", e);
+            LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_GROOVY_ROUTER_EXAMPLE_PROCESSOR_READ_FAILED), e);
             return "";
         }
     }
@@ -75,7 +80,7 @@ public class GroovyRouterRegistry extends AbstractRouterRegistry {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
             // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
-            Processor processor = (Processor) aClass.newInstance();
+            Processor processor = (Processor) aClass.getDeclaredConstructor().newInstance();
             ctx.getAutowireCapableBeanFactory().autowireBean(processor);
             // 构建过滤器对象并返回。
             return ctx.getBean(GroovyRouter.class, processor);

@@ -1,17 +1,19 @@
 package com.dwarfeng.notify.node.all.he.launcher;
 
 import com.dwarfeng.notify.node.all.he.handler.LauncherSettingHandler;
+import com.dwarfeng.notify.node.all.he.internal.i18n.NodeMessageKey;
+import com.dwarfeng.notify.node.all.he.internal.i18n.NodeMessages;
 import com.dwarfeng.notify.stack.service.PurgeQosService;
 import com.dwarfeng.notify.stack.service.ResetQosService;
 import com.dwarfeng.notify.stack.service.SupportQosService;
 import com.dwarfeng.springterminator.sdk.util.ApplicationUtil;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
-import java.util.Date;
+import java.time.Instant;
 
 /**
  * 程序启动器。
@@ -23,9 +25,9 @@ public class Launcher {
 
     private final static Logger LOGGER = LoggerFactory.getLogger(Launcher.class);
 
-    public static void main(String[] args) {
+    static void main() {
         ApplicationUtil.launch(new String[]{
-                "classpath:spring/application-context*.xml",
+                "classpath:com/dwarfeng/notify/node/all/he/spring/application-context*.xml",
                 "file:opt/opt*.xml",
                 "file:optext/opt*.xml"
         }, ctx -> {
@@ -58,12 +60,12 @@ public class Launcher {
         }
 
         // 重置路由器支持。
-        LOGGER.info("重置路由器支持...");
+        LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_RESETTING_ROUTER_SUPPORT));
         SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
         try {
             supportQosService.resetRouter();
         } catch (ServiceException e) {
-            LOGGER.warn("路由器支持重置失败，异常信息如下", e);
+            LOGGER.warn(NodeMessages.message(NodeMessageKey.LAUNCHER_RESET_ROUTER_SUPPORT_FAILED), e);
         }
     }
 
@@ -77,12 +79,12 @@ public class Launcher {
         }
 
         // 重置发送器支持。
-        LOGGER.info("重置发送器支持...");
+        LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_RESETTING_SENDER_SUPPORT));
         SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
         try {
             supportQosService.resetSender();
         } catch (ServiceException e) {
-            LOGGER.warn("发送器支持重置失败，异常信息如下", e);
+            LOGGER.warn(NodeMessages.message(NodeMessageKey.LAUNCHER_RESET_SENDER_SUPPORT_FAILED), e);
         }
     }
 
@@ -96,12 +98,12 @@ public class Launcher {
         }
 
         // 重置调度器支持。
-        LOGGER.info("重置调度器支持...");
+        LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_RESETTING_DISPATCHER_SUPPORT));
         SupportQosService supportQosService = ctx.getBean(SupportQosService.class);
         try {
             supportQosService.resetDispatcher();
         } catch (ServiceException e) {
-            LOGGER.warn("调度器支持重置失败，异常信息如下", e);
+            LOGGER.warn(NodeMessages.message(NodeMessageKey.LAUNCHER_RESET_DISPATCHER_SUPPORT_FAILED), e);
         }
     }
 
@@ -118,24 +120,24 @@ public class Launcher {
         // 判断重置处理器是否启动重置服务，并按条件执行不同的操作。
         long startResetDelay = launcherSettingHandler.getStartResetDelay();
         if (startResetDelay == 0) {
-            LOGGER.info("立即启动重置服务...");
+            LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_STARTING_RESET_IMMEDIATELY));
             try {
                 resetQosService.start();
             } catch (ServiceException e) {
-                LOGGER.error("无法启动重置服务，异常原因如下", e);
+                LOGGER.error(NodeMessages.message(NodeMessageKey.LAUNCHER_START_RESET_FAILED), e);
             }
         } else if (startResetDelay > 0) {
-            LOGGER.info("{} 毫秒后启动重置服务...", startResetDelay);
+            LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_STARTING_RESET_DELAYED, startResetDelay));
             scheduler.schedule(
                     () -> {
-                        LOGGER.info("启动重置服务...");
+                        LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_STARTING_RESET));
                         try {
                             resetQosService.start();
                         } catch (ServiceException e) {
-                            LOGGER.error("无法启动重置服务，异常原因如下", e);
+                            LOGGER.error(NodeMessages.message(NodeMessageKey.LAUNCHER_START_RESET_FAILED), e);
                         }
                     },
-                    new Date(System.currentTimeMillis() + startResetDelay)
+                    Instant.ofEpochMilli(System.currentTimeMillis() + startResetDelay)
             );
         }
     }
@@ -153,24 +155,24 @@ public class Launcher {
         // 清除处理器是否上线清除服务。
         long onlinePurgeDelay = launcherSettingHandler.getOnlinePurgeDelay();
         if (onlinePurgeDelay == 0) {
-            LOGGER.info("立即上线清除服务...");
+            LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_ONLINE_PURGE_IMMEDIATELY));
             try {
                 purgeQosService.online();
             } catch (ServiceException e) {
-                LOGGER.error("无法上线清除服务，异常原因如下", e);
+                LOGGER.error(NodeMessages.message(NodeMessageKey.LAUNCHER_ONLINE_PURGE_FAILED), e);
             }
         } else if (onlinePurgeDelay > 0) {
-            LOGGER.info("{} 毫秒后上线清除服务...", onlinePurgeDelay);
+            LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_ONLINE_PURGE_DELAYED, onlinePurgeDelay));
             scheduler.schedule(
                     () -> {
-                        LOGGER.info("上线清除服务...");
+                        LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_ONLINE_PURGE));
                         try {
                             purgeQosService.online();
                         } catch (ServiceException e) {
-                            LOGGER.error("无法上线清除服务，异常原因如下", e);
+                            LOGGER.error(NodeMessages.message(NodeMessageKey.LAUNCHER_ONLINE_PURGE_FAILED), e);
                         }
                     },
-                    new Date(System.currentTimeMillis() + onlinePurgeDelay)
+                    Instant.ofEpochMilli(System.currentTimeMillis() + onlinePurgeDelay)
             );
         }
     }
@@ -188,24 +190,24 @@ public class Launcher {
         // 清除处理器是否启动清除服务。
         long enablePurgeDelay = launcherSettingHandler.getEnablePurgeDelay();
         if (enablePurgeDelay == 0) {
-            LOGGER.info("立即启动清除服务...");
+            LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_STARTING_PURGE_IMMEDIATELY));
             try {
                 purgeQosService.start();
             } catch (ServiceException e) {
-                LOGGER.error("无法启动清除服务，异常原因如下", e);
+                LOGGER.error(NodeMessages.message(NodeMessageKey.LAUNCHER_START_PURGE_FAILED), e);
             }
         } else if (enablePurgeDelay > 0) {
-            LOGGER.info("{} 毫秒后启动清除服务...", enablePurgeDelay);
+            LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_STARTING_PURGE_DELAYED, enablePurgeDelay));
             scheduler.schedule(
                     () -> {
-                        LOGGER.info("启动清除服务...");
+                        LOGGER.info(NodeMessages.message(NodeMessageKey.LAUNCHER_STARTING_PURGE));
                         try {
                             purgeQosService.start();
                         } catch (ServiceException e) {
-                            LOGGER.error("无法启动清除服务，异常原因如下", e);
+                            LOGGER.error(NodeMessages.message(NodeMessageKey.LAUNCHER_START_PURGE_FAILED), e);
                         }
                     },
-                    new Date(System.currentTimeMillis() + enablePurgeDelay)
+                    Instant.ofEpochMilli(System.currentTimeMillis() + enablePurgeDelay)
             );
         }
     }

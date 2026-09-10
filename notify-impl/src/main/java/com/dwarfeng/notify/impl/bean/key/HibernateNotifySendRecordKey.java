@@ -1,7 +1,8 @@
 package com.dwarfeng.notify.impl.bean.key;
 
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -12,8 +13,9 @@ import java.util.Objects;
  */
 public class HibernateNotifySendRecordKey implements Key {
 
-    private static final long serialVersionUID = -7100777531882484011L;
-    
+    @Serial
+    private static final long serialVersionUID = 1496576771211363168L;
+
     private Long notifyHistoryId;
     private String topicId;
     private String userId;

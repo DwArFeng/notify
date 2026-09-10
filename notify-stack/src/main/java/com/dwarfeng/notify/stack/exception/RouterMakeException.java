@@ -1,5 +1,10 @@
 package com.dwarfeng.notify.stack.exception;
 
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+
+import java.io.Serial;
+
 /**
  * 路由器构造异常。
  *
@@ -8,6 +13,7 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class RouterMakeException extends RouterException {
 
+    @Serial
     private static final long serialVersionUID = -8716257155912288696L;
 
     private final String routerType;
@@ -26,6 +32,6 @@ public class RouterMakeException extends RouterException {
 
     @Override
     public String getMessage() {
-        return "路由器构造异常, 类型为: " + routerType + ", 参数为: " + param;
+        return StackMessages.message(StackMessageKey.ROUTER_MAKE_EXCEPTION, routerType, param);
     }
 }

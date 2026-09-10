@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.service.PurgeQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
@@ -46,7 +49,7 @@ public class PurgeCommand extends CliCommand {
 
     @Override
     protected DescriptionProvider provideDescriptionProvider() {
-        return context -> "清除处理器操作/查看";
+        return _ -> ImplMessages.message(ImplMessageKey.TELQOS_PURGE_DESCRIPTION);
     }
 
     @Override
@@ -69,11 +72,26 @@ public class PurgeCommand extends CliCommand {
     @Override
     protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder(COMMAND_OPTION_ONLINE).optionalArg(true).hasArg(false).desc("上线清除处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_OFFLINE).optionalArg(true).hasArg(false).desc("下线清除处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_START).optionalArg(true).hasArg(false).desc("启动清除处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_STOP).optionalArg(true).hasArg(false).desc("停止清除处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_STATUS).optionalArg(true).hasArg(false).desc("查看清除处理器状态").build());
+        list.add(
+                Option.builder(COMMAND_OPTION_ONLINE).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_OPTION_ONLINE)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_OFFLINE).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_OPTION_OFFLINE)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_START).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_OPTION_START)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_STOP).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_OPTION_STOP)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_STATUS).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_OPTION_STATUS)).get()
+        );
         return list;
     }
 
@@ -88,25 +106,25 @@ public class PurgeCommand extends CliCommand {
         switch (pair.getLeft()) {
             case COMMAND_OPTION_ONLINE:
                 purgeQosService.online();
-                context.sendMessage("清除处理器已上线!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_ONLINE));
                 break;
             case COMMAND_OPTION_OFFLINE:
                 purgeQosService.offline();
-                context.sendMessage("清除处理器已下线!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_OFFLINE));
                 break;
             case COMMAND_OPTION_START:
                 purgeQosService.start();
-                context.sendMessage("清除处理器已启动!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_STARTED));
                 break;
             case COMMAND_OPTION_STOP:
                 purgeQosService.stop();
-                context.sendMessage("清除处理器已停止!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_PURGE_STOPPED));
                 break;
             case COMMAND_OPTION_STATUS:
                 printStatus(context);
                 break;
             default:
-                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
+                throw new IllegalStateException(ImplMessages.message(ImplMessageKey.ERROR_INTERNAL_UNREACHABLE));
         }
     }
 

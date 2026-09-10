@@ -5,7 +5,7 @@ import com.dwarfeng.notify.sdk.handler.dispatcher.AbstractDispatcherRegistry;
 import com.dwarfeng.notify.stack.exception.DispatcherException;
 import com.dwarfeng.notify.stack.exception.DispatcherMakeException;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;

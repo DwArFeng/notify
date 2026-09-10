@@ -1,5 +1,10 @@
 package com.dwarfeng.notify.stack.exception;
 
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+
+import java.io.Serial;
+
 /**
  * 调度器构造异常。
  *
@@ -8,8 +13,9 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class DispatcherMakeException extends DispatcherException {
 
+    @Serial
     private static final long serialVersionUID = -6038666667222292186L;
-    
+
     private final String dispatcherType;
     private final String param;
 
@@ -26,6 +32,6 @@ public class DispatcherMakeException extends DispatcherException {
 
     @Override
     public String getMessage() {
-        return "调度器构造异常, 类型为: " + dispatcherType + ", 参数为: " + param;
+        return StackMessages.message(StackMessageKey.DISPATCHER_MAKE_EXCEPTION, dispatcherType, param);
     }
 }

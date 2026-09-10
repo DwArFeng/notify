@@ -1,11 +1,13 @@
 package com.dwarfeng.notify.sdk.bean.key;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -16,7 +18,8 @@ import java.util.Objects;
  */
 public class WebInputSenderInfoKey implements Key {
 
-    private static final long serialVersionUID = 45962443872371671L;
+    @Serial
+    private static final long serialVersionUID = 156678880643856910L;
 
     public static SenderInfoKey toStackBean(WebInputSenderInfoKey webInputSenderInfoKey) {
         if (Objects.isNull(webInputSenderInfoKey)) {

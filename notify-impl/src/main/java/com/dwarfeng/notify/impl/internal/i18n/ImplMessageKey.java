@@ -1,0 +1,211 @@
+package com.dwarfeng.notify.impl.internal.i18n;
+
+import static com.dwarfeng.notify.impl.internal.i18n.ImplMessages.Catalog.IMPL;
+
+/**
+ * Impl 模块消息键。
+ *
+ * @author DwArFeng
+ * @since 4.0.0
+ */
+public enum ImplMessageKey {
+
+    SENDER_LOG_OPTION_ANY(IMPL, "sender.log.option.any"),
+    LOG_RESET_ALL_FAILED(IMPL, "log.reset.all.failed"),
+    LOG_PURGE_RETENTION_DATE(IMPL, "log.purge.retention.date"),
+    LOG_PURGE_RETENTION_DURATION(IMPL, "log.purge.retention.duration"),
+    TELQOS_COMMON_LOCAL_CACHE_CLEARED(IMPL, "telqos.common.local.cache.cleared"),
+    ROUTER_IDENTITY_LABEL(IMPL, "router.identity.label"),
+    DISPATCHER_EMPTY_DESCRIPTION(IMPL, "dispatcher.empty.description"),
+    ROUTER_EMPTY_DESCRIPTION(IMPL, "router.empty.description"),
+    ERROR_INTERNAL_UNREACHABLE(IMPL, "error.internal.unreachable"),
+    TELQOS_PURGE_OPTION_STATUS(IMPL, "telqos.purge.option.status"),
+    TELQOS_RESET_OPTION_LOOKUP(IMPL, "telqos.reset.option.lookup"),
+    TELQOS_RESET_OPTION_STATUS(IMPL, "telqos.reset.option.status"),
+    TELQOS_DISPATCHER_LOCAL_CACHE_OPTION_LOOKUP(IMPL, "telqos.dispatcher.local.cache.option.lookup"),
+    TELQOS_SENDER_LOCAL_CACHE_OPTION_LOOKUP(IMPL, "telqos.sender.local.cache.option.lookup"),
+    TELQOS_ROUTER_LOCAL_CACHE_OPTION_LOOKUP(IMPL, "telqos.router.local.cache.option.lookup"),
+    LOG_RESETTER_HANDLER_INITIALIZING(IMPL, "log.resetter.handler.initializing"),
+    LOG_MULTI_PUSHER_PUSH_FAILED(IMPL, "log.multi.pusher.push.failed"),
+    LOG_DISPATCHER_DETAIL(IMPL, "log.dispatcher.detail"),
+    TELQOS_DISPATCHER_LOCAL_CACHE_DESCRIPTION(IMPL, "telqos.dispatcher.local.cache.description"),
+    LOG_DISPATCHER_INITIALIZED(IMPL, "log.dispatcher.initialized"),
+    LOG_DISPATCHER_BUILT(IMPL, "log.dispatcher.built"),
+    RESET_DISPATCH_EVENT(IMPL, "reset.dispatch.event"),
+    SENDER_DRAIN_DESCRIPTION(IMPL, "sender.drain.description"),
+    LOG_GROOVY_DISPATCHER_EXAMPLE_PROCESSOR_READ_FAILED(IMPL, "log.groovy.dispatcher.example.processor.read.failed"),
+    LOG_GROOVY_ROUTER_EXAMPLE_PROCESSOR_READ_FAILED(IMPL, "log.groovy.router.example.processor.read.failed"),
+    LOG_GROOVY_SENDER_EXAMPLE_PROCESSOR_READ_FAILED(IMPL, "log.groovy.sender.example.processor.read.failed"),
+    SENDER_GROOVY_EXCEPTION_MESSAGE(IMPL, "sender.groovy.exception.message"),
+    SENDER_SEND_SUCCEEDED(IMPL, "sender.send.succeeded"),
+    LOG_SENDER_DETAIL(IMPL, "log.sender.detail"),
+    TELQOS_SENDER_LOCAL_CACHE_DESCRIPTION(IMPL, "telqos.sender.local.cache.description"),
+    LOG_SENDER_INITIALIZED(IMPL, "log.sender.initialized"),
+    LOG_SENDER_BUILT(IMPL, "log.sender.built"),
+    RESET_SEND_EVENT(IMPL, "reset.send.event"),
+    ERROR_ILLEGAL_ARGUMENT(IMPL, "error.illegal.argument"),
+    ERROR_ILLEGAL_PARAM(IMPL, "error.illegal.param"),
+    ERROR_NOTIFY_QOS_SERVICE_CONFIRM_MODE_GET_FAILED(IMPL, "error.notify.qos.service.confirm.mode.get.failed"),
+    ERROR_NOTIFY_QOS_SERVICE_DISPATCHER_GET_FAILED(IMPL, "error.notify.qos.service.dispatcher.get.failed"),
+    ERROR_NOTIFY_QOS_SERVICE_SENDER_GET_FAILED(IMPL, "error.notify.qos.service.sender.get.failed"),
+    ERROR_NOTIFY_QOS_SERVICE_ROUTER_GET_FAILED(IMPL, "error.notify.qos.service.router.get.failed"),
+    LOG_RESET_SCHEDULE_TRIGGERED(IMPL, "log.reset.schedule.triggered"),
+    LOG_PURGE_RETENTION_DATE_CALCULATING(IMPL, "log.purge.retention.date.calculating"),
+    LOG_KAFKA_LISTENER_OFFSET_MOVING(IMPL, "log.kafka.listener.offset.moving"),
+    ROUTER_STATIC_PARAM_DESCRIPTION(IMPL, "router.static.param.description"),
+    ROUTER_IDENTITY_DESCRIPTION(IMPL, "router.identity.description"),
+    SENDER_LOG_DESCRIPTION(IMPL, "sender.log.description"),
+    ROUTER_ENTIRE_DESCRIPTION(IMPL, "router.entire.description"),
+    LOG_RESET_DISPATCH_MESSAGE_RECEIVED(IMPL, "log.reset.dispatch.message.received"),
+    LOG_RESET_SEND_MESSAGE_RECEIVED(IMPL, "log.reset.send.message.received"),
+    LOG_RESET_ROUTE_MESSAGE_RECEIVED(IMPL, "log.reset.route.message.received"),
+    DISPATCHER_ENTIRE_DESCRIPTION(IMPL, "dispatcher.entire.description"),
+    ERROR_EXTERNAL_INSTANTIATION_PROHIBITED(IMPL, "error.external.instantiation.prohibited"),
+    ROUTER_STATIC_LABEL(IMPL, "router.static.label"),
+    LOG_PURGE_TASK_EXECUTING(IMPL, "log.purge.task.executing"),
+    DISPATCHER_EMPTY_LABEL(IMPL, "dispatcher.empty.label"),
+    ROUTER_EMPTY_LABEL(IMPL, "router.empty.label"),
+    LOG_NOTIFY_HISTORY_RECORD_EVENT_PUSH_FAILED(IMPL, "log.notify.history.record.event.push.failed"),
+    ERROR_RESET_QOS_SERVICE_RESETTER_LIST_FAILED(IMPL, "error.reset.qos.service.resetter.list.failed"),
+    LOG_ROUTER_DETAIL(IMPL, "log.router.detail"),
+    TELQOS_ROUTER_LOCAL_CACHE_DESCRIPTION(IMPL, "telqos.router.local.cache.description"),
+    LOG_ROUTER_INITIALIZED(IMPL, "log.router.initialized"),
+    LOG_ROUTER_BUILT(IMPL, "log.router.built"),
+    RESET_ROUTE_EVENT(IMPL, "reset.route.event"),
+    ERROR_PURGE_QOS_SERVICE_STARTED_QUERY_FAILED(IMPL, "error.purge.qos.service.started.query.failed"),
+    ERROR_PURGE_QOS_SERVICE_ONLINE_QUERY_FAILED(IMPL, "error.purge.qos.service.online.query.failed"),
+    ERROR_PURGE_QOS_SERVICE_LOCKED_QUERY_FAILED(IMPL, "error.purge.qos.service.locked.query.failed"),
+    ERROR_PURGE_QOS_SERVICE_WORKING_QUERY_FAILED(IMPL, "error.purge.qos.service.working.query.failed"),
+    ERROR_RESET_QOS_SERVICE_STARTED_QUERY_FAILED(IMPL, "error.reset.qos.service.started.query.failed"),
+    LOG_KAFKA_CONSUMER_FACTORY_CONFIGURING(IMPL, "log.kafka.consumer.factory.configuring"),
+    LOG_KAFKA_CONSUMER_PROPERTIES_CONFIGURING(IMPL, "log.kafka.consumer.properties.configuring"),
+    LOG_KAFKA_LISTENER_CONTAINER_FACTORY_CONFIGURING(IMPL, "log.kafka.listener.container.factory.configuring"),
+    TELQOS_PURGE_OPTION_START(IMPL, "telqos.purge.option.start"),
+    ERROR_PURGE_QOS_SERVICE_START_FAILED(IMPL, "error.purge.qos.service.start.failed"),
+    TELQOS_RESET_OPTION_START(IMPL, "telqos.reset.option.start"),
+    LOG_RESETTERS_STARTING(IMPL, "log.resetters.starting"),
+    TELQOS_PURGE_DESCRIPTION(IMPL, "telqos.purge.description"),
+    LOG_PURGE_HANDLER_WORKING_STARTED(IMPL, "log.purge.handler.working.started"),
+    LOG_PURGE_HANDLER_WORKING_STOPPED(IMPL, "log.purge.handler.working.stopped"),
+    TELQOS_PURGE_STARTED(IMPL, "telqos.purge.started"),
+    TELQOS_PURGE_ONLINE(IMPL, "telqos.purge.online"),
+    TELQOS_PURGE_STOPPED(IMPL, "telqos.purge.stopped"),
+    TELQOS_PURGE_OFFLINE(IMPL, "telqos.purge.offline"),
+    TELQOS_DISPATCHER_LOCAL_CACHE_OPTION_CLEAR(IMPL, "telqos.dispatcher.local.cache.option.clear"),
+    TELQOS_SENDER_LOCAL_CACHE_OPTION_CLEAR(IMPL, "telqos.sender.local.cache.option.clear"),
+    LOG_PURGE_SCHEDULE_STARTED(IMPL, "log.purge.schedule.started"),
+    TELQOS_ROUTER_LOCAL_CACHE_OPTION_CLEAR(IMPL, "telqos.router.local.cache.option.clear"),
+    LOG_PURGE_TASK_EXECUTE_FAILED(IMPL, "log.purge.task.execute.failed"),
+    LOG_PURGE_TASK_EXECUTED(IMPL, "log.purge.task.executed"),
+    PURGE_FAILED_EVENT(IMPL, "purge.failed.event"),
+    LOG_PURGE_NOTIFY_HISTORY(IMPL, "log.purge.notify.history"),
+    LOG_PURGE_NOTIFY_HISTORY_PURGED(IMPL, "log.purge.notify.history.purged"),
+    PURGE_COMPLETED_EVENT(IMPL, "purge.completed.event"),
+    ERROR_NOTIFY_QOS_SERVICE_DISPATCHER_LOCAL_CACHE_CLEAR_FAILED(
+            IMPL, "error.notify.qos.service.dispatcher.local.cache.clear.failed"
+    ),
+    ERROR_NOTIFY_QOS_SERVICE_SENDER_LOCAL_CACHE_CLEAR_FAILED(
+            IMPL, "error.notify.qos.service.sender.local.cache.clear.failed"
+    ),
+    ERROR_NOTIFY_QOS_SERVICE_ROUTER_LOCAL_CACHE_CLEAR_FAILED(
+            IMPL, "error.notify.qos.service.router.local.cache.clear.failed"
+    ),
+    LOG_PURGE_HISTORY_DIVERGENCE_SUGGESTION(IMPL, "log.purge.history.divergence.suggestion"),
+    DISPATCHER_ENTIRE_LABEL(IMPL, "dispatcher.entire.label"),
+    ROUTER_ENTIRE_LABEL(IMPL, "router.entire.label"),
+    SENDER_LOG_LABEL(IMPL, "sender.log.label"),
+    ERROR_PARAM_NULL(IMPL, "error.param.null"),
+    TELQOS_PURGE_OPTION_ONLINE(IMPL, "telqos.purge.option.online"),
+    ERROR_PURGE_QOS_SERVICE_ONLINE_FAILED(IMPL, "error.purge.qos.service.online.failed"),
+    TELQOS_PURGE_OPTION_STOP(IMPL, "telqos.purge.option.stop"),
+    ERROR_PURGE_QOS_SERVICE_STOP_FAILED(IMPL, "error.purge.qos.service.stop.failed"),
+    TELQOS_RESET_OPTION_STOP(IMPL, "telqos.reset.option.stop"),
+    LOG_RESETTERS_STOPPING(IMPL, "log.resetters.stopping"),
+    META_REMARK_INTERNAL_ROUTER_CONTEXT_UPDATED(IMPL, "meta.remark.internal.router.context.updated"),
+    NOTIFY_HISTORY_REMARK_GENERATED(IMPL, "notify.history.remark.generated"),
+    LOG_DISPATCHER_BUILDING(IMPL, "log.dispatcher.building"),
+    LOG_SENDER_BUILDING(IMPL, "log.sender.building"),
+    LOG_ROUTER_BUILDING(IMPL, "log.router.building"),
+    DISPATCHER_GROOVY_DESCRIPTION(IMPL, "dispatcher.groovy.description"),
+    SENDER_GROOVY_DESCRIPTION(IMPL, "sender.groovy.description"),
+    ROUTER_GROOVY_DESCRIPTION(IMPL, "router.groovy.description"),
+    NOTIFY_HISTORY_RECORDED_EVENT(IMPL, "notify.history.recorded.event"),
+    TELQOS_SENDER_LOCAL_CACHE_OPTION_NOTIFY_SETTING_ID(IMPL, "telqos.sender.local.cache.option.notify.setting.id"),
+    LOG_RESET_DISPATCH_MESSAGE_PUSH_FAILED(IMPL, "log.reset.dispatch.message.push.failed"),
+    LOG_RESET_ROUTE_MESSAGE_PUSH_FAILED(IMPL, "log.reset.route.message.push.failed"),
+    LOG_PURGE_RESULT_PUSH_FAILED(IMPL, "log.purge.result.push.failed"),
+    LOG_PURGE_FAILED_PUSH_FAILED(IMPL, "log.purge.failed.push.failed"),
+    LOG_RESET_SEND_MESSAGE_PUSH_FAILED(IMPL, "log.reset.send.message.push.failed"),
+    ERROR_UNKNOWN_PUSHER_TYPE(IMPL, "error.unknown.pusher.type"),
+    ERROR_UNKNOWN_LOG_LEVEL(IMPL, "error.unknown.log.level"),
+    ERROR_UNRECOGNIZED_PRESET(IMPL, "error.unrecognized.preset"),
+    SENDER_DRAIN_LABEL(IMPL, "sender.drain.label"),
+    TELQOS_PURGE_OPTION_OFFLINE(IMPL, "telqos.purge.option.offline"),
+    ERROR_PURGE_QOS_SERVICE_OFFLINE_FAILED(IMPL, "error.purge.qos.service.offline.failed"),
+    LOG_LOG_SENDER_SENDING(IMPL, "log.log.sender.sending"),
+    LOG_PURGE_SCHEDULE_NOT_STARTED(IMPL, "log.purge.schedule.not.started"),
+    LOG_PURGE_TASK_SKIPPED(IMPL, "log.purge.task.skipped"),
+    ERROR_KAFKA_LISTENER_CONTAINER_NOT_FOUND(IMPL, "error.kafka.listener.container.not.found"),
+    TELQOS_SUPPORT_DESCRIPTION(IMPL, "telqos.support.description"),
+    TELQOS_RESET_OPTION_RESET_DISPATCH(IMPL, "telqos.reset.option.reset.dispatch"),
+    TELQOS_RESET_OPTION_RESET_SEND(IMPL, "telqos.reset.option.reset.send"),
+    TELQOS_RESET_OPTION_RESET_ROUTE(IMPL, "telqos.reset.option.reset.route"),
+    LOG_PURGE_HISTORY_DIVERGENCE(IMPL, "log.purge.history.divergence"),
+    TELQOS_RESET_SUCCEEDED(IMPL, "telqos.reset.succeeded"),
+    TELQOS_RESET_DESCRIPTION(IMPL, "telqos.reset.description"),
+    TELQOS_RESET_STARTED(IMPL, "telqos.reset.started"),
+    TELQOS_RESET_STOPPED(IMPL, "telqos.reset.stopped"),
+    TELQOS_SUPPORT_OPTION_RESET_DISPATCHER(IMPL, "telqos.support.option.reset.dispatcher"),
+    TELQOS_SUPPORT_RESET_DISPATCHER_SUCCEEDED(IMPL, "telqos.support.reset.dispatcher.succeeded"),
+    ERROR_SUPPORT_QOS_SERVICE_DISPATCHER_RESET_FAILED(IMPL, "error.support.qos.service.dispatcher.reset.failed"),
+    ERROR_RESET_QOS_SERVICE_DISPATCH_FAILED(IMPL, "error.reset.qos.service.dispatch.failed"),
+    LOG_RESET_DISPATCH_FAILED(IMPL, "log.reset.dispatch.failed"),
+    TELQOS_SUPPORT_OPTION_RESET_SENDER(IMPL, "telqos.support.option.reset.sender"),
+    TELQOS_SUPPORT_RESET_SENDER_SUCCEEDED(IMPL, "telqos.support.reset.sender.succeeded"),
+    ERROR_SUPPORT_QOS_SERVICE_SENDER_RESET_FAILED(IMPL, "error.support.qos.service.sender.reset.failed"),
+    ERROR_RESET_QOS_SERVICE_SEND_FAILED(IMPL, "error.reset.qos.service.send.failed"),
+    LOG_RESET_SEND_FAILED(IMPL, "log.reset.send.failed"),
+    ERROR_RESET_QOS_SERVICE_START_FAILED(IMPL, "error.reset.qos.service.start.failed"),
+    ERROR_RESET_QOS_SERVICE_STOP_FAILED(IMPL, "error.reset.qos.service.stop.failed"),
+    TELQOS_SUPPORT_OPTION_RESET_ROUTER(IMPL, "telqos.support.option.reset.router"),
+    TELQOS_SUPPORT_RESET_ROUTER_SUCCEEDED(IMPL, "telqos.support.reset.router.succeeded"),
+    ERROR_SUPPORT_QOS_SERVICE_ROUTER_RESET_FAILED(IMPL, "error.support.qos.service.router.reset.failed"),
+    ERROR_RESET_QOS_SERVICE_ROUTE_FAILED(IMPL, "error.reset.qos.service.route.failed"),
+    LOG_RESET_ROUTE_FAILED(IMPL, "log.reset.route.failed"),
+    TELQOS_RESET_RESETTER(IMPL, "telqos.reset.resetter"),
+    LOG_RESETTER_START_FAILED(IMPL, "log.resetter.start.failed"),
+    LOG_RESETTER_STOP_FAILED(IMPL, "log.resetter.stop.failed"),
+    LOG_NOTIFY_DISPATCH_FAILED(IMPL, "log.notify.dispatch.failed"),
+    LOG_NOTIFY_SEND_FAILED(IMPL, "log.notify.send.failed"),
+    TELQOS_SENDER_LOCAL_CACHE_OPTION_TOPIC_ID(IMPL, "telqos.sender.local.cache.option.topic.id"),
+    LOG_DUBBO_RESETTER_STARTING(IMPL, "log.dubbo.resetter.starting"),
+    LOG_DUBBO_RESETTER_STOPPING(IMPL, "log.dubbo.resetter.stopping"),
+    DISPATCHER_GROOVY_LABEL(IMPL, "dispatcher.groovy.label"),
+    SENDER_GROOVY_LABEL(IMPL, "sender.groovy.label"),
+    ROUTER_GROOVY_LABEL(IMPL, "router.groovy.label"),
+    LOG_KAFKA_CONSUMER_FACTORY_CONFIGURED(IMPL, "log.kafka.consumer.factory.configured"),
+    LOG_KAFKA_CONSUMER_PROPERTIES_CONFIGURED(IMPL, "log.kafka.consumer.properties.configured"),
+    LOG_KAFKA_RESETTER_STARTING(IMPL, "log.kafka.resetter.starting"),
+    LOG_KAFKA_RESETTER_STOPPING(IMPL, "log.kafka.resetter.stopping");
+
+    private final ImplMessages.Catalog catalog;
+    private final String key;
+
+    ImplMessageKey(ImplMessages.Catalog catalog, String key) {
+        this.catalog = catalog;
+        this.key = key;
+    }
+
+    ImplMessages.Catalog catalog() {
+        return catalog;
+    }
+
+    /**
+     * 获取消息键。
+     *
+     * @return 消息键。
+     */
+    public String key() {
+        return key;
+    }
+}

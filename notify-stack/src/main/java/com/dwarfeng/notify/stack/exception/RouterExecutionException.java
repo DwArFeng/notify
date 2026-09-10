@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.stack.exception;
 
+import java.io.Serial;
+
 /**
  * 路由器执行异常。
  *
@@ -8,6 +10,7 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class RouterExecutionException extends RouterException {
 
+    @Serial
     private static final long serialVersionUID = 7727523113758951141L;
 
     public RouterExecutionException() {

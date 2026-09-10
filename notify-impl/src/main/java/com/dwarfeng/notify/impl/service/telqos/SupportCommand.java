@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.service.SupportQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
 import com.dwarfeng.springtelqos.sdk.configuration.TelqosCommand;
@@ -42,7 +45,7 @@ public class SupportCommand extends CliCommand {
 
     @Override
     protected DescriptionProvider provideDescriptionProvider() {
-        return context -> "支持操作";
+        return _ -> ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_DESCRIPTION);
     }
 
     @Override
@@ -63,12 +66,18 @@ public class SupportCommand extends CliCommand {
     @Override
     protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_ROUTER).optionalArg(true).hasArg(false)
-                .desc("重置路由器").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_SENDER).optionalArg(true).hasArg(false)
-                .desc("重置发送器").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_DISPATCHER).optionalArg(true).hasArg(false)
-                .desc("重置调度器").build());
+        list.add(
+                Option.builder().longOpt(COMMAND_OPTION_RESET_ROUTER).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_OPTION_RESET_ROUTER)).get()
+        );
+        list.add(
+                Option.builder().longOpt(COMMAND_OPTION_RESET_SENDER).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_OPTION_RESET_SENDER)).get()
+        );
+        list.add(
+                Option.builder().longOpt(COMMAND_OPTION_RESET_DISPATCHER).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_OPTION_RESET_DISPATCHER)).get()
+        );
         return list;
     }
 
@@ -83,18 +92,18 @@ public class SupportCommand extends CliCommand {
         switch (pair.getLeft()) {
             case COMMAND_OPTION_RESET_ROUTER:
                 supportQosService.resetRouter();
-                context.sendMessage("重置路由器成功。");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_RESET_ROUTER_SUCCEEDED));
                 break;
             case COMMAND_OPTION_RESET_SENDER:
                 supportQosService.resetSender();
-                context.sendMessage("重置发送器成功。");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_RESET_SENDER_SUCCEEDED));
                 break;
             case COMMAND_OPTION_RESET_DISPATCHER:
                 supportQosService.resetDispatcher();
-                context.sendMessage("重置调度器成功。");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_SUPPORT_RESET_DISPATCHER_SUCCEEDED));
                 break;
             default:
-                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
+                throw new IllegalStateException(ImplMessages.message(ImplMessageKey.ERROR_INTERNAL_UNREACHABLE));
         }
     }
 }

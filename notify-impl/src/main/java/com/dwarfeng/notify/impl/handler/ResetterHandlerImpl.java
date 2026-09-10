@@ -1,12 +1,15 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.Resetter;
 import com.dwarfeng.notify.stack.handler.ResetterHandler;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -29,7 +32,7 @@ public class ResetterHandlerImpl implements ResetterHandler {
 
     @PostConstruct
     public void init() {
-        LOGGER.info("初始化驱动器...");
+        LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESETTER_HANDLER_INITIALIZING));
         resetters.forEach(resetter -> resetter.init(resetterContext));
     }
 

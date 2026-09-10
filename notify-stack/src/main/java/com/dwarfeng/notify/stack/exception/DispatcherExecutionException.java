@@ -1,5 +1,7 @@
 package com.dwarfeng.notify.stack.exception;
 
+import java.io.Serial;
+
 /**
  * 调度器执行异常。
  *
@@ -8,6 +10,7 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class DispatcherExecutionException extends DispatcherException {
 
+    @Serial
     private static final long serialVersionUID = -3520759771951461040L;
 
     public DispatcherExecutionException() {

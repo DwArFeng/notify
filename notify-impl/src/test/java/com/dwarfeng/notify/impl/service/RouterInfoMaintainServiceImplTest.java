@@ -5,20 +5,20 @@ import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
 import com.dwarfeng.notify.stack.service.RouterInfoMaintainService;
 import org.apache.commons.beanutils.BeanUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Objects;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/application-context*.xml")
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(locations = "classpath:com/dwarfeng/notify/impl/spring/application-context*.xml")
 public class RouterInfoMaintainServiceImplTest {
 
     @Autowired
@@ -29,13 +29,13 @@ public class RouterInfoMaintainServiceImplTest {
     private NotifySetting notifySetting;
     private RouterInfo routerInfo;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         notifySetting = new NotifySetting(null, "label", "remark", true);
         routerInfo = new RouterInfo(null, "label", "type", "param", "remark");
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         notifySetting = null;
         routerInfo = null;

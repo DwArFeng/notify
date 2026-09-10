@@ -1,9 +1,12 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.pusher.AbstractPusher;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,42 +43,42 @@ public class LogPusher extends AbstractPusher {
 
     @Override
     public void notifyHistoryRecorded(NotifyHistoryRecordInfo info) throws HandlerException {
-        String title = "通知历史被记录事件:";
+        String title = ImplMessages.message(ImplMessageKey.NOTIFY_HISTORY_RECORDED_EVENT);
         String message = Objects.toString(info);
         logData(title, message);
     }
 
     @Override
     public void routeReset() throws HandlerException {
-        String title = "路由重置事件:";
+        String title = ImplMessages.message(ImplMessageKey.RESET_ROUTE_EVENT);
         String message = StringUtils.EMPTY;
         logData(title, message);
     }
 
     @Override
     public void dispatchReset() throws HandlerException {
-        String title = "调度重置事件:";
+        String title = ImplMessages.message(ImplMessageKey.RESET_DISPATCH_EVENT);
         String message = StringUtils.EMPTY;
         logData(title, message);
     }
 
     @Override
     public void sendReset() throws HandlerException {
-        String title = "发送重置事件:";
+        String title = ImplMessages.message(ImplMessageKey.RESET_SEND_EVENT);
         String message = StringUtils.EMPTY;
         logData(title, message);
     }
 
     @Override
     public void purgeFinished(PurgeFinishedResult result) throws HandlerException {
-        String title = "清除完成事件:";
+        String title = ImplMessages.message(ImplMessageKey.PURGE_COMPLETED_EVENT);
         String message = Objects.toString(result);
         logData(title, message);
     }
 
     @Override
     public void purgeFailed() throws HandlerException {
-        String title = "清除失败事件:";
+        String title = ImplMessages.message(ImplMessageKey.PURGE_FAILED_EVENT);
         String message = StringUtils.EMPTY;
         logData(title, message);
     }
@@ -104,7 +107,7 @@ public class LogPusher extends AbstractPusher {
                 LOGGER.error(message);
                 return;
             default:
-                throw new HandlerException("未知的日志等级: " + logLevel);
+                throw new HandlerException(ImplMessages.message(ImplMessageKey.ERROR_UNKNOWN_LOG_LEVEL, logLevel));
         }
     }
 

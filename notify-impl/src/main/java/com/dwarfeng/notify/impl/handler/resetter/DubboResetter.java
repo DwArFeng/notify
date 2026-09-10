@@ -1,12 +1,15 @@
 package com.dwarfeng.notify.impl.handler.resetter;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.resetter.AbstractResetter;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
-import com.dwarfeng.subgrade.stack.service.Service;
+import com.dwarfeng.subgrade.basic.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.stack.service.Service;
 import org.apache.dubbo.config.ProtocolConfig;
 import org.apache.dubbo.config.RegistryConfig;
 import org.apache.dubbo.config.ServiceConfig;
@@ -59,7 +62,7 @@ public class DubboResetter extends AbstractResetter {
     protected void doStart() throws Exception {
         lock.lock();
         try {
-            LOGGER.info("Dubbo resetter 开启...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_DUBBO_RESETTER_STARTING));
 
             // 判断启动状态，如已经启动，则什么也不做。
             if (startFlag) {
@@ -96,7 +99,7 @@ public class DubboResetter extends AbstractResetter {
     protected void doStop() throws Exception {
         lock.lock();
         try {
-            LOGGER.info("Dubbo resetter 停止...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_DUBBO_RESETTER_STOPPING));
 
             // 判断启动状态，如已经停止，则什么也不做。
             if (!startFlag) {
@@ -176,33 +179,39 @@ public class DubboResetter extends AbstractResetter {
         @Override
         public boolean resetRoute() throws ServiceException {
             try {
-                LOGGER.info("接收到路由重置消息, 正在重置路由...");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_ROUTE_MESSAGE_RECEIVED));
                 context.resetRoute();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
+                throw ServiceExceptionHelper.logParse(
+                        ImplMessages.message(ImplMessageKey.SENDER_GROOVY_EXCEPTION_MESSAGE), LogLevel.WARN, e, sem
+                );
             }
         }
 
         @Override
         public boolean resetDispatch() throws ServiceException {
             try {
-                LOGGER.info("接收到调度重置消息, 正在重置调度...");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_DISPATCH_MESSAGE_RECEIVED));
                 context.resetDispatch();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
+                throw ServiceExceptionHelper.logParse(
+                        ImplMessages.message(ImplMessageKey.SENDER_GROOVY_EXCEPTION_MESSAGE), LogLevel.WARN, e, sem
+                );
             }
         }
 
         @Override
         public boolean resetSend() throws ServiceException {
             try {
-                LOGGER.info("接收到发送重置消息, 正在重置发送...");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_SEND_MESSAGE_RECEIVED));
                 context.resetSend();
                 return true;
             } catch (Exception e) {
-                throw ServiceExceptionHelper.logParse("发生异常", LogLevel.WARN, e, sem);
+                throw ServiceExceptionHelper.logParse(
+                        ImplMessages.message(ImplMessageKey.SENDER_GROOVY_EXCEPTION_MESSAGE), LogLevel.WARN, e, sem
+                );
             }
         }
 

@@ -1,15 +1,17 @@
 package com.dwarfeng.notify.impl.service;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.PurgeHandler;
 import com.dwarfeng.notify.stack.service.PurgeQosService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
+import jakarta.annotation.PreDestroy;
 import org.springframework.stereotype.Component;
-
-import javax.annotation.PreDestroy;
 
 @Component
 public class PurgeQosServiceImpl implements PurgeQosService {
@@ -34,7 +36,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             return purgeHandler.isOnline();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("判断清除服务是否上线时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_ONLINE_QUERY_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -43,7 +48,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             purgeHandler.online();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("上线清除服务时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_ONLINE_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -52,7 +60,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             purgeHandler.offline();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("下线清除服务时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_OFFLINE_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -61,7 +72,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             return purgeHandler.isLockHolding();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("判断清除服务是否正在持有锁时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_LOCKED_QUERY_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -70,7 +84,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             return purgeHandler.isStarted();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("判断清除服务是否启动时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_STARTED_QUERY_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -79,7 +96,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             purgeHandler.start();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("启动清除服务时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_START_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -88,7 +108,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             purgeHandler.stop();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("停止清除服务时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_STOP_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -97,7 +120,10 @@ public class PurgeQosServiceImpl implements PurgeQosService {
         try {
             return purgeHandler.isWorking();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("判断清除服务是否正在工作时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_PURGE_QOS_SERVICE_WORKING_QUERY_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 }

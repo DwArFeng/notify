@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.service;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.handler.Dispatcher;
@@ -7,12 +10,12 @@ import com.dwarfeng.notify.stack.handler.NotifyHandler;
 import com.dwarfeng.notify.stack.handler.Router;
 import com.dwarfeng.notify.stack.handler.Sender;
 import com.dwarfeng.notify.stack.service.NotifyQosService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -32,7 +35,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.notify(notifyInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("获取当前的确认模式时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_CONFIRM_MODE_GET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -41,7 +47,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             return notifyHandler.getRouter(routerInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("获取指定主键对应的路由器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_ROUTER_GET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -50,7 +59,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.clearRouterLocalCache();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("清理路由器本地缓存时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_ROUTER_LOCAL_CACHE_CLEAR_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -59,7 +71,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             return notifyHandler.getDispatcher(dispatcherInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("获取指定主键对应的调度器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_DISPATCHER_GET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -68,7 +83,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.clearDispatcherLocalCache();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("清理调度器本地缓存时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_DISPATCHER_LOCAL_CACHE_CLEAR_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -77,7 +95,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             return notifyHandler.getSender(senderInfoKey);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("获取指定主键对应的发送器时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_SENDER_GET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 
@@ -86,7 +107,10 @@ public class NotifyQosServiceImpl implements NotifyQosService {
         try {
             notifyHandler.clearSenderLocalCache();
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("清理发送器本地缓存时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_SENDER_LOCAL_CACHE_CLEAR_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 }

@@ -1,8 +1,8 @@
 package com.dwarfeng.notify.stack.service;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.service.Service;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.service.Service;
 
 /**
  * 通知服务。

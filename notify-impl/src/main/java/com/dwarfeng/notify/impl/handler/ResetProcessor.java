@@ -1,10 +1,13 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.DispatchLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.PushHandler;
 import com.dwarfeng.notify.stack.handler.RouteLocalCacheHandler;
 import com.dwarfeng.notify.stack.handler.SendLocalCacheHandler;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -44,7 +47,7 @@ public class ResetProcessor {
         try {
             pushHandler.routeReset();
         } catch (Exception e) {
-            LOGGER.warn("推送路由被重置消息时发生异常, 本次消息将不会被推送, 异常信息如下: ", e);
+            LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_RESET_ROUTE_MESSAGE_PUSH_FAILED), e);
         }
     }
 
@@ -54,7 +57,7 @@ public class ResetProcessor {
         try {
             pushHandler.dispatchReset();
         } catch (Exception e) {
-            LOGGER.warn("推送调度被重置消息时发生异常, 本次消息将不会被推送, 异常信息如下: ", e);
+            LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_RESET_DISPATCH_MESSAGE_PUSH_FAILED), e);
         }
     }
 
@@ -64,7 +67,7 @@ public class ResetProcessor {
         try {
             pushHandler.sendReset();
         } catch (Exception e) {
-            LOGGER.warn("推送推送被重置消息时发生异常, 本次消息将不会被推送, 异常信息如下: ", e);
+            LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_RESET_SEND_MESSAGE_PUSH_FAILED), e);
         }
     }
 }

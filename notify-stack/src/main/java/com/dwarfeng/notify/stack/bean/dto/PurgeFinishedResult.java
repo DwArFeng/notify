@@ -1,6 +1,8 @@
 package com.dwarfeng.notify.stack.bean.dto;
 
-import com.dwarfeng.subgrade.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.Dto;
+
+import java.io.Serial;
 
 /**
  * 清除结束结果。
@@ -10,7 +12,8 @@ import com.dwarfeng.subgrade.stack.bean.dto.Dto;
  */
 public class PurgeFinishedResult implements Dto {
 
-    private static final long serialVersionUID = -4025401134760534801L;
+    @Serial
+    private static final long serialVersionUID = 6611130777195797830L;
 
     /**
      * 通知历史实体的删除数量。

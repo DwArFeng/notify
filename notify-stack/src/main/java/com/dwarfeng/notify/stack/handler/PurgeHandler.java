@@ -1,6 +1,6 @@
 package com.dwarfeng.notify.stack.handler;
 
-import com.dwarfeng.subgrade.stack.handler.DistributedLockHandler;
+import com.dwarfeng.subgrade.lock.stack.handler.DistributedLockHandler;
 
 /**
  * 清除处理器。

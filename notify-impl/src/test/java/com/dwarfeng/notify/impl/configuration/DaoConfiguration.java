@@ -6,24 +6,24 @@ import com.dwarfeng.notify.impl.bean.key.*;
 import com.dwarfeng.notify.impl.dao.preset.*;
 import com.dwarfeng.notify.stack.bean.entity.*;
 import com.dwarfeng.notify.stack.bean.key.*;
-import com.dwarfeng.subgrade.impl.bean.MapStructBeanTransformer;
-import com.dwarfeng.subgrade.impl.dao.HibernateBatchBaseDao;
-import com.dwarfeng.subgrade.impl.dao.HibernateEntireLookupDao;
-import com.dwarfeng.subgrade.impl.dao.HibernatePresetLookupDao;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
-import com.dwarfeng.subgrade.sdk.hibernate.modification.DefaultDeletionMod;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.impl.bean.MapStructBeanTransformer;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.data.impl.dao.hibernate.HibernateBatchBaseDao;
+import com.dwarfeng.subgrade.data.impl.dao.hibernate.HibernateEntireLookupDao;
+import com.dwarfeng.subgrade.data.impl.dao.hibernate.HibernatePresetLookupDao;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateLongIdKey;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateStringIdKey;
+import com.dwarfeng.subgrade.data.sdk.hibernate.modification.DefaultDeletionMod;
+import com.dwarfeng.subgrade.data.sdk.hibernate.operation.HibernateOperations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.orm.hibernate5.HibernateTemplate;
 
 @Configuration
 public class DaoConfiguration {
 
-    private final HibernateTemplate hibernateTemplate;
+    private final HibernateOperations template;
 
     private final UserPresetCriteriaMaker userPresetCriteriaMaker;
     private final RouterInfoPresetCriteriaMaker routerInfoPresetCriteriaMaker;
@@ -44,7 +44,7 @@ public class DaoConfiguration {
     private int batchSize;
 
     public DaoConfiguration(
-            HibernateTemplate hibernateTemplate,
+            HibernateOperations template,
             UserPresetCriteriaMaker userPresetCriteriaMaker,
             RouterInfoPresetCriteriaMaker routerInfoPresetCriteriaMaker,
             RouterSupportPresetCriteriaMaker routerSupportPresetCriteriaMaker,
@@ -60,7 +60,7 @@ public class DaoConfiguration {
             NotifyInfoRecordPresetCriteriaMaker notifyInfoRecordPresetCriteriaMaker,
             NotifySendRecordPresetCriteriaMaker notifySendRecordPresetCriteriaMaker
     ) {
-        this.hibernateTemplate = hibernateTemplate;
+        this.template = template;
         this.userPresetCriteriaMaker = userPresetCriteriaMaker;
         this.routerInfoPresetCriteriaMaker = routerInfoPresetCriteriaMaker;
         this.routerSupportPresetCriteriaMaker = routerSupportPresetCriteriaMaker;
@@ -81,7 +81,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, User, HibernateUser>
     userHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(User.class, HibernateUser.class, BeanMapper.class),
                 HibernateUser.class,
@@ -93,7 +93,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<User, HibernateUser> userHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(User.class, HibernateUser.class, BeanMapper.class),
                 HibernateUser.class
         );
@@ -102,7 +102,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<User, HibernateUser> userHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(User.class, HibernateUser.class, BeanMapper.class),
                 HibernateUser.class,
                 userPresetCriteriaMaker
@@ -113,7 +113,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, RouterInfo, HibernateRouterInfo>
     routerInfoHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(RouterInfo.class, HibernateRouterInfo.class, BeanMapper.class),
                 HibernateRouterInfo.class,
@@ -125,7 +125,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<RouterInfo, HibernateRouterInfo> routerInfoHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(RouterInfo.class, HibernateRouterInfo.class, BeanMapper.class),
                 HibernateRouterInfo.class
         );
@@ -134,7 +134,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<RouterInfo, HibernateRouterInfo> routerInfoHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(RouterInfo.class, HibernateRouterInfo.class, BeanMapper.class),
                 HibernateRouterInfo.class,
                 routerInfoPresetCriteriaMaker
@@ -145,7 +145,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, RouterSupport, HibernateRouterSupport>
     routerSupportHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(
                         RouterSupport.class, HibernateRouterSupport.class, BeanMapper.class
@@ -159,7 +159,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<RouterSupport, HibernateRouterSupport> routerSupportHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         RouterSupport.class, HibernateRouterSupport.class, BeanMapper.class
                 ),
@@ -170,7 +170,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<RouterSupport, HibernateRouterSupport> routerSupportHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         RouterSupport.class, HibernateRouterSupport.class, BeanMapper.class
                 ),
@@ -183,7 +183,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, NotifySetting, HibernateNotifySetting>
     notifySettingHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(
                         NotifySetting.class, HibernateNotifySetting.class, BeanMapper.class
@@ -197,7 +197,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<NotifySetting, HibernateNotifySetting> notifySettingHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifySetting.class, HibernateNotifySetting.class, BeanMapper.class
                 ),
@@ -208,7 +208,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<NotifySetting, HibernateNotifySetting> notifySettingHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifySetting.class, HibernateNotifySetting.class, BeanMapper.class
                 ),
@@ -221,7 +221,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<SenderInfoKey, HibernateSenderInfoKey, SenderInfo, HibernateSenderInfo>
     senderInfoHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         SenderInfoKey.class, HibernateSenderInfoKey.class, BeanMapper.class
                 ),
@@ -235,7 +235,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<SenderInfo, HibernateSenderInfo> senderInfoHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(SenderInfo.class, HibernateSenderInfo.class, BeanMapper.class),
                 HibernateSenderInfo.class
         );
@@ -244,7 +244,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<SenderInfo, HibernateSenderInfo> senderInfoHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(SenderInfo.class, HibernateSenderInfo.class, BeanMapper.class),
                 HibernateSenderInfo.class,
                 senderInfoPresetCriteriaMaker
@@ -255,7 +255,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, SenderSupport, HibernateSenderSupport>
     senderSupportHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(
                         SenderSupport.class, HibernateSenderSupport.class, BeanMapper.class
@@ -269,7 +269,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<SenderSupport, HibernateSenderSupport> senderSupportHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         SenderSupport.class, HibernateSenderSupport.class, BeanMapper.class
                 ),
@@ -280,7 +280,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<SenderSupport, HibernateSenderSupport> senderSupportHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         SenderSupport.class, HibernateSenderSupport.class, BeanMapper.class
                 ),
@@ -293,7 +293,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, Topic, HibernateTopic>
     topicHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(Topic.class, HibernateTopic.class, BeanMapper.class),
                 HibernateTopic.class,
@@ -305,7 +305,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<Topic, HibernateTopic> topicHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(Topic.class, HibernateTopic.class, BeanMapper.class),
                 HibernateTopic.class
         );
@@ -314,7 +314,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<Topic, HibernateTopic> topicHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(Topic.class, HibernateTopic.class, BeanMapper.class),
                 HibernateTopic.class,
                 topicPresetCriteriaMaker
@@ -325,7 +325,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, DispatcherInfo, HibernateDispatcherInfo>
     dispatcherInfoHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(
                         DispatcherInfo.class, HibernateDispatcherInfo.class, BeanMapper.class
@@ -339,7 +339,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<DispatcherInfo, HibernateDispatcherInfo> dispatcherInfoHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         DispatcherInfo.class, HibernateDispatcherInfo.class, BeanMapper.class
                 ),
@@ -350,7 +350,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<DispatcherInfo, HibernateDispatcherInfo> dispatcherInfoHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         DispatcherInfo.class, HibernateDispatcherInfo.class, BeanMapper.class
                 ),
@@ -363,7 +363,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<StringIdKey, HibernateStringIdKey, DispatcherSupport, HibernateDispatcherSupport>
     dispatcherSupportHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(StringIdKey.class, HibernateStringIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(
                         DispatcherSupport.class, HibernateDispatcherSupport.class, BeanMapper.class
@@ -378,7 +378,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<DispatcherSupport, HibernateDispatcherSupport>
     dispatcherSupportHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         DispatcherSupport.class, HibernateDispatcherSupport.class, BeanMapper.class
                 ),
@@ -390,7 +390,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<DispatcherSupport, HibernateDispatcherSupport>
     dispatcherSupportHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         DispatcherSupport.class, HibernateDispatcherSupport.class, BeanMapper.class
                 ),
@@ -403,7 +403,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<MetaKey, HibernateMetaKey, Meta, HibernateMeta>
     metaHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(MetaKey.class, HibernateMetaKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(Meta.class, HibernateMeta.class, BeanMapper.class),
                 HibernateMeta.class,
@@ -415,7 +415,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<Meta, HibernateMeta> metaHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(Meta.class, HibernateMeta.class, BeanMapper.class),
                 HibernateMeta.class
         );
@@ -424,7 +424,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<Meta, HibernateMeta> metaHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(Meta.class, HibernateMeta.class, BeanMapper.class),
                 HibernateMeta.class,
                 metaPresetCriteriaMaker
@@ -435,7 +435,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<MetaIndicatorKey, HibernateMetaIndicatorKey, MetaIndicator,
             HibernateMetaIndicator> metaIndicatorHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         MetaIndicatorKey.class, HibernateMetaIndicatorKey.class, BeanMapper.class
                 ),
@@ -452,7 +452,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<MetaIndicator, HibernateMetaIndicator>
     metaIndicatorHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         MetaIndicator.class, HibernateMetaIndicator.class, BeanMapper.class
                 ),
@@ -464,7 +464,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<MetaIndicator, HibernateMetaIndicator>
     metaIndicatorHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         MetaIndicator.class, HibernateMetaIndicator.class, BeanMapper.class
                 ),
@@ -477,7 +477,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<LongIdKey, HibernateLongIdKey, NotifyHistory, HibernateNotifyHistory>
     notifyHistoryHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(LongIdKey.class, HibernateLongIdKey.class, BeanMapper.class),
                 new MapStructBeanTransformer<>(
                         NotifyHistory.class, HibernateNotifyHistory.class, BeanMapper.class
@@ -491,7 +491,7 @@ public class DaoConfiguration {
     @Bean
     public HibernateEntireLookupDao<NotifyHistory, HibernateNotifyHistory> notifyHistoryHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifyHistory.class, HibernateNotifyHistory.class, BeanMapper.class
                 ),
@@ -502,7 +502,7 @@ public class DaoConfiguration {
     @Bean
     public HibernatePresetLookupDao<NotifyHistory, HibernateNotifyHistory> notifyHistoryHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifyHistory.class, HibernateNotifyHistory.class, BeanMapper.class
                 ),
@@ -515,7 +515,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<NotifyInfoRecordKey, HibernateNotifyInfoRecordKey, NotifyInfoRecord,
             HibernateNotifyInfoRecord> notifyInfoRecordHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifyInfoRecordKey.class, HibernateNotifyInfoRecordKey.class, BeanMapper.class
                 ),
@@ -532,7 +532,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord>
     notifyInfoRecordHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifyInfoRecord.class, HibernateNotifyInfoRecord.class, BeanMapper.class
                 ),
@@ -544,7 +544,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<NotifyInfoRecord, HibernateNotifyInfoRecord>
     notifyInfoRecordHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifyInfoRecord.class, HibernateNotifyInfoRecord.class, BeanMapper.class
                 ),
@@ -557,7 +557,7 @@ public class DaoConfiguration {
     public HibernateBatchBaseDao<NotifySendRecordKey, HibernateNotifySendRecordKey, NotifySendRecord,
             HibernateNotifySendRecord> notifySendRecordHibernateBatchBaseDao() {
         return new HibernateBatchBaseDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifySendRecordKey.class, HibernateNotifySendRecordKey.class, BeanMapper.class
                 ),
@@ -574,7 +574,7 @@ public class DaoConfiguration {
     public HibernateEntireLookupDao<NotifySendRecord, HibernateNotifySendRecord>
     notifySendRecordHibernateEntireLookupDao() {
         return new HibernateEntireLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifySendRecord.class, HibernateNotifySendRecord.class, BeanMapper.class
                 ),
@@ -586,7 +586,7 @@ public class DaoConfiguration {
     public HibernatePresetLookupDao<NotifySendRecord, HibernateNotifySendRecord>
     notifySendRecordHibernatePresetLookupDao() {
         return new HibernatePresetLookupDao<>(
-                hibernateTemplate,
+                template,
                 new MapStructBeanTransformer<>(
                         NotifySendRecord.class, HibernateNotifySendRecord.class, BeanMapper.class
                 ),

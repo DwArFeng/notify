@@ -1,7 +1,11 @@
 package com.dwarfeng.notify.stack.exception;
 
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+
+import java.io.Serial;
 
 /**
  * 主题不存在异常。
@@ -11,7 +15,8 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class TopicNotExistsException extends HandlerException {
 
-    private static final long serialVersionUID = 4807952907793339517L;
+    @Serial
+    private static final long serialVersionUID = -6796457400428165093L;
 
     private final StringIdKey topicKey;
 
@@ -26,6 +31,6 @@ public class TopicNotExistsException extends HandlerException {
 
     @Override
     public String getMessage() {
-        return "主题 " + topicKey + " 不存在";
+        return StackMessages.message(StackMessageKey.TOPIC_NOT_EXISTS, topicKey);
     }
 }

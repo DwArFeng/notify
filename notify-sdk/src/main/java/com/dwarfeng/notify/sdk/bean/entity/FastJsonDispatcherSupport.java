@@ -1,10 +1,11 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.entity.DispatcherSupport;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.web.sdk.bean.key.FastJsonStringIdKey;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,8 @@ import java.util.Objects;
  */
 public class FastJsonDispatcherSupport implements Bean {
 
-    private static final long serialVersionUID = -3291310879540561926L;
+    @Serial
+    private static final long serialVersionUID = -243965365222130355L;
 
     public static FastJsonDispatcherSupport of(DispatcherSupport dispatcherSupport) {
         if (Objects.isNull(dispatcherSupport)) {

@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.service.telqos;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.handler.Resetter;
 import com.dwarfeng.notify.stack.service.ResetQosService;
 import com.dwarfeng.springtelqos.sdk.command.CliCommand;
@@ -51,7 +54,7 @@ public class ResetCommand extends CliCommand {
 
     @Override
     protected DescriptionProvider provideDescriptionProvider() {
-        return context -> "重置处理器操作/查看";
+        return _ -> ImplMessages.message(ImplMessageKey.TELQOS_RESET_DESCRIPTION);
     }
 
     @Override
@@ -76,16 +79,34 @@ public class ResetCommand extends CliCommand {
     @Override
     protected List<Option> provideOptions() {
         List<Option> list = new ArrayList<>();
-        list.add(Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(false).desc("查看重置处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_START).optionalArg(true).hasArg(false).desc("启动重置处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_STOP).optionalArg(true).hasArg(false).desc("停止重置处理器").build());
-        list.add(Option.builder(COMMAND_OPTION_STATUS).optionalArg(true).hasArg(false).desc("查看重置处理器状态").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_ROUTE).optionalArg(true).hasArg(false)
-                .desc("执行路由重置操作").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_DISPATCH).optionalArg(true).hasArg(false)
-                .desc("执行调度重置操作").build());
-        list.add(Option.builder().longOpt(COMMAND_OPTION_RESET_SEND).optionalArg(true).hasArg(false)
-                .desc("执行发送重置操作").build());
+        list.add(
+                Option.builder(COMMAND_OPTION_LOOKUP).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_LOOKUP)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_START).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_START)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_STOP).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_STOP)).get()
+        );
+        list.add(
+                Option.builder(COMMAND_OPTION_STATUS).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_STATUS)).get()
+        );
+        list.add(
+                Option.builder().longOpt(COMMAND_OPTION_RESET_ROUTE).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_RESET_ROUTE)).get()
+        );
+        list.add(
+                Option.builder().longOpt(COMMAND_OPTION_RESET_DISPATCH).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_RESET_DISPATCH)).get()
+        );
+        list.add(
+                Option.builder().longOpt(COMMAND_OPTION_RESET_SEND).optionalArg(true).hasArg(false)
+                        .desc(ImplMessages.message(ImplMessageKey.TELQOS_RESET_OPTION_RESET_SEND)).get()
+        );
         return list;
     }
 
@@ -103,29 +124,29 @@ public class ResetCommand extends CliCommand {
                 break;
             case COMMAND_OPTION_START:
                 resetQosService.start();
-                context.sendMessage("重置处理器已启动!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_RESET_STARTED));
                 break;
             case COMMAND_OPTION_STOP:
                 resetQosService.stop();
-                context.sendMessage("重置处理器已停止!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_RESET_STOPPED));
                 break;
             case COMMAND_OPTION_STATUS:
                 printStatus(context);
                 break;
             case COMMAND_OPTION_RESET_ROUTE:
                 resetQosService.resetRoute();
-                context.sendMessage("重置成功!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_RESET_SUCCEEDED));
                 break;
             case COMMAND_OPTION_RESET_DISPATCH:
                 resetQosService.resetDispatch();
-                context.sendMessage("重置成功!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_RESET_SUCCEEDED));
                 break;
             case COMMAND_OPTION_RESET_SEND:
                 resetQosService.resetSend();
-                context.sendMessage("重置成功!");
+                context.sendMessage(ImplMessages.message(ImplMessageKey.TELQOS_RESET_SUCCEEDED));
                 break;
             default:
-                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
+                throw new IllegalStateException(ImplMessages.message(ImplMessageKey.ERROR_INTERNAL_UNREACHABLE));
         }
     }
 

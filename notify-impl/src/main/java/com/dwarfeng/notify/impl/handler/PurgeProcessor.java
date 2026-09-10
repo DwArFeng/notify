@@ -1,13 +1,16 @@
 package com.dwarfeng.notify.impl.handler;
 
-import com.dwarfeng.dutil.basic.mea.TimeMeasurer;
-import com.dwarfeng.dutil.basic.num.NumberUtil;
-import com.dwarfeng.dutil.basic.num.unit.Time;
+import com.dwarfeng.dutil.basic.sdk.number.NumberUtil;
+import com.dwarfeng.dutil.basic.sdk.time.TimeMeasurer;
+import com.dwarfeng.dutil.basic.stack.number.unit.Time;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
 import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
 import com.dwarfeng.notify.stack.bean.entity.NotifyHistory;
 import com.dwarfeng.notify.stack.handler.PushHandler;
 import com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService;
-import com.dwarfeng.subgrade.stack.bean.dto.PagingInfo;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.PagingInfo;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -80,21 +83,23 @@ public class PurgeProcessor {
         lock.lock();
         try {
             if (Objects.nonNull(purgeTaskScheduledFuture)) {
-                throw new IllegalStateException("不应该执行到此处, 请联系开发人员");
+                throw new IllegalStateException(ImplMessages.message(ImplMessageKey.ERROR_INTERNAL_UNREACHABLE));
             }
             // 如果 purgeRetentionDuration <= 0 则不启动清除计划。
             if (purgeRetentionDuration <= 0) {
-                LOGGER.info("由于保留时长小于等于 0, 清除计划不启动");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_PURGE_SCHEDULE_NOT_STARTED));
             }
             // 否则启动清除计划。
             else {
-                LOGGER.info("清除计划启动, 保留时长: {} 毫秒, 任务执行周期: {}", purgeRetentionDuration, purgeTaskCron);
-                LOGGER.info(
-                        "保留时长约为 {} 天, 请注意配置是否正确",
+                LOGGER.info(ImplMessages.message(
+                        ImplMessageKey.LOG_PURGE_SCHEDULE_STARTED, purgeRetentionDuration, purgeTaskCron
+                ));
+                LOGGER.info(ImplMessages.message(
+                        ImplMessageKey.LOG_PURGE_RETENTION_DURATION,
                         new DecimalFormat("0.00").format(
                                 NumberUtil.unitTrans(purgeRetentionDuration, Time.MS, Time.DAY).doubleValue()
                         )
-                );
+                ));
                 purgeTaskScheduledFuture = scheduler.schedule(purgeTask, new CronTrigger(purgeTaskCron));
             }
         } finally {
@@ -130,7 +135,7 @@ public class PurgeProcessor {
         private void run0() {
             // 二次检查 purgeRetentionDuration 是否大于 0。
             if (purgeRetentionDuration <= 0) {
-                LOGGER.warn("由于保留时长小于等于 0, 清除任务将不执行, 不该指定到此处, 请联系开发人员");
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_PURGE_TASK_SKIPPED));
                 return;
             }
 
@@ -139,32 +144,31 @@ public class PurgeProcessor {
 
             try {
                 // 日志记录。
-                LOGGER.info("开始执行清除任务...");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_PURGE_TASK_EXECUTING));
                 // 计算保留日期。
-                LOGGER.debug("计算保留日期...");
+                LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_PURGE_RETENTION_DATE_CALCULATING));
                 Date retentionDate = new Date(System.currentTimeMillis() - purgeRetentionDuration);
-                LOGGER.debug("保留日期: {}", retentionDate);
+                LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_PURGE_RETENTION_DATE, retentionDate));
                 // 定义计时器。
                 TimeMeasurer tm;
                 // 清除通知历史。
-                LOGGER.info("清除通知历史...");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_PURGE_NOTIFY_HISTORY));
                 tm = new TimeMeasurer();
                 tm.start();
                 PurgeResult notifyHistoryPurgeResult = purgeNotifyHistory(retentionDate);
-                int notifyHistoryDeletionCount = notifyHistoryPurgeResult.getDeletionCount();
-                boolean notifyHistoryDivergent = notifyHistoryPurgeResult.isDivergent();
+                int notifyHistoryDeletionCount = notifyHistoryPurgeResult.deletionCount();
+                boolean notifyHistoryDivergent = notifyHistoryPurgeResult.divergent();
                 tm.stop();
-                LOGGER.info(
-                        "清除通知历史完成, 共清除 {} 条数据, 耗时 {} 毫秒",
-                        notifyHistoryDeletionCount, tm.getTimeMs()
-                );
+                LOGGER.info(ImplMessages.message(
+                        ImplMessageKey.LOG_PURGE_NOTIFY_HISTORY_PURGED, notifyHistoryDeletionCount, tm.getTimeMs()
+                ));
                 // 构造推送结果。
                 purgeFinishedResult = new PurgeFinishedResult(notifyHistoryDeletionCount, notifyHistoryDivergent);
                 // 日志记录。
-                LOGGER.info("清除任务执行完成");
+                LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_PURGE_TASK_EXECUTED));
             } catch (Exception e) {
                 // 日志记录。
-                LOGGER.warn("清除任务执行失败, 本次清除中止, 异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_PURGE_TASK_EXECUTE_FAILED), e);
             }
 
             // 如果清除结果不为 null，则代表清除成功；否则清除失败。分别推送相应的事件。
@@ -173,14 +177,14 @@ public class PurgeProcessor {
                 try {
                     pushHandler.purgeFinished(purgeFinishedResult);
                 } catch (Exception e) {
-                    LOGGER.warn("推送清除结果时发生异常, 本次消息将不会被推送, 异常信息如下: ", e);
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_PURGE_RESULT_PUSH_FAILED), e);
                 }
             } else {
                 // 推送清除失败事件。
                 try {
                     pushHandler.purgeFailed();
                 } catch (Exception e) {
-                    LOGGER.warn("推送清除失败时发生异常, 本次消息将不会被推送, 异常信息如下: ", e);
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_PURGE_FAILED_PUSH_FAILED), e);
                 }
             }
         }
@@ -230,8 +234,8 @@ public class PurgeProcessor {
                         retentionDate.getTime() - notifyHistory.getHappenedDate().getTime();
                 // 如果偏移量大于上一次的偏移量，说明清除发散，记录日志。
                 if (currentRetentionNotifyHistoryOffset > lastRetentionNotifyHistoryOffset) {
-                    LOGGER.warn("执行清除任务时检测到通知历史发散, 这意味着清除的数据小于生成的数据, 将会造成数据的积压");
-                    LOGGER.warn("请减少清理任务的执行间隔或增加最大删除数量, 以避免通知历史的积压");
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_PURGE_HISTORY_DIVERGENCE));
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_PURGE_HISTORY_DIVERGENCE_SUGGESTION));
                     divergent = true;
                 }
                 // 更新 lastRetentionNotifyHistoryOffset。
@@ -243,26 +247,10 @@ public class PurgeProcessor {
         }
     }
 
-    private static final class PurgeResult {
-
-        private final int deletionCount;
-        private final boolean divergent;
-
-        public PurgeResult(int deletionCount, boolean divergent) {
-            this.deletionCount = deletionCount;
-            this.divergent = divergent;
-        }
-
-        public int getDeletionCount() {
-            return deletionCount;
-        }
-
-        public boolean isDivergent() {
-            return divergent;
-        }
+    private record PurgeResult(int deletionCount, boolean divergent) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "PurgeResult{" +
                     "deletionCount=" + deletionCount +
                     ", divergent=" + divergent +

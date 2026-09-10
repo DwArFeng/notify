@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
 import com.dwarfeng.notify.stack.bean.key.NotifySendRecordKey;
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+
+import java.io.Serial;
 
 /**
  * 通知发送记录。
@@ -11,8 +13,9 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  */
 public class NotifySendRecord implements Entity<NotifySendRecordKey> {
 
-    private static final long serialVersionUID = -4519591340700222670L;
-    
+    @Serial
+    private static final long serialVersionUID = 108944670767254073L;
+
     private NotifySendRecordKey key;
     private Boolean succeedFlag;
     private String senderMessage;

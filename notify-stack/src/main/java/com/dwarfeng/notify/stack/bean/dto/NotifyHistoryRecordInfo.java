@@ -1,9 +1,10 @@
 package com.dwarfeng.notify.stack.bean.dto;
 
-import com.dwarfeng.subgrade.stack.bean.dto.Dto;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.List;
 
@@ -15,7 +16,8 @@ import java.util.List;
  */
 public class NotifyHistoryRecordInfo implements Dto {
 
-    private static final long serialVersionUID = -7348932754670762323L;
+    @Serial
+    private static final long serialVersionUID = 4670821785791158841L;
 
     private LongIdKey key;
     private LongIdKey notifySettingKey;
@@ -106,7 +108,8 @@ public class NotifyHistoryRecordInfo implements Dto {
      */
     public static class InfoRecord implements Dto {
 
-        private static final long serialVersionUID = -8237879824227381515L;
+        @Serial
+        private static final long serialVersionUID = 6746861503612027485L;
 
         private Integer type;
         private String recordId;
@@ -162,8 +165,9 @@ public class NotifyHistoryRecordInfo implements Dto {
      */
     public static class SendRecord implements Dto {
 
-        private static final long serialVersionUID = -8554653160649335378L;
-        
+        @Serial
+        private static final long serialVersionUID = 229835355842242704L;
+
         private StringIdKey topicKey;
         private StringIdKey userKey;
         private boolean succeedFlag;

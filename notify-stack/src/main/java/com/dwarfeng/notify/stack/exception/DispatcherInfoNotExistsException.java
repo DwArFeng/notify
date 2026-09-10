@@ -1,7 +1,11 @@
 package com.dwarfeng.notify.stack.exception;
 
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+
+import java.io.Serial;
 
 /**
  * 调度器信息不存在异常。
@@ -11,7 +15,8 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class DispatcherInfoNotExistsException extends HandlerException {
 
-    private static final long serialVersionUID = 5314206805665491703L;
+    @Serial
+    private static final long serialVersionUID = 4613471776510071083L;
 
     private final StringIdKey dispatcherInfoKey;
 
@@ -26,6 +31,6 @@ public class DispatcherInfoNotExistsException extends HandlerException {
 
     @Override
     public String getMessage() {
-        return "调度器信息 " + dispatcherInfoKey + " 不存在";
+        return StackMessages.message(StackMessageKey.DISPATCHER_INFO_NOT_EXISTS, dispatcherInfoKey);
     }
 }

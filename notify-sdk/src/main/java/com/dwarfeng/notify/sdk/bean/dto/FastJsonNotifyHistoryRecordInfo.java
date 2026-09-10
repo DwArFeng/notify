@@ -3,10 +3,11 @@ package com.dwarfeng.notify.sdk.bean.dto;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo.InfoRecord;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo.SendRecord;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonLongIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.web.sdk.bean.key.FastJsonLongIdKey;
+import com.dwarfeng.subgrade.web.sdk.bean.key.FastJsonStringIdKey;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +22,8 @@ import java.util.stream.Collectors;
  */
 public class FastJsonNotifyHistoryRecordInfo implements Dto {
 
-    private static final long serialVersionUID = 7723575918616769783L;
+    @Serial
+    private static final long serialVersionUID = -8251703111889319276L;
 
     public static FastJsonNotifyHistoryRecordInfo of(NotifyHistoryRecordInfo notifyHistoryRecordInfo) {
         if (Objects.isNull(notifyHistoryRecordInfo)) {
@@ -125,7 +127,8 @@ public class FastJsonNotifyHistoryRecordInfo implements Dto {
 
     public static class FastJsonInfoRecord implements Dto {
 
-        private static final long serialVersionUID = -823916524032485519L;
+        @Serial
+        private static final long serialVersionUID = 6824770998157161947L;
 
         public static FastJsonInfoRecord of(InfoRecord infoRecord) {
             if (Objects.isNull(infoRecord)) {
@@ -186,7 +189,8 @@ public class FastJsonNotifyHistoryRecordInfo implements Dto {
 
     public static class FastJsonSendRecord implements Dto {
 
-        private static final long serialVersionUID = -2763712276369938873L;
+        @Serial
+        private static final long serialVersionUID = -548359615987494582L;
 
         public static FastJsonSendRecord of(SendRecord sendRecord) {
             if (Objects.isNull(sendRecord)) {

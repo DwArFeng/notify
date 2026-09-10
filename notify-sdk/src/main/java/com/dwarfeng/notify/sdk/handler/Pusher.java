@@ -2,7 +2,7 @@ package com.dwarfeng.notify.sdk.handler;
 
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
 
 /**
  * 事件推送器。

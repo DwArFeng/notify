@@ -1,14 +1,14 @@
 package com.dwarfeng.notify.impl.handler.router;
 
-import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson2.JSON;
 import com.dwarfeng.notify.sdk.handler.router.AbstractRouter;
 import com.dwarfeng.notify.sdk.handler.router.AbstractRouterRegistry;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.RouterExecutionException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.web.sdk.bean.key.FastJsonStringIdKey;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
@@ -39,7 +39,7 @@ public class StaticRouterRegistry extends AbstractRouterRegistry {
     public static String stringifyParam(List<StringIdKey> userKeys) {
         List<FastJsonStringIdKey> fastJsonUserKeys = userKeys.stream().map(FastJsonStringIdKey::of)
                 .collect(Collectors.toList());
-        return JSON.toJSONString(fastJsonUserKeys, false);
+        return JSON.toJSONString(fastJsonUserKeys);
     }
 
     /**

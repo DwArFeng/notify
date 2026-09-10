@@ -5,15 +5,14 @@ import com.dwarfeng.notify.stack.bean.entity.Topic;
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
 import com.dwarfeng.notify.stack.exception.*;
 import com.dwarfeng.notify.stack.service.*;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * 处理器验证器。
@@ -135,7 +134,7 @@ public class HandlerValidator {
             // 查询所有使能的主题。
             List<StringIdKey> topicKeys = topicMaintainService.lookupAsList(
                     TopicMaintainService.ENABLED, new Object[0]
-            ).stream().map(Topic::getKey).collect(Collectors.toList());
+            ).stream().map(Topic::getKey).toList();
 
             // 确认所有的主题的调度器存在。
             for (StringIdKey topicKey : topicKeys) {

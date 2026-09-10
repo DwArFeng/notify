@@ -1,7 +1,8 @@
 package com.dwarfeng.notify.impl.bean.key;
 
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,7 +14,8 @@ import java.util.Objects;
  */
 public class HibernateSenderInfoKey implements Bean, Serializable {
 
-    private static final long serialVersionUID = 2816003000405764231L;
+    @Serial
+    private static final long serialVersionUID = -4182331953278268998L;
 
     private Long notifySettingId;
     private String topicId;

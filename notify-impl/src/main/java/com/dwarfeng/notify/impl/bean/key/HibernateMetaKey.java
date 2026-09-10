@@ -1,7 +1,8 @@
 package com.dwarfeng.notify.impl.bean.key;
 
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Objects;
  */
 public class HibernateMetaKey implements Key {
 
-    private static final long serialVersionUID = -3544905505589414750L;
+    @Serial
+    private static final long serialVersionUID = -6023031160235170697L;
 
     private Long notifySettingId;
     private String topicId;

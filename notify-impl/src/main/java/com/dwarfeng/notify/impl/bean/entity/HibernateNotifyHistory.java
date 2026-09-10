@@ -1,11 +1,12 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateLongIdKey;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
-import java.util.Date;
+import java.io.Serial;
+import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -15,7 +16,8 @@ import java.util.Set;
 @Table(name = "tbl_notify_history")
 public class HibernateNotifyHistory implements Bean {
 
-    private static final long serialVersionUID = -8657379149799147790L;
+    @Serial
+    private static final long serialVersionUID = 4647062074716725538L;
 
     // region 主键
 
@@ -35,8 +37,7 @@ public class HibernateNotifyHistory implements Bean {
     // region 主属性字段
 
     @Column(name = "happened_date")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date happenedDate;
+    private Timestamp happenedDate;
 
     @Column(name = "remark", length = Constraints.LENGTH_REMARK)
     private String remark;
@@ -104,11 +105,11 @@ public class HibernateNotifyHistory implements Bean {
         this.notifySettingLongId = notifySettingLongId;
     }
 
-    public Date getHappenedDate() {
+    public Timestamp getHappenedDate() {
         return happenedDate;
     }
 
-    public void setHappenedDate(Date happenedDate) {
+    public void setHappenedDate(Timestamp happenedDate) {
         this.happenedDate = happenedDate;
     }
 

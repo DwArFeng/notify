@@ -1,14 +1,15 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.notify.stack.bean.entity.Topic;
-import com.dwarfeng.subgrade.sdk.bean.key.WebInputStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.web.sdk.bean.key.WebInputStringIdKey;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -19,7 +20,8 @@ import java.util.Objects;
  */
 public class WebInputTopic implements Bean {
 
-    private static final long serialVersionUID = 2773264961331580703L;
+    @Serial
+    private static final long serialVersionUID = -190489930705874930L;
 
     public static Topic toStackBean(WebInputTopic webInputTopic) {
         if (Objects.isNull(webInputTopic)) {

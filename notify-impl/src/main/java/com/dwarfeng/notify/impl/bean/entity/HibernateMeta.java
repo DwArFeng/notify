@@ -2,9 +2,11 @@ package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.impl.bean.key.HibernateMetaKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +14,8 @@ import java.util.Objects;
 @Table(name = "tbl_meta")
 public class HibernateMeta implements Bean {
 
-    private static final long serialVersionUID = -2128593082064931893L;
+    @Serial
+    private static final long serialVersionUID = 1412523694823598920L;
 
     // region 主键
 

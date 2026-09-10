@@ -1,7 +1,8 @@
 package com.dwarfeng.notify.stack.bean.key;
 
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Objects;
  */
 public class MetaKey implements Key {
 
-    private static final long serialVersionUID = 1062577477259663474L;
+    @Serial
+    private static final long serialVersionUID = 2628978464863768283L;
 
     private Long notifySettingId;
     private String topicId;

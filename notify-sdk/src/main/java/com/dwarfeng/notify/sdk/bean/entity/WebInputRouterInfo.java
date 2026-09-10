@@ -1,16 +1,17 @@
 package com.dwarfeng.notify.sdk.bean.entity;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.sdk.util.Constraints;
 import com.dwarfeng.notify.stack.bean.entity.RouterInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.web.sdk.bean.key.WebInputLongIdKey;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.groups.Default;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.groups.Default;
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -21,7 +22,8 @@ import java.util.Objects;
  */
 public class WebInputRouterInfo implements Bean {
 
-    private static final long serialVersionUID = 3926023465101373608L;
+    @Serial
+    private static final long serialVersionUID = -4482379728795446499L;
 
     public static RouterInfo toStackBean(WebInputRouterInfo webInputRouterInfo) {
         if (Objects.isNull(webInputRouterInfo)) {

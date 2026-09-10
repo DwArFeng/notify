@@ -4,9 +4,11 @@ import com.dwarfeng.datamark.sdk.jpa.DatamarkEntityListener;
 import com.dwarfeng.datamark.sdk.jpa.DatamarkField;
 import com.dwarfeng.notify.impl.bean.key.HibernateSenderInfoKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +17,8 @@ import java.util.Objects;
 @EntityListeners(DatamarkEntityListener.class)
 public class HibernateSenderInfo implements Bean {
 
-    private static final long serialVersionUID = 6717479113778427998L;
+    @Serial
+    private static final long serialVersionUID = -3573812840827452101L;
 
     // region 主键
 

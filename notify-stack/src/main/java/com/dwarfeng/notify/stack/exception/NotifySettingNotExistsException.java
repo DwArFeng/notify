@@ -1,7 +1,11 @@
 package com.dwarfeng.notify.stack.exception;
 
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+
+import java.io.Serial;
 
 /**
  * 通知设置不存在异常。
@@ -11,7 +15,8 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class NotifySettingNotExistsException extends HandlerException {
 
-    private static final long serialVersionUID = -5619719405129064458L;
+    @Serial
+    private static final long serialVersionUID = -6591239391700680425L;
 
     private final LongIdKey notifySettingKey;
 
@@ -26,6 +31,6 @@ public class NotifySettingNotExistsException extends HandlerException {
 
     @Override
     public String getMessage() {
-        return "通知设置 " + notifySettingKey + " 不存在";
+        return StackMessages.message(StackMessageKey.NOTIFY_SETTING_NOT_EXISTS, notifySettingKey);
     }
 }

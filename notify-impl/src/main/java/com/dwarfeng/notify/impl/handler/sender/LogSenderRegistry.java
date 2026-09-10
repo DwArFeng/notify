@@ -1,14 +1,17 @@
 package com.dwarfeng.notify.impl.handler.sender;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.sender.AbstractSender;
 import com.dwarfeng.notify.sdk.handler.sender.AbstractSenderRegistry;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.exception.SenderMakeException;
 import com.dwarfeng.notify.stack.handler.Sender;
-import com.dwarfeng.subgrade.sdk.log.SingleLevelLoggerFactory;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
-import com.dwarfeng.subgrade.stack.log.SingleLevelLogger;
+import com.dwarfeng.subgrade.basic.sdk.log.SingleLevelLoggerFactory;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.stack.log.SingleLevelLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -65,7 +68,9 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
 
     @Override
     public String provideExampleParam() {
-        StringJoiner stringJoiner = new StringJoiner(", ", "", " 任选其一");
+        StringJoiner stringJoiner = new StringJoiner(
+                ", ", "", ImplMessages.message(ImplMessageKey.SENDER_LOG_OPTION_ANY)
+        );
         LOG_LEVEL_MAP.keySet().forEach(stringJoiner::add);
         return stringJoiner.toString();
     }
@@ -74,11 +79,11 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
     public Sender makeSender(String type, String param) throws SenderException {
         try {
             if (Objects.isNull(param)) {
-                throw new NullPointerException("入口参数 param 不能为 null");
+                throw new NullPointerException(ImplMessages.message(ImplMessageKey.ERROR_PARAM_NULL));
             }
             LogLevel logLevel = LOG_LEVEL_MAP.getOrDefault(param.toLowerCase(), null);
             if (Objects.isNull(logLevel)) {
-                throw new IllegalArgumentException("非法的入口参数 param: " + param);
+                throw new IllegalArgumentException(ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_PARAM, param));
             }
             return ctx.getBean(LogSender.class, logLevel);
         } catch (Exception e) {
@@ -104,8 +109,8 @@ public class LogSenderRegistry extends AbstractSenderRegistry {
         ) {
             List<Response> responses = new ArrayList<>();
             for (StringIdKey userKey : userKeys) {
-                logger.log("向用户 {} 发送消息，发送信息为 {}", userKey, sendInfoMap);
-                responses.add(new Response(userKey, true, "发送成功"));
+                logger.log(ImplMessages.message(ImplMessageKey.LOG_LOG_SENDER_SENDING, userKey, sendInfoMap));
+                responses.add(new Response(userKey, true, ImplMessages.message(ImplMessageKey.SENDER_SEND_SUCCEEDED)));
             }
             return responses;
         }

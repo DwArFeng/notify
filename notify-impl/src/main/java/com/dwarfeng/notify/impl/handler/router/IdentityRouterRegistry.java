@@ -1,22 +1,23 @@
 package com.dwarfeng.notify.impl.handler.router;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.sdk.handler.router.AbstractRouter;
 import com.dwarfeng.notify.sdk.handler.router.AbstractRouterRegistry;
 import com.dwarfeng.notify.stack.exception.RouterException;
 import com.dwarfeng.notify.stack.exception.RouterExecutionException;
 import com.dwarfeng.notify.stack.exception.RouterMakeException;
 import com.dwarfeng.notify.stack.handler.Router;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.web.sdk.bean.key.FastJsonStringIdKey;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.io.Serial;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
      * @return 指定的参数转换成的字符串。
      */
     public static String stringifyParam(Config config) {
-        return JSON.toJSONString(config, false);
+        return JSON.toJSONString(config);
     }
 
     /**
@@ -64,7 +65,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
     public static String stringifyIdentityUserList(List<StringIdKey> identityUserList) {
         List<FastJsonStringIdKey> fastJsonUserKeys = identityUserList.stream().map(FastJsonStringIdKey::of)
                 .collect(Collectors.toList());
-        return JSON.toJSONString(fastJsonUserKeys, false);
+        return JSON.toJSONString(fastJsonUserKeys);
     }
 
     /**
@@ -99,7 +100,7 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
     @Override
     public String provideExampleParam() {
         Config config = new Config("your-identity-user-list-key-here");
-        return JSON.toJSONString(config, false);
+        return JSON.toJSONString(config);
     }
 
     @Override
@@ -161,7 +162,8 @@ public class IdentityRouterRegistry extends AbstractRouterRegistry {
 
     public static class Config implements Bean {
 
-        private static final long serialVersionUID = -409012282137963853L;
+        @Serial
+        private static final long serialVersionUID = -605344838759754551L;
 
         @JSONField(name = "identity_user_list_key", ordinal = 1)
         private String identityUserListKey;

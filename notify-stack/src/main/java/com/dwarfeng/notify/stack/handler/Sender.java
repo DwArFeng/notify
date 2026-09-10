@@ -1,8 +1,9 @@
 package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.exception.SenderException;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -56,32 +57,10 @@ public interface Sender {
      * @author DwArFeng
      * @since 1.1.0
      */
-    final class Response {
-
-        private final StringIdKey userKey;
-        private final boolean succeedFlag;
-        private final String message;
-
-        public Response(StringIdKey userKey, boolean succeedFlag, String message) {
-            this.userKey = userKey;
-            this.succeedFlag = succeedFlag;
-            this.message = message;
-        }
-
-        public StringIdKey getUserKey() {
-            return userKey;
-        }
-
-        public boolean isSucceedFlag() {
-            return succeedFlag;
-        }
-
-        public String getMessage() {
-            return message;
-        }
+    record Response(StringIdKey userKey, boolean succeedFlag, String message) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "Response{" +
                     "userKey=" + userKey +
                     ", succeedFlag=" + succeedFlag +
@@ -185,26 +164,10 @@ public interface Sender {
      * @author DwArFeng
      * @since 1.4.0
      */
-    final class ContextInfo {
-
-        private final LongIdKey notifySettingKey;
-        private final StringIdKey topicKey;
-
-        public ContextInfo(LongIdKey notifySettingKey, StringIdKey topicKey) {
-            this.notifySettingKey = notifySettingKey;
-            this.topicKey = topicKey;
-        }
-
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
-
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
+    record ContextInfo(LongIdKey notifySettingKey, StringIdKey topicKey) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "ContextInfo{" +
                     "notifySettingKey=" + notifySettingKey +
                     ", topicKey=" + topicKey +

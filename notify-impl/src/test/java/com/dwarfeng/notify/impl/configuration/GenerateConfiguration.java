@@ -2,8 +2,8 @@ package com.dwarfeng.notify.impl.configuration;
 
 import com.dwarfeng.sfds.api.integration.subgrade.SnowflakeLongIdKeyGenerator;
 import com.dwarfeng.sfds.stack.service.GenerateService;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.generation.KeyGenerator;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.generation.KeyGenerator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

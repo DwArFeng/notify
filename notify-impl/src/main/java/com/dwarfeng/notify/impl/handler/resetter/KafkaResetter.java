@@ -1,8 +1,11 @@
 package com.dwarfeng.notify.impl.handler.resetter;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.resetter.AbstractResetter;
-import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.sdk.exception.HandlerExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.TopicPartition;
@@ -62,10 +65,12 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
     protected void doStart() throws Exception {
         lock.lock();
         try {
-            LOGGER.info("Kafka resetter 开启...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_RESETTER_STARTING));
             MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
             if (Objects.isNull(listenerContainer)) {
-                throw new HandlerException("找不到 kafka listener container " + listenerId);
+                throw new HandlerException(
+                        ImplMessages.message(ImplMessageKey.ERROR_KAFKA_LISTENER_CONTAINER_NOT_FOUND, listenerId)
+                );
             }
             // 判断监听容器是否启动，未启动则将其启动。
             if (!listenerContainer.isRunning()) {
@@ -86,10 +91,12 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
     protected void doStop() throws Exception {
         lock.lock();
         try {
-            LOGGER.info("Kafka resetter 停止...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_RESETTER_STOPPING));
             MessageListenerContainer listenerContainer = registry.getListenerContainer(listenerId);
             if (Objects.isNull(listenerContainer)) {
-                throw new HandlerException("找不到 kafka listener container " + listenerId);
+                throw new HandlerException(
+                        ImplMessages.message(ImplMessageKey.ERROR_KAFKA_LISTENER_CONTAINER_NOT_FOUND, listenerId)
+                );
             }
             // 判断监听容器是否暂停，未暂停则将其暂停。
             if (!listenerContainer.isPauseRequested()) {
@@ -119,26 +126,26 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             Set<String> valueSet = consumerRecords.stream().map(ConsumerRecord::value).collect(Collectors.toSet());
             if (valueSet.contains(RESET_IDENTIFIER_ROUTE)) {
                 try {
-                    LOGGER.info("接收到路由重置消息, 正在重置路由...");
+                    LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_ROUTE_MESSAGE_RECEIVED));
                     context.resetRoute();
                 } catch (Exception e) {
-                    LOGGER.warn("重置路由时发生异常, 路由将不会重置, 异常信息如下: ", e);
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_RESET_ROUTE_FAILED), e);
                 }
             }
             if (valueSet.contains(RESET_IDENTIFIER_DISPATCH)) {
                 try {
-                    LOGGER.info("接收到调度重置消息, 正在重置调度...");
+                    LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_DISPATCH_MESSAGE_RECEIVED));
                     context.resetDispatch();
                 } catch (Exception e) {
-                    LOGGER.warn("重置调度时发生异常, 调度将不会重置, 异常信息如下: ", e);
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_RESET_DISPATCH_FAILED), e);
                 }
             }
             if (valueSet.contains(RESET_IDENTIFIER_SEND)) {
                 try {
-                    LOGGER.info("接收到发送重置消息, 正在重置发送...");
+                    LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_RESET_SEND_MESSAGE_RECEIVED));
                     context.resetSend();
                 } catch (Exception e) {
-                    LOGGER.warn("重置发送时发生异常, 发送将不会重置, 异常信息如下: ", e);
+                    LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_RESET_SEND_FAILED), e);
                 }
             }
             ack.acknowledge();
@@ -149,7 +156,7 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
 
     @Override
     public void onPartitionsAssigned(Map<TopicPartition, Long> assignments, ConsumerSeekCallback callback) {
-        LOGGER.info("将 id 为 {} 的监听器的 offset 移动至最后, 避免处理过期的消息...", listenerId);
+        LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_LISTENER_OFFSET_MOVING, listenerId));
         callback.seekToEnd(assignments.keySet());
     }
 
@@ -184,7 +191,7 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
 
         @Bean("kafkaResetter.consumerProperties")
         public Map<String, Object> consumerProperties() {
-            LOGGER.info("配置 Kafka 消费者属性...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_CONSUMER_PROPERTIES_CONFIGURING));
             Map<String, Object> props = new HashMap<>();
             props.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerBootstrapServers);
             // 本实例使用 ack 手动提交，因此禁止自动提交的功能。
@@ -195,25 +202,25 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, autoOffsetReset);
             props.put(ConsumerConfig.MAX_POLL_RECORDS_CONFIG, maxPollRecords);
             props.put(ConsumerConfig.MAX_POLL_INTERVAL_MS_CONFIG, maxPollIntervalMs);
-            LOGGER.debug("Kafka 消费者属性配置完成...");
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_KAFKA_CONSUMER_PROPERTIES_CONFIGURED));
             return props;
         }
 
         @Bean("kafkaResetter.consumerFactory")
         public ConsumerFactory<String, String> consumerFactory() {
-            LOGGER.info("配置 Kafka 消费者工厂...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_CONSUMER_FACTORY_CONFIGURING));
             Map<String, Object> properties = consumerProperties();
             DefaultKafkaConsumerFactory<String, String> factory = new DefaultKafkaConsumerFactory<>(properties);
             factory.setKeyDeserializer(new StringDeserializer());
             factory.setValueDeserializer(new StringDeserializer());
-            LOGGER.debug("Kafka 消费者工厂配置完成");
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_KAFKA_CONSUMER_FACTORY_CONFIGURED));
             return factory;
         }
 
         @Bean("kafkaResetter.kafkaListenerContainerFactory")
         public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, String>>
         kafkaListenerContainerFactory() {
-            LOGGER.info("配置 Kafka 侦听容器工厂...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_LISTENER_CONTAINER_FACTORY_CONFIGURING));
             ConsumerFactory<String, String> consumerFactory = consumerFactory();
             ConcurrentKafkaListenerContainerFactory<String, String> factory =
                     new ConcurrentKafkaListenerContainerFactory<>();
@@ -226,7 +233,7 @@ public class KafkaResetter extends AbstractResetter implements ConsumerSeekAware
             factory.setBatchListener(true);
             // 配置 ACK 模式为手动立即提交。
             factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
-            LOGGER.info("配置 Kafka 侦听容器工厂...");
+            LOGGER.info(ImplMessages.message(ImplMessageKey.LOG_KAFKA_LISTENER_CONTAINER_FACTORY_CONFIGURING));
             return factory;
         }
     }

@@ -1,6 +1,8 @@
 package com.dwarfeng.notify.stack.exception;
 
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+
+import java.io.Serial;
 
 /**
  * 发送器异常。
@@ -10,6 +12,7 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class SenderException extends HandlerException {
 
+    @Serial
     private static final long serialVersionUID = 2333548017100518399L;
 
     public SenderException() {

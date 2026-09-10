@@ -2,9 +2,11 @@ package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.impl.bean.key.HibernateNotifyInfoRecordKey;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+
+import java.io.Serial;
 import java.util.Objects;
 
 @Entity
@@ -12,7 +14,8 @@ import java.util.Objects;
 @Table(name = "tbl_notify_info_record")
 public class HibernateNotifyInfoRecord implements Bean {
 
-    private static final long serialVersionUID = 5281515276251667342L;
+    @Serial
+    private static final long serialVersionUID = -3585456518650970639L;
 
     // region 主键
 

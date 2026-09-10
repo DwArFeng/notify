@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+
+import java.io.Serial;
 
 /**
  * 发送器信息。
@@ -11,8 +13,9 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  */
 public class SenderInfo implements Entity<SenderInfoKey> {
 
-    private static final long serialVersionUID = -6590807531984924592L;
-    
+    @Serial
+    private static final long serialVersionUID = 2485284804539522743L;
+
     private SenderInfoKey key;
     private String label;
     private String type;

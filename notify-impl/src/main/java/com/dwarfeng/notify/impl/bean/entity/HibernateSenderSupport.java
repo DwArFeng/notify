@@ -1,10 +1,11 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateStringIdKey;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
+import java.io.Serial;
 import java.util.Optional;
 
 @Entity
@@ -12,7 +13,8 @@ import java.util.Optional;
 @Table(name = "tbl_sender_support")
 public class HibernateSenderSupport implements Bean {
 
-    private static final long serialVersionUID = 1344771067751662713L;
+    @Serial
+    private static final long serialVersionUID = 6990498647697464148L;
 
     // region 主键
 

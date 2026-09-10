@@ -1,12 +1,13 @@
 package com.dwarfeng.notify.sdk.bean.dto;
 
-import com.alibaba.fastjson.annotation.JSONField;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
-import com.dwarfeng.subgrade.sdk.bean.key.WebInputLongIdKey;
-import com.dwarfeng.subgrade.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.web.sdk.bean.key.WebInputLongIdKey;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import java.io.Serial;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,7 +19,8 @@ import java.util.Objects;
  */
 public class WebInputNotifyInfo implements Dto {
 
-    private static final long serialVersionUID = 543189554207402052L;
+    @Serial
+    private static final long serialVersionUID = 6567077195826160368L;
 
     public static NotifyInfo toStackBean(WebInputNotifyInfo webInputNotifyInfo) {
         if (Objects.isNull(webInputNotifyInfo)) {

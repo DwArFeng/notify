@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.util.Constants;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
@@ -17,11 +20,12 @@ import com.dwarfeng.notify.stack.service.NotifyHistoryMaintainService;
 import com.dwarfeng.notify.stack.service.NotifyInfoRecordMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySendRecordMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
-import com.dwarfeng.subgrade.sdk.exception.HandlerExceptionHelper;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
-import com.dwarfeng.subgrade.stack.generation.KeyGenerator;
+import com.dwarfeng.subgrade.basic.sdk.exception.HandlerExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.generation.KeyGenerator;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -30,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Component
 public class NotifyHandlerImpl implements NotifyHandler {
@@ -121,7 +124,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
         // 查询所有使能的主题。
         List<StringIdKey> topicKeys = topicMaintainService.lookupAsList(
                 TopicMaintainService.ENABLED_SORTED, new Object[0]
-        ).stream().map(Topic::getKey).collect(Collectors.toList());
+        ).stream().map(Topic::getKey).toList();
 
         // 对所有调度器执行启动调度方法，获取每个主题的目标用户，并转换为 Item 结构体。
         List<DispatchedItem> dispatchedItems = new ArrayList<>();
@@ -139,7 +142,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 生成 Item 结构体，并添加到结果列表。
                 dispatchedItems.add(new DispatchedItem(topicKey, dispatchedUserKeys));
             } catch (DispatcherException e) {
-                LOGGER.warn("主题 {} 调度失败, 将不参与发送, 异常信息如下: ", topicKey, e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_NOTIFY_DISPATCH_FAILED, topicKey), e);
             }
         }
 
@@ -156,8 +159,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         // 遍历 Item 结构体，对每个主题发送通知，生成发送响应并添加到发送列表中。
         for (DispatchedItem item : dispatchedItems) {
             // 获取结构体的参数。
-            StringIdKey topicKey = item.getTopicKey();
-            List<StringIdKey> userKeys = item.getUserKeys();
+            StringIdKey topicKey = item.topicKey();
+            List<StringIdKey> userKeys = item.userKeys();
 
             try {
                 // 获取当前通知设置与当前主题下的发送器及其类型。
@@ -172,7 +175,7 @@ public class NotifyHandlerImpl implements NotifyHandler {
                 // 构建发送结构体，添加到结构体列表中。
                 sentItems.add(new SentItem(topicKey, senderResponse));
             } catch (SenderException e) {
-                LOGGER.warn("主题 {} 发送失败, 异常信息如下: ", topicKey, e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_NOTIFY_SEND_FAILED, topicKey), e);
             }
         }
 
@@ -197,7 +200,8 @@ public class NotifyHandlerImpl implements NotifyHandler {
         LongIdKey notifyHistoryKey = keyGenerator.generate();
         long notifyHistoryId = notifyHistoryKey.getLongId();
         persistNotifyHistory = new NotifyHistory(
-                notifyHistoryKey, notifySettingKey, currentDate, "通过 NotifyHandlerImpl 生成"
+                notifyHistoryKey, notifySettingKey, currentDate,
+                ImplMessages.message(ImplMessageKey.NOTIFY_HISTORY_REMARK_GENERATED)
         );
         for (Map.Entry<String, String> entry : routeInfoMap.entrySet()) {
             persistNotifyInfoRecords.add(new NotifyInfoRecord(
@@ -233,22 +237,22 @@ public class NotifyHandlerImpl implements NotifyHandler {
             ));
         }
         for (SentItem item : sentItems) {
-            for (Sender.Response response : item.getResponses()) {
+            for (Sender.Response response : item.responses()) {
                 persistNotifySendRecords.add(new NotifySendRecord(
                         new NotifySendRecordKey(
-                                notifyHistoryId, item.getTopicKey().getStringId(), response.getUserKey().getStringId()
+                                notifyHistoryId, item.topicKey().getStringId(), response.userKey().getStringId()
                         ),
-                        response.isSucceedFlag(),
-                        response.getMessage()
+                        response.succeedFlag(),
+                        response.message()
                 ));
                 pushSendRecords.add(new NotifyHistoryRecordInfo.SendRecord(
-                        item.getTopicKey(), response.getUserKey(), response.isSucceedFlag(), response.getMessage()
+                        item.topicKey(), response.userKey(), response.succeedFlag(), response.message()
                 ));
             }
         }
         pushNotifyHistoryRecordInfo = new NotifyHistoryRecordInfo(
-                notifyHistoryKey, notifySettingKey, currentDate, "通过 NotifyHandlerImpl 生成",
-                pushInfoRecords, pushSendRecords
+                notifyHistoryKey, notifySettingKey, currentDate,
+                ImplMessages.message(ImplMessageKey.NOTIFY_HISTORY_REMARK_GENERATED), pushInfoRecords, pushSendRecords
         );
 
         // 插入历史记录信息。
@@ -260,7 +264,12 @@ public class NotifyHandlerImpl implements NotifyHandler {
         try {
             pushHandler.notifyHistoryRecorded(pushNotifyHistoryRecordInfo);
         } catch (Exception e) {
-            LOGGER.warn("历史记录信息插入事件推送失败, 放弃对数据的推送: {}", pushNotifyHistoryRecordInfo, e);
+            LOGGER.warn(
+                    ImplMessages.message(
+                            ImplMessageKey.LOG_NOTIFY_HISTORY_RECORD_EVENT_PUSH_FAILED, pushNotifyHistoryRecordInfo
+                    ),
+                    e
+            );
         }
     }
 
@@ -294,26 +303,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         sendLocalCacheHandler.clear();
     }
 
-    private static class DispatchedItem {
-
-        private final StringIdKey topicKey;
-        private final List<StringIdKey> userKeys;
-
-        public DispatchedItem(StringIdKey topicKey, List<StringIdKey> userKeys) {
-            this.topicKey = topicKey;
-            this.userKeys = userKeys;
-        }
-
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
-
-        public List<StringIdKey> getUserKeys() {
-            return userKeys;
-        }
+    private record DispatchedItem(StringIdKey topicKey, List<StringIdKey> userKeys) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "DispatchedItem{" +
                     "topicKey=" + topicKey +
                     ", userKeys=" + userKeys +
@@ -321,26 +314,10 @@ public class NotifyHandlerImpl implements NotifyHandler {
         }
     }
 
-    private static class SentItem {
-
-        private final StringIdKey topicKey;
-        private final List<Sender.Response> responses;
-
-        public SentItem(StringIdKey topicKey, List<Sender.Response> responses) {
-            this.topicKey = topicKey;
-            this.responses = responses;
-        }
-
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
-
-        public List<Sender.Response> getResponses() {
-            return responses;
-        }
+    private record SentItem(StringIdKey topicKey, List<Sender.Response> responses) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "SentItem{" +
                     "topicKey=" + topicKey +
                     ", responses=" + responses +

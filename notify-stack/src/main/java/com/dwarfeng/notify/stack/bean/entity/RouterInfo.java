@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+
+import java.io.Serial;
 
 /**
  * 路由器信息。
@@ -11,8 +13,9 @@ import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
  */
 public class RouterInfo implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = 2544012714879188416L;
-    
+    @Serial
+    private static final long serialVersionUID = -5853591262864530234L;
+
     private LongIdKey key;
     private String label;
     private String type;

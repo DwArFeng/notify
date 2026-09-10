@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
 import com.dwarfeng.notify.stack.bean.key.MetaKey;
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+
+import java.io.Serial;
 
 /**
  * 元数据。
@@ -11,8 +13,9 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  */
 public class Meta implements Entity<MetaKey> {
 
-    private static final long serialVersionUID = 1597526375281291335L;
-    
+    @Serial
+    private static final long serialVersionUID = 6752143982617372955L;
+
     private MetaKey key;
     private String value;
     private String remark;

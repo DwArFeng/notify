@@ -1,13 +1,15 @@
 package com.dwarfeng.notify.impl.handler.sender;
 
-import com.dwarfeng.dutil.basic.io.IOUtil;
-import com.dwarfeng.dutil.basic.io.StringOutputStream;
+import com.dwarfeng.dutil.basic.impl.io.StringOutputStream;
+import com.dwarfeng.dutil.basic.sdk.io.IOUtil;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
 import com.dwarfeng.notify.sdk.handler.sender.AbstractSender;
 import com.dwarfeng.notify.sdk.handler.sender.AbstractSenderRegistry;
 import com.dwarfeng.notify.stack.exception.SenderException;
 import com.dwarfeng.notify.stack.exception.SenderMakeException;
 import com.dwarfeng.notify.stack.handler.Sender;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import groovy.lang.GroovyClassLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,9 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
 
     public static final String SENDER_TYPE = "groovy_sender";
 
+    private static final String EXAMPLE_PROCESSOR_RESOURCE_PATH =
+            "classpath:com/dwarfeng/notify/impl/groovy/ExampleSenderProcessor.groovy";
+
     private static final Logger LOGGER = LoggerFactory.getLogger(GroovySenderRegistry.class);
 
     private final ApplicationContext ctx;
@@ -55,7 +60,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
     @Override
     public String provideExampleParam() {
         try {
-            Resource resource = ctx.getResource("classpath:groovy/ExampleSenderProcessor.groovy");
+            Resource resource = ctx.getResource(EXAMPLE_PROCESSOR_RESOURCE_PATH);
             String example;
             try (InputStream sin = resource.getInputStream();
                  StringOutputStream sout = new StringOutputStream(StandardCharsets.UTF_8, true)) {
@@ -65,7 +70,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
             }
             return example;
         } catch (Exception e) {
-            LOGGER.warn("读取文件 classpath:groovy/ExampleSenderProcessor.groovy 时出现异常", e);
+            LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_GROOVY_SENDER_EXAMPLE_PROCESSOR_READ_FAILED), e);
             return "";
         }
     }
@@ -75,7 +80,7 @@ public class GroovySenderRegistry extends AbstractSenderRegistry {
         try (GroovyClassLoader classLoader = new GroovyClassLoader()) {
             // 通过 Groovy 脚本生成处理器。
             Class<?> aClass = classLoader.parseClass(param);
-            Processor processor = (Processor) aClass.newInstance();
+            Processor processor = (Processor) aClass.getDeclaredConstructor().newInstance();
             ctx.getAutowireCapableBeanFactory().autowireBean(processor);
             // 构建过滤器对象并返回。
             return ctx.getBean(GroovySender.class, processor);

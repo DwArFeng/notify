@@ -1,7 +1,11 @@
 package com.dwarfeng.notify.stack.exception;
 
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+
+import java.io.Serial;
 
 /**
  * 发送器信息不存在异常。
@@ -11,8 +15,9 @@ import com.dwarfeng.subgrade.stack.exception.HandlerException;
  */
 public class SenderInfoNotExistsException extends HandlerException {
 
+    @Serial
     private static final long serialVersionUID = -2900362851034009419L;
-    
+
     private final SenderInfoKey senderInfoKey;
 
     public SenderInfoNotExistsException(SenderInfoKey senderInfoKey) {
@@ -26,6 +31,6 @@ public class SenderInfoNotExistsException extends HandlerException {
 
     @Override
     public String getMessage() {
-        return "发送器信息 " + senderInfoKey + " 不存在";
+        return StackMessages.message(StackMessageKey.SENDER_INFO_NOT_EXISTS, senderInfoKey);
     }
 }

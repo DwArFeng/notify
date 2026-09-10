@@ -1,8 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
 
+import java.io.Serial;
 import java.util.Date;
 
 /**
@@ -13,7 +14,8 @@ import java.util.Date;
  */
 public class NotifyHistory implements Entity<LongIdKey> {
 
-    private static final long serialVersionUID = -487691850267911309L;
+    @Serial
+    private static final long serialVersionUID = -5193314727779979712L;
 
     private LongIdKey key;
     private LongIdKey notifySettingKey;

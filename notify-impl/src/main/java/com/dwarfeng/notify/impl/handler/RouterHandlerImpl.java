@@ -1,5 +1,8 @@
 package com.dwarfeng.notify.impl.handler;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.RouterMaker;
 import com.dwarfeng.notify.stack.bean.entity.Meta;
 import com.dwarfeng.notify.stack.bean.entity.MetaIndicator;
@@ -15,8 +18,8 @@ import com.dwarfeng.notify.stack.service.MetaIndicatorMaintainService;
 import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
 import com.dwarfeng.notify.stack.service.UserMaintainService;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -60,14 +63,14 @@ public class RouterHandlerImpl implements RouterHandler {
     public Router make(String type, String param) throws RouterException {
         try {
             // 生成路由器。
-            LOGGER.debug("通过路由器信息构建新的的路由器...");
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_ROUTER_BUILDING));
             RouterMaker routerMaker = routerMakers.stream().filter(maker -> maker.supportType(type))
                     .findFirst().orElseThrow(() -> new UnsupportedRouterTypeException(type));
             Router router = routerMaker.makeRouter(type, param);
-            LOGGER.debug("路由器构建成功!");
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_ROUTER_BUILT));
             router.init(routerContext);
-            LOGGER.debug("路由器初始化成功!");
-            LOGGER.debug("路由器: {}", router);
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_ROUTER_INITIALIZED));
+            LOGGER.debug(ImplMessages.message(ImplMessageKey.LOG_ROUTER_DETAIL, router));
             return router;
         } catch (RouterException e) {
             throw e;
@@ -154,7 +157,11 @@ public class RouterHandlerImpl implements RouterHandler {
                                 notifySettingKey.getLongId(), topicKey.getStringId(), userKey.getStringId(),
                                 metaId
                         ),
-                        value, "通过 InternalRouterContext 更新, 更新日期: " + new Date()
+                        value,
+                        ImplMessages.message(
+                                ImplMessageKey.META_REMARK_INTERNAL_ROUTER_CONTEXT_UPDATED,
+                                new Date().toString()
+                        )
                 );
                 metaMaintainService.insertOrUpdate(meta);
             } catch (Exception e) {

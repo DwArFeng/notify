@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+
+import java.io.Serial;
 
 /**
  * 通知信息记录。
@@ -11,7 +13,8 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  */
 public class NotifyInfoRecord implements Entity<NotifyInfoRecordKey> {
 
-    private static final long serialVersionUID = 7745773740215488481L;
+    @Serial
+    private static final long serialVersionUID = -758543764695413912L;
 
     private NotifyInfoRecordKey key;
     private String value;

@@ -1,5 +1,10 @@
 package com.dwarfeng.notify.stack.exception;
 
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+
+import java.io.Serial;
+
 /**
  * 发送器构造异常。
  *
@@ -8,6 +13,7 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class SenderMakeException extends SenderException {
 
+    @Serial
     private static final long serialVersionUID = 319531295182011844L;
 
     private final String senderType;
@@ -26,6 +32,6 @@ public class SenderMakeException extends SenderException {
 
     @Override
     public String getMessage() {
-        return "发送器构造异常, 类型为: " + senderType + ", 参数为: " + param;
+        return StackMessages.message(StackMessageKey.SENDER_MAKE_EXCEPTION, senderType, param);
     }
 }

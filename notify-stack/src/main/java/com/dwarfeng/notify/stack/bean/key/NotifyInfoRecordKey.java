@@ -1,7 +1,8 @@
 package com.dwarfeng.notify.stack.bean.key;
 
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -12,7 +13,8 @@ import java.util.Objects;
  */
 public class NotifyInfoRecordKey implements Key {
 
-    private static final long serialVersionUID = 1639983541813922891L;
+    @Serial
+    private static final long serialVersionUID = -7537122588264663216L;
 
     private Long notifyHistoryId;
     private Integer type;

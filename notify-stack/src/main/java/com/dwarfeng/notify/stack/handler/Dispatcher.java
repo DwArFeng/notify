@@ -1,8 +1,9 @@
 package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.exception.DispatcherException;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -150,26 +151,10 @@ public interface Dispatcher {
      * @author DwArFeng
      * @since 1.4.0
      */
-    final class ContextInfo {
-
-        private final LongIdKey notifySettingKey;
-        private final StringIdKey topicKey;
-
-        public ContextInfo(LongIdKey notifySettingKey, StringIdKey topicKey) {
-            this.notifySettingKey = notifySettingKey;
-            this.topicKey = topicKey;
-        }
-
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
-
-        public StringIdKey getTopicKey() {
-            return topicKey;
-        }
+    record ContextInfo(LongIdKey notifySettingKey, StringIdKey topicKey) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "ContextInfo{" +
                     "notifySettingKey=" + notifySettingKey +
                     ", topicKey=" + topicKey +

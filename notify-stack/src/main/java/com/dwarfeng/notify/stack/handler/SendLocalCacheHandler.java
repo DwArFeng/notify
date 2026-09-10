@@ -1,7 +1,7 @@
 package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.bean.key.SenderInfoKey;
-import com.dwarfeng.subgrade.stack.handler.LocalCacheHandler;
+import com.dwarfeng.subgrade.cache.stack.handler.LocalCacheHandler;
 
 /**
  * 发送本地缓存处理器。

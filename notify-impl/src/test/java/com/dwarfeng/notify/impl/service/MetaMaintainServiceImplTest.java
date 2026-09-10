@@ -9,24 +9,24 @@ import com.dwarfeng.notify.stack.service.MetaMaintainService;
 import com.dwarfeng.notify.stack.service.NotifySettingMaintainService;
 import com.dwarfeng.notify.stack.service.TopicMaintainService;
 import com.dwarfeng.notify.stack.service.UserMaintainService;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
 import org.apache.commons.beanutils.BeanUtils;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Objects;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath:spring/application-context*.xml")
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(locations = "classpath:com/dwarfeng/notify/impl/spring/application-context*.xml")
 public class MetaMaintainServiceImplTest {
 
     private static final long NOTIFY_SETTING_ID = 12450L;
@@ -48,7 +48,7 @@ public class MetaMaintainServiceImplTest {
     private User user;
     private Meta meta;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         notifySetting = new NotifySetting(new LongIdKey(NOTIFY_SETTING_ID), "label", "remark", true);
         topic = new Topic(new StringIdKey(TOPIC_ID), "label", "remark", true, 12450);
@@ -58,7 +58,7 @@ public class MetaMaintainServiceImplTest {
         );
     }
 
-    @After
+    @AfterEach
     public void tearDown() {
         notifySetting = null;
         topic = null;

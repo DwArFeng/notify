@@ -1,83 +1,133 @@
 package com.dwarfeng.notify.impl.dao.preset;
 
+import com.dwarfeng.notify.impl.bean.entity.HibernateSenderInfo;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
 import com.dwarfeng.notify.stack.service.SenderInfoMaintainService;
-import com.dwarfeng.subgrade.sdk.hibernate.criteria.PresetCriteriaMaker;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.MatchMode;
-import org.hibernate.criterion.Restrictions;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.data.sdk.hibernate.criteria.PresetCriteriaMaker;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
 import java.util.Objects;
 
 @Component
-public class SenderInfoPresetCriteriaMaker implements PresetCriteriaMaker {
+public class SenderInfoPresetCriteriaMaker implements PresetCriteriaMaker<HibernateSenderInfo> {
 
     @Override
-    public void makeCriteria(DetachedCriteria detachedCriteria, String s, Object[] objects) {
+    public void makeCriteria(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateSenderInfo> root,
+            String s, Object[] objects
+    ) {
         switch (s) {
             case SenderInfoMaintainService.CHILD_FOR_NOTIFY_SETTING:
-                childForNotifySetting(detachedCriteria, objects);
+                childForNotifySetting(criteriaBuilder, criteriaQuery, root, objects);
                 break;
             case SenderInfoMaintainService.CHILD_FOR_TOPIC:
-                childForTopic(detachedCriteria, objects);
+                childForTopic(criteriaBuilder, criteriaQuery, root, objects);
                 break;
             case SenderInfoMaintainService.TYPE_EQUALS:
-                typeEquals(detachedCriteria, objects);
+                typeEquals(criteriaBuilder, criteriaQuery, root, objects);
                 break;
             case SenderInfoMaintainService.TYPE_LIKE:
-                typeLike(detachedCriteria, objects);
+                typeLike(criteriaBuilder, criteriaQuery, root, objects);
                 break;
             default:
-                throw new IllegalArgumentException("无法识别的预设: " + s);
+                throw new IllegalArgumentException(ImplMessages.message(ImplMessageKey.ERROR_UNRECOGNIZED_PRESET, s));
         }
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void childForNotifySetting(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForNotifySetting(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateSenderInfo> root,
+            Object[] objects
+    ) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("notifySettingId"));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder, criteriaQuery, criteriaBuilder.isNull(root.get("notifySettingId"))
+                );
             } else {
                 LongIdKey longIdKey = (LongIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("notifySettingId", longIdKey.getLongId()));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder,
+                        criteriaQuery,
+                        CriteriaQueryHelper.equalOrIsNull(
+                                criteriaBuilder, root.get("notifySettingId"), longIdKey.getLongId()
+                        )
+                );
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
     @SuppressWarnings("DuplicatedCode")
-    private void childForTopic(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void childForTopic(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateSenderInfo> root,
+            Object[] objects
+    ) {
         try {
             if (Objects.isNull(objects[0])) {
-                detachedCriteria.add(Restrictions.isNull("topicId"));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder, criteriaQuery, criteriaBuilder.isNull(root.get("topicId"))
+                );
             } else {
                 StringIdKey stringIdKey = (StringIdKey) objects[0];
-                detachedCriteria.add(Restrictions.eqOrIsNull("topicId", stringIdKey.getStringId()));
+                CriteriaQueryHelper.addRestriction(
+                        criteriaBuilder,
+                        criteriaQuery,
+                        CriteriaQueryHelper.equalOrIsNull(
+                                criteriaBuilder, root.get("topicId"), stringIdKey.getStringId()
+                        )
+                );
             }
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
-    private void typeEquals(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void typeEquals(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateSenderInfo> root,
+            Object[] objects
+    ) {
         try {
             String type = (String) objects[0];
-            detachedCriteria.add(Restrictions.eqOrIsNull("type", type));
+            CriteriaQueryHelper.addRestriction(
+                    criteriaBuilder,
+                    criteriaQuery,
+                    CriteriaQueryHelper.equalOrIsNull(criteriaBuilder, root.get("type"), type)
+            );
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 
-    private void typeLike(DetachedCriteria detachedCriteria, Object[] objects) {
+    private void typeLike(
+            CriteriaBuilder criteriaBuilder, CriteriaQuery<?> criteriaQuery, Root<HibernateSenderInfo> root,
+            Object[] objects
+    ) {
         try {
             String pattern = (String) objects[0];
-            detachedCriteria.add(Restrictions.like("type", pattern, MatchMode.ANYWHERE));
+            CriteriaQueryHelper.addRestriction(
+                    criteriaBuilder,
+                    criteriaQuery,
+                    criteriaBuilder.like(root.get("type"), "%" + pattern + "%")
+            );
         } catch (Exception e) {
-            throw new IllegalArgumentException("非法的参数:" + Arrays.toString(objects));
+            throw new IllegalArgumentException(
+                    ImplMessages.message(ImplMessageKey.ERROR_ILLEGAL_ARGUMENT, Arrays.toString(objects))
+            );
         }
     }
 }

@@ -1,12 +1,15 @@
 package com.dwarfeng.notify.impl.service;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.stack.bean.dto.NotifyInfo;
 import com.dwarfeng.notify.stack.handler.NotifyHandler;
 import com.dwarfeng.notify.stack.service.NotifyService;
-import com.dwarfeng.subgrade.sdk.exception.ServiceExceptionHelper;
-import com.dwarfeng.subgrade.stack.exception.ServiceException;
-import com.dwarfeng.subgrade.stack.exception.ServiceExceptionMapper;
-import com.dwarfeng.subgrade.stack.log.LogLevel;
+import com.dwarfeng.subgrade.basic.sdk.exception.ServiceExceptionHelper;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceException;
+import com.dwarfeng.subgrade.basic.stack.exception.ServiceExceptionMapper;
+import com.dwarfeng.subgrade.basic.stack.log.LogLevel;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -26,7 +29,10 @@ public class NotifyServiceImpl implements NotifyService {
         try {
             notifyHandler.notify(notifyInfo);
         } catch (Exception e) {
-            throw ServiceExceptionHelper.logParse("获取当前的确认模式时发生异常", LogLevel.WARN, e, sem);
+            throw ServiceExceptionHelper.logParse(
+                    ImplMessages.message(ImplMessageKey.ERROR_NOTIFY_QOS_SERVICE_CONFIRM_MODE_GET_FAILED),
+                    LogLevel.WARN, e, sem
+            );
         }
     }
 }

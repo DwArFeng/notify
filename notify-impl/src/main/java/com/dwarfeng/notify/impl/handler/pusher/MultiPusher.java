@@ -1,17 +1,20 @@
 package com.dwarfeng.notify.impl.handler.pusher;
 
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessageKey;
+import com.dwarfeng.notify.impl.internal.i18n.ImplMessages;
+
 import com.dwarfeng.notify.sdk.handler.Pusher;
 import com.dwarfeng.notify.sdk.handler.pusher.AbstractPusher;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.PurgeFinishedResult;
-import com.dwarfeng.subgrade.stack.exception.HandlerException;
+import com.dwarfeng.subgrade.basic.stack.exception.HandlerException;
+import jakarta.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**
@@ -45,7 +48,9 @@ public class MultiPusher extends AbstractPusher {
         while (st.hasMoreTokens()) {
             String delegateType = st.nextToken();
             delegates.add(pushers.stream().filter(p -> p.supportType(delegateType)).findAny()
-                    .orElseThrow(() -> new HandlerException("未知的 pusher 类型: " + delegateType)));
+                    .orElseThrow(() -> new HandlerException(
+                            ImplMessages.message(ImplMessageKey.ERROR_UNKNOWN_PUSHER_TYPE, delegateType))
+                    ));
         }
     }
 
@@ -55,7 +60,7 @@ public class MultiPusher extends AbstractPusher {
             try {
                 delegate.notifyHistoryRecorded(info);
             } catch (Exception e) {
-                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_MULTI_PUSHER_PUSH_FAILED), e);
             }
         }
     }
@@ -66,7 +71,7 @@ public class MultiPusher extends AbstractPusher {
             try {
                 delegate.routeReset();
             } catch (Exception e) {
-                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_MULTI_PUSHER_PUSH_FAILED), e);
             }
         }
     }
@@ -77,7 +82,7 @@ public class MultiPusher extends AbstractPusher {
             try {
                 delegate.dispatchReset();
             } catch (Exception e) {
-                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_MULTI_PUSHER_PUSH_FAILED), e);
             }
         }
     }
@@ -88,7 +93,7 @@ public class MultiPusher extends AbstractPusher {
             try {
                 delegate.sendReset();
             } catch (Exception e) {
-                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_MULTI_PUSHER_PUSH_FAILED), e);
             }
         }
     }
@@ -99,7 +104,7 @@ public class MultiPusher extends AbstractPusher {
             try {
                 delegate.purgeFinished(result);
             } catch (Exception e) {
-                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_MULTI_PUSHER_PUSH_FAILED), e);
             }
         }
     }
@@ -110,7 +115,7 @@ public class MultiPusher extends AbstractPusher {
             try {
                 delegate.purgeFailed();
             } catch (Exception e) {
-                LOGGER.warn("代理推送器推送数据失败，异常信息如下: ", e);
+                LOGGER.warn(ImplMessages.message(ImplMessageKey.LOG_MULTI_PUSHER_PUSH_FAILED), e);
             }
         }
     }

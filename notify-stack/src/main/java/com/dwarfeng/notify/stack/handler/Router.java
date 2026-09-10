@@ -2,8 +2,9 @@ package com.dwarfeng.notify.stack.handler;
 
 import com.dwarfeng.notify.stack.bean.entity.User;
 import com.dwarfeng.notify.stack.exception.RouterException;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
-import com.dwarfeng.subgrade.stack.bean.key.StringIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.key.StringIdKey;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Map;
@@ -169,20 +170,10 @@ public interface Router {
      * @author DwArFeng
      * @since 1.4.0
      */
-    final class ContextInfo {
-
-        private final LongIdKey notifySettingKey;
-
-        public ContextInfo(LongIdKey notifySettingKey) {
-            this.notifySettingKey = notifySettingKey;
-        }
-
-        public LongIdKey getNotifySettingKey() {
-            return notifySettingKey;
-        }
+    record ContextInfo(LongIdKey notifySettingKey) {
 
         @Override
-        public String toString() {
+        public @NotNull String toString() {
             return "ContextInfo{" +
                     "notifySettingKey=" + notifySettingKey +
                     '}';

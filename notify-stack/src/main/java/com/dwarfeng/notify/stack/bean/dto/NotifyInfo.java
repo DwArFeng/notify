@@ -1,8 +1,9 @@
 package com.dwarfeng.notify.stack.bean.dto;
 
-import com.dwarfeng.subgrade.stack.bean.dto.Dto;
-import com.dwarfeng.subgrade.stack.bean.key.LongIdKey;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.basic.stack.bean.key.LongIdKey;
 
+import java.io.Serial;
 import java.util.Map;
 
 /**
@@ -13,8 +14,9 @@ import java.util.Map;
  */
 public class NotifyInfo implements Dto {
 
-    private static final long serialVersionUID = -5383204390541718933L;
-    
+    @Serial
+    private static final long serialVersionUID = 1130867621945987363L;
+
     private LongIdKey notifySettingKey;
     private Map<String, String> routeInfoMap;
     private Map<String, String> dispatchInfoMap;

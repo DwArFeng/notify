@@ -1,10 +1,11 @@
 package com.dwarfeng.notify.sdk.bean.key;
 
-import com.alibaba.fastjson.annotation.JSONField;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
+import com.alibaba.fastjson2.JSONWriter;
+import com.alibaba.fastjson2.annotation.JSONField;
 import com.dwarfeng.notify.stack.bean.key.NotifyInfoRecordKey;
-import com.dwarfeng.subgrade.stack.bean.key.Key;
+import com.dwarfeng.subgrade.basic.stack.bean.key.Key;
 
+import java.io.Serial;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,8 @@ import java.util.Objects;
  */
 public class JSFixedFastJsonNotifyInfoRecordKey implements Key {
 
-    private static final long serialVersionUID = -3831407035439933995L;
+    @Serial
+    private static final long serialVersionUID = 5522245114576828793L;
 
     public static JSFixedFastJsonNotifyInfoRecordKey of(NotifyInfoRecordKey notifyInfoRecordKey) {
         if (Objects.isNull(notifyInfoRecordKey)) {
@@ -28,7 +30,7 @@ public class JSFixedFastJsonNotifyInfoRecordKey implements Key {
         }
     }
 
-    @JSONField(name = "notify_history_id", ordinal = 1, serializeUsing = ToStringSerializer.class)
+    @JSONField(name = "notify_history_id", ordinal = 1, serializeFeatures = JSONWriter.Feature.WriteLongAsString)
     private Long notifyHistoryId;
 
     @JSONField(name = "type", ordinal = 2)

@@ -1,7 +1,9 @@
 package com.dwarfeng.notify.stack.bean.entity;
 
 import com.dwarfeng.notify.stack.bean.key.MetaIndicatorKey;
-import com.dwarfeng.subgrade.stack.bean.entity.Entity;
+import com.dwarfeng.subgrade.basic.stack.bean.entity.Entity;
+
+import java.io.Serial;
 
 /**
  * 元数据指示器。
@@ -11,8 +13,9 @@ import com.dwarfeng.subgrade.stack.bean.entity.Entity;
  */
 public class MetaIndicator implements Entity<MetaIndicatorKey> {
 
-    private static final long serialVersionUID = 136591841341681718L;
-    
+    @Serial
+    private static final long serialVersionUID = -3072083739453388999L;
+
     private MetaIndicatorKey key;
     private String label;
     private String remark;

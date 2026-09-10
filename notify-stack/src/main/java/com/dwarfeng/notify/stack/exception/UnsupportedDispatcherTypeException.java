@@ -1,5 +1,10 @@
 package com.dwarfeng.notify.stack.exception;
 
+import com.dwarfeng.notify.stack.internal.i18n.StackMessageKey;
+import com.dwarfeng.notify.stack.internal.i18n.StackMessages;
+
+import java.io.Serial;
+
 /**
  * 不支持的调度器类型异常。
  *
@@ -8,8 +13,9 @@ package com.dwarfeng.notify.stack.exception;
  */
 public class UnsupportedDispatcherTypeException extends SenderException {
 
+    @Serial
     private static final long serialVersionUID = 2220611918313284006L;
-    
+
     private final String type;
 
     public UnsupportedDispatcherTypeException(String type) {
@@ -23,6 +29,6 @@ public class UnsupportedDispatcherTypeException extends SenderException {
 
     @Override
     public String getMessage() {
-        return "不支持的调度器类型: " + type;
+        return StackMessages.message(StackMessageKey.UNSUPPORTED_DISPATCHER_TYPE, type);
     }
 }

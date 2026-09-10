@@ -1,10 +1,11 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateStringIdKey;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
+import java.io.Serial;
 import java.util.Optional;
 
 @Entity
@@ -12,8 +13,9 @@ import java.util.Optional;
 @Table(name = "tbl_dispatcher_support")
 public class HibernateDispatcherSupport implements Bean {
 
-    private static final long serialVersionUID = -7063471128549711750L;
-    
+    @Serial
+    private static final long serialVersionUID = 231327022726321314L;
+
     // region 主键
 
     @Id

@@ -1,10 +1,11 @@
 package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateStringIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateStringIdKey;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
+import java.io.Serial;
 import java.util.Optional;
 
 @Entity
@@ -12,7 +13,8 @@ import java.util.Optional;
 @Table(name = "tbl_router_support")
 public class HibernateRouterSupport implements Bean {
 
-    private static final long serialVersionUID = 7444555005895758126L;
+    @Serial
+    private static final long serialVersionUID = -933555277139655454L;
 
     // region 主键
 

@@ -2,10 +2,11 @@ package com.dwarfeng.notify.impl.bean.entity;
 
 import com.dwarfeng.datamark.sdk.jpa.DatamarkField;
 import com.dwarfeng.notify.sdk.util.Constraints;
-import com.dwarfeng.subgrade.sdk.bean.key.HibernateLongIdKey;
-import com.dwarfeng.subgrade.stack.bean.Bean;
+import com.dwarfeng.subgrade.basic.stack.bean.Bean;
+import com.dwarfeng.subgrade.data.sdk.bean.key.hibernate.HibernateLongIdKey;
+import jakarta.persistence.*;
 
-import javax.persistence.*;
+import java.io.Serial;
 import java.util.Optional;
 
 @Entity
@@ -13,7 +14,8 @@ import java.util.Optional;
 @Table(name = "tbl_router_info")
 public class HibernateRouterInfo implements Bean {
 
-    private static final long serialVersionUID = -3214122460625249718L;
+    @Serial
+    private static final long serialVersionUID = -1266452926871141998L;
 
     // region 主键
 

@@ -3,10 +3,11 @@ package com.dwarfeng.notify.sdk.bean.dto;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo.InfoRecord;
 import com.dwarfeng.notify.stack.bean.dto.NotifyHistoryRecordInfo.SendRecord;
-import com.dwarfeng.subgrade.sdk.bean.key.FastJsonStringIdKey;
-import com.dwarfeng.subgrade.sdk.bean.key.JSFixedFastJsonLongIdKey;
-import com.dwarfeng.subgrade.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.basic.stack.bean.dto.Dto;
+import com.dwarfeng.subgrade.web.sdk.bean.key.FastJsonStringIdKey;
+import com.dwarfeng.subgrade.web.sdk.bean.key.JSFixedFastJsonLongIdKey;
 
+import java.io.Serial;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -21,7 +22,8 @@ import java.util.stream.Collectors;
  */
 public class JSFixedFastJsonNotifyHistoryRecordInfo implements Dto {
 
-    private static final long serialVersionUID = -3264210579109717227L;
+    @Serial
+    private static final long serialVersionUID = -5442957398869217345L;
 
     public static JSFixedFastJsonNotifyHistoryRecordInfo of(NotifyHistoryRecordInfo notifyHistoryRecordInfo) {
         if (Objects.isNull(notifyHistoryRecordInfo)) {
@@ -125,7 +127,8 @@ public class JSFixedFastJsonNotifyHistoryRecordInfo implements Dto {
 
     public static class JSFixedFastJsonInfoRecord implements Dto {
 
-        private static final long serialVersionUID = 6887637681202418700L;
+        @Serial
+        private static final long serialVersionUID = -3635094094342644152L;
 
         public static JSFixedFastJsonInfoRecord of(InfoRecord infoRecord) {
             if (Objects.isNull(infoRecord)) {
@@ -186,7 +189,8 @@ public class JSFixedFastJsonNotifyHistoryRecordInfo implements Dto {
 
     public static class JSFixedFastJsonSendRecord implements Dto {
 
-        private static final long serialVersionUID = 3209450650270713880L;
+        @Serial
+        private static final long serialVersionUID = 2000089281951964026L;
 
         public static JSFixedFastJsonSendRecord of(SendRecord sendRecord) {
             if (Objects.isNull(sendRecord)) {
