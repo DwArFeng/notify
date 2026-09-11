@@ -4,6 +4,10 @@
 
 ### 功能构建
 
+- Wiki 更新。
+  - docs/wiki/zh-CN/QuickStart.md。
+  - docs/wiki/zh-CN/SystemRequirements.md。
+
 - 升级 JDK 版本至 25。
 
 ### Bug 修复

@@ -6,11 +6,11 @@
 - 内存：4G 以上。
 - 硬盘：100G 以上。
 - CentOS 7。
-- JRE 1.8。
+- JDK 25。
 - MySQL 8.0.19。
-- Redis 5.0.7。
-- Zookeeper 3.5.5。
-- snowflake-distributed-service 2.0.2.a。
+- Redis 8.8.1。
+- Zookeeper 3.9.5。
+- snowflake-distributed-service 3.0.0.a。
 
 ## 获取软件包
 
@@ -25,7 +25,7 @@
 ```shell
 cd /usr/local
 tar -zxvf notify-all-he-${version}-release.tar.gz
-mv notify-all-he-${version}-release/notify-all-he-${version} notify
+mv notify-all-he-${version} notify
 ```
 
 ## 数据库初始化
