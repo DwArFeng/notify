@@ -25,7 +25,7 @@
 ```shell
 cd /usr/local
 tar -zxvf notify-all-he-${version}-release.tar.gz
-mv notify-all-he-${version}-release/notify-all-he-${version} notify
+mv notify-all-he-${version} notify
 ```
 
 ## 数据库初始化
@@ -304,7 +304,7 @@ ON DUPLICATE KEY UPDATE `remark` = VALUES(`remark`),
 
 ## 最小化配置
 
-下文列出了启动程序需要改动的最少的配置文件，每个配置文件中仅展示需要改动的配置项。
+下文列出了启动程序需要改动的最少配置文件，每个配置文件中仅展示需要改动的配置项。
 
 `conf/curator/connection.properties` 文件中配置 curator 连接信息。
 
@@ -589,7 +589,7 @@ com.dwarfeng.notify.redis.password=your-password-here
 在 `/usr/local/notify` 目录下执行如下命令：
 
 ```shell
-sh  bin/notify-start.sh
+sh bin/notify-start.sh
 ```
 
 1. 观察数据库，数据库将会自动生成 `tbl_` 前缀的表，并具有部分数据。
@@ -600,5 +600,5 @@ sh  bin/notify-start.sh
 在 `/usr/local/notify` 目录下执行如下命令：
 
 ```shell
-sh  bin/notify-stop.sh
+sh bin/notify-stop.sh
 ```
