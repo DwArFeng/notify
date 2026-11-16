@@ -11,7 +11,9 @@
 
 ### Bug 修复
 
-- (无)
+- 修复部分 DTO 实体中错误的字段注解。
+  - com.dwarfeng.notify.sdk.bean.key.FastJsonNotifySendRecordKey。
+  - com.dwarfeng.notify.sdk.bean.key.JSFixedFastJsonNotifySendRecordKey。
 
 ### 功能移除
 

@@ -34,7 +34,7 @@ public class JSFixedFastJsonNotifySendRecordKey implements Key {
     @JSONField(name = "topic_id", ordinal = 2)
     private String topicId;
 
-    @JSONField(name = "user_id", ordinal = 2)
+    @JSONField(name = "user_id", ordinal = 3)
     private String userId;
 
     public JSFixedFastJsonNotifySendRecordKey() {
